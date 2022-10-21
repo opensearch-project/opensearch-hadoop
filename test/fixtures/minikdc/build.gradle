@@ -17,7 +17,7 @@
  * under the License.
  */
 
-apply plugin: 'es.hadoop.build.base'
+apply plugin: 'opensearch.hadoop.build.base'
 apply plugin: 'java'
 
 repositories {

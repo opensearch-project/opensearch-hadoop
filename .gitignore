@@ -13,7 +13,7 @@ metastore_db
 .idea
 /hdfs/data
 /repository-hdfs/data/*
-/mr/src/main/resources/esh-build.properties
+/mr/src/main/resources/opensearch-hadoop-build.properties
 /pig/tmp-pig/*
 /spark/keyvaluerdd.parquet
 /spark/sql-13/default_*

@@ -35,10 +35,10 @@ import org.elasticsearch.hadoop.serialization.ParsingUtils;
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonParser;
 import org.elasticsearch.hadoop.serialization.json.JsonFactory;
 import org.elasticsearch.hadoop.serialization.json.ObjectReader;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConfig;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.SerializationConfig;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConfig;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.SerializationConfig;
 import org.elasticsearch.hadoop.util.Assert;
 import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
 

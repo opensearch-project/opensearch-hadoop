@@ -18,7 +18,7 @@
  */
 package org.elasticsearch.hadoop.rest.commonshttp;
 
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.methods.RequestEntity;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.methods.RequestEntity;
 import org.elasticsearch.hadoop.util.ByteSequence;
 
 import java.io.IOException;

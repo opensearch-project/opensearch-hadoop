@@ -22,12 +22,12 @@ package org.elasticsearch.hadoop.rest.commonshttp.auth.spnego;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
 import org.elasticsearch.hadoop.security.User;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.URIException;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthScheme;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthenticationException;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.auth.MalformedChallengeException;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.URIException;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthScheme;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthenticationException;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.MalformedChallengeException;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.ietf.jgss.GSSException;
 

@@ -25,11 +25,11 @@ import java.util.List;
 
 import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException;
 import org.elasticsearch.hadoop.serialization.Parser;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonFactory;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonStreamContext;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonToken;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.impl.JsonParserBase;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonFactory;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonStreamContext;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonToken;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.impl.JsonParserBase;
 
 public class JacksonJsonParser implements Parser {
 

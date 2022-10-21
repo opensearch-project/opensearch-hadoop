@@ -17,21 +17,21 @@
  * under the License.
  */
 
-import org.elasticsearch.hadoop.gradle.buildtools.AntFixture
+import org.opensearch.hadoop.gradle.buildtools.AntFixture
 import org.elasticsearch.gradle.testclusters.DefaultTestClustersTask
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.HadoopFixturePlugin
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.ServiceDescriptor
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.conf.HadoopClusterConfiguration
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.conf.InstanceConfiguration
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.conf.RoleConfiguration
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.conf.ServiceConfiguration
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.conf.SettingsContainer
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.tasks.HadoopMRJob
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.tasks.HiveBeeline
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.tasks.PigScript
-import org.elasticsearch.hadoop.gradle.fixture.hadoop.tasks.SparkApp
+import org.opensearch.hadoop.gradle.fixture.hadoop.HadoopFixturePlugin
+import org.opensearch.hadoop.gradle.fixture.hadoop.ServiceDescriptor
+import org.opensearch.hadoop.gradle.fixture.hadoop.conf.HadoopClusterConfiguration
+import org.opensearch.hadoop.gradle.fixture.hadoop.conf.InstanceConfiguration
+import org.opensearch.hadoop.gradle.fixture.hadoop.conf.RoleConfiguration
+import org.opensearch.hadoop.gradle.fixture.hadoop.conf.ServiceConfiguration
+import org.opensearch.hadoop.gradle.fixture.hadoop.conf.SettingsContainer
+import org.opensearch.hadoop.gradle.fixture.hadoop.tasks.HadoopMRJob
+import org.opensearch.hadoop.gradle.fixture.hadoop.tasks.HiveBeeline
+import org.opensearch.hadoop.gradle.fixture.hadoop.tasks.PigScript
+import org.opensearch.hadoop.gradle.fixture.hadoop.tasks.SparkApp
 
-apply plugin: 'es.hadoop.build'
+apply plugin: 'opensearch.hadoop.build'
 apply plugin: 'scala'
 apply plugin: HadoopFixturePlugin
 

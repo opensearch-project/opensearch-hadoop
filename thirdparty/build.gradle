@@ -1,11 +1,11 @@
-import org.elasticsearch.hadoop.gradle.BuildPlugin
+import org.opensearch.hadoop.gradle.BuildPlugin
 
 plugins {
     id 'com.github.johnrengelman.shadow'
-    id 'es.hadoop.build'
+    id 'opensearch.hadoop.build'
 }
 
-description = "Elasticsearch Hadoop Shaded Third-Party Libraries"
+description = "OpenSearch Hadoop Shaded Third-Party Libraries"
 
 configurations {
     shaded {
@@ -27,6 +27,6 @@ dependencies {
 
 shadowJar {
     configurations = [project.configurations.shaded]
-    relocate 'org.apache.commons.httpclient', 'org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient'
-    relocate 'org.codehaus.jackson', 'org.elasticsearch.hadoop.thirdparty.codehaus.jackson'
+    relocate 'org.apache.commons.httpclient', 'org.opensearch.hadoop.thirdparty.apache.commons.httpclient'
+    relocate 'org.codehaus.jackson', 'org.opensearch.hadoop.thirdparty.codehaus.jackson'
 }

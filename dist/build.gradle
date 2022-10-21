@@ -1,11 +1,11 @@
 import org.elasticsearch.hadoop.gradle.buildtools.ConcatFilesTask
 import org.elasticsearch.hadoop.gradle.buildtools.DependenciesInfoTask
 import org.elasticsearch.hadoop.gradle.buildtools.DependencyLicensesTask
-import org.elasticsearch.hadoop.gradle.BuildPlugin
+import org.opensearch.hadoop.gradle.BuildPlugin
 
-apply plugin: 'es.hadoop.build'
+apply plugin: 'opensearch.hadoop.build'
 
-description = "Elasticsearch for Apache Hadoop"
+description = "OpenSearch for Apache Hadoop"
 project.archivesBaseName = 'elasticsearch-hadoop'
 
 def sparkVariantIncluded = 'spark20scala211'
@@ -118,7 +118,7 @@ jar {
 
     from(project.configurations.embedded.collect { it.isDirectory() ? it : zipTree(it)}) {
         include "org/elasticsearch/**"
-        include "esh-build.properties"
+        include "opensearch-hadoop-build.properties"
         include "META-INF/services/*"
     }
 

@@ -1,6 +1,6 @@
 import org.elasticsearch.hadoop.gradle.buildtools.info.BuildParams
 
-apply plugin: 'es.hadoop.build.integration'
+apply plugin: 'opensearch.hadoop.build.integration'
 
 description = "Elasticsearch Hadoop Hive"
 
@@ -68,7 +68,7 @@ jar {
     dependsOn(project.configurations.embedded)
     from(project.configurations.embedded.collect { it.isDirectory() ? it : zipTree(it)}) {
         include "org/elasticsearch/hadoop/**"
-        include "esh-build.properties"
+        include "opensearch-hadoop-build.properties"
         include "META-INF/services/*"
     }
 }
@@ -84,7 +84,7 @@ itestJar {
     dependsOn(project.configurations.embedded)
     from(project.configurations.embedded.collect { it.isDirectory() ? it : zipTree(it)}) {
         include "org/elasticsearch/hadoop/**"
-        include "esh-build.properties"
+        include "opensearch-hadoop-build.properties"
         include "META-INF/services/*"
     }
 }

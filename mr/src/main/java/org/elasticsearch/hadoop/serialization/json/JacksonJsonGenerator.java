@@ -27,9 +27,9 @@ import java.util.LinkedList;
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException;
 import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonEncoding;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonFactory;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonGenerator;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonEncoding;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonFactory;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonGenerator;
 import org.elasticsearch.hadoop.util.StringUtils;
 
 public class JacksonJsonGenerator implements Generator {

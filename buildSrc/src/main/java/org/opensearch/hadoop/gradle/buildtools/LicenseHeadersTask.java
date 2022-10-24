@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.gradle.buildtools;
+package org.opensearch.hadoop.gradle.buildtools;
 
 import org.apache.rat.Defaults;
 import org.apache.rat.ReportConfiguration;

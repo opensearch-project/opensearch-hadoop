@@ -20,7 +20,6 @@
 package org.opensearch.hadoop.gradle.buildtools
 
 import org.apache.tools.ant.taskdefs.condition.Os
-import org.elasticsearch.hadoop.gradle.buildtools.Fixture
 import org.gradle.api.GradleException
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskProvider

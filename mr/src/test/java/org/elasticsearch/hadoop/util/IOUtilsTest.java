@@ -78,9 +78,9 @@ public class IOUtilsTest {
         String canonicalFilePath = IOUtils.toCanonicalFilePath(url);
         assertEquals(file, canonicalFilePath);
 
-        url = new URL("jar:file:/some/path/elasticsearch-hadoop-7.17.0.jar!/org/elasticsearch/hadoop/util/Version.class");
+        url = new URL("jar:file:/some/path/opensearch-hadoop-7.17.0.jar!/org/elasticsearch/hadoop/util/Version.class");
         canonicalFilePath = IOUtils.toCanonicalFilePath(url);
-        assertEquals("file:/some/path/elasticsearch-hadoop-7.17.0.jar", canonicalFilePath);
+        assertEquals("file:/some/path/opensearch-hadoop-7.17.0.jar", canonicalFilePath);
 
         url = new URL("file:/some/path/../path/org/elasticsearch/hadoop/util/Version.class");
         canonicalFilePath = IOUtils.toCanonicalFilePath(url);
@@ -89,7 +89,7 @@ public class IOUtilsTest {
 
     @Test
     public void testToCanonicalFileSpringBoot() throws Exception {
-        String jarWithinJarPath = "file:/some/path/outer.jar!/BOOT-INF/lib/elasticsearch-hadoop-7.17.0.jar";
+        String jarWithinJarPath = "file:/some/path/outer.jar!/BOOT-INF/lib/opensearch-hadoop-7.17.0.jar";
         String file = jarWithinJarPath + "!/org/elasticsearch/hadoop/util/Version.class";
         URL url = new URL("jar", "", -1, file, new SpringBootURLStreamHandler(jarWithinJarPath) );
         String canonicalFilePath = IOUtils.toCanonicalFilePath(url);

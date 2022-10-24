@@ -1,10 +1,10 @@
-import org.elasticsearch.hadoop.gradle.buildtools.info.BuildParams
+import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
 
 apply plugin: 'opensearch.hadoop.build.integration'
 
 description = "Elasticsearch Hadoop Hive"
 
-evaluationDependsOn(':elasticsearch-hadoop-mr')
+evaluationDependsOn(':opensearch-hadoop-mr')
 
 configurations {
     embedded {
@@ -25,7 +25,7 @@ configurations.all {
 }
 
 dependencies {
-    embedded(project(":elasticsearch-hadoop-mr"))
+    embedded(project(":opensearch-hadoop-mr"))
 
     implementation("org.apache.hive:hive-service:$hiveVersion") {
         exclude module: "log4j-slf4j-impl"
@@ -54,8 +54,8 @@ dependencies {
     itestImplementation("org.apache.tez:tez-dag:0.9.1")
     itestImplementation("com.fasterxml.jackson.core:jackson-databind:2.7.8")
 
-    additionalSources(project(":elasticsearch-hadoop-mr"))
-    javadocSources(project(":elasticsearch-hadoop-mr"))
+    additionalSources(project(":opensearch-hadoop-mr"))
+    javadocSources(project(":opensearch-hadoop-mr"))
 }
 
 tasks.named("test").configure {

@@ -29,4 +29,4 @@
  * We'll revisit these classes here and adjust as the dedicated public build tools plugins
  * evolve over time.
  */
-package org.elasticsearch.hadoop.gradle.buildtools;
+package org.opensearch.hadoop.gradle.buildtools;

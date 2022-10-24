@@ -42,4 +42,4 @@ Then sit back and wait. There will probably be discussion about the pull request
 [contributing guidelines]: http://www.elasticsearch.org/contributing-to-elasticsearch/
 [Contributor License Agreement]: http://www.elasticsearch.org/contributor-agreement/
 [submit a pull request]: http://help.github.com/articles/using-pull-requests
-[find or open an issue]: http://github.com/elasticsearch/elasticsearch-hadoop/issues
+[find or open an issue]: http://github.com/opensearch-project/opensearch-hadoop/issues

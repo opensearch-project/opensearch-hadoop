@@ -21,7 +21,7 @@ package org.opensearch.hadoop.gradle.fixture.hadoop
 
 import org.apache.tools.ant.taskdefs.condition.Os
 import org.elasticsearch.gradle.testclusters.ElasticsearchCluster
-import org.elasticsearch.hadoop.gradle.util.WaitForURL
+import org.opensearch.hadoop.gradle.util.WaitForURL
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.InstanceConfiguration
 import org.gradle.api.GradleException
 import org.gradle.api.Project

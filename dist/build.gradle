@@ -1,12 +1,12 @@
-import org.elasticsearch.hadoop.gradle.buildtools.ConcatFilesTask
-import org.elasticsearch.hadoop.gradle.buildtools.DependenciesInfoTask
-import org.elasticsearch.hadoop.gradle.buildtools.DependencyLicensesTask
+import org.opensearch.hadoop.gradle.buildtools.ConcatFilesTask
+import org.opensearch.hadoop.gradle.buildtools.DependenciesInfoTask
+import org.opensearch.hadoop.gradle.buildtools.DependencyLicensesTask
 import org.opensearch.hadoop.gradle.BuildPlugin
 
 apply plugin: 'opensearch.hadoop.build'
 
 description = "OpenSearch for Apache Hadoop"
-project.archivesBaseName = 'elasticsearch-hadoop'
+project.archivesBaseName = 'opensearch-hadoop'
 
 def sparkVariantIncluded = 'spark20scala211'
 
@@ -43,7 +43,7 @@ configurations {
 
 BuildPlugin.disableTransitiveDependencies(project, project.configurations.thirdPartyShaded)
 
-def distProjects = [":elasticsearch-hadoop-mr", ":elasticsearch-hadoop-hive", ":elasticsearch-hadoop-pig",
+def distProjects = [":opensearch-hadoop-mr", ":opensearch-hadoop-hive", ":opensearch-hadoop-pig",
                     ":elasticsearch-spark-20", ":elasticsearch-storm"]
 
 distProjects.each { distProject ->
@@ -113,7 +113,7 @@ jar {
     dependsOn(project.configurations.embedded)
 
     manifest {
-        attributes['Implementation-Title'] = 'elasticsearch-hadoop'
+        attributes['Implementation-Title'] = 'opensearch-hadoop'
     }
 
     from(project.configurations.embedded.collect { it.isDirectory() ? it : zipTree(it)}) {
@@ -129,7 +129,7 @@ jar {
 
 javadoc {
     options {
-        header = "elasticsearch-hadoop"
+        header = "opensearch-hadoop"
     }
 }
 
@@ -153,7 +153,7 @@ publishing {
 }
 
 // Name of the directory under the root of the zip file that will contain the zip contents
-String zipContentDir = "elasticsearch-hadoop-${project.version}"
+String zipContentDir = "opensearch-hadoop-${project.version}"
 
 // Create a zip task for creating the distribution
 task('distZip', type: Zip) {

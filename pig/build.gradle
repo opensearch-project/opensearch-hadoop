@@ -3,7 +3,7 @@ apply plugin: 'opensearch.hadoop.build.integration'
 
 description = "Elasticsearch Hadoop Pig"
 
-evaluationDependsOn(':elasticsearch-hadoop-mr')
+evaluationDependsOn(':opensearch-hadoop-mr')
 
 configurations {
     embedded {
@@ -25,7 +25,7 @@ configurations {
 ext.pigClassifier = "h2"
 
 dependencies {
-    embedded(project(":elasticsearch-hadoop-mr"))
+    embedded(project(":opensearch-hadoop-mr"))
 
     implementation("org.apache.pig:pig:$pigVersion:$pigClassifier")
     implementation("joda-time:joda-time:$jodaVersion")
@@ -43,8 +43,8 @@ dependencies {
     itestImplementation("com.fasterxml.jackson.core:jackson-databind:2.7.8")
     itestImplementation("dk.brics.automaton:automaton:1.11-8")
 
-    additionalSources(project(":elasticsearch-hadoop-mr"))
-    javadocSources(project(":elasticsearch-hadoop-mr"))
+    additionalSources(project(":opensearch-hadoop-mr"))
+    javadocSources(project(":opensearch-hadoop-mr"))
 }
 
 tasks.named("test").configure {

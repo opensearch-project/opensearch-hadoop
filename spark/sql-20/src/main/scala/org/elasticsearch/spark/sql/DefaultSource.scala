@@ -170,7 +170,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
     // 2. "resource"
     // 3. "path"
     //
-    // See https://github.com/elastic/elasticsearch-hadoop/issues/1082
+    // See https://github.com/elastic/opensearch-hadoop/issues/1082
     val preferredResource = dottedParams.get(ConfigurationOptions.ES_RESOURCE)
       .orElse(dottedParams.get("resource"))
       .orElse(dottedParams.get("path"))

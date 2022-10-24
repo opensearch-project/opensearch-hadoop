@@ -20,7 +20,6 @@
 package org.opensearch.hadoop.gradle.buildtools
 
 import org.apache.tools.ant.taskdefs.condition.Os
-import org.elasticsearch.hadoop.gradle.buildtools.LoggedExec
 import org.gradle.api.file.FileSystemOperations
 import org.gradle.api.tasks.Internal
 

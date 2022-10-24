@@ -19,13 +19,13 @@
 
 package org.opensearch.hadoop.gradle
 
-import org.elasticsearch.hadoop.gradle.buildtools.DependenciesInfoPlugin
-import org.elasticsearch.hadoop.gradle.buildtools.DependencyLicensesTask
-import org.elasticsearch.hadoop.gradle.buildtools.LicenseHeadersTask
+import org.opensearch.hadoop.gradle.buildtools.DependenciesInfoPlugin
+import org.opensearch.hadoop.gradle.buildtools.DependencyLicensesTask
+import org.opensearch.hadoop.gradle.buildtools.LicenseHeadersTask
 import org.elasticsearch.gradle.testclusters.StandaloneRestIntegTestTask
-import org.elasticsearch.hadoop.gradle.buildtools.UpdateShasTask
-import org.elasticsearch.hadoop.gradle.buildtools.info.BuildParams
-import org.elasticsearch.hadoop.gradle.scala.SparkVariantPlugin
+import org.opensearch.hadoop.gradle.buildtools.UpdateShasTask
+import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
+import org.opensearch.hadoop.gradle.scala.SparkVariantPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -66,8 +66,8 @@ import org.w3c.dom.NodeList
 
 import javax.inject.Inject
 
-import static org.elasticsearch.hadoop.gradle.scala.SparkVariantPlugin.SparkVariantPluginExtension
-import static org.elasticsearch.hadoop.gradle.scala.SparkVariantPlugin.SparkVariant
+import static org.opensearch.hadoop.gradle.scala.SparkVariantPlugin.SparkVariantPluginExtension
+import static org.opensearch.hadoop.gradle.scala.SparkVariantPlugin.SparkVariant
 
 class BuildPlugin implements Plugin<Project>  {
 
@@ -382,7 +382,7 @@ class BuildPlugin implements Plugin<Project>  {
             manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
             manifest.attributes['Implementation-Title'] = project.name
             manifest.attributes['Implementation-Version'] = project.version
-            manifest.attributes['Implementation-URL'] = "https://github.com/elastic/elasticsearch-hadoop"
+            manifest.attributes['Implementation-URL'] = "https://github.com/elastic/opensearch-hadoop"
             manifest.attributes['Implementation-Vendor'] = "Elastic"
             manifest.attributes['Implementation-Vendor-Id'] = "org.elasticsearch.hadoop"
             manifest.attributes['Repository-Revision'] = BuildParams.gitRevision
@@ -688,7 +688,7 @@ class BuildPlugin implements Plugin<Project>  {
         MavenPom pom = publication.getPom()
         pom.name = descriptionProvider
         pom.description = descriptionProvider
-        pom.url = 'http://github.com/elastic/elasticsearch-hadoop'
+        pom.url = 'http://github.com/opensearch-project/opensearch-hadoop'
         pom.organization {
             name = 'Elastic'
             url = 'https://www.elastic.co/'
@@ -701,9 +701,9 @@ class BuildPlugin implements Plugin<Project>  {
             }
         }
         pom.scm {
-            url = 'https://github.com/elastic/elasticsearch-hadoop'
-            connection = 'scm:git:git://github.com/elastic/elasticsearch-hadoop'
-            developerConnection = 'scm:git:git://github.com/elastic/elasticsearch-hadoop'
+            url = 'https://github.com/opensearch-project/opensearch-hadoop'
+            connection = 'scm:git:git://github.com/opensearch-project/opensearch-hadoop'
+            developerConnection = 'scm:git:git://github.com/opensearch-project/opensearch-hadoop'
         }
         pom.developers {
             developer {

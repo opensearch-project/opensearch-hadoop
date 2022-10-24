@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.gradle.util;
+package org.opensearch.hadoop.gradle.util;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;

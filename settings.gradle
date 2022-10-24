@@ -9,11 +9,11 @@ rootProject.name = "opensearch-hadoop"
 include 'thirdparty'
 
 include 'mr'
-project(":mr").name = "elasticsearch-hadoop-mr"
+project(":mr").name = "opensearch-hadoop-mr"
 include 'hive'
-project(":hive").name = "elasticsearch-hadoop-hive"
+project(":hive").name = "opensearch-hadoop-hive"
 include 'pig'
-project(":pig").name = "elasticsearch-hadoop-pig"
+project(":pig").name = "opensearch-hadoop-pig"
 
 include 'spark-core'
 project(":spark-core").projectDir = new File(settingsDir, "spark/core")

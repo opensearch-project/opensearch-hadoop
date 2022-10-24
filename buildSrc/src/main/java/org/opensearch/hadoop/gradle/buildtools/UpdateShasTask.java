@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.gradle.buildtools;
+package org.opensearch.hadoop.gradle.buildtools;
 
 import org.gradle.api.DefaultTask;
 import org.gradle.api.logging.Logger;
@@ -25,6 +25,7 @@ import org.gradle.api.logging.Logging;
 import org.gradle.api.tasks.Internal;
 import org.gradle.api.tasks.TaskAction;
 import org.gradle.api.tasks.TaskProvider;
+import org.opensearch.hadoop.gradle.buildtools.DependencyLicensesTask;
 
 import java.io.File;
 import java.io.IOException;

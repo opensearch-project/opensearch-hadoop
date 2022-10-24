@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.gradle.buildtools;
+package org.opensearch.hadoop.gradle.buildtools;
 
 import org.elasticsearch.gradle.dependencies.CompileOnlyResolvePlugin;
 import org.gradle.api.Plugin;

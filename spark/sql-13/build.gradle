@@ -1,4 +1,4 @@
-import org.elasticsearch.hadoop.gradle.scala.SparkVariantPlugin
+import org.opensearch.hadoop.gradle.scala.SparkVariantPlugin
 
 description = "Elasticsearch Spark (for Spark 1.3-1.6)"
 
@@ -50,7 +50,7 @@ sparkVariants {
         }
 
         dependencies {
-            add(variant.configuration('embedded'), project(":elasticsearch-hadoop-mr"))
+            add(variant.configuration('embedded'), project(":opensearch-hadoop-mr"))
             add(variant.configuration('embedded'), project(":elasticsearch-spark")) {
                 capabilities {
                     requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
@@ -107,8 +107,8 @@ sparkVariants {
                 exclude group: 'org.apache.hadoop'
             }
 
-            add(variant.configuration('additionalSources'), project(":elasticsearch-hadoop-mr"))
-            add(variant.configuration('javadocSources'), project(":elasticsearch-hadoop-mr"))
+            add(variant.configuration('additionalSources'), project(":opensearch-hadoop-mr"))
+            add(variant.configuration('javadocSources'), project(":opensearch-hadoop-mr"))
         }
 
         def javaFilesOnly = { FileTreeElement spec ->

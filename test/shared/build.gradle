@@ -64,7 +64,7 @@ tasks.named("test").configure {
 }
 
 dependencies {
-    api(project(':elasticsearch-hadoop-mr'))
+    api(project(':opensearch-hadoop-mr'))
     api(project.ext.hadoopClient) {
         exclude group: "commons-httpclient"
         exclude group: 'com.fasterxml.jackson.core'

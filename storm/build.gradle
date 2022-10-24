@@ -3,7 +3,7 @@ apply plugin: 'opensearch.hadoop.build.integration'
 
 description = "Elasticsearch Storm"
 
-evaluationDependsOn(':elasticsearch-hadoop-mr')
+evaluationDependsOn(':opensearch-hadoop-mr')
 
 configurations {
     embedded {
@@ -16,7 +16,7 @@ configurations {
 }
 
 dependencies {
-    embedded(project(":elasticsearch-hadoop-mr"))
+    embedded(project(":opensearch-hadoop-mr"))
 
     api("org.apache.storm:storm-core:$stormVersion") {
         exclude module: "log4j-slf4j-impl"
@@ -32,8 +32,8 @@ dependencies {
     itestImplementation("com.google.guava:guava:16.0.1")
     itestImplementation("com.twitter:carbonite:1.4.0")
 
-    additionalSources(project(":elasticsearch-hadoop-mr"))
-    javadocSources(project(":elasticsearch-hadoop-mr"))
+    additionalSources(project(":opensearch-hadoop-mr"))
+    javadocSources(project(":opensearch-hadoop-mr"))
 }
 
 jar {

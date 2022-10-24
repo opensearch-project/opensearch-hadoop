@@ -17,10 +17,10 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.gradle.buildtools;
+package org.opensearch.hadoop.gradle.buildtools;
 
 import org.elasticsearch.gradle.util.GradleUtils;
-import org.elasticsearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin;
+import org.opensearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.Project;

@@ -48,7 +48,7 @@ if (snapshot) {
     buildToolsVersion += "-SNAPSHOT"
 }
 
-props.put("eshadoop", opensearchHadoopVersion)
+props.put("opensearch_hadoop", opensearchHadoopVersion)
 props.put("elasticsearch", esVersion)
 props.put("build-tools", buildToolsVersion)
 

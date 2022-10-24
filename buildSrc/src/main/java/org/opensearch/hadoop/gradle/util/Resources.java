@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.gradle.util;
+package org.opensearch.hadoop.gradle.util;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -27,7 +27,7 @@ import java.io.UncheckedIOException;
 public class Resources {
 
     /**
-     * Duplicated from org.elasticsearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin#getResourceContents(java.lang.String)
+     * Duplicated from org.opensearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin#getResourceContents(java.lang.String)
      * Needed in BuildPlugin for reading ES-Hadoop specific minimum runtime and compile versions
      * @param resourcePath the classpath resource to load
      * @return The contents of the resource file

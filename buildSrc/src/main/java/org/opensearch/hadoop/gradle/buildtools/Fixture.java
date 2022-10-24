@@ -16,30 +16,16 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.hadoop.gradle.buildtools.info;
 
-import org.gradle.api.provider.Provider;
+package org.opensearch.hadoop.gradle.buildtools;
 
-import java.io.File;
+/**
+ * Any object that can produce an accompanying stop task, meant to tear down
+ * a previously instantiated service.
+ */
+public interface Fixture {
 
-public class JavaHome {
-    private Integer version;
-    private Provider<File> javaHome;
+    /** A task which will stop this fixture. This should be used as a finalizedBy for any tasks that use the fixture. */
+    Object getStopTask();
 
-    private JavaHome(int version, Provider<File> javaHome) {
-        this.version = version;
-        this.javaHome = javaHome;
-    }
-
-    public static org.elasticsearch.hadoop.gradle.buildtools.info.JavaHome of(int version, Provider<File> javaHome) {
-        return new org.elasticsearch.hadoop.gradle.buildtools.info.JavaHome(version, javaHome);
-    }
-
-    public Integer getVersion() {
-        return version;
-    }
-
-    public Provider<File> getJavaHome() {
-        return javaHome;
-    }
 }

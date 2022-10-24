@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.hadoop.gradle.buildtools.info;
+package org.opensearch.hadoop.gradle.buildtools.info;
 
 import org.gradle.api.JavaVersion;
 
@@ -116,7 +116,7 @@ public class BuildParams {
          * Resets any existing values from previous initializations.
          */
         public void reset() {
-            Arrays.stream(org.elasticsearch.hadoop.gradle.buildtools.info.BuildParams.class.getDeclaredFields()).filter(f -> Modifier.isStatic(f.getModifiers())).forEach(f -> {
+            Arrays.stream(BuildParams.class.getDeclaredFields()).filter(f -> Modifier.isStatic(f.getModifiers())).forEach(f -> {
                 try {
                     // Since we are mutating private static fields from a public static inner class we need to suppress
                     // accessibility controls here.

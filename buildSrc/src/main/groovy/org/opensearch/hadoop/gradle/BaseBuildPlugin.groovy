@@ -19,10 +19,10 @@
 
 package org.opensearch.hadoop.gradle
 
-import org.elasticsearch.hadoop.gradle.buildtools.info.BuildParams
-import org.elasticsearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin
-import org.elasticsearch.hadoop.gradle.buildtools.info.JavaHome
-import org.elasticsearch.hadoop.gradle.util.Resources
+import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
+import org.opensearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin
+import org.opensearch.hadoop.gradle.buildtools.info.JavaHome
+import org.opensearch.hadoop.gradle.util.Resources
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
 import org.gradle.api.Plugin
@@ -98,10 +98,10 @@ class BaseBuildPlugin implements Plugin<Project> {
      */
     private static void configureVersions(Project project) {
         if (!project.rootProject.ext.has('versionsConfigured')) {
-            project.rootProject.version = OshVersionProperties.ESHADOOP_VERSION
+            project.rootProject.version = OshVersionProperties.OPENSEARCH_HADOOP_VERSION
             println "Building version [${project.rootProject.version}]"
 
-            project.rootProject.ext.eshadoopVersion = OshVersionProperties.ESHADOOP_VERSION
+            project.rootProject.ext.opensearchHadoopVersion = OshVersionProperties.OPENSEARCH_HADOOP_VERSION
             project.rootProject.ext.elasticsearchVersion = OshVersionProperties.ELASTICSEARCH_VERSION
             project.rootProject.ext.luceneVersion = OshVersionProperties.LUCENE_VERSION
             project.rootProject.ext.buildToolsVersion = OshVersionProperties.BUILD_TOOLS_VERSION
@@ -133,7 +133,7 @@ class BaseBuildPlugin implements Plugin<Project> {
             }
             project.rootProject.ext.hadoopClient = ["org.apache.hadoop:hadoop-client:$project.rootProject.ext.hadoopVersion"]
         }
-        project.ext.eshadoopVersion = project.rootProject.ext.eshadoopVersion
+        project.ext.opensearchHadoopVersion = project.rootProject.ext.opensearchHadoopVersion
         project.ext.elasticsearchVersion = project.rootProject.ext.elasticsearchVersion
         project.ext.luceneVersion = project.rootProject.ext.luceneVersion
         project.ext.buildToolsVersion = project.rootProject.ext.buildToolsVersion

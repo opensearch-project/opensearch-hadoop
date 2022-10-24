@@ -24,7 +24,7 @@ package org.opensearch.hadoop.gradle
  */
 class OshVersionProperties {
 
-    public static final String ESHADOOP_VERSION
+    public static final String OPENSEARCH_HADOOP_VERSION
     public static final String ELASTICSEARCH_VERSION
     public static final String LUCENE_VERSION
     public static final String BUILD_TOOLS_VERSION
@@ -36,7 +36,7 @@ class OshVersionProperties {
             throw new RuntimeException("Could not locate the opensearch-hadoop-version.properties file!")
         }
         versionProperties.load(propertyStream)
-        ESHADOOP_VERSION = versionProperties.getProperty('eshadoop')
+        OPENSEARCH_HADOOP_VERSION = versionProperties.getProperty('opensearch_hadoop')
         ELASTICSEARCH_VERSION = versionProperties.getProperty('elasticsearch')
         LUCENE_VERSION = versionProperties.getProperty('lucene')
         BUILD_TOOLS_VERSION = versionProperties.getProperty('build-tools')

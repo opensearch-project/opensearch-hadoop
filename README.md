@@ -25,7 +25,7 @@ Available through any Maven-compatible tool:
 ```xml
 <dependency>
   <groupId>org.elasticsearch</groupId>
-  <artifactId>elasticsearch-hadoop</artifactId>
+  <artifactId>opensearch-hadoop</artifactId>
   <version>8.4.0</version>
 </dependency>
 ```
@@ -37,7 +37,7 @@ Grab the latest nightly build from the [repository](http://oss.sonatype.org/cont
 ```xml
 <dependency>
   <groupId>org.elasticsearch</groupId>
-  <artifactId>elasticsearch-hadoop</artifactId>
+  <artifactId>opensearch-hadoop</artifactId>
   <version>8.6.0-SNAPSHOT</version>
 </dependency>
 ```

@@ -16,10 +16,10 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.hadoop.gradle.buildtools.info;
+package org.opensearch.hadoop.gradle.buildtools.info;
 
 import org.elasticsearch.gradle.OS;
-import org.elasticsearch.hadoop.gradle.buildtools.Util;
+import org.opensearch.hadoop.gradle.buildtools.Util;
 import org.gradle.api.GradleException;
 import org.gradle.api.JavaVersion;
 import org.gradle.api.Plugin;
@@ -47,8 +47,6 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,7 +60,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GlobalBuildInfoPlugin implements Plugin<Project> {
-    private static final Logger LOGGER = Logging.getLogger(org.elasticsearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin.class);
+    private static final Logger LOGGER = Logging.getLogger(GlobalBuildInfoPlugin.class);
     private static final String DEFAULT_VERSION_JAVA_FILE_PATH = "server/src/main/java/org/elasticsearch/Version.java";
     private static Integer _defaultParallel = null;
 
@@ -394,9 +392,9 @@ public class GlobalBuildInfoPlugin implements Plugin<Project> {
                     File refsDir = gitDir.resolve("refs").toFile();
                     if (refsDir.exists()) {
                         String foundRefs = Arrays.stream(refsDir.listFiles()).map(f -> f.getName()).collect(Collectors.joining("\n"));
-                        Logging.getLogger(org.elasticsearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin.class).error("Found git refs\n" + foundRefs);
+                        Logging.getLogger(GlobalBuildInfoPlugin.class).error("Found git refs\n" + foundRefs);
                     } else {
-                        Logging.getLogger(org.elasticsearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin.class).error("No git refs dir found");
+                        Logging.getLogger(GlobalBuildInfoPlugin.class).error("No git refs dir found");
                     }
                     throw new GradleException("Can't find revision for refName " + refName);
                 }

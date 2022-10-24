@@ -240,9 +240,9 @@ public abstract class IOUtils {
             fileURL = jarURLConnection.getJarFileURL();
         }
         /*
-         * Ordinarily at this point we would have a URL with a "file" protocal. But Spring boot puts the es-hadoop jar is inside of the
+         * Ordinarily at this point we would have a URL with a "file" protocal. But Spring boot puts the opensearch-hadoop jar is inside of the
          * spring boot jar like:
-         * jar:file:/some/path/outer.jar!/BOOT-INF/lib/elasticsearch-hadoop-7.17.0.jar!/org/elasticsearch/hadoop/util/Version.class
+         * jar:file:/some/path/outer.jar!/BOOT-INF/lib/opensearch-hadoop-7.17.0.jar!/org/opensearch/hadoop/util/Version.class
          * And spring boot has its own custom URLStreamHandler which returns a URL with a "jar" protocol from the previous call to
          * getJarFileURL() (the default JDK URLStreamHandler does not do this). So this next check is Spring Boot specific.
          */

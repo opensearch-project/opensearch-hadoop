@@ -1,4 +1,4 @@
-import org.elasticsearch.hadoop.gradle.buildtools.info.BuildParams
+import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
 
 apply plugin: 'opensearch.hadoop.build.integration'
 

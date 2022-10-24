@@ -1,4 +1,4 @@
-import org.elasticsearch.hadoop.gradle.scala.SparkVariantPlugin
+import org.opensearch.hadoop.gradle.scala.SparkVariantPlugin
 
 description = "Elasticsearch Spark Core"
 
@@ -48,7 +48,7 @@ sparkVariants {
                 exclude group: 'org.apache.hadoop'
             }
 
-            add(variant.configuration('implementation'), project(":elasticsearch-hadoop-mr"))
+            add(variant.configuration('implementation'), project(":opensearch-hadoop-mr"))
             add(variant.configuration('implementation'), "commons-logging:commons-logging:1.1.1")
 
             add(variant.configuration('compileOnly'), "com.fasterxml.jackson.module:jackson-module-scala_${variant.scalaMajorVersion}:2.9.10")
@@ -83,8 +83,8 @@ sparkVariants {
                 }
             }
 
-            add(variant.configuration('additionalSources'), project(":elasticsearch-hadoop-mr"))
-            add(variant.configuration('javadocSources'), project(":elasticsearch-hadoop-mr"))
+            add(variant.configuration('additionalSources'), project(":opensearch-hadoop-mr"))
+            add(variant.configuration('javadocSources'), project(":opensearch-hadoop-mr"))
         }
 
         def javaFilesOnly = { FileTreeElement spec ->

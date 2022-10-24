@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.gradle.scala;
+package org.opensearch.hadoop.gradle.scala;
 
 import java.util.Arrays;
 import java.util.Collections;

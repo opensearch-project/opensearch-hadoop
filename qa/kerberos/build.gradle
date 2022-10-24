@@ -63,7 +63,7 @@ configurations {
 }
 
 dependencies {
-    implementation(project(":elasticsearch-hadoop-mr"))
+    implementation(project(":opensearch-hadoop-mr"))
     implementation(project(":elasticsearch-storm"))
 
     implementation("org.scala-lang:scala-library:${scala212Version}")
@@ -83,7 +83,7 @@ dependencies {
     implementation("org.apache.hadoop:hadoop-client:${HadoopClusterConfiguration.HADOOP.defaultVersion()}")
     implementation("org.apache.spark:spark-sql_2.12:$project.ext.spark30Version")
 
-    implementation( project(path: ':elasticsearch-hadoop-mr', configuration: 'itestJarConfig'))
+    implementation( project(path: ':opensearch-hadoop-mr', configuration: 'itestJarConfig'))
     implementation( project(path: ':elasticsearch-storm', configuration: 'itestJarConfig'))
 
     kdcFixture project(':test:fixtures:minikdc')
@@ -123,7 +123,7 @@ if (disableTests) {
     qaKerberosStormJar.classifier = 'storm-testing'
     
     // Add projects to the storm testing uber-jar
-    [project, project(":elasticsearch-hadoop-mr"), project(":elasticsearch-storm")].forEach { proj ->
+    [project, project(":opensearch-hadoop-mr"), project(":elasticsearch-storm")].forEach { proj ->
         qaKerberosStormJar.from(proj.sourceSets.test.output)
         qaKerberosStormJar.from(proj.sourceSets.main.output)
         qaKerberosStormJar.from(proj.sourceSets.itest.output)
@@ -256,9 +256,9 @@ if (disableTests) {
     def kerberosItestJar = project.tasks.findByName('itestJar') as Jar
 
     // TODO: We should be acquiring these jars via a configuration instead of breaking the glass here.
-    def mrJar = project(':elasticsearch-hadoop-mr').tasks.getByName('jar') as Jar
-    def hiveJar = project(':elasticsearch-hadoop-hive').tasks.getByName('jar') as Jar
-    def pigJar = project(':elasticsearch-hadoop-pig').tasks.getByName('jar') as Jar
+    def mrJar = project(':opensearch-hadoop-mr').tasks.getByName('jar') as Jar
+    def hiveJar = project(':opensearch-hadoop-hive').tasks.getByName('jar') as Jar
+    def pigJar = project(':opensearch-hadoop-pig').tasks.getByName('jar') as Jar
     def sparkJar = project(':elasticsearch-spark-30').tasks.getByName('jar') as Jar
 
     // Need these for SSL items, test data, and scripts

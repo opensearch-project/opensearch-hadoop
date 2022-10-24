@@ -44,7 +44,7 @@ public class RestUtils {
 
         private static Settings withVersion(Settings settings) {
             if (TEST_CLUSTER == null) {
-                TEST_CLUSTER = TestUtils.getEsClusterInfo();
+                TEST_CLUSTER = TestUtils.getOpenSearchClusterInfo();
             }
             settings.setInternalClusterInfo(TEST_CLUSTER);
             return settings;

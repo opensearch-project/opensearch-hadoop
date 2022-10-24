@@ -23,18 +23,17 @@ import java.{lang => jl, util => ju}
 
 import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.dstream.DStream
-import org.apache.spark.streaming.scheduler.{StreamingListenerOutputOperationCompleted, _}
+import org.apache.spark.streaming.scheduler._
 import org.apache.spark.streaming.{Seconds, StreamingContext, StreamingContextState}
 import org.apache.spark.{SparkConf, SparkContext, SparkException}
-import org.elasticsearch.hadoop.EsAssume
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
+import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, OpenSearchAssume}
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions._
 import org.elasticsearch.hadoop.rest.RestUtils
 import org.elasticsearch.hadoop.util.TestUtils
 import org.elasticsearch.hadoop.util.TestUtils.resource
 import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
-import org.elasticsearch.hadoop.util.{EsMajorVersion, StringUtils, TestSettings}
+import org.elasticsearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings}
 import org.elasticsearch.spark.rdd.EsSpark
 import org.elasticsearch.spark.rdd.Metadata._
 import org.elasticsearch.spark.serialization.{Bean, Garbage, ModuleCaseClass, ReflectionUtils, Trip}
@@ -50,7 +49,7 @@ import scala.collection.JavaConversions.propertiesAsScalaMap
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
-object AbstractScalaEsScalaSparkStreaming {
+object AbstractScalaOpenSearchScalaSparkStreaming {
   @transient val conf = new SparkConf()
     .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
     .setMaster("local")
@@ -87,13 +86,13 @@ object AbstractScalaEsScalaSparkStreaming {
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(classOf[Parameterized])
-class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Boolean) extends Serializable {
+class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadata: jl.Boolean) extends Serializable {
 
-  val sc = AbstractScalaEsScalaSparkStreaming.sc
+  val sc = AbstractScalaOpenSearchScalaSparkStreaming.sc
   val cfg = Map(ConfigurationOptions.ES_READ_METADATA -> readMetadata.toString)
-  val version = TestUtils.getEsClusterInfo.getMajorVersion
-  val keyword = if (version.onOrAfter(EsMajorVersion.V_5_X)) "keyword" else "string"
-  val text = if (version.onOrAfter(EsMajorVersion.V_5_X)) "text" else "string"
+  val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
+  val keyword = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "keyword" else "string"
+  val text = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "text" else "string"
 
   var ssc: StreamingContext = _
 
@@ -266,8 +265,8 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
   }
 
   @Test
-  def testEsRDDIngest(): Unit = {
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_5_X, "Ingest Supported in 5.x and above only")
+  def testOpenSearchRDDIngest(): Unit = {
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only")
 
     val client: RestUtils.ExtendedRestClient = new RestUtils.ExtendedRestClient
     val pipelineName: String = prefix + "-pipeline"
@@ -280,7 +279,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
 
     val target = wrapIndex(resource("spark-streaming-test-scala-ingest-write", "data", version))
 
-    val ingestCfg = cfg + (ConfigurationOptions.ES_INGEST_PIPELINE -> pipelineName) + (ConfigurationOptions.ES_NODES_INGEST_ONLY -> "true")
+    val ingestCfg = cfg + (ConfigurationOptions.ES_INGEST_PIPELINE -> pipelineName) + (ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY -> "true")
 
     val batch = sc.makeRDD(Seq(doc1, doc2))
     runStream(batch)(_.saveToEs(target, ingestCfg))
@@ -360,7 +359,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
     RestUtils.postData(s"$docPath/1", """{ "id" : "1", "note": "First", "address": [] }""".getBytes(StringUtils.UTF_8))
     RestUtils.postData(s"$docPath/2", """{ "id" : "2", "note": "First", "address": [] }""".getBytes(StringUtils.UTF_8))
 
-    val lang = if (version.onOrAfter(EsMajorVersion.V_5_X)) "painless" else "groovy"
+    val lang = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "painless" else "groovy"
     val props = Map("es.write.operation" -> "upsert",
       "es.input.json" -> "true",
       "es.mapping.id" -> "id",
@@ -371,7 +370,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
     val lines = sc.makeRDD(List("""{"id":"1","address":{"zipcode":"12345","id":"1"}}"""))
     val up_params = "new_address:address"
     val up_script = {
-      if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+      if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
         "ctx._source.address.add(params.new_address)"
       } else {
         "ctx._source.address+=new_address"
@@ -382,7 +381,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
     // Upsert a value that should only modify the second document. Modification will update the "note" field.
     val notes = sc.makeRDD(List("""{"id":"2","note":"Second"}"""))
     val note_up_params = "new_note:note"
-    val note_up_script = if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+    val note_up_script = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
       "ctx._source.note = params.new_note"
     } else {
       "ctx._source.note=new_note"

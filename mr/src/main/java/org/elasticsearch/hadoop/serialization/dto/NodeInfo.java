@@ -18,7 +18,7 @@
  */
 package org.elasticsearch.hadoop.serialization.dto;
 
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 
 import java.io.Serializable;
@@ -41,11 +41,11 @@ public class NodeInfo implements Serializable {
 
     public NodeInfo(String id, Map<String, Object> map) {
         this.id = id;
-        EsMajorVersion version = EsMajorVersion.parse((String) map.get("version"));
+        OpenSearchMajorVersion version = OpenSearchMajorVersion.parse((String) map.get("version"));
         this.name = (String) map.get("name");
         this.host = (String) map.get("host");
         this.ip = (String) map.get("ip");
-        if (version.before(EsMajorVersion.V_5_X)) {
+        if (version.before(OpenSearchMajorVersion.V_5_X)) {
             Map<String, Object> attributes = (Map<String, Object>) map.get("attributes");
             if (attributes == null) {
                 this.isClient = false;

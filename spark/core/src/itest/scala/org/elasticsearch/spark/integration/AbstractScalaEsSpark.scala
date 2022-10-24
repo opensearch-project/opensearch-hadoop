@@ -29,8 +29,7 @@ import java.{util => ju}
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkException
-import org.elasticsearch.hadoop.EsAssume
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
+import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, OpenSearchAssume}
 import org.elasticsearch.hadoop.TestData
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
@@ -47,7 +46,7 @@ import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
 import org.elasticsearch.hadoop.rest.RestUtils
 import org.elasticsearch.hadoop.rest.RestUtils.ExtendedRestClient
 import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException
-import org.elasticsearch.hadoop.util.EsMajorVersion
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
 import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.hadoop.util.TestUtils
@@ -134,8 +133,8 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
   val sc = AbstractScalaEsScalaSpark.sc
   val cfg = Map(ES_READ_METADATA -> readMetadata.toString())
-  val version: EsMajorVersion = TestUtils.getEsClusterInfo.getMajorVersion
-  val keyword: String = if (version.onOrAfter(EsMajorVersion.V_5_X)) "keyword" else "string"
+  val version: OpenSearchMajorVersion = TestUtils.getOpenSearchClusterInfo.getMajorVersion
+  val keyword: String = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "keyword" else "string"
 
   private def readAsRDD(uri: URI) = {
     // don't use the sc.read.json/textFile to avoid the whole Hadoop madness
@@ -267,7 +266,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
   @Test(expected = classOf[EsHadoopSerializationException])
   def testEsRDDWriteWithUnsupportedMapping() {
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_6_X, "TTL only removed in v6 and up.")
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "TTL only removed in v6 and up.")
 
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."), "number" -> 1)
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran", "number" -> 2)
@@ -310,7 +309,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
   def testEsRDDWriteJoinField(): Unit = {
     // Join added in 6.0.
     // TODO: Available in 5.6, but we only track major version ids in the connector.
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_6_X, "Join added in 6.0.")
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "Join added in 6.0.")
 
     // test mix of short-form and long-form joiner values
     val company1 = Map("id" -> "1", "company" -> "Elastic", "joiner" -> "company")
@@ -404,7 +403,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
   @Test
   def testEsRDDIngest() {
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_5_X, "Ingest Supported in 5.x and above only")
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only")
 
     val client: RestUtils.ExtendedRestClient = new RestUtils.ExtendedRestClient
     val prefix: String = "spark"
@@ -417,7 +416,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
     val target = wrapIndex(resource("spark-test-scala-ingest-write", "data", version))
 
-    val ingestCfg = cfg + (ConfigurationOptions.ES_INGEST_PIPELINE -> "spark-pipeline") + (ConfigurationOptions.ES_NODES_INGEST_ONLY -> "true")
+    val ingestCfg = cfg + (ConfigurationOptions.ES_INGEST_PIPELINE -> "spark-pipeline") + (ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY -> "true")
 
     sc.makeRDD(Seq(doc1, doc2)).saveToEs(target, ingestCfg)
     assertTrue(RestUtils.exists(target))
@@ -464,7 +463,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
   @Test(expected = classOf[EsHadoopIllegalArgumentException ])
   def testEsRDDBreakOnFileScript(): Unit = {
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_6_X, "File scripts are only removed in 6.x and on")
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "File scripts are only removed in 6.x and on")
     val props = Map("es.write.operation" -> "upsert", "es.update.script.file" -> "break")
     val lines = sc.makeRDD(List(Map("id" -> "1")))
     try {
@@ -478,7 +477,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
   @Test
   def testEsRDDWriteFileScriptUpdate(): Unit = {
-    EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "File scripts are only available in 5.x and lower")
+    OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "File scripts are only available in 5.x and lower")
     // assumes you have a script named "increment" as a file. I don't think there's a way to verify this before
     // the test runs. Maybe a quick poke before the job runs?
 
@@ -508,7 +507,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
     // Test assumption:
     try {
-      if (version.onOrBefore(EsMajorVersion.V_2_X)) {
+      if (version.onOrBefore(OpenSearchMajorVersion.V_2_X)) {
         RestUtils.postData(s"$target/1/_update", """{"script_file":"increment"}""".getBytes(StringUtils.UTF_8))
       } else if (TestUtils.isTypelessVersion(version)) {
         RestUtils.postData(s"$index/_update/1", """{"script": { "file":"increment" } }""".getBytes(StringUtils.UTF_8))
@@ -520,8 +519,8 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     }
 
     val scriptName = "increment"
-    val lang = if (version.onOrAfter(EsMajorVersion.V_5_X)) "painless" else "groovy"
-    val script = if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+    val lang = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "painless" else "groovy"
+    val script = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
       "ctx._source.counter = ctx._source.getOrDefault('counter', 0) + 1"
     } else {
       "ctx._source.counter += 1"
@@ -559,16 +558,16 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     RestUtils.put(s"$docPath/1", """{"id":"1", "counter":5}""".getBytes(StringUtils.UTF_8))
 
     val scriptName = "increment"
-    val lang = if (version.onOrAfter(EsMajorVersion.V_5_X)) "painless" else "groovy"
-    val script = if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+    val lang = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "painless" else "groovy"
+    val script = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
       "ctx._source.counter = ctx._source.getOrDefault('counter', 0) + 1"
     } else {
       "ctx._source.counter += 1"
     }
 
-    if (version.onOrAfter(EsMajorVersion.V_8_X)) {
+    if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
       RestUtils.put(s"_scripts/$scriptName", s"""{"script":{"lang":"$lang", "source": "$script"}}""".getBytes(StringUtils.UTF_8))
-    } else if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+    } else if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
       RestUtils.put(s"_scripts/$scriptName", s"""{"script":{"lang":"$lang", "code": "$script"}}""".getBytes(StringUtils.UTF_8))
     } else {
       RestUtils.put(s"_scripts/$lang/$scriptName", s"""{"script":"$script"}""".getBytes(StringUtils.UTF_8))
@@ -613,7 +612,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     RestUtils.postData(s"$docPath/1", """{ "id" : "1", "note": "First", "address": [] }""".getBytes(StringUtils.UTF_8))
     RestUtils.postData(s"$docPath/2", """{ "id" : "2", "note": "First", "address": [] }""".getBytes(StringUtils.UTF_8))
 
-    val lang = if (version.onOrAfter(EsMajorVersion.V_5_X)) "painless" else "groovy"
+    val lang = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "painless" else "groovy"
     val props = Map("es.write.operation" -> "upsert",
       "es.input.json" -> "true",
       "es.mapping.id" -> "id",
@@ -624,7 +623,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     val lines = sc.makeRDD(List("""{"id":"1","address":{"zipcode":"12345","id":"1"}}"""))
     val up_params = "new_address:address"
     val up_script = {
-      if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+      if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
         "ctx._source.address.add(params.new_address)"
       } else {
         "ctx._source.address+=new_address"
@@ -636,7 +635,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     val notes = sc.makeRDD(List("""{"id":"2","note":"Second"}"""))
     val note_up_params = "new_note:note"
     val note_up_script = {
-      if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+      if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
         "ctx._source.note = params.new_note"
       } else {
         "ctx._source.note=new_note"
@@ -670,7 +669,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
   @Test
   def testEsRDDReadNoType(): Unit = {
-    EsAssume.versionOnOrBefore(EsMajorVersion.V_6_X, "after 6.x, it is assumed that new types are unnamed.")
+    OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_6_X, "after 6.x, it is assumed that new types are unnamed.")
     val doc =
       """{
         |  "id": 1,
@@ -811,7 +810,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     val target = resource(index, typename, version)
 
     val indexPattern = "spark-template-*"
-    val patternMatchField = if (version.onOrAfter(EsMajorVersion.V_8_X)) {
+    val patternMatchField = if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
       s""""index_patterns":["$indexPattern"],"""
     } else {
       s""""template": "$indexPattern","""

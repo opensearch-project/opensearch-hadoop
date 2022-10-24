@@ -93,7 +93,7 @@ public class SSLTests {
         cfg.setProperty(ES_NET_USE_SSL, "true");
         cfg.setProperty(ES_NET_SSL_CERT_ALLOW_SELF_SIGNED, "true");
         cfg.setProperty(ES_NET_SSL_TRUST_STORE_LOCATION, "ssl/client.jks");
-        cfg.setProperty(ES_NODES_PATH_PREFIX, PREFIX);
+        cfg.setProperty(OPENSEARCH_NODES_PATH_PREFIX, PREFIX);
 
         transport = new CommonsHttpTransport(cfg.copy(), new SecureSettings(cfg), "localhost");
     }

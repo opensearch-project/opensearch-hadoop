@@ -74,7 +74,7 @@ public final class EsMapReduceUtil {
             } catch (EsHadoopException ex) {
                 throw new EsHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
                         + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
-                        + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.ES_NODES_WAN_ONLY), ex);
+                        + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {
                 bootstrap.close();
             }
@@ -109,7 +109,7 @@ public final class EsMapReduceUtil {
             } catch (EsHadoopException ex) {
                 throw new EsHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
                         + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
-                        + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.ES_NODES_WAN_ONLY), ex);
+                        + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {
                 bootstrap.close();
             }

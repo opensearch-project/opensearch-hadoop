@@ -26,7 +26,7 @@ import org.elasticsearch.hadoop.TestData;
 import org.elasticsearch.hadoop.fs.HdfsUtils;
 import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -45,7 +45,7 @@ import static org.hamcrest.CoreMatchers.*;
 
 public class AbstractPigExtraTests extends AbstractPigTests {
 
-    private EsMajorVersion VERSION = TestUtils.getEsClusterInfo().getMajorVersion();
+    private OpenSearchMajorVersion VERSION = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
     private static String PIG_DATA_DIR = "/pig-data/";
     private static Configuration testConfiguration = HdpBootstrap.hadoopConfig();
     private static String workingDir = HadoopCfgUtils.isLocal(testConfiguration) ? Paths.get("").toAbsolutePath().toString() : "/";

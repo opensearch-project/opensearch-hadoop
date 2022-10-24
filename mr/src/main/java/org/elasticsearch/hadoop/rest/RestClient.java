@@ -38,6 +38,7 @@ import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator;
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonParser;
 import org.elasticsearch.hadoop.serialization.json.JsonFactory;
 import org.elasticsearch.hadoop.serialization.json.ObjectReader;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConfig;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
@@ -47,7 +48,6 @@ import org.elasticsearch.hadoop.util.ByteSequence;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.ClusterInfo;
 import org.elasticsearch.hadoop.util.ClusterName;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
 import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
 import org.elasticsearch.hadoop.util.IOUtils;
 import org.elasticsearch.hadoop.util.ObjectUtils;
@@ -73,9 +73,9 @@ import static org.elasticsearch.hadoop.rest.Request.Method.GET;
 import static org.elasticsearch.hadoop.rest.Request.Method.HEAD;
 import static org.elasticsearch.hadoop.rest.Request.Method.POST;
 import static org.elasticsearch.hadoop.rest.Request.Method.PUT;
-import static org.elasticsearch.hadoop.util.EsMajorVersion.V_6_X;
-import static org.elasticsearch.hadoop.util.EsMajorVersion.V_7_X;
-import static org.elasticsearch.hadoop.util.EsMajorVersion.V_8_X;
+import static org.elasticsearch.hadoop.util.OpenSearchMajorVersion.V_6_X;
+import static org.elasticsearch.hadoop.util.OpenSearchMajorVersion.V_7_X;
+import static org.elasticsearch.hadoop.util.OpenSearchMajorVersion.V_8_X;
 
 public class RestClient implements Closeable, StatsAware {
 
@@ -320,9 +320,9 @@ public class RestClient implements Closeable, StatsAware {
 
     public MappingSet getMappings(String query, boolean includeTypeName) {
         // If the version is not at least 7, then the property isn't guaranteed to exist. If it is, then defer to the flag.
-        boolean requestTypeNameInResponse = clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_7_X) && includeTypeName;
+        boolean requestTypeNameInResponse = clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X) && includeTypeName;
         // Response will always have the type name in it if node version is before 7, and if it is not, defer to the flag.
-        boolean typeNameInResponse = clusterInfo.getMajorVersion().before(EsMajorVersion.V_7_X) || includeTypeName;
+        boolean typeNameInResponse = clusterInfo.getMajorVersion().before(OpenSearchMajorVersion.V_7_X) || includeTypeName;
         if (requestTypeNameInResponse) {
             query = query + "?include_type_name=true";
         }
@@ -349,7 +349,7 @@ public class RestClient implements Closeable, StatsAware {
         sb.setLength(sb.length() - 1);
         sb.append("],\n\"query\":{");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_2_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_2_X)) {
             sb.append("\"bool\": { \"must\":[");
         }
         else {
@@ -363,7 +363,7 @@ public class RestClient implements Closeable, StatsAware {
         sb.setLength(sb.length() - 1);
         sb.append("\n]}");
 
-        if (clusterInfo.getMajorVersion().on(EsMajorVersion.V_1_X)) {
+        if (clusterInfo.getMajorVersion().on(OpenSearchMajorVersion.V_1_X)) {
             sb.append("}");
         }
 
@@ -493,7 +493,7 @@ public class RestClient implements Closeable, StatsAware {
         long start = network.transportStats().netTotalTime;
         try {
             BytesArray body;
-            if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_2_X)) {
+            if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_2_X)) {
                 body = new BytesArray("{\"scroll_id\":\"" + scrollId + "\"}");
             } else {
                 body = new BytesArray(scrollId);
@@ -516,7 +516,7 @@ public class RestClient implements Closeable, StatsAware {
     }
     public boolean deleteScroll(String scrollId) {
         BytesArray body;
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_2_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_2_X)) {
             body = new BytesArray(("{\"scroll_id\":[\"" + scrollId + "\"]}").getBytes(StringUtils.UTF_8));
         } else {
             body = new BytesArray(scrollId.getBytes(StringUtils.UTF_8));
@@ -532,7 +532,7 @@ public class RestClient implements Closeable, StatsAware {
 
     public boolean typeExists(String index, String type) {
         String indexType;
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             indexType = index + "/_mapping/" + type;
         } else {
             indexType = index + "/" + type;
@@ -586,7 +586,7 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public long count(String index, String type, String shardId, QueryBuilder query) {
-        return clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X) ?
+        return clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X) ?
                 countInES5X(index, type, shardId, query) : countBeforeES5X(index + "/" + type, shardId, query);
     }
 
@@ -605,7 +605,7 @@ public class RestClient implements Closeable, StatsAware {
     @SuppressWarnings("unchecked")
     private long countInES5X(String index, String type, String shardId, QueryBuilder query) {
         StringBuilder uri;
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_7_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X)) {
             uri = new StringBuilder(index); // Only use index for counting in 7.X and up.
         } else {
             // Sanity check. Removal of types has left a lot of previously populated fields as null
@@ -618,7 +618,7 @@ public class RestClient implements Closeable, StatsAware {
         uri.append("/_search?size=0");
         // Option added in the 6.x line. This must be set to true or else in 7.X and 6/7 mixed clusters
         // will return lower bounded count values instead of an accurate count.
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_6_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_6_X)) {
             uri.append("&track_total_hits=true");
         }
         if (StringUtils.hasLength(shardId)) {
@@ -676,7 +676,7 @@ public class RestClient implements Closeable, StatsAware {
         // create index first (if needed) - it might return 403/404
         touch(index);
 
-        if (clusterInfo.getMajorVersion().after(EsMajorVersion.V_6_X)) {
+        if (clusterInfo.getMajorVersion().after(OpenSearchMajorVersion.V_6_X)) {
             execute(PUT, index + "/_mapping", new BytesArray(bytes));
         } else {
             execute(PUT, index + "/_mapping/" + type, new BytesArray(bytes));
@@ -765,10 +765,10 @@ public class RestClient implements Closeable, StatsAware {
             throw new EsHadoopIllegalStateException("Unable to retrieve elasticsearch version.");
         }
         String versionNumber = versionBody.get("number");
-        EsMajorVersion major = EsMajorVersion.parse(versionNumber);
-        if (major.before(EsMajorVersion.V_6_X)) {
+        OpenSearchMajorVersion major = OpenSearchMajorVersion.parse(versionNumber);
+        if (major.before(OpenSearchMajorVersion.V_6_X)) {
             throw new EsHadoopIllegalStateException("Invalid major version [" + major + "]. " +
-                    "Version is lower than minimum required version [" + EsMajorVersion.V_6_X + "].");
+                    "Version is lower than minimum required version [" + OpenSearchMajorVersion.V_6_X + "].");
         } else if (major.onOrAfter(V_6_X)) {
             String tagline = result.get("tagline").toString();
             if (ELASTICSEARCH_TAGLINE.equals(tagline) == false) {
@@ -795,14 +795,14 @@ public class RestClient implements Closeable, StatsAware {
                 }
             }
         }
-        return new ClusterInfo(new ClusterName(clusterName, clusterUUID), EsMajorVersion.parse(versionNumber));
+        return new ClusterInfo(new ClusterName(clusterName, clusterUUID), OpenSearchMajorVersion.parse(versionNumber));
     }
 
     /**
      * @deprecated use RestClient#mainInfo() instead.
      */
     @Deprecated
-    public EsMajorVersion remoteEsVersion() {
+    public OpenSearchMajorVersion remoteEsVersion() {
         return mainInfo().getMajorVersion();
     }
 

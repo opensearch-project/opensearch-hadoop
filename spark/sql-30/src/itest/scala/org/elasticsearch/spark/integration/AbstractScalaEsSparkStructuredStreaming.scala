@@ -34,8 +34,7 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.streaming.OutputMode
 import org.apache.spark.sql.types.Decimal
-import org.elasticsearch.hadoop.EsAssume
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
+import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, OpenSearchAssume}
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException
 import org.elasticsearch.hadoop.TestData
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions
@@ -45,7 +44,7 @@ import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES
 import org.elasticsearch.hadoop.rest.RestUtils
 import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException
-import org.elasticsearch.hadoop.util.EsMajorVersion
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
 import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.hadoop.util.TestUtils
@@ -143,7 +142,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
 
   val spark: SparkSession = AbstractScalaEsSparkStructuredStreaming.spark
     .getOrElse(throw new EsHadoopIllegalStateException("Spark not started..."))
-  val version: EsMajorVersion = TestUtils.getEsClusterInfo.getMajorVersion
+  val version: OpenSearchMajorVersion = TestUtils.getOpenSearchClusterInfo.getMajorVersion
 
   import org.elasticsearch.spark.integration.Products._
   import spark.implicits._
@@ -435,7 +434,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
 
   @Test
   def test2WriteToIngestPipeline(): Unit = {
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_5_X, "Ingest Supported in 5.x and above only")
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only")
 
     val pipelineName: String = prefix + "-pipeline"
     val pipeline: String = """{"description":"Test Pipeline","processors":[{"set":{"field":"pipeTEST","value":true,"override":true}}]}"""

@@ -27,7 +27,7 @@ import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter;
 import org.elasticsearch.hadoop.serialization.bulk.BulkCommand;
 import org.elasticsearch.hadoop.serialization.bulk.BulkCommands;
 import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Before;
@@ -53,13 +53,13 @@ public class CommandTest {
     private final String operation;
     private boolean noId = false;
     private boolean jsonInput = false;
-    private final EsMajorVersion version;
+    private final OpenSearchMajorVersion version;
 
     @Parameters
     public static Collection<Object[]> data() {
 
         // make sure all versions are tested. Throw if a new one is seen:
-        if (EsMajorVersion.LATEST != EsMajorVersion.V_8_X) {
+        if (OpenSearchMajorVersion.LATEST != OpenSearchMajorVersion.V_8_X) {
             throw new IllegalStateException("CommandTest needs new version updates.");
         }
 
@@ -71,14 +71,14 @@ public class CommandTest {
                 ConfigurationOptions.ES_OPERATION_UPSERT,
                 ConfigurationOptions.ES_OPERATION_DELETE};
         boolean[] asJsons = new boolean[]{false, true};
-        EsMajorVersion[] versions = new EsMajorVersion[]{EsMajorVersion.V_1_X,
-                EsMajorVersion.V_2_X,
-                EsMajorVersion.V_5_X,
-                EsMajorVersion.V_6_X,
-                EsMajorVersion.V_7_X,
-                EsMajorVersion.V_8_X};
+        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[]{OpenSearchMajorVersion.V_1_X,
+                OpenSearchMajorVersion.V_2_X,
+                OpenSearchMajorVersion.V_5_X,
+                OpenSearchMajorVersion.V_6_X,
+                OpenSearchMajorVersion.V_7_X,
+                OpenSearchMajorVersion.V_8_X};
 
-        for (EsMajorVersion version : versions) {
+        for (OpenSearchMajorVersion version : versions) {
             for (boolean asJson : asJsons) {
                 for (String operation : operations) {
                     result.add(new Object[]{operation, asJson, version});
@@ -89,7 +89,7 @@ public class CommandTest {
         return result;
     }
 
-    public CommandTest(String operation, boolean jsonInput, EsMajorVersion version) {
+    public CommandTest(String operation, boolean jsonInput, OpenSearchMajorVersion version) {
         this.operation = operation;
         this.jsonInput = jsonInput;
         this.version = version;
@@ -135,7 +135,7 @@ public class CommandTest {
 
     @Test
     public void testParent() throws Exception {
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_6_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -148,7 +148,7 @@ public class CommandTest {
 
     @Test
     public void testParent7X() throws Exception {
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -161,7 +161,7 @@ public class CommandTest {
 
     @Test
     public void testVersion() throws Exception {
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_6_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -174,7 +174,7 @@ public class CommandTest {
 
     @Test
     public void testVersion7X() throws Exception {
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -210,7 +210,7 @@ public class CommandTest {
 
     @Test
     public void testRouting() throws Exception {
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_6_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -223,7 +223,7 @@ public class CommandTest {
 
     @Test
     public void testRouting7X() throws Exception {
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -236,7 +236,7 @@ public class CommandTest {
 
     @Test
     public void testAll() throws Exception {
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_6_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -251,7 +251,7 @@ public class CommandTest {
 
     @Test
     public void testAll7X() throws Exception {
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -269,7 +269,7 @@ public class CommandTest {
         assumeFalse(isDeleteOP() && jsonInput);
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         Settings settings = settings();
-        if (version.onOrAfter(EsMajorVersion.V_8_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
             settings.setResourceWrite("{n}");
         } else {
             settings.setResourceWrite("foo/{n}");
@@ -277,7 +277,7 @@ public class CommandTest {
 
         create(settings).write(data).copyTo(ba);
         String header;
-        if (version.onOrAfter(EsMajorVersion.V_8_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
             header = "{\"_index\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
         } else {
             header = "{\"_index\":\"foo\",\"_type\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
@@ -297,7 +297,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyInlineScript1X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_1_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -315,8 +315,8 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyInlineScript5X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.after(EsMajorVersion.V_1_X));
-        assumeTrue(version.before(EsMajorVersion.V_6_X));
+        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
+        assumeTrue(version.before(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -334,7 +334,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyInlineScript6X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.on(EsMajorVersion.V_6_X));
+        assumeTrue(version.on(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -352,7 +352,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyInlineScript7X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -370,7 +370,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyFileScript1X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_1_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -388,8 +388,8 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyFileScript5X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.after(EsMajorVersion.V_1_X));
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_6_X));
+        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -407,7 +407,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyFileScript7X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -425,7 +425,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyParamInlineScript1X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_1_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -444,8 +444,8 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyParamInlineScript5X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.after(EsMajorVersion.V_1_X));
-        assumeTrue(version.before(EsMajorVersion.V_6_X));
+        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
+        assumeTrue(version.before(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -465,7 +465,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyParamInlineScript6X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_6_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -485,7 +485,7 @@ public class CommandTest {
     @Test
     public void testUpsertParamInlineScript1X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_1_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
@@ -504,8 +504,8 @@ public class CommandTest {
     @Test
     public void testUpsertParamInlineScript5X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.after(EsMajorVersion.V_1_X));
-        assumeTrue(version.before(EsMajorVersion.V_6_X));
+        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
+        assumeTrue(version.before(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
@@ -524,7 +524,7 @@ public class CommandTest {
     @Test
     public void testUpsertParamInlineScript6X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_6_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
@@ -543,7 +543,7 @@ public class CommandTest {
     @Test
     public void testScriptedUpsertParamInlineScript1X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_1_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -564,8 +564,8 @@ public class CommandTest {
     @Test
     public void testScriptedUpsertParamInlineScript5X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.after(EsMajorVersion.V_1_X));
-        assumeTrue(version.before(EsMajorVersion.V_6_X));
+        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
+        assumeTrue(version.before(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -585,7 +585,7 @@ public class CommandTest {
     @Test
     public void testScriptedUpsertParamInlineScript6X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.onOrAfter(EsMajorVersion.V_6_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -606,7 +606,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyParamFileScript1X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrBefore(EsMajorVersion.V_1_X));
+        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -625,7 +625,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyParamFileScript5X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.after(EsMajorVersion.V_1_X));
+        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -660,7 +660,7 @@ public class CommandTest {
         InitializationUtils.setUserProviderIfNotSet(set, HadoopUserProvider.class, null);
 
         set.setProperty(ConfigurationOptions.ES_WRITE_OPERATION, operation);
-        if (version.onOrAfter(EsMajorVersion.V_8_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
             set.setResourceWrite("foo");
         } else {
             set.setResourceWrite("foo/bar");
@@ -711,4 +711,3 @@ public class CommandTest {
         return ConfigurationOptions.ES_OPERATION_DELETE.equals(operation);
     }
 }
-

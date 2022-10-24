@@ -32,7 +32,7 @@ import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-public class EsMajorVersionTest {
+public class OpenSearchMajorVersionTest {
     private static final List<String> TEST_VERSIONS;
     static {
         List<String> versions = new ArrayList<>();
@@ -82,21 +82,21 @@ public class EsMajorVersionTest {
     public void testVersionFromString() {
         for (int i = 0; i < TEST_VERSIONS.size(); i++) {
             String testVersion = TEST_VERSIONS.get(i);
-            EsMajorVersion version = EsMajorVersion.parse(testVersion);
-            EsMajorVersion version2 = EsMajorVersion.parse(testVersion);
+            OpenSearchMajorVersion version = OpenSearchMajorVersion.parse(testVersion);
+            OpenSearchMajorVersion version2 = OpenSearchMajorVersion.parse(testVersion);
             assertTrue(version.onOrAfter(version));
             assertTrue(version.equals(version));
             assertTrue(version.equals(version2));
             for (int j = i + 1; j < TEST_VERSIONS.size(); j++) {
                 String laterTestVersion = TEST_VERSIONS.get(j);
-                EsMajorVersion compareVersion = EsMajorVersion.parse(laterTestVersion);
+                OpenSearchMajorVersion compareVersion = OpenSearchMajorVersion.parse(laterTestVersion);
                 assertTrue(compareVersion.onOrAfter(version));
                 assertFalse(compareVersion.equals(version));
             }
 
             for (int j = i - 1; j >= 0; j--) {
                 String earlierTestVersion = TEST_VERSIONS.get(j);
-                EsMajorVersion cmp_version = EsMajorVersion.parse(earlierTestVersion);
+                OpenSearchMajorVersion cmp_version = OpenSearchMajorVersion.parse(earlierTestVersion);
                 assertTrue(cmp_version.onOrBefore(version));
                 assertFalse(cmp_version.equals(version));
             }
@@ -106,26 +106,26 @@ public class EsMajorVersionTest {
     @Test
     public void testMinorVersionParsing() {
         for (String testVersion : TEST_VERSIONS) {
-            EsMajorVersion version = EsMajorVersion.parse(testVersion);
+            OpenSearchMajorVersion version = OpenSearchMajorVersion.parse(testVersion);
             int minorVersion = version.parseMinorVersion(testVersion);
             assertThat(minorVersion, greaterThanOrEqualTo(0));
         }
         try {
-            EsMajorVersion.V_7_X.parseMinorVersion("6.0.0");
+            OpenSearchMajorVersion.V_7_X.parseMinorVersion("6.0.0");
             fail("Invalid major version");
         } catch (EsHadoopIllegalArgumentException e) {
             assertEquals("Invalid version string for major version; Received [6.0.0] for major version [7.x]",
                     e.getMessage());
         }
         try {
-            EsMajorVersion.V_7_X.parseMinorVersion("7.");
+            OpenSearchMajorVersion.V_7_X.parseMinorVersion("7.");
             fail("Invalid major version");
         } catch (EsHadoopIllegalArgumentException e) {
             assertEquals("Could not parse Elasticsearch minor version [7.]. Invalid version format.",
                     e.getMessage());
         }
         try {
-            EsMajorVersion.V_7_X.parseMinorVersion("7.4-abcd.4");
+            OpenSearchMajorVersion.V_7_X.parseMinorVersion("7.4-abcd.4");
             fail("Invalid major version");
         } catch (EsHadoopIllegalArgumentException e) {
             assertEquals("Could not parse Elasticsearch minor version [7.4-abcd.4]. Non-numeric minor version [4-abcd].",

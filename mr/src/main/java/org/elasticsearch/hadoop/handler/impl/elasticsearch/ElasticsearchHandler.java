@@ -133,7 +133,7 @@ public class ElasticsearchHandler<I extends Exceptional, O, C extends ErrorColle
         }
 
         // Gather high level configs and push to client conf level
-        resolveProperty(CONF_CLIENT_NODES, CONF_CLIENT_CONF + "." + ConfigurationOptions.ES_NODES, handlerSettings);
+        resolveProperty(CONF_CLIENT_NODES, CONF_CLIENT_CONF + "." + ConfigurationOptions.OPENSEARCH_NODES, handlerSettings);
         resolveProperty(CONF_CLIENT_PORT, CONF_CLIENT_CONF + "." + ConfigurationOptions.ES_PORT, handlerSettings);
         resolveProperty(CONF_CLIENT_RESOURCE, CONF_CLIENT_CONF + "." + ConfigurationOptions.ES_RESOURCE_WRITE, handlerSettings);
         resolveProperty(CONF_CLIENT_RESOURCE, CONF_CLIENT_CONF + "." + ConfigurationOptions.ES_RESOURCE, handlerSettings);

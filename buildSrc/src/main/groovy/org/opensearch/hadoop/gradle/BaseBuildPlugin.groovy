@@ -102,13 +102,13 @@ class BaseBuildPlugin implements Plugin<Project> {
             println "Building version [${project.rootProject.version}]"
 
             project.rootProject.ext.opensearchHadoopVersion = OshVersionProperties.OPENSEARCH_HADOOP_VERSION
-            project.rootProject.ext.elasticsearchVersion = OshVersionProperties.ELASTICSEARCH_VERSION
+            project.rootProject.ext.opensearchVersion = OshVersionProperties.OPENSEARCH_VERSION
             project.rootProject.ext.luceneVersion = OshVersionProperties.LUCENE_VERSION
             project.rootProject.ext.buildToolsVersion = OshVersionProperties.BUILD_TOOLS_VERSION
             project.rootProject.ext.versions = OshVersionProperties.VERSIONS
             project.rootProject.ext.versionsConfigured = true
 
-            println "Testing against Elasticsearch [${project.rootProject.ext.elasticsearchVersion}] with Lucene [${project.rootProject.ext.luceneVersion}]"
+            println "Testing against OpenSearch [${project.rootProject.ext.opensearchVersion}] with Lucene [${project.rootProject.ext.luceneVersion}]"
 
             println "Using Gradle [${project.gradle.gradleVersion}]"
 
@@ -134,7 +134,7 @@ class BaseBuildPlugin implements Plugin<Project> {
             project.rootProject.ext.hadoopClient = ["org.apache.hadoop:hadoop-client:$project.rootProject.ext.hadoopVersion"]
         }
         project.ext.opensearchHadoopVersion = project.rootProject.ext.opensearchHadoopVersion
-        project.ext.elasticsearchVersion = project.rootProject.ext.elasticsearchVersion
+        project.ext.opensearchVersion = project.rootProject.ext.opensearchVersion
         project.ext.luceneVersion = project.rootProject.ext.luceneVersion
         project.ext.buildToolsVersion = project.rootProject.ext.buildToolsVersion
         project.ext.versions = project.rootProject.ext.versions

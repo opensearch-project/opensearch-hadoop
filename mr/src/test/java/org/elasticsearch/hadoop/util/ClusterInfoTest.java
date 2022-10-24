@@ -32,7 +32,7 @@ public class ClusterInfoTest {
 
     @Test
     public void testSerialization() throws Exception {
-        ClusterInfo info = new ClusterInfo(new ClusterName("clusterName", "clusterUUID"), EsMajorVersion.LATEST);
+        ClusterInfo info = new ClusterInfo(new ClusterName("clusterName", "clusterUUID"), OpenSearchMajorVersion.LATEST);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(byteArrayOutputStream);

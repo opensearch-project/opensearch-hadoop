@@ -25,7 +25,7 @@ package org.opensearch.hadoop.gradle
 class OshVersionProperties {
 
     public static final String OPENSEARCH_HADOOP_VERSION
-    public static final String ELASTICSEARCH_VERSION
+    public static final String OPENSEARCH_VERSION
     public static final String LUCENE_VERSION
     public static final String BUILD_TOOLS_VERSION
     public static final Map<String, String> VERSIONS
@@ -37,7 +37,7 @@ class OshVersionProperties {
         }
         versionProperties.load(propertyStream)
         OPENSEARCH_HADOOP_VERSION = versionProperties.getProperty('opensearch_hadoop')
-        ELASTICSEARCH_VERSION = versionProperties.getProperty('elasticsearch')
+        OPENSEARCH_VERSION = versionProperties.getProperty('opensearch')
         LUCENE_VERSION = versionProperties.getProperty('lucene')
         BUILD_TOOLS_VERSION = versionProperties.getProperty('build-tools')
         VERSIONS = new HashMap<>()

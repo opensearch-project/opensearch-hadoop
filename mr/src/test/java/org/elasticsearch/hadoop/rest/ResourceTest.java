@@ -25,7 +25,7 @@ import java.util.List;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.encoding.HttpEncodingTools;
 import org.junit.Assume;
@@ -42,27 +42,27 @@ public class ResourceTest {
     @Parameters
     public static Collection<Object[]> params() {
         List<Object[]> parameters = new ArrayList<Object[]>();
-        parameters.add(new Object[]{EsMajorVersion.LATEST, true});
-        parameters.add(new Object[]{EsMajorVersion.LATEST, false});
+        parameters.add(new Object[]{OpenSearchMajorVersion.LATEST, true});
+        parameters.add(new Object[]{OpenSearchMajorVersion.LATEST, false});
 
-        parameters.add(new Object[]{EsMajorVersion.V_8_X, true});
-        parameters.add(new Object[]{EsMajorVersion.V_7_X, true});
-        parameters.add(new Object[]{EsMajorVersion.V_6_X, true});
-        parameters.add(new Object[]{EsMajorVersion.V_5_X, true});
-        parameters.add(new Object[]{EsMajorVersion.V_2_X, true});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_8_X, true});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_7_X, true});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_6_X, true});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_5_X, true});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, true});
 
-        parameters.add(new Object[]{EsMajorVersion.V_8_X, false});
-        parameters.add(new Object[]{EsMajorVersion.V_7_X, false});
-        parameters.add(new Object[]{EsMajorVersion.V_6_X, false});
-        parameters.add(new Object[]{EsMajorVersion.V_5_X, false});
-        parameters.add(new Object[]{EsMajorVersion.V_2_X, false});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_8_X, false});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_7_X, false});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_6_X, false});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_5_X, false});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, false});
         return parameters;
     }
 
-    private final EsMajorVersion testVersion;
+    private final OpenSearchMajorVersion testVersion;
     private final boolean readResource;
 
-    public ResourceTest(EsMajorVersion testVersion, boolean readResource) {
+    public ResourceTest(OpenSearchMajorVersion testVersion, boolean readResource) {
         this.testVersion = testVersion;
         this.readResource = readResource;
     }
@@ -284,12 +284,12 @@ public class ResourceTest {
 
     private void assumeTyped() {
         Assume.assumeTrue("Typed api only accepted 7.X and before. Running [" + testVersion + ", " + readResource + "]",
-                (testVersion.onOrBefore(EsMajorVersion.V_7_X)));
+                (testVersion.onOrBefore(OpenSearchMajorVersion.V_7_X)));
     }
 
     private void assumeTypeless() {
         Assume.assumeTrue("Typeless api only accepted 7.X and up for writes. Running [" + testVersion + ", " + readResource + "]",
-                (testVersion.onOrAfter(EsMajorVersion.V_7_X) || readResource));
+                (testVersion.onOrAfter(OpenSearchMajorVersion.V_7_X) || readResource));
     }
 
     @Test

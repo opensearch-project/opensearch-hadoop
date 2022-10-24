@@ -22,9 +22,8 @@ package org.elasticsearch.hadoop.serialization.field;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
-import org.hamcrest.Matchers;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;
@@ -37,7 +36,7 @@ public class JsonFieldExtractorsTest {
     public void indexAndType() {
         Settings settings = new TestSettings();
         // Types will not be supported in 8.x
-        settings.setInternalVersion(EsMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
         settings.setResourceWrite("test/{field}");
         JsonFieldExtractors jsonFieldExtractors = new JsonFieldExtractors(settings);
 
@@ -53,7 +52,7 @@ public class JsonFieldExtractorsTest {
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void indexAndTypeNull() {
         Settings settings = new TestSettings();
-        settings.setInternalVersion(EsMajorVersion.LATEST);
+        settings.setInternalVersion(OpenSearchMajorVersion.LATEST);
         settings.setResourceWrite("test/{optional}");
         JsonFieldExtractors jsonFieldExtractors = new JsonFieldExtractors(settings);
 
@@ -70,7 +69,7 @@ public class JsonFieldExtractorsTest {
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void indexAndTypeFailure() {
         Settings settings = new TestSettings();
-        settings.setInternalVersion(EsMajorVersion.LATEST);
+        settings.setInternalVersion(OpenSearchMajorVersion.LATEST);
         settings.setResourceWrite("test/{optional}");
         JsonFieldExtractors jsonFieldExtractors = new JsonFieldExtractors(settings);
 

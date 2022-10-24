@@ -45,7 +45,7 @@ import org.elasticsearch.hadoop.rest.stats.Stats;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.BytesRef;
 import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
 import org.elasticsearch.hadoop.util.IOUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
@@ -78,16 +78,16 @@ public class BulkProcessorTest {
     public static Collection<Object[]> data() {
         List<Object[]> params = new ArrayList<Object[]>();
 
-        params.add(new Object[]{EsMajorVersion.V_7_X, new BulkOutputGeneratorV5()});
-        params.add(new Object[]{EsMajorVersion.V_6_X, new BulkOutputGeneratorV5()});
-        params.add(new Object[]{EsMajorVersion.V_5_X, new BulkOutputGeneratorV5()});
-        params.add(new Object[]{EsMajorVersion.V_2_X, new BulkOutputGeneratorV2()});
-        params.add(new Object[]{EsMajorVersion.V_1_X, new BulkOutputGeneratorV1()});
+        params.add(new Object[]{OpenSearchMajorVersion.V_7_X, new BulkOutputGeneratorV5()});
+        params.add(new Object[]{OpenSearchMajorVersion.V_6_X, new BulkOutputGeneratorV5()});
+        params.add(new Object[]{OpenSearchMajorVersion.V_5_X, new BulkOutputGeneratorV5()});
+        params.add(new Object[]{OpenSearchMajorVersion.V_2_X, new BulkOutputGeneratorV2()});
+        params.add(new Object[]{OpenSearchMajorVersion.V_1_X, new BulkOutputGeneratorV1()});
 
         return params;
     }
 
-    public BulkProcessorTest(EsMajorVersion version, BulkOutputGenerator generator) {
+    public BulkProcessorTest(OpenSearchMajorVersion version, BulkOutputGenerator generator) {
         this.esClusterInfo = ClusterInfo.unnamedClusterWithVersion(version);
         this.generator = generator;
     }

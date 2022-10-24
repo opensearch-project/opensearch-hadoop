@@ -18,7 +18,7 @@
  */
 package org.elasticsearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.encoding.HttpEncodingTools;
 import org.junit.Test;
 
@@ -29,7 +29,7 @@ public class SearchRequestBuilderTest {
 
     @Test
     public void testVersion() {
-        EsMajorVersion esVersion = EsMajorVersion.LATEST;
+        OpenSearchMajorVersion esVersion = OpenSearchMajorVersion.LATEST;
         SearchRequestBuilder includeVersionBuilder = new SearchRequestBuilder(esVersion, true);
         SearchRequestBuilder noVersionBuilder = new SearchRequestBuilder(esVersion, false);
 
@@ -44,7 +44,7 @@ public class SearchRequestBuilderTest {
         String preferenceString = "_only_nodes:abc*";
         String encodedPreferenceString = HttpEncodingTools.encode(preferenceString);
 
-        EsMajorVersion esVersion = EsMajorVersion.LATEST;
+        OpenSearchMajorVersion esVersion = OpenSearchMajorVersion.LATEST;
         SearchRequestBuilder localOnlyBuilder = new SearchRequestBuilder(esVersion, true)
                 .local(true);
         SearchRequestBuilder preferenceOnlyBuilder = new SearchRequestBuilder(esVersion, true)

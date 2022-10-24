@@ -25,7 +25,7 @@ import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.bulk.MetadataExtractor.Metadata;
 import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 
 class UpdateBulkFactory extends AbstractBulkFactory {
@@ -44,12 +44,12 @@ class UpdateBulkFactory extends AbstractBulkFactory {
     private final boolean HAS_SCRIPT, HAS_LANG, HAS_SCRIPT_UPSERT;
     private final boolean UPSERT;
 
-    public UpdateBulkFactory(Settings settings, MetadataExtractor metaExtractor, EsMajorVersion esMajorVersion) {
-        this(settings, false, metaExtractor, esMajorVersion);
+    public UpdateBulkFactory(Settings settings, MetadataExtractor metaExtractor, OpenSearchMajorVersion opensearchMajorVersion) {
+        this(settings, false, metaExtractor, opensearchMajorVersion);
     }
 
-    public UpdateBulkFactory(Settings settings, boolean upsert, MetadataExtractor metaExtractor, EsMajorVersion esMajorVersion) {
-        super(settings, metaExtractor, esMajorVersion);
+    public UpdateBulkFactory(Settings settings, boolean upsert, MetadataExtractor metaExtractor, OpenSearchMajorVersion opensearchMajorVersion) {
+        super(settings, metaExtractor, opensearchMajorVersion);
 
         UPSERT = upsert;
         RETRY_ON_FAILURE = settings.getUpdateRetryOnConflict();
@@ -66,7 +66,7 @@ class UpdateBulkFactory extends AbstractBulkFactory {
             if (StringUtils.hasText(settings.getUpdateScriptInline())) {
                 // INLINE
                 String source = "inline";
-                if (esMajorVersion.onOrAfter(EsMajorVersion.V_6_X)) {
+                if (opensearchMajorVersion.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
                     source = "source";
                 }
                 SCRIPT_5X = "{\"script\":{\"" + source + "\":\"" + settings.getUpdateScriptInline() + "\"";
@@ -113,9 +113,9 @@ class UpdateBulkFactory extends AbstractBulkFactory {
 
         Object paramExtractor = getMetadataExtractorOrFallback(Metadata.PARAMS, getParamExtractor());
 
-        if (esMajorVersion.on(EsMajorVersion.V_1_X)) {
+        if (opensearchMajorVersion.on(OpenSearchMajorVersion.V_1_X)) {
             writeLegacyFormatting(list, paramExtractor);
-        } else if (esMajorVersion.on(EsMajorVersion.V_2_X)) {
+        } else if (opensearchMajorVersion.on(OpenSearchMajorVersion.V_2_X)) {
             writeStrictFormatting(list, paramExtractor, SCRIPT_2X);
         } else {
             writeStrictFormatting(list, paramExtractor, SCRIPT_5X);

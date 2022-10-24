@@ -27,20 +27,20 @@ import org.elasticsearch.hadoop.serialization.field.DefaultParamsExtractor;
  */
 public interface ConfigurationOptions {
 
-    /** Elasticsearch host **/
-    String ES_NODES = "es.nodes";
-    String ES_NODES_DEFAULT = "localhost";
+    /** OpenSearch host **/
+    String OPENSEARCH_NODES = "opensearch.nodes";
+    String OPENSEARCH_NODES_DEFAULT = "localhost";
 
-    String ES_NODES_DISCOVERY = "es.nodes.discovery";
-    String ES_NODES_DISCOVERY_DEFAULT = "true";
+    String OPENSEARCH_NODES_DISCOVERY = "opensearch.nodes.discovery";
+    String OPENSEARCH_NODES_DISCOVERY_DEFAULT = "true";
 
     /** Elasticsearch port **/
     String ES_PORT = "es.port";
     String ES_PORT_DEFAULT = "9200";
 
-    /** Elasticsearch prefix **/
-    String ES_NODES_PATH_PREFIX = "es.nodes.path.prefix";
-    String ES_NODES_PATH_PREFIX_DEFAULT = "";
+    /** OpenSearch prefix **/
+    String OPENSEARCH_NODES_PATH_PREFIX = "opensearch.nodes.path.prefix";
+    String OPENSEARCH_NODES_PATH_PREFIX_DEFAULT = "";
 
     /** Elasticsearch index */
     String ES_RESOURCE = "es.resource";
@@ -50,29 +50,29 @@ public interface ConfigurationOptions {
     String ES_QUERY = "es.query";
 
     /** Clients only */
-    String ES_NODES_CLIENT_ONLY = "es.nodes.client.only";
+    String OPENSEARCH_NODES_CLIENT_ONLY = "opensearch.nodes.client.only";
     String ES_NODES_CLIENT_ONLY_DEFAULT = "false";
 
     /** Data only */
-    String ES_NODES_DATA_ONLY = "es.nodes.data.only";
-    String ES_NODES_DATA_ONLY_DEFAULT = "true";
+    String OPENSEARCH_NODES_DATA_ONLY = "opensearch.nodes.data.only";
+    String OPENSEARCH_NODES_DATA_ONLY_DEFAULT = "true";
 
     /** Ingest only */
-    String ES_NODES_INGEST_ONLY = "es.nodes.ingest.only";
-    String ES_NODES_INGEST_ONLY_DEFAULT = "false";
+    String OPENSEARCH_NODES_INGEST_ONLY = "opensearch.nodes.ingest.only";
+    String OPENSEARCH_NODES_INGEST_ONLY_DEFAULT = "false";
 
     /** WAN only */
-    String ES_NODES_WAN_ONLY = "es.nodes.wan.only";
-    String ES_NODES_WAN_ONLY_DEFAULT = "false";
+    String OPENSEARCH_NODES_WAN_ONLY = "opensearch.nodes.wan.only";
+    String OPENSEARCH_NODES_WAN_ONLY_DEFAULT = "false";
 
-    String ES_NODES_RESOLVE_HOST_NAME = "es.nodes.resolve.hostname";
+    String OPENSEARCH_NODES_RESOLVE_HOST_NAME = "opensearch.nodes.resolve.hostname";
 
     /** Secure Settings Keystore */
     String ES_KEYSTORE_LOCATION = "es.keystore.location";
 
-    /** Elasticsearch batch size given in bytes */
-    String ES_BATCH_SIZE_BYTES = "es.batch.size.bytes";
-    String ES_BATCH_SIZE_BYTES_DEFAULT = "1mb";
+    /** OpenSearch batch size given in bytes */
+    String OPENSEARCH_BATCH_SIZE_BYTES = "opensearch.batch.size.bytes";
+    String OPENSEARCH_BATCH_SIZE_BYTES_DEFAULT = "1mb";
 
     /** Elasticsearch batch size given in entries */
     String ES_BATCH_SIZE_ENTRIES = "es.batch.size.entries";

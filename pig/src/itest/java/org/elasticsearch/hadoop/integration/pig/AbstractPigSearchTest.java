@@ -27,10 +27,10 @@ import org.apache.hadoop.fs.Path;
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.QueryTestParams;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -67,7 +67,7 @@ public class AbstractPigSearchTest extends AbstractPigTests {
 
     private final String query;
     private final boolean readMetadata;
-    private final EsMajorVersion VERSION = TestUtils.getEsClusterInfo().getMajorVersion();
+    private final OpenSearchMajorVersion VERSION = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
 
     public AbstractPigSearchTest(String query, boolean readMetadata) {
         this.query = query;
@@ -201,7 +201,7 @@ public class AbstractPigSearchTest extends AbstractPigTests {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         String script =
                       "DEFINE EsStorage org.elasticsearch.hadoop.pig.EsStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"');"
                       + "A = LOAD 'pig-pc/child' USING EsStorage();"

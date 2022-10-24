@@ -53,7 +53,7 @@ public class AbstractHiveExtraTests {
 
     @Test
     public void testQuery() throws Exception {
-        String resource = resource("cars", "transactions", TestUtils.getEsClusterInfo().getMajorVersion());
+        String resource = resource("cars", "transactions", TestUtils.getOpenSearchClusterInfo().getMajorVersion());
 
         if (!RestUtils.exists(resource)) {
             RestUtils.bulkData(resource, "cars-bulk.txt");
@@ -89,7 +89,7 @@ public class AbstractHiveExtraTests {
         RestUtils.touch("hive-date-as-long");
         RestUtils.putMapping("hive-date-as-long", "data", "org/elasticsearch/hadoop/hive/hive-date-typeless-mapping.json");
 
-        String docEndpoint = docEndpoint(resource, "data", TestUtils.getEsClusterInfo().getMajorVersion());
+        String docEndpoint = docEndpoint(resource, "data", TestUtils.getOpenSearchClusterInfo().getMajorVersion());
 
         RestUtils.postData(docEndpoint + "/1", "{\"type\" : 1, \"&t\" : 1407239910771}".getBytes());
 

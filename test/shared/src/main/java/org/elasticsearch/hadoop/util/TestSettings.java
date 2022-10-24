@@ -61,8 +61,8 @@ public class TestSettings extends PropertiesSettings {
 
     {
         // pick up dedicated ES port if present
-        String embeddedEsLocalPort = System.getProperty(TestUtils.ES_LOCAL_PORT);
-        if (StringUtils.hasText(System.getProperty(TestUtils.ES_LOCAL_PORT))) {
+        String embeddedEsLocalPort = System.getProperty(TestUtils.OPENSEARCH_LOCAL_PORT);
+        if (StringUtils.hasText(System.getProperty(TestUtils.OPENSEARCH_LOCAL_PORT))) {
             TESTING_PROPS.put("es.port", embeddedEsLocalPort);
         }
     }

@@ -30,11 +30,11 @@ import org.gradle.api.tasks.TaskCollection
 import org.gradle.process.CommandLineArgumentProvider
 
 /**
- * Plugin that adds the ability to stand up an Elasticsearch cluster for tests.
+ * Plugin that adds the ability to stand up an OpenSearch cluster for tests.
  * Adapted mostly from the existing cluster testing functionality from the core
- * Elasticsearch project.
+ * OpenSearch project.
  *
- * This is mostly adapted from the main Elasticsearch project, but slimmed down to
+ * This is mostly adapted from the main OpenSearch project, but slimmed down to
  * avoid all the extra baggage of dealing with mixed version clusters or multiple
  * nodes.
  *
@@ -44,7 +44,7 @@ class OpenSearchFixturePlugin implements Plugin<Project> {
     @Override
     void apply(Project project) {
         project.pluginManager.apply(TestClustersPlugin)
-        def version = project.hasProperty("es.version") ? project.getProperty("es.version") : project.elasticsearchVersion
+        def version = project.hasProperty("opensearch.version") ? project.getProperty("opensearch.version") : project.opensearchVersion
 
         // Optionally allow user to disable the fixture
         def useFixture = Boolean.parseBoolean(project.findProperty("tests.fixture.es.enable") ?: "true")
@@ -55,7 +55,7 @@ class OpenSearchFixturePlugin implements Plugin<Project> {
             // task, as well as javaHome+runtimeJavaHome configured
             createClusterFor(integrationTestTasks, project, version)
         } else {
-            integrationTestTasks.all { systemProperty("test.disable.local.es", "true") }
+            integrationTestTasks.all { systemProperty("test.disable.local.opensearch", "true") }
         }
     }
 

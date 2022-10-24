@@ -29,7 +29,7 @@ import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.security.AuthenticationMethod;
 import org.elasticsearch.hadoop.util.ClusterName;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.IOUtils;
 import org.elasticsearch.hadoop.util.ClusterInfo;
 import org.elasticsearch.hadoop.util.StringUtils;
@@ -47,31 +47,31 @@ import static org.elasticsearch.hadoop.cfg.InternalConfigurationOptions.*;
 public abstract class Settings {
     /**
      * Get the internal version or throw an {@link IllegalArgumentException} if not present
-     * @return The {@link EsMajorVersion} extracted from the properties
+     * @return The {@link OpenSearchMajorVersion} extracted from the properties
      */
-    public EsMajorVersion getInternalVersionOrThrow() {
-        String version = getProperty(InternalConfigurationOptions.INTERNAL_ES_VERSION, null);
+    public OpenSearchMajorVersion getInternalVersionOrThrow() {
+        String version = getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION, null);
         if (version == null) {
-            throw new IllegalArgumentException("Elasticsearch version:[ " + InternalConfigurationOptions.INTERNAL_ES_VERSION + "] not present in configuration");
+            throw new IllegalArgumentException("Elasticsearch version:[ " + InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION + "] not present in configuration");
         }
-        return EsMajorVersion.parse(version);
+        return OpenSearchMajorVersion.parse(version);
     }
 
     /**
-     * Get the internal version or {@link EsMajorVersion#LATEST} if not present
-     * @return The {@link EsMajorVersion} extracted from the properties or {@link EsMajorVersion#LATEST} if not present
+     * Get the internal version or {@link OpenSearchMajorVersion#LATEST} if not present
+     * @return The {@link OpenSearchMajorVersion} extracted from the properties or {@link OpenSearchMajorVersion#LATEST} if not present
      * @deprecated This is kind of a dangerous method to use, because it assumes that you care about which version you are working with,
      *             but the version you receive from this call may not be accurate, and thus, cannot be trusted to let you make accurate
      *             decisions about the version of ES you are speaking with. Prefer to use the {@link Settings#getInternalVersionOrThrow()}
      *             instead.
      */
     @Deprecated
-    public EsMajorVersion getInternalVersionOrLatest() {
-        String version = getProperty(InternalConfigurationOptions.INTERNAL_ES_VERSION, null);
+    public OpenSearchMajorVersion getInternalVersionOrLatest() {
+        String version = getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION, null);
         if (version == null) {
-            return EsMajorVersion.LATEST;
+            return OpenSearchMajorVersion.LATEST;
         }
-        return EsMajorVersion.parse(version);
+        return OpenSearchMajorVersion.parse(version);
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class Settings {
             return null;
         }
         String clusterUUID = getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_UUID);
-        EsMajorVersion version = getInternalVersionOrThrow();
+        OpenSearchMajorVersion version = getInternalVersionOrThrow();
         return new ClusterInfo(new ClusterName(clusterName, clusterUUID), version);
     }
 
@@ -106,7 +106,7 @@ public abstract class Settings {
      * @return the {@link ClusterInfo} extracted from the properties
      * @deprecated This is a dangerous method to use, because it assumes that you care about which cluster you are working with,
      *     but the info you receive from this call may not be accurate, and thus, cannot be trusted to let you make accurate
-     *     decisions about the ES cluster you are speaking with. Prefer to use the {@link Settings#getClusterInfoOrThrow()}
+     *     decisions about the OpenSearch cluster you are speaking with. Prefer to use the {@link Settings#getClusterInfoOrThrow()}
      *     instead.
      */
     @Deprecated
@@ -116,12 +116,12 @@ public abstract class Settings {
             return ClusterInfo.unnamedLatest();
         }
         String clusterUUID = getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_UUID);
-        EsMajorVersion version = getInternalVersionOrLatest();
+        OpenSearchMajorVersion version = getInternalVersionOrLatest();
         return new ClusterInfo(new ClusterName(clusterName, clusterUUID), version);
     }
 
     public String getNodes() {
-        return getProperty(ES_NODES, ES_NODES_DEFAULT);
+        return getProperty(OPENSEARCH_NODES, OPENSEARCH_NODES_DEFAULT);
     }
 
     public int getPort() {
@@ -132,30 +132,30 @@ public abstract class Settings {
         // by default, if not set, return a value compatible with the WAN setting
         // otherwise return the user value.
         // this helps validate the configuration
-        return Booleans.parseBoolean(getProperty(ES_NODES_DISCOVERY), !getNodesWANOnly());
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_DISCOVERY), !getNodesWANOnly());
     }
 
     public String getShardPreference() { return getProperty(ES_READ_SHARD_PREFERENCE, ES_READ_SHARD_PREFERENCE_DEFAULT); }
 
     public String getNodesPathPrefix() {
-        return getProperty(ES_NODES_PATH_PREFIX, ES_NODES_PATH_PREFIX_DEFAULT);
+        return getProperty(OPENSEARCH_NODES_PATH_PREFIX, OPENSEARCH_NODES_PATH_PREFIX_DEFAULT);
     }
 
     public boolean getNodesDataOnly() {
         // by default, if not set, return a value compatible with the other settings
-        return Booleans.parseBoolean(getProperty(ES_NODES_DATA_ONLY), !getNodesWANOnly() && !getNodesClientOnly() && !getNodesIngestOnly());
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_DATA_ONLY), !getNodesWANOnly() && !getNodesClientOnly() && !getNodesIngestOnly());
     }
 
     public boolean getNodesIngestOnly() {
-        return Booleans.parseBoolean(getProperty(ES_NODES_INGEST_ONLY, ES_NODES_INGEST_ONLY_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_INGEST_ONLY, OPENSEARCH_NODES_INGEST_ONLY_DEFAULT));
     }
 
     public boolean getNodesClientOnly() {
-        return Booleans.parseBoolean(getProperty(ES_NODES_CLIENT_ONLY, ES_NODES_CLIENT_ONLY_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_CLIENT_ONLY, ES_NODES_CLIENT_ONLY_DEFAULT));
     }
 
     public boolean getNodesWANOnly() {
-        return Booleans.parseBoolean(getProperty(ES_NODES_WAN_ONLY, ES_NODES_WAN_ONLY_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_WAN_ONLY, OPENSEARCH_NODES_WAN_ONLY_DEFAULT));
     }
 
     public long getHttpTimeout() {
@@ -167,7 +167,7 @@ public abstract class Settings {
     }
 
     public int getBatchSizeInBytes() {
-        return ByteSizeValue.parseBytesSizeValue(getProperty(ES_BATCH_SIZE_BYTES, ES_BATCH_SIZE_BYTES_DEFAULT)).bytesAsInt();
+        return ByteSizeValue.parseBytesSizeValue(getProperty(OPENSEARCH_BATCH_SIZE_BYTES, OPENSEARCH_BATCH_SIZE_BYTES_DEFAULT)).bytesAsInt();
     }
 
     public int getBatchSizeInEntries() {
@@ -582,7 +582,7 @@ public abstract class Settings {
         // by default, if not set, return a value compatible with the WAN setting
         // otherwise return the user value.
         // this helps validate the configuration
-        return Booleans.parseBoolean(getProperty(ES_NODES_RESOLVE_HOST_NAME), !getNodesWANOnly());
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_RESOLVE_HOST_NAME), !getNodesWANOnly());
     }
 
     public Settings setInternalClusterInfo(ClusterInfo clusterInfo) {
@@ -590,7 +590,7 @@ public abstract class Settings {
         if (clusterInfo.getClusterName().getUUID() != null) {
             setProperty(INTERNAL_ES_CLUSTER_UUID, clusterInfo.getClusterName().getUUID());
         }
-        setProperty(INTERNAL_ES_VERSION, clusterInfo.getMajorVersion().toString());
+        setProperty(INTERNAL_OPENSEARCH_VERSION, clusterInfo.getMajorVersion().toString());
         return this;
     }
 
@@ -598,13 +598,13 @@ public abstract class Settings {
      * @deprecated prefer to use Settings#setInternalClusterInfo
      */
     @Deprecated
-    public Settings setInternalVersion(EsMajorVersion version) {
-        setProperty(INTERNAL_ES_VERSION, version.toString());
+    public Settings setInternalVersion(OpenSearchMajorVersion version) {
+        setProperty(INTERNAL_OPENSEARCH_VERSION, version.toString());
         return this;
     }
 
     public Settings setNodes(String hosts) {
-        setProperty(ES_NODES, hosts);
+        setProperty(OPENSEARCH_NODES, hosts);
         return this;
     }
 
@@ -807,4 +807,3 @@ public abstract class Settings {
         return this;
     }
 }
-

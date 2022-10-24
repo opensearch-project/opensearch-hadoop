@@ -50,7 +50,7 @@ import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.storage.StorageLevel.DISK_ONLY
 import org.apache.spark.storage.StorageLevel.DISK_ONLY_2
-import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
+import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException, OpenSearchAssume}
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions._
 import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.TestSettings
@@ -90,12 +90,11 @@ import org.apache.spark.rdd.RDD
 
 import javax.xml.bind.DatatypeConverter
 import org.apache.spark.sql.SparkSession
-import org.elasticsearch.hadoop.EsAssume
 import org.elasticsearch.hadoop.TestData
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions
 import org.elasticsearch.hadoop.rest.{EsHadoopParsingException, RestUtils}
 import org.elasticsearch.hadoop.serialization.JsonUtils
-import org.elasticsearch.hadoop.util.EsMajorVersion
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
 import org.junit.Assert._
 import org.junit.ClassRule
 
@@ -120,8 +119,8 @@ object AbstractScalaEsScalaSparkSQL {
     sc = new SparkContext(conf)
     sqc = SparkSession.builder().config(conf).getOrCreate().sqlContext
 
-    val version = TestUtils.getEsClusterInfo.getMajorVersion
-    if (version.before(EsMajorVersion.V_5_X)) {
+    val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
+    if (version.before(OpenSearchMajorVersion.V_5_X)) {
       keywordType = "string"
       textType = "string"
     }
@@ -224,7 +223,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
                 "es.internal.spark.sql.pushdown.strict" -> strictPushDown.toString(),
                 "es.internal.spark.sql.pushdown.keep.handled.filters" -> doubleFiltering.toString())
 
-  val version = TestUtils.getEsClusterInfo.getMajorVersion
+  val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
   val keyword = AbstractScalaEsScalaSparkSQL.keywordType
   val text = AbstractScalaEsScalaSparkSQL.textType
 
@@ -250,7 +249,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
   @Test(expected = classOf[EsHadoopIllegalArgumentException])
   def testNoMappingExists() {
-    EsAssume.versionOnOrBefore(EsMajorVersion.V_6_X, "types are deprecated fully in 7.0 and will be removed in a later release")
+    OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_6_X, "types are deprecated fully in 7.0 and will be removed in a later release")
     val index = wrapIndex("spark-index-ex")
     RestUtils.touch(index)
     val idx = sqc.read.format("org.elasticsearch.spark.sql").load(s"$index/no_such_mapping")
@@ -1315,7 +1314,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   @Test
   def testEsDataFrame52OverwriteExistingDataSourceWithJoinField() {
     // Join added in 6.0.
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_6_X, "Join added in 6.0.")
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "Join added in 6.0.")
 
     // using long-form joiner values
     val schema = StructType(Seq(
@@ -1623,7 +1622,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   def testJoinField(): Unit = {
     // Join added in 6.0.
     // TODO: Available in 5.6, but we only track major version ids in the connector.
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_6_X, "Join added in 6.0.")
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "Join added in 6.0.")
 
     // test mix of short-form and long-form joiner values
     val company1 = Map("id" -> "1", "company" -> "Elastic", "joiner" -> "company")
@@ -2198,7 +2197,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   
   @Test
   def testGeoShapeCircle() {
-    EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "circle geo shape is removed in later 6.6+ versions")
+    OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "circle geo shape is removed in later 6.6+ versions")
     val mapping = wrapMapping("data", s"""{
     |      "properties": {
     |        "name": {

@@ -29,7 +29,6 @@ import org.elasticsearch.hadoop.serialization.field.FieldFilter.NumberedInclude;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
@@ -215,8 +214,8 @@ public abstract class SettingsUtils {
      */
     @Deprecated
     public static boolean isEs50(Settings settings) {
-        EsMajorVersion version = settings.getInternalVersionOrLatest();
-        return version.onOrAfter(EsMajorVersion.V_5_X);
+        OpenSearchMajorVersion version = settings.getInternalVersionOrLatest();
+        return version.onOrAfter(OpenSearchMajorVersion.V_5_X);
     }
 
     public static List<NumberedInclude> getFieldArrayFilterInclude(Settings settings) {

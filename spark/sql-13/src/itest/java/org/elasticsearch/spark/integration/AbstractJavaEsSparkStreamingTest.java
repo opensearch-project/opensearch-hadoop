@@ -38,9 +38,9 @@ import org.apache.spark.streaming.scheduler.StreamingListenerReceiverError;
 import org.apache.spark.streaming.scheduler.StreamingListenerReceiverStarted;
 import org.apache.spark.streaming.scheduler.StreamingListenerReceiverStopped;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
@@ -116,7 +116,7 @@ public class AbstractJavaEsSparkStreamingTest implements Serializable {
     private String prefix;
     private Map<String, String> cfg = new HashMap<>();
     private JavaStreamingContext ssc = null;
-    private EsMajorVersion version = TestUtils.getEsClusterInfo().getMajorVersion();
+    private OpenSearchMajorVersion version = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
 
     public AbstractJavaEsSparkStreamingTest(String prefix, boolean readMetadata) {
         this.prefix = prefix;
@@ -387,7 +387,7 @@ public class AbstractJavaEsSparkStreamingTest implements Serializable {
 
     @Test
     public void testEsRDDIngest() throws Exception {
-        EsAssume.versionOnOrAfter(EsMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
+        OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
 
         RestUtils.ExtendedRestClient client = new RestUtils.ExtendedRestClient();
         String pipelineName =  prefix + "-pipeline";
@@ -414,7 +414,7 @@ public class AbstractJavaEsSparkStreamingTest implements Serializable {
 
         Map<String, String> localConf = new HashMap<>(cfg);
         localConf.put(ES_INGEST_PIPELINE, pipelineName);
-        localConf.put(ES_NODES_INGEST_ONLY, "true");
+        localConf.put(OPENSEARCH_NODES_INGEST_ONLY, "true");
 
         JavaRDD<Map<String, Object>> batch = sc.parallelize(docs);
         Queue<JavaRDD<Map<String, Object>>> rddQueue = new LinkedList<>();
@@ -514,7 +514,7 @@ public class AbstractJavaEsSparkStreamingTest implements Serializable {
     public void testEsRDDWriteWithUpsertScriptUsingBothObjectAndRegularString() throws Exception {
         // BWC for string vs keyword types
         String keyword = "string";
-        if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             keyword = "keyword";
         }
 
@@ -534,7 +534,7 @@ public class AbstractJavaEsSparkStreamingTest implements Serializable {
         RestUtils.refresh(index);
 
         String lang = "painless";
-        if (version.onOrBefore(EsMajorVersion.V_2_X)) {
+        if (version.onOrBefore(OpenSearchMajorVersion.V_2_X)) {
             lang = "groovy";
         }
 
@@ -549,7 +549,7 @@ public class AbstractJavaEsSparkStreamingTest implements Serializable {
         docs1.add(doc1);
         String upParams = "new_address:address";
         String upScript;
-        if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             upScript = "ctx._source.address.add(params.new_address)";
         } else {
             upScript = "ctx._source.address+=new_address";
@@ -574,7 +574,7 @@ public class AbstractJavaEsSparkStreamingTest implements Serializable {
         docs2.add(doc2);
         String noteUpParams = "new_note:note";
         String noteUpScript;
-        if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             noteUpScript = "ctx._source.note = params.new_note";
         } else {
             noteUpScript = "ctx._source.note=new_note";

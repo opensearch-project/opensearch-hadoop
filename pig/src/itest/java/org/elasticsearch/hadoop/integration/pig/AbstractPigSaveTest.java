@@ -26,10 +26,10 @@ import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.Provisioner;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.elasticsearch.hadoop.rest.RestClient;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
@@ -39,7 +39,7 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import static org.elasticsearch.hadoop.util.EsMajorVersion.V_5_X;
+import static org.elasticsearch.hadoop.util.OpenSearchMajorVersion.V_5_X;
 import static org.elasticsearch.hadoop.util.TestUtils.docEndpoint;
 import static org.elasticsearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.*;
@@ -51,7 +51,7 @@ import static org.hamcrest.CoreMatchers.*;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AbstractPigSaveTest extends AbstractPigTests {
 
-    private final EsMajorVersion VERSION = TestUtils.getEsClusterInfo().getMajorVersion();
+    private final OpenSearchMajorVersion VERSION = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
     private final Configuration configuration = HdpBootstrap.hadoopConfig();
 
     @BeforeClass
@@ -253,7 +253,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         RestUtils.createMultiTypeIndex("pig-pc");
         RestUtils.putMapping("pig-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
 
@@ -268,7 +268,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
 
     @Test
     public void testParentChildMapping() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         assertThat(RestUtils.getMapping("pig-pc", "child").toString(),
                 VERSION.onOrAfter(V_5_X)
                         ? is("pig-pc/child=[id=LONG, links=TEXT, name=TEXT]")

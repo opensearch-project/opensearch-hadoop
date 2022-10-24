@@ -28,9 +28,9 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.elasticsearch.spark.rdd.Metadata;
@@ -65,7 +65,7 @@ public class AbstractJavaEsSparkTest implements Serializable {
                     .setAppName("estest");
     private static transient JavaSparkContext sc = null;
 
-    private final EsMajorVersion version = TestUtils.getEsClusterInfo().getMajorVersion();
+    private final OpenSearchMajorVersion version = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
 
     @BeforeClass
     public static void setup() {
@@ -295,7 +295,7 @@ public class AbstractJavaEsSparkTest implements Serializable {
 
     @Test
     public void testEsRDDZReadMultiIndex() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Multiple Types Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Multiple Types Disabled in 6.0");
         String index = "spark-test";
 
         RestUtils.createMultiTypeIndex(index);

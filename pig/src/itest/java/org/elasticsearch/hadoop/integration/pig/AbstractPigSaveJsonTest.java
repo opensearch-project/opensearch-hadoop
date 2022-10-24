@@ -24,10 +24,10 @@ import org.apache.hadoop.conf.Configuration;
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.elasticsearch.hadoop.rest.RestClient;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.BeforeClass;
@@ -41,7 +41,7 @@ import static org.elasticsearch.hadoop.util.TestUtils.resource;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AbstractPigSaveJsonTest extends AbstractPigTests {
 
-    private final EsMajorVersion VERSION = TestUtils.getEsClusterInfo().getMajorVersion();
+    private final OpenSearchMajorVersion VERSION = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
     private final Configuration configuration = HdpBootstrap.hadoopConfig();
 
     @BeforeClass
@@ -126,7 +126,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         RestUtils.createMultiTypeIndex("json-pig-pc");
         RestUtils.putMapping("json-pig-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
 

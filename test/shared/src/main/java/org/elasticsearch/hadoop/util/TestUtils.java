@@ -22,17 +22,13 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Locale;
 
-import org.apache.hadoop.conf.Configuration;
-import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.rest.RestClient;
 
 public class TestUtils {
 
-    public static final String ES_LOCAL_PORT = "es.hadoop.testing.local.es.port";
+    public static final String OPENSEARCH_LOCAL_PORT = "opensearch.hadoop.testing.local.opensearch.port";
 
     public static boolean delete(File file) {
         if (file == null || !file.exists()) {
@@ -49,7 +45,7 @@ public class TestUtils {
         return file.delete() & result;
     }
 
-    public static ClusterInfo getEsClusterInfo() {
+    public static ClusterInfo getOpenSearchClusterInfo() {
         RestClient client = new RestClient(new TestSettings());
         try {
             return client.mainInfo();
@@ -58,7 +54,7 @@ public class TestUtils {
         }
     }
 
-    public static String resource(String index, String type, EsMajorVersion testVersion) {
+    public static String resource(String index, String type, OpenSearchMajorVersion testVersion) {
         if (TestUtils.isTypelessVersion(testVersion)) {
             return index;
         } else {
@@ -66,7 +62,7 @@ public class TestUtils {
         }
     }
 
-    public static String docEndpoint(String index, String type, EsMajorVersion testVersion) {
+    public static String docEndpoint(String index, String type, OpenSearchMajorVersion testVersion) {
         if (TestUtils.isTypelessVersion(testVersion)) {
             return index + "/_doc";
         } else {
@@ -74,9 +70,9 @@ public class TestUtils {
         }
     }
 
-    public static boolean isTypelessVersion(EsMajorVersion version) {
+    public static boolean isTypelessVersion(OpenSearchMajorVersion version) {
         // Types have been deprecated in 7.0.0, and will be removed at a later date
-        return version.onOrAfter(EsMajorVersion.V_7_X);
+        return version.onOrAfter(OpenSearchMajorVersion.V_7_X);
     }
 
     public static boolean isWindows() {

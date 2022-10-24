@@ -25,10 +25,10 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.QueryTestParams;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Before;
@@ -55,7 +55,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     private static int testInstance = 0;
     private static String previousQuery;
     private boolean readMetadata;
-    private EsMajorVersion testVersion;
+    private OpenSearchMajorVersion testVersion;
     private static Configuration testConfiguration = HdpBootstrap.hadoopConfig();
     private static String workingDir = HadoopCfgUtils.isLocal(testConfiguration) ? Paths.get("").toAbsolutePath().toString() : "/";
 
@@ -72,7 +72,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     public AbstractPigReadAsJsonTest(String query, boolean metadata) {
         this.query = query;
         this.readMetadata = metadata;
-        this.testVersion = TestUtils.getEsClusterInfo().getMajorVersion();
+        this.testVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
 
         if (!query.equals(previousQuery)) {
             previousQuery = query;
@@ -118,7 +118,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc1.add("\"_type\":\""+metaType+"\"");
             }
             doc1.add("\"_id\":\"");
@@ -130,7 +130,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc2.add("\"_type\":\""+metaType+"\"");
             }
             doc2.add("\"_id\":\"");
@@ -142,7 +142,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc3.add("\"_type\":\""+metaType+"\"");
             }
             doc3.add("\"_id\":\"");
@@ -175,7 +175,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc1.add("\"_type\":\""+metaType+"\"");
             }
             doc1.add("\"_id\":\"");
@@ -187,7 +187,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc2.add("\"_type\":\""+metaType+"\"");
             }
             doc2.add("\"_id\":\"");
@@ -199,7 +199,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc3.add("\"_type\":\""+metaType+"\"");
             }
             doc3.add("\"_id\":\"");
@@ -231,7 +231,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc1.add("\"_type\":\""+metaType+"\"");
             }
             doc1.add("\"_id\":\"");
@@ -243,7 +243,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc2.add("\"_type\":\""+metaType+"\"");
             }
             doc2.add("\"_id\":\"");
@@ -255,7 +255,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(EsMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
                 doc3.add("\"_type\":\""+metaType+"\"");
             }
             doc3.add("\"_id\":\"");
@@ -281,7 +281,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         String script = scriptHead
                       + "A = LOAD 'json-pig-pc/child' USING EsStorage();"
                       + "X = LIMIT A 3;"
@@ -296,7 +296,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         if (readMetadata) {
             doc1.add(",\"_metadata\":{\"_index\":\"json-pig-pc\",\"_type\":\"child\",\"_id\":\"");
             doc1.add("\",\"_score\":");
-            if (testVersion.onOrAfter(EsMajorVersion.V_2_X)) {
+            if (testVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
                 doc1.add("\"_routing\":\"12\",\"_parent\":\"12\"");
             }
         }
@@ -307,7 +307,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         if (readMetadata) {
             doc2.add(",\"_metadata\":{\"_index\":\"json-pig-pc\",\"_type\":\"child\",\"_id\":\"");
             doc2.add("\",\"_score\":");
-            if (testVersion.onOrAfter(EsMajorVersion.V_2_X)) {
+            if (testVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
                 doc2.add("\"_routing\":\"918\",\"_parent\":\"918\"");
             }
         }
@@ -318,7 +318,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         if (readMetadata) {
             doc3.add(",\"_metadata\":{\"_index\":\"json-pig-pc\",\"_type\":\"child\",\"_id\":\"");
             doc3.add("\",\"_score\":");
-            if (testVersion.onOrAfter(EsMajorVersion.V_2_X)) {
+            if (testVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
                 doc3.add("\"_routing\":\"982\",\"_parent\":\"982\"");
             }
         }

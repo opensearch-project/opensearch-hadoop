@@ -19,9 +19,9 @@
 package org.elasticsearch.hadoop.integration.hive;
 
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import org.junit.runners.MethodSorters;
 
 import java.sql.SQLException;
 
-import static org.elasticsearch.hadoop.util.EsMajorVersion.V_5_X;
+import static org.elasticsearch.hadoop.util.OpenSearchMajorVersion.V_5_X;
 import static org.elasticsearch.hadoop.util.TestUtils.docEndpoint;
 import static org.elasticsearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.assertFalse;
@@ -47,12 +47,12 @@ import static org.hamcrest.Matchers.containsString;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AbstractHiveSaveTest {
 
-    private EsMajorVersion targetVersion;
+    private OpenSearchMajorVersion targetVersion;
 
     @Before
     public void before() throws Exception {
         HiveSuite.before();
-        targetVersion = TestUtils.getEsClusterInfo().getMajorVersion();
+        targetVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
     }
 
     @After
@@ -552,7 +552,7 @@ public class AbstractHiveSaveTest {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         RestUtils.createMultiTypeIndex("hive-pc");
         RestUtils.putMapping("hive-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
 
@@ -586,7 +586,7 @@ public class AbstractHiveSaveTest {
 
     @Test
     public void testParentChildMapping() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         assertThat(RestUtils.getMapping("hive-pc", "child").toString(),
                 targetVersion.onOrAfter(V_5_X)
                         ? is("hive-pc/child=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]")

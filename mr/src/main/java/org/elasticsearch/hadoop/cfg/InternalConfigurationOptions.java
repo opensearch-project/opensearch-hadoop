@@ -31,7 +31,7 @@ public interface InternalConfigurationOptions extends ConfigurationOptions {
 
     String INTERNAL_ES_QUERY_FILTERS = "es.internal.query.filters";
 
-    String INTERNAL_ES_VERSION = "es.internal.es.version";
+    String INTERNAL_OPENSEARCH_VERSION = "opensearch.internal.opensearch.version";
     String INTERNAL_ES_CLUSTER_NAME = "es.internal.es.cluster.name";
     String INTERNAL_ES_CLUSTER_UUID = "es.internal.es.cluster.uuid";
     // used for isolating connection pools of multiple spark streaming jobs in the same app.

@@ -41,7 +41,7 @@ import org.elasticsearch.hadoop.serialization.dto.mapping.MappingUtils;
 import org.elasticsearch.hadoop.serialization.field.IndexExtractor;
 import org.elasticsearch.hadoop.util.Assert;
 import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.IOUtils;
 import org.elasticsearch.hadoop.util.ObjectUtils;
 import org.elasticsearch.hadoop.util.SettingsUtils;
@@ -263,7 +263,7 @@ public abstract class RestService implements Serializable {
                 }
             }
             final List<PartitionDefinition> partitions;
-            if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X) && settings.getMaxDocsPerPartition() != null) {
+            if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X) && settings.getMaxDocsPerPartition() != null) {
                 partitions = findSlicePartitions(client.getRestClient(), settings, mapping, nodesMap, shards, log);
             } else {
                 partitions = findShardPartitions(settings, mapping, nodesMap, shards, log);
@@ -476,7 +476,7 @@ public abstract class RestService implements Serializable {
      * If the index is the result of an alias, the filters and routing values of the alias are added in the
      * provided {@link SearchRequestBuilder}.
      */
-    static SearchRequestBuilder applyAliasMetadata(EsMajorVersion version,
+    static SearchRequestBuilder applyAliasMetadata(OpenSearchMajorVersion version,
                                                    Map<String, IndicesAliases.Alias> aliases,
                                                    SearchRequestBuilder searchRequestBuilder,
                                                    String index, String... indicesOrAliases) {
@@ -518,7 +518,7 @@ public abstract class RestService implements Serializable {
             } else {
                 BoolQueryBuilder mainQuery = new BoolQueryBuilder();
                 mainQuery.must(searchRequestBuilder.query());
-                if (version.after(EsMajorVersion.V_1_X)) {
+                if (version.after(OpenSearchMajorVersion.V_1_X)) {
                     mainQuery.filter(aliasQuery);
                 } else {
                     mainQuery.must(new ConstantScoreQueryBuilder().filter(aliasQuery).boost(0.0f));

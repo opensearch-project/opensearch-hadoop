@@ -18,24 +18,9 @@
  */
 package org.elasticsearch.hadoop.serialization.bulk;
 
-import org.apache.hadoop.io.BooleanWritable;
-import org.apache.hadoop.io.ByteWritable;
-import org.apache.hadoop.io.BytesWritable;
-import org.apache.hadoop.io.DoubleWritable;
-import org.apache.hadoop.io.FloatWritable;
-import org.apache.hadoop.io.IntWritable;
-import org.apache.hadoop.io.LongWritable;
-import org.apache.hadoop.io.MD5Hash;
-import org.apache.hadoop.io.NullWritable;
-import org.apache.hadoop.io.Text;
-import org.apache.hadoop.io.UTF8;
-import org.apache.hadoop.io.VIntWritable;
-import org.apache.hadoop.io.VLongWritable;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.builder.ValueWriter;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 
 import java.util.List;
@@ -43,7 +28,7 @@ import java.util.List;
 public class DeleteBulkFactory extends AbstractBulkFactory {
 
 
-    public DeleteBulkFactory(Settings settings, MetadataExtractor metaExtractor, EsMajorVersion version) {
+    public DeleteBulkFactory(Settings settings, MetadataExtractor metaExtractor, OpenSearchMajorVersion version) {
         super(settings, metaExtractor, version);
     }
 
@@ -58,4 +43,3 @@ public class DeleteBulkFactory extends AbstractBulkFactory {
         list.add(StringUtils.EMPTY);
     }
 }
-

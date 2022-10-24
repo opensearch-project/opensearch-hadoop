@@ -40,7 +40,7 @@ import org.elasticsearch.hadoop.serialization.field.FieldExtractor;
 import org.elasticsearch.hadoop.util.Assert;
 import org.elasticsearch.hadoop.util.ClusterInfo;
 import org.elasticsearch.hadoop.util.ClusterName;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.SettingsUtils;
 import org.elasticsearch.hadoop.util.StringUtils;
 
@@ -280,10 +280,10 @@ public abstract class InitializationUtils {
     }
 
     public static void validateSettingsForWriting(Settings settings) {
-        EsMajorVersion version = settings.getInternalVersionOrThrow();
+        OpenSearchMajorVersion version = settings.getInternalVersionOrThrow();
 
         // Things that were removed in 6.x and forward
-        if (version.onOrAfter(EsMajorVersion.V_6_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
             // File Scripts
             if (StringUtils.hasText(settings.getUpdateScriptFile())) {
                 throw new EsHadoopIllegalArgumentException("Cannot use file scripts on ES 6.x and above. Please use " +
@@ -334,7 +334,7 @@ public abstract class InitializationUtils {
         } catch (EsHadoopException ex) {
             throw new EsHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
                     + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
-                    + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.ES_NODES_WAN_ONLY), ex);
+                    + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
         } finally {
             bootstrap.close();
         }
@@ -342,7 +342,7 @@ public abstract class InitializationUtils {
         // Check if the info is set in the settings and validate that it is correct
         String clusterName = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_NAME);
         String clusterUUID = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_UUID);
-        String version = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_VERSION);
+        String version = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION);
         if (StringUtils.hasText(clusterName) && StringUtils.hasText(version)) { // UUID is optional for now
             if (mainInfo.getClusterName().getName().equals(clusterName) == false) {
                 log.warn(String.format("Discovered incorrect cluster name in settings. Expected [%s] but received [%s]; replacing...",
@@ -354,7 +354,7 @@ public abstract class InitializationUtils {
                         mainInfo.getClusterName().getUUID(),
                         clusterUUID));
             }
-            EsMajorVersion existingVersion = EsMajorVersion.parse(version);
+            OpenSearchMajorVersion existingVersion = OpenSearchMajorVersion.parse(version);
             if (mainInfo.getMajorVersion().equals(existingVersion) == false) {
                 log.warn(String.format("Discovered incorrect cluster version in settings. Expected [%s] but received [%s]; replacing...",
                         mainInfo.getMajorVersion(),
@@ -373,17 +373,17 @@ public abstract class InitializationUtils {
      */
     public static ClusterInfo discoverClusterInfo(Settings settings, Log log) {
         ClusterName remoteClusterName = null;
-        EsMajorVersion remoteVersion = null;
+        OpenSearchMajorVersion remoteVersion = null;
         String clusterName = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_NAME);
         String clusterUUID = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_UUID);
-        String version = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_VERSION);
+        String version = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION);
         if (StringUtils.hasText(clusterName) && StringUtils.hasText(version)) { // UUID is optional for now
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Elasticsearch cluster [NAME:%s][UUID:%s][VERSION:%s] already present in configuration; skipping discovery",
                         clusterName, clusterUUID, version));
             }
             remoteClusterName = new ClusterName(clusterName, clusterUUID);
-            remoteVersion = EsMajorVersion.parse(version);
+            remoteVersion = OpenSearchMajorVersion.parse(version);
             return new ClusterInfo(remoteClusterName, remoteVersion);
         }
 
@@ -402,7 +402,7 @@ public abstract class InitializationUtils {
         } catch (EsHadoopException ex) {
             throw new EsHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
                     + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
-                    + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.ES_NODES_WAN_ONLY), ex);
+                    + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
         } finally {
             bootstrap.close();
         }
@@ -412,7 +412,7 @@ public abstract class InitializationUtils {
      * @deprecated Use {@link InitializationUtils#discoverClusterInfo(Settings, Log)} instead
      */
     @Deprecated
-    public static EsMajorVersion discoverEsVersion(Settings settings, Log log) {
+    public static OpenSearchMajorVersion discoverEsVersion(Settings settings, Log log) {
         return discoverClusterInfo(settings, log).getMajorVersion();
     }
 

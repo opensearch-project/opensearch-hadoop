@@ -29,17 +29,17 @@ public class ClusterInfo implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final ClusterName clusterName;
-    private final EsMajorVersion majorVersion;
+    private final OpenSearchMajorVersion majorVersion;
 
     public static ClusterInfo unnamedLatest() {
-        return new ClusterInfo(new ClusterName(ClusterName.UNNAMED_CLUSTER_NAME, null), EsMajorVersion.LATEST);
+        return new ClusterInfo(new ClusterName(ClusterName.UNNAMED_CLUSTER_NAME, null), OpenSearchMajorVersion.LATEST);
     }
 
-    public static ClusterInfo unnamedClusterWithVersion(EsMajorVersion version) {
+    public static ClusterInfo unnamedClusterWithVersion(OpenSearchMajorVersion version) {
         return new ClusterInfo(new ClusterName(ClusterName.UNNAMED_CLUSTER_NAME, null), version);
     }
 
-    public ClusterInfo(ClusterName clusterName, EsMajorVersion majorVersion) {
+    public ClusterInfo(ClusterName clusterName, OpenSearchMajorVersion majorVersion) {
         this.clusterName = clusterName;
         this.majorVersion = majorVersion;
     }
@@ -48,7 +48,7 @@ public class ClusterInfo implements Serializable {
         return clusterName;
     }
 
-    public EsMajorVersion getMajorVersion() {
+    public OpenSearchMajorVersion getMajorVersion() {
         return majorVersion;
     }
 

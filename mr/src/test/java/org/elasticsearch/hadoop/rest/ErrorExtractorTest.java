@@ -26,7 +26,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.Map;
 
 import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
@@ -44,7 +44,7 @@ public class ErrorExtractorTest {
 				.put("caused_by", nestedCause)
 				.build();
 		
-		final ErrorExtractor extractor = new ErrorExtractor(EsMajorVersion.V_5_X);
+		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_5_X);
 		
 		final EsHadoopException ex = extractor.extractErrorWithCause(cause);
 		checkException(ex, cause);
@@ -66,7 +66,7 @@ public class ErrorExtractorTest {
 				.put("error", cause)
 				.build();
 		
-		final ErrorExtractor extractor = new ErrorExtractor(EsMajorVersion.V_5_X);
+		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_5_X);
 		
 		final EsHadoopException ex = extractor.extractError(error);
 		checkException(ex, cause);
@@ -83,7 +83,7 @@ public class ErrorExtractorTest {
 				.put("error", cause)
 				.build();
 		
-		final ErrorExtractor extractor = new ErrorExtractor(EsMajorVersion.V_2_X);
+		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_2_X);
 		
 		final EsHadoopException ex = extractor.extractError(error);
 		checkException(ex, cause);
@@ -95,7 +95,7 @@ public class ErrorExtractorTest {
 				.put("error", "UnKnown Issue")
 				.build();
 		
-		final ErrorExtractor extractor = new ErrorExtractor(EsMajorVersion.V_1_X);
+		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_1_X);
 		
 		final EsHadoopException ex = extractor.extractError(error);
 		

@@ -36,7 +36,7 @@ import org.elasticsearch.hadoop.serialization.field.JsonFieldExtractors;
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.BytesArrayPool;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
 import org.elasticsearch.hadoop.util.ObjectUtils;
 import org.elasticsearch.hadoop.util.StringUtils;
@@ -50,7 +50,7 @@ public abstract class AbstractBulkFactory implements BulkFactory {
     private static Log log = LogFactory.getLog(AbstractBulkFactory.class);
 
     protected Settings settings;
-    protected EsMajorVersion esMajorVersion;
+    protected OpenSearchMajorVersion opensearchMajorVersion;
 
     protected RequestParameterNames requestParameterNames;
 
@@ -199,8 +199,8 @@ public abstract class AbstractBulkFactory implements BulkFactory {
         final String version;
         final String versionType;
 
-        public RequestParameterNames(EsMajorVersion majorVersion) {
-            if (majorVersion.onOrAfter(EsMajorVersion.V_7_X)) {
+        public RequestParameterNames(OpenSearchMajorVersion majorVersion) {
+            if (majorVersion.onOrAfter(OpenSearchMajorVersion.V_7_X)) {
                 this.parent = "\"parent\":";
                 this.retryOnConflict = "\"retry_on_conflict\":";
                 this.routing = "\"routing\":";
@@ -217,10 +217,10 @@ public abstract class AbstractBulkFactory implements BulkFactory {
     }
 
 
-    AbstractBulkFactory(Settings settings, MetadataExtractor metaExtractor, EsMajorVersion esMajorVersion) {
+    AbstractBulkFactory(Settings settings, MetadataExtractor metaExtractor, OpenSearchMajorVersion opensearchMajorVersion) {
         this.settings = settings;
-        this.esMajorVersion = esMajorVersion;
-        this.requestParameterNames = new RequestParameterNames(esMajorVersion);
+        this.opensearchMajorVersion = opensearchMajorVersion;
+        this.requestParameterNames = new RequestParameterNames(opensearchMajorVersion);
         this.valueWriter = ObjectUtils.instantiate(settings.getSerializerValueWriterClassName(), settings);
         this.metaExtractor = metaExtractor;
 
@@ -544,4 +544,3 @@ public abstract class AbstractBulkFactory implements BulkFactory {
         return paramsExtractor;
     }
 }
-

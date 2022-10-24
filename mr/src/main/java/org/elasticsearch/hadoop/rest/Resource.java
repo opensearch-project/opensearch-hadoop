@@ -24,7 +24,7 @@ import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 
 import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_OPERATION_UPDATE;
@@ -81,8 +81,8 @@ public class Resource {
         int slash = res.indexOf("/");
         boolean typeExists = slash >= 0;
 
-        EsMajorVersion esMajorVersion = settings.getInternalVersionOrThrow();
-        if (esMajorVersion.after(EsMajorVersion.V_7_X)) {
+        OpenSearchMajorVersion opensearchMajorVersion = settings.getInternalVersionOrThrow();
+        if (opensearchMajorVersion.after(OpenSearchMajorVersion.V_7_X)) {
             // Types can no longer the specified at all! Index names only!
             if (typeExists) {
                 throw new EsHadoopIllegalArgumentException(String.format(
@@ -91,7 +91,7 @@ public class Resource {
                 ));
             }
         }
-        if (esMajorVersion.onOrBefore(EsMajorVersion.V_7_X)) {
+        if (opensearchMajorVersion.onOrBefore(OpenSearchMajorVersion.V_7_X)) {
             // Type can be specified, but a warning will be returned. An ES 7.X cluster will accept types if include_type_name is true,
             // which we will set in the case of a type existing.
             // This is onOrBefore because we want to print the deprecation log no matter what version of ES they're running on.
@@ -102,7 +102,7 @@ public class Resource {
                 ));
             }
         }
-        if (esMajorVersion.onOrBefore(EsMajorVersion.V_6_X)) {
+        if (opensearchMajorVersion.onOrBefore(OpenSearchMajorVersion.V_6_X)) {
             // Type is required for writing via the bulk API, but not for reading. No type on a read resource means to read all types.
             // This is important even if we're on a 6.x cluster that enforces a single type per index. 6.x STILL supports opening old 5.x
             // indices in order to ease the upgrade process!!!!

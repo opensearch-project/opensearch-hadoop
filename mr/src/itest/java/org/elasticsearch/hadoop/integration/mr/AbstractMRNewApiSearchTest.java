@@ -29,14 +29,14 @@ import org.apache.hadoop.mapreduce.Job;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.QueryTestParams;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.mr.EsInputFormat;
 import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.mr.LinkedMapWritable;
 import org.elasticsearch.hadoop.mr.PrintStreamOutputFormat;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.Assert;
@@ -73,7 +73,7 @@ public class AbstractMRNewApiSearchTest {
         this.query = query;
         this.readMetadata = readMetadata;
         this.readAsJson = readAsJson;
-        this.clusterInfo = TestUtils.getEsClusterInfo();
+        this.clusterInfo = TestUtils.getOpenSearchClusterInfo();
     }
 
     @Before
@@ -132,7 +132,7 @@ public class AbstractMRNewApiSearchTest {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
 
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.ES_RESOURCE, indexPrefix + "mrnewapi-pc/child");

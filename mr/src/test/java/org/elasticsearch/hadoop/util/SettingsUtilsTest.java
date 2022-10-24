@@ -25,16 +25,19 @@ import org.elasticsearch.hadoop.cfg.PropertiesSettings;
 import org.elasticsearch.hadoop.serialization.field.FieldFilter;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertThat;
 
-import static org.hamcrest.core.IsEqual.*;
+import static org.hamcrest.core.IsEqual.equalTo;
+
+import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES;
+import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES_DISCOVERY;
 
 public class SettingsUtilsTest {
 
     @Test
     public void testHostWithoutAPortFallingBackToDefault() throws Exception {
         Properties props = new Properties();
-        props.setProperty("es.nodes", "localhost");
+        props.setProperty(OPENSEARCH_NODES, "localhost");
         props.setProperty("es.port", "9800");
 
         PropertiesSettings settings = new PropertiesSettings(props);
@@ -46,9 +49,9 @@ public class SettingsUtilsTest {
     @Test
     public void testHostWithoutAPortFallingBackToDefaultAndNoDiscovery() throws Exception {
         Properties props = new Properties();
-        props.setProperty("es.nodes", "localhost");
+        props.setProperty(OPENSEARCH_NODES, "localhost");
         props.setProperty("es.port", "9800");
-        props.setProperty("es.nodes.discovery", "false");
+        props.setProperty(OPENSEARCH_NODES_DISCOVERY, "false");
 
         PropertiesSettings settings = new PropertiesSettings(props);
         List<String> nodes = SettingsUtils.discoveredOrDeclaredNodes(settings);
@@ -59,9 +62,9 @@ public class SettingsUtilsTest {
     @Test
     public void testHostWithAPortAndFallBack() throws Exception {
         Properties props = new Properties();
-        props.setProperty("es.nodes", "localhost:9800");
+        props.setProperty(OPENSEARCH_NODES, "localhost:9800");
         props.setProperty("es.port", "9300");
-        props.setProperty("es.nodes.discovery", "false");
+        props.setProperty(OPENSEARCH_NODES_DISCOVERY, "false");
 
         PropertiesSettings settings = new PropertiesSettings(props);
         List<String> nodes = SettingsUtils.discoveredOrDeclaredNodes(settings);
@@ -72,9 +75,9 @@ public class SettingsUtilsTest {
     @Test
     public void testHostWithoutAPortFallingBackToDefaultAndNoDiscoveryWithSchema() throws Exception {
         Properties props = new Properties();
-        props.setProperty("es.nodes", "http://localhost");
+        props.setProperty(OPENSEARCH_NODES, "http://localhost");
         props.setProperty("es.port", "9800");
-        props.setProperty("es.nodes.discovery", "false");
+        props.setProperty(OPENSEARCH_NODES_DISCOVERY, "false");
 
         PropertiesSettings settings = new PropertiesSettings(props);
         List<String> nodes = SettingsUtils.discoveredOrDeclaredNodes(settings);
@@ -85,9 +88,9 @@ public class SettingsUtilsTest {
     @Test
     public void testHostWithAPortAndFallBackWithSchema() throws Exception {
         Properties props = new Properties();
-        props.setProperty("es.nodes", "http://localhost:9800");
+        props.setProperty(OPENSEARCH_NODES, "http://localhost:9800");
         props.setProperty("es.port", "9300");
-        props.setProperty("es.nodes.discovery", "false");
+        props.setProperty(OPENSEARCH_NODES_DISCOVERY, "false");
 
         PropertiesSettings settings = new PropertiesSettings(props);
         List<String> nodes = SettingsUtils.discoveredOrDeclaredNodes(settings);

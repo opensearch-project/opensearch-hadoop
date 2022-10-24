@@ -45,7 +45,7 @@ import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.Stream;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.mr.EsOutputFormat;
 import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.mr.LinkedMapWritable;
@@ -53,7 +53,7 @@ import org.elasticsearch.hadoop.mr.MultiOutputFormat;
 import org.elasticsearch.hadoop.mr.PrintStreamOutputFormat;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
@@ -73,7 +73,7 @@ import static org.junit.Assume.assumeFalse;
 @RunWith(Parameterized.class)
 public class AbstractMROldApiSaveTest {
 
-    private ClusterInfo clusterInfo = TestUtils.getEsClusterInfo();
+    private ClusterInfo clusterInfo = TestUtils.getOpenSearchClusterInfo();
 
     public static class TabMapper extends MapReduceBase implements Mapper {
 
@@ -219,7 +219,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ROUTING, "number");
 
         RestUtils.touch(index);
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_7_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X)) {
             conf.set(ConfigurationOptions.ES_RESOURCE, index);
             RestUtils.putMapping(index, type, StringUtils.toUTF("{\"_routing\": {\"required\":true}}"));
         } else {
@@ -241,7 +241,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ROUTING, "<foobar/>");
 
         RestUtils.touch(index);
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_7_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X)) {
             conf.set(ConfigurationOptions.ES_RESOURCE, index);
             RestUtils.putMapping(index, type, StringUtils.toUTF("{\"_routing\": {\"required\":true}}"));
         } else {
@@ -269,7 +269,7 @@ public class AbstractMROldApiSaveTest {
 
     @Test
     public void testSaveWithIngest() throws Exception {
-        EsAssume.versionOnOrAfter(EsMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
+        OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
 
         JobConf conf = createJobConf();
 
@@ -281,7 +281,7 @@ public class AbstractMROldApiSaveTest {
 
         conf.set(ConfigurationOptions.ES_RESOURCE, resource("mroldapi-ingested", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INGEST_PIPELINE, "mroldapi-pipeline");
-        conf.set(ConfigurationOptions.ES_NODES_INGEST_ONLY, "true");
+        conf.set(ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY, "true");
 
         runJob(conf);
     }
@@ -327,7 +327,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
         conf.set(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = 3");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -348,7 +348,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; String anothercounter = params.param2");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -369,7 +369,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -390,7 +390,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"some_list\": [\"one\", \"two\"]}");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "HashSet list = new HashSet(); list.add(ctx._source.list); list.add(params.some_list); ctx._source.list = list.toArray()");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -429,7 +429,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "<1>");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"new_date\": [\"add me\", \"and me\"]}");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "HashSet tmp = new HashSet(); tmp.addAll(ctx._source.tags); tmp.addAll(params.new_date); ctx._source.tags = tmp.toArray()");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -497,7 +497,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "<1>");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, (conf.get(ConfigurationOptions.ES_INPUT_JSON).equals("true") ? "update_tags:name" :"update_tags:list"));
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "ctx._source.tags = params.update_tags");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -531,7 +531,7 @@ public class AbstractMROldApiSaveTest {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         // in ES 2.x, the parent/child relationship needs to be created fresh
         // hence why we reindex everything again
 

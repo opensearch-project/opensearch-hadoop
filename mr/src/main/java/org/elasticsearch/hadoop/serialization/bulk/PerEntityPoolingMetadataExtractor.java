@@ -24,12 +24,12 @@ import org.elasticsearch.hadoop.EsHadoopUnsupportedOperationException;
 import org.elasticsearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.SettingsAware;
 import org.elasticsearch.hadoop.serialization.field.FieldExtractor;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 
 // specific implementation that relies on basic field extractors that are computed
 // lazy per entity. Both the pool and extractors are meant to be reused.
 public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtractor, SettingsAware {
-    protected EsMajorVersion version;
+    protected OpenSearchMajorVersion version;
     protected Object entity;
     protected Settings settings;
 
@@ -69,9 +69,9 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
      */
     private static class UnsupportedMetadataFieldExtractor extends StaticFieldExtractor {
         private Metadata unsupportedMetadata;
-        private EsMajorVersion version;
+        private OpenSearchMajorVersion version;
 
-        public UnsupportedMetadataFieldExtractor(Metadata unsupportedMetadata, EsMajorVersion version) {
+        public UnsupportedMetadataFieldExtractor(Metadata unsupportedMetadata, OpenSearchMajorVersion version) {
             this.unsupportedMetadata = unsupportedMetadata;
             this.version = version;
         }
@@ -116,7 +116,7 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
      */
     private FieldExtractor _createExtractorFor(Metadata metadata) {
         // Boot metadata tags that are not supported in this version of Elasticsearch
-        if (version.onOrAfter(EsMajorVersion.V_6_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
             // 6.0 Removed support for TTL and Timestamp metadata on index and update requests.
             switch (metadata) {
                 case TTL: // Fall through

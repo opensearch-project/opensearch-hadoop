@@ -25,7 +25,7 @@ boolean localRepo = project.getProperties().containsKey("localRepo")
 Properties props = new Properties()
 props.load(project.file('opensearch-hadoop-version.properties').newDataInputStream())
 String opensearchHadoopVersion = props.getProperty('opensearch_hadoop')
-String esVersion = props.getProperty('elasticsearch')
+String opensearchVersion = props.getProperty('opensearch')
 String buildToolsVersion = props.getProperty('build-tools')
 
 // determine if we're building a prerelease or candidate (alphaX/betaX/rcX)
@@ -35,7 +35,7 @@ if (qualifier.isEmpty() == false) {
         throw new IllegalStateException("Invalid qualifier: " + qualifier)
     }
     opensearchHadoopVersion += "-" + qualifier
-    esVersion += "-" + qualifier
+    opensearchVersion += "-" + qualifier
     buildToolsVersion += "-" + qualifier
 }
 
@@ -44,18 +44,18 @@ boolean snapshot = "true".equals(System.getProperty("build.snapshot", "true"))
 if (snapshot) {
     // we update the version property to reflect if we are building a snapshot or a release build
     opensearchHadoopVersion += "-SNAPSHOT"
-    esVersion += "-SNAPSHOT"
+    opensearchVersion += "-SNAPSHOT"
     buildToolsVersion += "-SNAPSHOT"
 }
 
 props.put("opensearch_hadoop", opensearchHadoopVersion)
-props.put("elasticsearch", esVersion)
+props.put("opensearch", opensearchVersion)
 props.put("build-tools", buildToolsVersion)
 
 repositories {
     gradlePluginPortal()
     mavenCentral()
-    // For Elasticsearch snapshots.
+    // For OpenSearch snapshots.
     if (localRepo) {
         // For some reason the root dirs all point to the buildSrc folder. The local Repo will be one above that.
         flatDir { dirs new File(project.rootDir, "../localRepo") }

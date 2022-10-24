@@ -323,7 +323,8 @@ public class ScrollReaderTest {
     }
 
     /**
-     * Loads and parses the mapping response content with include_type_name set to true to simulate older ES cluster response formats.
+     * Loads and parses the mapping response content with include_type_name set to true to simulate older opensearch cluster
+     * response formats.
      * @param s mapping file name
      * @return MappingSet with type names loaded
      */

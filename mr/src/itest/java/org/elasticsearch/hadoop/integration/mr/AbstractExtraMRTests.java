@@ -47,7 +47,7 @@ import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.mr.LinkedMapWritable;
 import org.elasticsearch.hadoop.mr.PrintStreamOutputFormat;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.elasticsearch.hadoop.util.WritableUtils;
@@ -114,7 +114,7 @@ public class AbstractExtraMRTests {
 
     private String indexPrefix = "";
     private final JobConf config;
-    private EsMajorVersion targetVersion;
+    private OpenSearchMajorVersion targetVersion;
 
     public AbstractExtraMRTests(JobConf config, String indexPrefix) {
         this.indexPrefix = indexPrefix;
@@ -125,7 +125,7 @@ public class AbstractExtraMRTests {
 
     @Before
     public void before() {
-        targetVersion = TestUtils.getEsClusterInfo().getMajorVersion();
+        targetVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
     }
 
     @Test

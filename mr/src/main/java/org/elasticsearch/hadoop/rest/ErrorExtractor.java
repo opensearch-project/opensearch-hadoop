@@ -24,16 +24,16 @@ import java.util.Map;
 
 import org.elasticsearch.hadoop.EsHadoopException;
 import org.elasticsearch.hadoop.util.ByteSequence;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 
 /**
  * Encapsulates logic for parsing and understanding error messages from Elasticsearch.
  */
 public class ErrorExtractor {
 
-    private final EsMajorVersion internalVersion;
+    private final OpenSearchMajorVersion internalVersion;
 
-    public ErrorExtractor(EsMajorVersion internalVersion) {
+    public ErrorExtractor(OpenSearchMajorVersion internalVersion) {
         this.internalVersion = internalVersion;
     }
     
@@ -107,7 +107,7 @@ public class ErrorExtractor {
     }
 
     public String prettify(String error) {
-        if (internalVersion.onOrAfter(EsMajorVersion.V_2_X)) {
+        if (internalVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
             return error;
         }
 
@@ -117,7 +117,7 @@ public class ErrorExtractor {
     }
 
     public String prettify(String error, ByteSequence body) {
-        if (internalVersion.onOrAfter(EsMajorVersion.V_2_X)) {
+        if (internalVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
             return error;
         }
         String message = ErrorUtils.extractJsonParse(error, body);

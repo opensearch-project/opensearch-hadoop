@@ -26,7 +26,7 @@ import org.elasticsearch.hadoop.EsHadoopException;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.StringUtils.IpAndPort;
 
-public class EsEmbeddedCluster {
+public class OpenSearchEmbeddedCluster {
 
     /**
      * Comma separated list of http addresses provided by the test fixture in the build system.
@@ -34,20 +34,20 @@ public class EsEmbeddedCluster {
     private static final String TESTS_REST_CLUSTER = "tests.rest.cluster";
 
     /**
-     * Set system property to true if you are testing against your own ES cluster.
+     * Set system property to true if you are testing against your own opensearch cluster.
      */
-    public static final String DISABLE_LOCAL_ES = "test.disable.local.es";
+    public static final String DISABLE_LOCAL_OPENSEARCH = "test.disable.local.opensearch";
 
     private List<IpAndPort> ipAndPorts;
 
-    public EsEmbeddedCluster() {
+    public OpenSearchEmbeddedCluster() {
         try {
             String nodeAddresses = System.getProperty(TESTS_REST_CLUSTER);
             if (!StringUtils.hasText(nodeAddresses)) {
                 // No local ES stood up. Better throw...
-                throw new IllegalStateException("Could not find list of Elasticsearch nodes to execute integration " +
+                throw new IllegalStateException("Could not find list of OpenSearch nodes to execute integration " +
                         "tests against. Should you be running tests with an external cluster? Try setting [" +
-                        DISABLE_LOCAL_ES + "].");
+                        DISABLE_LOCAL_OPENSEARCH + "].");
             }
 
             List<String> addresses = StringUtils.tokenize(nodeAddresses);

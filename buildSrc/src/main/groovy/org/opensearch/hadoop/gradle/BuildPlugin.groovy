@@ -784,7 +784,7 @@ class BuildPlugin implements Plugin<Project>  {
             }
 
             // Only add cluster settings if it's not the root project
-            project.logger.info "Configuring ${project.name} integrationTest task to use ES Fixture"
+            project.logger.info "Configuring ${project.name} integrationTest task to use OpenSearch Fixture"
             // Create the cluster fixture around the integration test.
             // There's probably a more elegant way to do this in Gradle
             project.plugins.apply("opensearch.hadoop.cluster")

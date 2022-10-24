@@ -21,7 +21,7 @@ package org.elasticsearch.hadoop.rest;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
@@ -46,7 +46,7 @@ public class InitializationUtilsTest {
     @Test
     public void testValidateWANOnly() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_NODES_WAN_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_WAN_ONLY, "true");
         validateSettings(set);
 
         assertTrue(set.getNodesWANOnly());
@@ -58,38 +58,38 @@ public class InitializationUtilsTest {
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void testValidateWANOnlyWithDiscovery() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_NODES_WAN_ONLY, "true");
-        set.setProperty(ES_NODES_DISCOVERY, "true");
+        set.setProperty(OPENSEARCH_NODES_WAN_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_DISCOVERY, "true");
         validateSettings(set);
     }
 
     @Test
     public void testValidateClientOnlyNodesWithDefaultData() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_NODES_CLIENT_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_CLIENT_ONLY, "true");
         validateSettings(set);
     }
 
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void testValidateDefaultDataVsClientOnlyNodes() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_NODES_CLIENT_ONLY, "true");
-        set.setProperty(ES_NODES_DATA_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_CLIENT_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_DATA_ONLY, "true");
         validateSettings(set);
     }
 
     @Test
     public void testValidateIngestOnlyNodesWithDefaults() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_NODES_INGEST_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_INGEST_ONLY, "true");
         validateSettings(set);
     }
 
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void testValidateIngestOnlyVsDataOnly() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_NODES_INGEST_ONLY, "true");
-        set.setProperty(ES_NODES_DATA_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_INGEST_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_DATA_ONLY, "true");
         validateSettings(set);
     }
 
@@ -97,8 +97,8 @@ public class InitializationUtilsTest {
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void testValidateIngestOnlyVsClientOnly() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_NODES_INGEST_ONLY, "true");
-        set.setProperty(ES_NODES_CLIENT_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_INGEST_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_CLIENT_ONLY, "true");
         validateSettings(set);
     }
 
@@ -106,9 +106,9 @@ public class InitializationUtilsTest {
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void testValidateAllRestrictionsBreak() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_NODES_CLIENT_ONLY, "true");
-        set.setProperty(ES_NODES_DATA_ONLY, "true");
-        set.setProperty(ES_NODES_INGEST_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_CLIENT_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_DATA_ONLY, "true");
+        set.setProperty(OPENSEARCH_NODES_INGEST_ONLY, "true");
         validateSettings(set);
     }
 
@@ -124,7 +124,7 @@ public class InitializationUtilsTest {
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void testValidateWriteV6PlusTTLRemoved() throws Exception {
         Settings set = new TestSettings();
-        set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(EsMajorVersion.V_6_X));
+        set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_6_X));
         set.setProperty(ES_MAPPING_TTL, "1000");
         validateSettingsForWriting(set);
     }
@@ -132,7 +132,7 @@ public class InitializationUtilsTest {
     @Test(expected = EsHadoopIllegalArgumentException.class)
     public void testValidateWriteV6PlusTimestampRemoved() throws Exception {
         Settings set = new TestSettings();
-        set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(EsMajorVersion.V_6_X));
+        set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_6_X));
         set.setProperty(ES_MAPPING_TIMESTAMP, "1000");
         validateSettingsForWriting(set);
     }

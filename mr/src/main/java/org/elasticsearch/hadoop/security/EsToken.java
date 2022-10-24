@@ -23,7 +23,7 @@ import java.io.DataInput;
 import java.io.DataOutput;
 import java.io.IOException;
 
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 
 /**
  * Stores token authentication information for an Elasticsearch user.
@@ -35,9 +35,9 @@ public class EsToken {
     private final String apiKey;
     private final long expirationTime;
     private final String clusterName;
-    private final EsMajorVersion majorVersion;
+    private final OpenSearchMajorVersion majorVersion;
 
-    public EsToken(String name, String id, String apiKey, long expirationTime, String clusterName, EsMajorVersion majorVersion) {
+    public EsToken(String name, String id, String apiKey, long expirationTime, String clusterName, OpenSearchMajorVersion majorVersion) {
         this.name = name;
         this.id = id;
         this.apiKey = apiKey;
@@ -52,7 +52,7 @@ public class EsToken {
         this.apiKey = inputStream.readUTF();
         this.expirationTime = inputStream.readLong();
         this.clusterName = inputStream.readUTF();
-        this.majorVersion = EsMajorVersion.parse(inputStream.readUTF());
+        this.majorVersion = OpenSearchMajorVersion.parse(inputStream.readUTF());
     }
 
     public String getName() {
@@ -75,7 +75,7 @@ public class EsToken {
         return clusterName;
     }
 
-    public EsMajorVersion getMajorVersion() {
+    public OpenSearchMajorVersion getMajorVersion() {
         return majorVersion;
     }
 

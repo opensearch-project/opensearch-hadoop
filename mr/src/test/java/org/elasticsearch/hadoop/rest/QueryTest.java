@@ -19,7 +19,7 @@
 package org.elasticsearch.hadoop.rest;
 
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,13 +34,13 @@ public class QueryTest {
     @Before
     public void setup() {
         cfg = new TestSettings();
-        builder = new SearchRequestBuilder(EsMajorVersion.V_5_X, true);
+        builder = new SearchRequestBuilder(OpenSearchMajorVersion.V_5_X, true);
     }
 
     @Test
     public void testSimpleQuery() {
         // Types will not be supported in 8.x
-        cfg.setInternalVersion(EsMajorVersion.V_7_X);
+        cfg.setInternalVersion(OpenSearchMajorVersion.V_7_X);
         cfg.setResourceRead("foo/bar");
         Resource typed = new Resource(cfg, true);
         assertTrue(builder.resource(typed).toString().contains("foo/bar"));
@@ -48,7 +48,7 @@ public class QueryTest {
 
     @Test
     public void testSimpleQueryTypeless() {
-        cfg.setInternalVersion(EsMajorVersion.LATEST);
+        cfg.setInternalVersion(OpenSearchMajorVersion.LATEST);
         cfg.setResourceRead("foo");
         Resource typeless = new Resource(cfg, true);
         assertTrue(builder.resource(typeless).toString().contains("foo"));

@@ -23,9 +23,9 @@ import org.apache.commons.logging.impl.NoOpLog;
 import org.elasticsearch.hadoop.cfg.PropertiesSettings;
 import org.elasticsearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.dto.NodeInfo;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -71,7 +71,7 @@ public class FindPartitionsTest {
     public void testEmpty() {
         Settings settings = new PropertiesSettings();
         settings.setMaxDocsPerPartition(10000);
-        settings.setInternalVersion(EsMajorVersion.LATEST);
+        settings.setInternalVersion(OpenSearchMajorVersion.LATEST);
         settings.setProperty(ES_RESOURCE_READ, "_all");
         assertEquals(RestService.findShardPartitions(settings, null,
                 Collections.<String, NodeInfo>emptyMap(), Collections.<List<Map<String,Object>>>emptyList(), LOGGER).size(), 0);
@@ -97,7 +97,7 @@ public class FindPartitionsTest {
                 MAPPER.readValue(getClass().getResourceAsStream("search-shards-response.json"), ArrayList.class);
         RestClient client = Mockito.mock(RestClient.class);
         Settings settings = new PropertiesSettings();
-        settings.setInternalVersion(EsMajorVersion.LATEST);
+        settings.setInternalVersion(OpenSearchMajorVersion.LATEST);
         settings.setProperty(ES_RESOURCE_READ, "index1,index2,index3");
         for (int i = 0; i < 15; i++) {
             Mockito.when(client.count("index1", "type1", Integer.toString(i), MATCH_ALL)).thenReturn(1000L);

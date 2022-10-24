@@ -42,7 +42,7 @@ import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
 import org.elasticsearch.hadoop.TestData;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.elasticsearch.spark.sql.api.java.JavaEsSparkSQL;
@@ -74,7 +74,7 @@ public class AbstractJavaEsSparkSQLTest implements Serializable {
 	
 	private static transient JavaSparkContext sc = null;
 	private static transient SQLContext sqc = null;
-	private transient EsMajorVersion version = TestUtils.getEsClusterInfo().getMajorVersion();
+	private transient OpenSearchMajorVersion version = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
 
 	@ClassRule
 	public static TestData testData = new TestData();

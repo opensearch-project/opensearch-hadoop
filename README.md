@@ -84,7 +84,7 @@ es.resource=<ES resource location, relative to the host/port specified above>
 ### Essential
 ```
 es.query=<uri or query dsl query>              # defaults to {"query":{"match_all":{}}}
-es.nodes=<ES host address>                     # defaults to localhost
+opensearch.nodes=<OpenSearch host address>     # defaults to localhost
 es.port=<ES REST port>                         # defaults to 9200
 ```
 

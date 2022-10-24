@@ -26,7 +26,7 @@ import org.elasticsearch.hadoop.serialization.ScrollReader;
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator;
 import org.elasticsearch.hadoop.util.Assert;
 import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.encoding.HttpEncodingTools;
@@ -54,7 +54,7 @@ public class SearchRequestBuilder {
         }
     }
 
-    private final EsMajorVersion version;
+    private final OpenSearchMajorVersion version;
     private final boolean includeVersion;
     private TimeValue scroll = TimeValue.timeValueMinutes(10);
     private long size = 50;
@@ -72,7 +72,7 @@ public class SearchRequestBuilder {
     private boolean excludeSource = false;
     private boolean readMetadata = false;
 
-    public SearchRequestBuilder(EsMajorVersion version, boolean includeVersion) {
+    public SearchRequestBuilder(OpenSearchMajorVersion version, boolean includeVersion) {
         this.version = version;
         this.includeVersion = includeVersion;
     }
@@ -200,7 +200,7 @@ public class SearchRequestBuilder {
         sb.append("/_search?");
 
         // override infrastructure params
-        if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             // scan type was removed
             // default to sorting by indexing/doc order
             uriParams.put("sort", "_doc");
@@ -222,7 +222,7 @@ public class SearchRequestBuilder {
         }
         if (local || StringUtils.hasText(preference)) {
             if (pref.length() > 0) {
-                if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+                if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
                     pref.append("|");
                 } else {
                     pref.append(";");
@@ -246,7 +246,7 @@ public class SearchRequestBuilder {
 
         // Always track total hits on versions that support it. 7.0+ will return lower bounded
         // hit counts if this is not set, and we want them to be accurate for scroll bookkeeping.
-        if (version.onOrAfter(EsMajorVersion.V_6_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
             uriParams.put("track_total_hits", "true");
         }
 
@@ -276,7 +276,7 @@ public class SearchRequestBuilder {
             root = MatchAllQueryBuilder.MATCH_ALL;
         }
         if (filters.isEmpty() == false) {
-            if (version.onOrAfter(EsMajorVersion.V_2_X)) {
+            if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
                 root = new BoolQueryBuilder().must(root).filters(filters);
             } else {
                 root = new FilteredQueryBuilder().query(root).filters(filters);

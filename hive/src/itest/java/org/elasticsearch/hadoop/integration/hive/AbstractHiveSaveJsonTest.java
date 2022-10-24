@@ -23,11 +23,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.apache.hive.service.cli.HiveSQLException;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.After;
@@ -43,12 +42,12 @@ import static org.elasticsearch.hadoop.util.TestUtils.resource;
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AbstractHiveSaveJsonTest {
 
-    private EsMajorVersion targetVersion;
+    private OpenSearchMajorVersion targetVersion;
 
     @Before
     public void before() throws Exception {
         HiveSuite.before();
-        targetVersion = TestUtils.getEsClusterInfo().getMajorVersion();
+        targetVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
     }
 
     @After
@@ -262,7 +261,7 @@ public class AbstractHiveSaveJsonTest {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         RestUtils.createMultiTypeIndex("json-hive-pc");
         RestUtils.putMapping("json-hive-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
 

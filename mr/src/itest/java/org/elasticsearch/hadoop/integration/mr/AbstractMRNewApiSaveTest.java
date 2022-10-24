@@ -37,7 +37,7 @@ import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.Stream;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.mr.EsOutputFormat;
 import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.mr.LinkedMapWritable;
@@ -45,7 +45,7 @@ import org.elasticsearch.hadoop.mr.MultiOutputFormat;
 import org.elasticsearch.hadoop.mr.PrintStreamOutputFormat;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
@@ -64,7 +64,7 @@ import static org.junit.Assert.assertFalse;
 @RunWith(Parameterized.class)
 public class AbstractMRNewApiSaveTest {
 
-    private ClusterInfo clusterInfo = TestUtils.getEsClusterInfo();
+    private ClusterInfo clusterInfo = TestUtils.getOpenSearchClusterInfo();
 
     public static class TabMapper extends Mapper {
 
@@ -193,7 +193,7 @@ public class AbstractMRNewApiSaveTest {
 
     @Test
     public void testSaveWithIngest() throws Exception {
-        EsAssume.versionOnOrAfter(EsMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
+        OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
 
         Configuration conf = createConf();
 
@@ -205,7 +205,7 @@ public class AbstractMRNewApiSaveTest {
 
         conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-ingested", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INGEST_PIPELINE, "mrnewapi-pipeline");
-        conf.set(ConfigurationOptions.ES_NODES_INGEST_ONLY, "true");
+        conf.set(ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY, "true");
 
         runJob(conf);
     }
@@ -250,7 +250,7 @@ public class AbstractMRNewApiSaveTest {
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
         conf.set(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = 3");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -271,7 +271,7 @@ public class AbstractMRNewApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; String anothercounter = params.param2");
         } else {
@@ -292,7 +292,7 @@ public class AbstractMRNewApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -324,7 +324,7 @@ public class AbstractMRNewApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = Integer.parseInt(params.param2)");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -344,7 +344,7 @@ public class AbstractMRNewApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
             conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
         } else {
@@ -366,7 +366,7 @@ public class AbstractMRNewApiSaveTest {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
 
         // in ES 2.x, the parent/child relationship needs to be created fresh
         // hence why we reindex everything again

@@ -25,7 +25,7 @@ import org.elasticsearch.hadoop.rest.query.MatchAllQueryBuilder;
 import org.elasticsearch.hadoop.rest.stats.Stats;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
@@ -49,7 +49,7 @@ public class RestClientTest {
     public void testPostDocumentSuccess() throws Exception {
         String index = "index/type";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(EsMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -85,7 +85,7 @@ public class RestClientTest {
     public void testPostTypelessDocumentSuccess() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(EsMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -121,7 +121,7 @@ public class RestClientTest {
     public void testPostDocumentFailure() throws Exception {
         String index = "index/type";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(EsMajorVersion.V_6_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_6_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -160,7 +160,7 @@ public class RestClientTest {
     public void testPostTypelessDocumentFailure() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(EsMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -199,7 +199,7 @@ public class RestClientTest {
     public void testPostDocumentWeirdness() throws Exception {
         String index = "index/type";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(EsMajorVersion.V_6_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_6_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -235,7 +235,7 @@ public class RestClientTest {
     public void testPostTypelessDocumentWeirdness() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(EsMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -297,7 +297,7 @@ public class RestClientTest {
                 .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(EsMajorVersion.V_5_X));
+        testSettings.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_5_X));
         RestClient client = new RestClient(testSettings, mock);
 
         long count = client.count(index, type, MatchAllQueryBuilder.MATCH_ALL);
@@ -335,7 +335,7 @@ public class RestClientTest {
                 .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(EsMajorVersion.V_6_X));
+        testSettings.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_6_X));
         RestClient client = new RestClient(testSettings, mock);
 
         long count = client.count(index, type, MatchAllQueryBuilder.MATCH_ALL);
@@ -378,7 +378,7 @@ public class RestClientTest {
                 .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setInternalVersion(EsMajorVersion.V_7_X);
+        testSettings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
         RestClient client = new RestClient(testSettings, mock);
 
         // Make sure that it works

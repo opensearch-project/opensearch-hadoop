@@ -36,7 +36,6 @@ import org.elasticsearch.hadoop.serialization.bulk.BulkEntryWriter;
 import org.elasticsearch.hadoop.serialization.bulk.MetadataExtractor;
 import org.elasticsearch.hadoop.serialization.dto.NodeInfo;
 import org.elasticsearch.hadoop.serialization.dto.ShardInfo;
-import org.elasticsearch.hadoop.serialization.dto.mapping.FieldParser;
 import org.elasticsearch.hadoop.serialization.dto.mapping.GeoField;
 import org.elasticsearch.hadoop.serialization.dto.mapping.GeoField.GeoType;
 import org.elasticsearch.hadoop.serialization.dto.mapping.Mapping;
@@ -46,7 +45,7 @@ import org.elasticsearch.hadoop.serialization.handler.read.impl.AbortOnlyHandler
 import org.elasticsearch.hadoop.util.Assert;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.BytesRef;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.SettingsUtils;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.unit.TimeValue;
@@ -320,7 +319,7 @@ public class RestRepository implements Closeable, StatsAware {
             Scroll scrollResult = reader.read(scroll);
             if (scrollResult == null) {
                 log.info(String.format("No scroll for query [%s/%s], likely because the index is frozen", query, body));
-            } else if (settings.getInternalVersionOrThrow().onOrBefore(EsMajorVersion.V_2_X)) {
+            } else if (settings.getInternalVersionOrThrow().onOrBefore(OpenSearchMajorVersion.V_2_X)) {
                 // On ES 2.X and before, a scroll response does not contain any hits to start with.
                 // Another request will be needed.
                 scrollResult = new Scroll(scrollResult.getScrollId(), scrollResult.getTotalHits(), false);
@@ -374,7 +373,7 @@ public class RestRepository implements Closeable, StatsAware {
     }
 
     public void delete() {
-        if (client.clusterInfo.getMajorVersion().on(EsMajorVersion.V_1_X)) {
+        if (client.clusterInfo.getMajorVersion().on(OpenSearchMajorVersion.V_1_X)) {
             // ES 1.x - delete as usual
             // Delete just the mapping
             client.delete(resources.getResourceWrite().index() + "/" + resources.getResourceWrite().type());
@@ -405,7 +404,7 @@ public class RestRepository implements Closeable, StatsAware {
             }
             sb.append("/_search?scroll=10m&_source=false&size=");
             sb.append(batchSize);
-            if (client.clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_5_X)) {
+            if (client.clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
                 sb.append("&sort=_doc");
             }
             else {
@@ -432,7 +431,7 @@ public class RestRepository implements Closeable, StatsAware {
                 // delete each retrieved batch, keep routing in mind:
                 String baseFormat = "{\"delete\":{\"_id\":\"%s\"}}\n";
                 String routedFormat;
-                if (client.clusterInfo.getMajorVersion().onOrAfter(EsMajorVersion.V_7_X)) {
+                if (client.clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X)) {
                     routedFormat = "{\"delete\":{\"_id\":\"%s\", \"routing\":\"%s\"}}\n";
                 } else {
                     routedFormat = "{\"delete\":{\"_id\":\"%s\", \"_routing\":\"%s\"}}\n";

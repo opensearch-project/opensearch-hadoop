@@ -83,7 +83,7 @@ public class AbstractRestSaveTest {
     @Test
     public void testEmptyBulkWrite() throws Exception {
         TestSettings testSettings = new TestSettings("rest/emptybulk");
-        testSettings.setInternalClusterInfo(TestUtils.getEsClusterInfo());
+        testSettings.setInternalClusterInfo(TestUtils.getOpenSearchClusterInfo());
         testSettings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
         RestRepository restRepo = new RestRepository(testSettings);
         RestClient client = restRepo.getRestClient();
@@ -102,7 +102,7 @@ public class AbstractRestSaveTest {
         settings.setProperty(ConfigurationOptions.ES_MAPPING_DEFAULT_EXTRACTOR_CLASS, ConstantFieldExtractor.class.getName());
         settings.setProperty(ConfigurationOptions.ES_BATCH_FLUSH_MANUAL, "false");
         settings.setProperty(ConfigurationOptions.ES_BATCH_SIZE_ENTRIES, "1000");
-        settings.setProperty(ConfigurationOptions.ES_BATCH_SIZE_BYTES, "1mb");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_BYTES, "1mb");
 
         RestRepository repository = new RestRepository(settings);
 
@@ -128,7 +128,7 @@ public class AbstractRestSaveTest {
         settings.setProperty(ConfigurationOptions.ES_MAPPING_DEFAULT_EXTRACTOR_CLASS, ConstantFieldExtractor.class.getName());
         settings.setProperty(ConfigurationOptions.ES_BATCH_FLUSH_MANUAL, "false");
         settings.setProperty(ConfigurationOptions.ES_BATCH_SIZE_ENTRIES, "1000");
-        settings.setProperty(ConfigurationOptions.ES_BATCH_SIZE_BYTES, "1mb");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_BYTES, "1mb");
 
         RestRepository repository = new RestRepository(settings);
         repository.touch();

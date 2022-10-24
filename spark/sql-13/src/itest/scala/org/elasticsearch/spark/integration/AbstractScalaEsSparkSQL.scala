@@ -71,15 +71,14 @@ import com.esotericsoftware.kryo.io.{Output => KryoOutput}
 import org.apache.spark.rdd.RDD
 
 import javax.xml.bind.DatatypeConverter
-import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
+import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException, OpenSearchAssume}
 import org.apache.spark.sql.types.DoubleType
-import org.elasticsearch.hadoop.EsAssume
 import org.elasticsearch.hadoop.TestData
 import org.elasticsearch.hadoop.rest.RestUtils
-import org.elasticsearch.hadoop.util.EsMajorVersion
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
 import org.junit.ClassRule
 
-object AbstractScalaEsScalaSparkSQL {
+object AbstractScalaOpenSearchScalaSparkSQL {
   @transient val conf = new SparkConf().set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
     .setMaster("local").setAppName("estest").set("spark.executor.extraJavaOptions", "-XX:MaxPermSize=256m")
     .set("spark.io.compression.codec", "lz4")
@@ -99,8 +98,8 @@ object AbstractScalaEsScalaSparkSQL {
     sc = new SparkContext(conf)
     sqc = new SQLContext(sc)
 
-    val version = TestUtils.getEsClusterInfo.getMajorVersion
-    if (version.before(EsMajorVersion.V_5_X)) {
+    val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
+    if (version.before(OpenSearchMajorVersion.V_5_X)) {
       keywordType = "string"
       textType = "string"
     }
@@ -193,20 +192,20 @@ object AbstractScalaEsScalaSparkSQL {
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(classOf[Parameterized])
-class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pushDown: jl.Boolean, strictPushDown: jl.Boolean, doubleFiltering: jl.Boolean, escapeResources: jl.Boolean, query: String = "") extends Serializable {
+class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pushDown: jl.Boolean, strictPushDown: jl.Boolean, doubleFiltering: jl.Boolean, escapeResources: jl.Boolean, query: String = "") extends Serializable {
 
-  val sc = AbstractScalaEsScalaSparkSQL.sc
-  val sqc = AbstractScalaEsScalaSparkSQL.sqc
+  val sc = AbstractScalaOpenSearchScalaSparkSQL.sc
+  val sqc = AbstractScalaOpenSearchScalaSparkSQL.sqc
   val cfg = Map(ES_QUERY -> query,
                 ES_READ_METADATA -> readMetadata.toString(),
                 "es.internal.spark.sql.pushdown" -> pushDown.toString(),
                 "es.internal.spark.sql.pushdown.strict" -> strictPushDown.toString(),
                 "es.internal.spark.sql.pushdown.keep.handled.filters" -> doubleFiltering.toString())
 
-  val version = TestUtils.getEsClusterInfo.getMajorVersion
-  val datInput = AbstractScalaEsScalaSparkSQL.testData.sampleArtistsDatUri().toString
-  val keyword = AbstractScalaEsScalaSparkSQL.keywordType
-  val text = AbstractScalaEsScalaSparkSQL.textType
+  val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
+  val datInput = AbstractScalaOpenSearchScalaSparkSQL.testData.sampleArtistsDatUri().toString
+  val keyword = AbstractScalaOpenSearchScalaSparkSQL.keywordType
+  val text = AbstractScalaOpenSearchScalaSparkSQL.textType
 
   @Test
   def test1KryoScalaEsRow() {
@@ -230,7 +229,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
   @Test(expected = classOf[EsHadoopIllegalArgumentException])
   def testNoMappingExists() {
-    EsAssume.versionOnOrBefore(EsMajorVersion.V_6_X, "types are unnamed in ES 7.0 and will be removed in a later release.")
+    OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_6_X, "types are unnamed in ES 7.0 and will be removed in a later release.")
     val index = wrapIndex("spark-index-ex")
     RestUtils.touch(index)
     val idx = sqc.read.format("org.elasticsearch.spark.sql").load(s"$index/no_such_mapping")
@@ -1257,7 +1256,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   @Test
   def testEsDataFrame52OverwriteExistingDataSourceWithJoinField() {
     // Join added in 6.0.
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_6_X, "Join added in 6.0.")
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "Join added in 6.0.")
 
     // using long-form joiner values
     val schema = StructType(Seq(
@@ -1558,9 +1557,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
   @Test
   def testJoinField(): Unit = {
-    // Join added in 6.0.
-    // TODO: Available in 5.6, but we only track major version ids in the connector.
-    EsAssume.versionOnOrAfter(EsMajorVersion.V_6_X, "Join added in 6.0.")
+    // Join added in legacy 6.0.
+    // TODO: Available in legacy 5.6, but we only track major version ids in the connector.
+    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "Join added in 6.0.")
 
     // test mix of short-form and long-form joiner values
     val company1 = Map("id" -> "1", "company" -> "Elastic", "joiner" -> "company")
@@ -2135,7 +2134,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   
   @Test
   def testGeoShapeCircle() {
-    EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "circle geo shape is removed in later 6.6+ versions")
+    OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "circle geo shape is removed in later 6.6+ versions")
     val mapping = s"""{ "data": {
     |      "properties": {
     |        "name": {

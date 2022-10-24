@@ -72,7 +72,7 @@ public class StreamToEs {
         List<Object> plugins = new ArrayList<Object>();
         plugins.add(AutoElasticsearch.class.getName());
         conf.put(Config.TOPOLOGY_AUTO_CREDENTIALS, plugins);
-        conf.put(ConfigurationOptions.ES_NODES, esNodes);
+        conf.put(ConfigurationOptions.OPENSEARCH_NODES, esNodes);
         conf.put(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");
         conf.put(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL, "HTTP/build.elastic.co@BUILD.ELASTIC.CO");
         conf.put(ConfigurationOptions.ES_INPUT_JSON, "true");

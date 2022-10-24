@@ -238,7 +238,7 @@ if (disableTests) {
 
         extraConfigFile('es.keytab', esKeytab.toFile())
     }
-    def esAddress = "${-> testClusters.integTest.getAllHttpSocketURI().get(0)}"
+    def opensearchAddress = "${-> testClusters.integTest.getAllHttpSocketURI().get(0)}"
 
     // Configure Integration Test Task
     Test integrationTest = project.tasks.findByName('integrationTest') as Test
@@ -272,7 +272,7 @@ if (disableTests) {
                 executable = project.runtimeJavaHome.toString() + "/bin/java"
                 mainClass = 'org.elasticsearch.hadoop.qa.kerberos.setup.SetupKerberosUsers'
                 classpath = sourceSets.main.runtimeClasspath
-                systemProperty('es.nodes', esAddress)
+                systemProperty('opensearch.nodes', opensearchAddress)
                 systemProperty('es.net.http.auth.user', 'test_admin')
                 systemProperty('es.net.http.auth.pass', 'x-pack-test-password')
                 systemProperty('principals', "$clientPrincipal$realm")
@@ -353,13 +353,13 @@ if (disableTests) {
                 f.addSetting("yarn.resourcemanager.principal", "$resourceManagerPrincipal$realm")
             }
 
-            // Add the ES-Hadoop jar to the resource manager classpath so that it can load the token renewer implementation
-            // for ES tokens. Otherwise, tokens may not be cancelled at the end of the job.
+            // Add the OpenSearch-Hadoop jar to the resource manager classpath so that it can load the token renewer implementation
+            // for OpenSearch tokens. Otherwise, tokens may not be cancelled at the end of the job.
             s.role('resourcemanager') { RoleConfiguration r ->
                 r.addEnvironmentVariable('YARN_USER_CLASSPATH', mrJar.archiveFile.get().asFile.toString())
                 r.settingsFile('yarn-site.xml') { SettingsContainer.FileSettings f ->
-                    // Add settings specifically for ES Node to allow for cancelling the tokens
-                    f.addSetting('es.nodes', esAddress)
+                    // Add settings specifically for OpenSearch Node to allow for cancelling the tokens
+                    f.addSetting('opensearch.nodes', opensearchAddress)
                 }
             }
         }
@@ -377,7 +377,7 @@ if (disableTests) {
             s.addSetting('yarn.app.mapreduce.am.command-opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
             s.addSetting('mapreduce.map.java.opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
             s.addSetting('mapreduce.reduce.java.opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
-            s.addSetting('es.nodes', esAddress)
+            s.addSetting('opensearch.nodes', opensearchAddress)
         }
         config.service('pig') { ServiceConfiguration s ->
             s.setJvmArgs("-Xmx200m")
@@ -387,7 +387,7 @@ if (disableTests) {
             s.addSetting('yarn.app.mapreduce.am.command-opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
             s.addSetting('mapreduce.map.java.opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
             s.addSetting('mapreduce.reduce.java.opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
-            s.addSetting('es.nodes', esAddress)
+            s.addSetting('opensearch.nodes', opensearchAddress)
         }
         config.addDependency(jar)
         config.addDependency(kerberosItestJar)
@@ -475,7 +475,7 @@ if (disableTests) {
         jobClass = 'org.elasticsearch.hadoop.qa.kerberos.mr.LoadToES'
         jobSettings([
                 'es.resource': 'qa_kerberos_mr_data',
-                'es.nodes': esAddress,
+                'opensearch.nodes': opensearchAddress,
                 'es.security.authentication': 'kerberos',
                 'es.net.spnego.auth.elasticsearch.principal': "${esPrincipal}${realm}",
                 'load.field.names': 'number,name,url,picture,@timestamp,tag',
@@ -502,7 +502,7 @@ if (disableTests) {
         jobClass = 'org.elasticsearch.hadoop.qa.kerberos.mr.ReadFromES'
         jobSettings([
                 'es.resource': 'qa_kerberos_mr_data',
-                'es.nodes': esAddress,
+                'es.nodes': opensearchAddress,
                 'es.security.authentication': 'kerberos',
                 'es.net.spnego.auth.elasticsearch.principal': "${esPrincipal}${realm}",
                 'mapreduce.map.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",
@@ -535,7 +535,7 @@ if (disableTests) {
         jobClass = 'org.elasticsearch.hadoop.qa.kerberos.spark.LoadToES'
         jobSettings([
                 'spark.es.resource': 'qa_kerberos_spark_data',
-                'spark.es.nodes': esAddress,
+                'spark.opensearch.nodes': opensearchAddress,
                 'spark.es.security.authentication': 'kerberos',
                 'spark.es.net.spnego.auth.elasticsearch.principal': "${esPrincipal}${realm}",
                 'spark.load.field.names': 'number,name,url,picture,@timestamp,tag',
@@ -567,7 +567,7 @@ if (disableTests) {
         jobClass = 'org.elasticsearch.hadoop.qa.kerberos.spark.ReadFromES'
         jobSettings([
                 'spark.es.resource': 'qa_kerberos_spark_data',
-                'spark.es.nodes': esAddress,
+                'spark.opensearch.nodes': opensearchAddress,
                 'spark.es.security.authentication': 'kerberos',
                 'spark.es.net.spnego.auth.elasticsearch.principal': "${esPrincipal}${realm}",
                 'spark.yarn.am.memory': "200m",

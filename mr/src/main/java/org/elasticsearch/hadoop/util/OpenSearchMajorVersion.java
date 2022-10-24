@@ -25,72 +25,72 @@ import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 /**
  * Elasticsearch major version information, useful to check client's query compatibility with the Rest API.
  */
-public class EsMajorVersion implements Serializable {
+public class OpenSearchMajorVersion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final EsMajorVersion V_0_X = new EsMajorVersion((byte) 0, "0.x");
-    public static final EsMajorVersion V_1_X = new EsMajorVersion((byte) 1, "1.x");
-    public static final EsMajorVersion V_2_X = new EsMajorVersion((byte) 2, "2.x");
-    public static final EsMajorVersion V_5_X = new EsMajorVersion((byte) 5, "5.x");
-    public static final EsMajorVersion V_6_X = new EsMajorVersion((byte) 6, "6.x");
-    public static final EsMajorVersion V_7_X = new EsMajorVersion((byte) 7, "7.x");
-    public static final EsMajorVersion V_8_X = new EsMajorVersion((byte) 8, "8.x");
-    public static final EsMajorVersion LATEST = V_8_X;
+    public static final OpenSearchMajorVersion V_0_X = new OpenSearchMajorVersion((byte) 0, "0.x");
+    public static final OpenSearchMajorVersion V_1_X = new OpenSearchMajorVersion((byte) 1, "1.x");
+    public static final OpenSearchMajorVersion V_2_X = new OpenSearchMajorVersion((byte) 2, "2.x");
+    public static final OpenSearchMajorVersion V_5_X = new OpenSearchMajorVersion((byte) 5, "5.x");
+    public static final OpenSearchMajorVersion V_6_X = new OpenSearchMajorVersion((byte) 6, "6.x");
+    public static final OpenSearchMajorVersion V_7_X = new OpenSearchMajorVersion((byte) 7, "7.x");
+    public static final OpenSearchMajorVersion V_8_X = new OpenSearchMajorVersion((byte) 8, "8.x");
+    public static final OpenSearchMajorVersion LATEST = V_8_X;
 
     public final byte major;
     private final String version;
 
-    private EsMajorVersion(byte major, String version) {
+    private OpenSearchMajorVersion(byte major, String version) {
         this.major = major;
         this.version = version;
     }
 
-    public boolean after(EsMajorVersion version) {
+    public boolean after(OpenSearchMajorVersion version) {
         return version.major < major;
     }
 
-    public boolean on(EsMajorVersion version) {
+    public boolean on(OpenSearchMajorVersion version) {
         return version.major == major;
     }
 
-    public boolean notOn(EsMajorVersion version) {
+    public boolean notOn(OpenSearchMajorVersion version) {
         return !on(version);
     }
 
-    public boolean onOrAfter(EsMajorVersion version) {
+    public boolean onOrAfter(OpenSearchMajorVersion version) {
         return version.major <= major;
     }
 
-    public boolean before(EsMajorVersion version) {
+    public boolean before(OpenSearchMajorVersion version) {
         return version.major > major;
     }
 
-    public boolean onOrBefore(EsMajorVersion version) {
+    public boolean onOrBefore(OpenSearchMajorVersion version) {
         return version.major >= major;
     }
 
-    public static EsMajorVersion parse(String version) {
+    public static OpenSearchMajorVersion parse(String version) {
         if (version.startsWith("0.")) {
-            return new EsMajorVersion((byte) 0, version);
+            return new OpenSearchMajorVersion((byte) 0, version);
         }
         if (version.startsWith("1.")) {
-            return new EsMajorVersion((byte) 1, version);
+            return new OpenSearchMajorVersion((byte) 1, version);
         }
         if (version.startsWith("2.")) {
-            return new EsMajorVersion((byte) 2, version);
+            return new OpenSearchMajorVersion((byte) 2, version);
         }
         if (version.startsWith("5.")) {
-            return new EsMajorVersion((byte) 5, version);
+            return new OpenSearchMajorVersion((byte) 5, version);
         }
         if (version.startsWith("6.")) {
-            return new EsMajorVersion((byte) 6, version);
+            return new OpenSearchMajorVersion((byte) 6, version);
         }
         if (version.startsWith("7.")) {
-            return new EsMajorVersion((byte) 7, version);
+            return new OpenSearchMajorVersion((byte) 7, version);
         }
         if (version.startsWith("8.")) {
-            return new EsMajorVersion((byte) 8, version);
+            return new OpenSearchMajorVersion((byte) 8, version);
         }
         throw new EsHadoopIllegalArgumentException("Unsupported/Unknown Elasticsearch version [" + version + "]." +
                 "Highest supported version is [" + LATEST.version + "]. You may need to upgrade ES-Hadoop.");
@@ -126,7 +126,7 @@ public class EsMajorVersion implements Serializable {
             return false;
         }
 
-        EsMajorVersion version = (EsMajorVersion) o;
+        OpenSearchMajorVersion version = (OpenSearchMajorVersion) o;
 
         return major == version.major &&
                 this.version.equals(version.version);

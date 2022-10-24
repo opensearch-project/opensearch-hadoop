@@ -37,7 +37,7 @@ import org.elasticsearch.hadoop.serialization.ScrollReaderConfigBuilder;
 import org.elasticsearch.hadoop.serialization.builder.JdkValueReader;
 import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter;
 import org.elasticsearch.hadoop.serialization.dto.mapping.MappingSet;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.SettingsUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
@@ -54,11 +54,11 @@ public class AbstractRestQueryTest {
     private static Log log = LogFactory.getLog(AbstractRestQueryTest.class);
     private RestRepository client;
     private Settings settings;
-    private EsMajorVersion version;
+    private OpenSearchMajorVersion version;
 
     @Before
     public void start() throws IOException {
-        version = TestUtils.getEsClusterInfo().getMajorVersion();
+        version = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
         settings = new TestSettings("rest/savebulk");
         settings.setInternalVersion(version);
         //testSettings.setPort(9200)

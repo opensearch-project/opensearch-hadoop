@@ -24,9 +24,9 @@ import org.elasticsearch.hadoop.rest.query.QueryBuilder;
 import org.elasticsearch.hadoop.rest.query.TermQueryBuilder;
 import org.elasticsearch.hadoop.rest.request.GetAliasesRequestBuilder;
 import org.elasticsearch.hadoop.serialization.dto.IndicesAliases;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -43,17 +43,17 @@ public class ApplyAliasMetaDataTest {
             new ObjectMapper()
                     .configure(JsonParser.Feature.ALLOW_COMMENTS, true);
 
-    private static final EsMajorVersion[] ES_VERSIONS =
-            new EsMajorVersion[]{
-                    EsMajorVersion.V_0_X,
-                    EsMajorVersion.V_1_X,
-                    EsMajorVersion.V_2_X,
-                    EsMajorVersion.V_5_X
+    private static final OpenSearchMajorVersion[] ES_VERSIONS =
+            new OpenSearchMajorVersion[]{
+                    OpenSearchMajorVersion.V_0_X,
+                    OpenSearchMajorVersion.V_1_X,
+                    OpenSearchMajorVersion.V_2_X,
+                    OpenSearchMajorVersion.V_5_X
             };
 
     @Test
     public void testNoAlias() throws IOException {
-        for (EsMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : ES_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-empty-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -66,7 +66,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testNoExplicitAlias() throws IOException {
-        for (EsMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : ES_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -124,7 +124,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testOneAlias() throws IOException {
-        for (EsMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : ES_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -166,7 +166,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testOneAliasWithQuery() throws IOException {
-        for (EsMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : ES_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -175,7 +175,7 @@ public class ApplyAliasMetaDataTest {
             searchRequest.query(query);
             RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1");
             QueryBuilder expected;
-            if (version.after(EsMajorVersion.V_1_X)) {
+            if (version.after(OpenSearchMajorVersion.V_1_X)) {
                 expected = new BoolQueryBuilder()
                         .must(
                                 new TermQueryBuilder().field("user").term("costin")
@@ -204,7 +204,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testTwoAliases() throws IOException {
-        for (EsMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : ES_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -229,7 +229,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testTwoAliasesWithQuery() throws IOException {
-        for (EsMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : ES_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -238,7 +238,7 @@ public class ApplyAliasMetaDataTest {
             searchRequest.query(query);
             RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1", "alias2");
             QueryBuilder expected;
-            if (version.after(EsMajorVersion.V_1_X)) {
+            if (version.after(OpenSearchMajorVersion.V_1_X)) {
                 expected = new BoolQueryBuilder()
                         .must(
                                 new TermQueryBuilder().field("user").term("costin")

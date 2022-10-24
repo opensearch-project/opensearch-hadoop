@@ -26,9 +26,9 @@ import java.util.List;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.QueryTestParams;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.After;
@@ -55,7 +55,7 @@ public class AbstractHiveSearchJsonTest {
 
     private static int testInstance = 0;
     private final boolean readMetadata;
-    private EsMajorVersion targetVersion;
+    private OpenSearchMajorVersion targetVersion;
 
     @ClassRule
     public static LazyTempFolder tempFolder = new LazyTempFolder();
@@ -76,7 +76,7 @@ public class AbstractHiveSearchJsonTest {
     public void before() throws Exception {
         provisionEsLib();
         RestUtils.refresh("json-hive*");
-        targetVersion = TestUtils.getEsClusterInfo().getMajorVersion();
+        targetVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
         new QueryTestParams(tempFolder).provisionQueries(HdpBootstrap.hadoopConfig());
     }
 
@@ -242,7 +242,7 @@ public class AbstractHiveSearchJsonTest {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         String create = "CREATE EXTERNAL TABLE jsonchildload" + testInstance + " ("
                 + "number       STRING, "
                 + "name     STRING, "

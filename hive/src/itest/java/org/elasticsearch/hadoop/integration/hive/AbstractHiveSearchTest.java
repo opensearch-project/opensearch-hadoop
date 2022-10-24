@@ -29,9 +29,9 @@ import java.util.List;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.QueryTestParams;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.After;
 import org.junit.Assert;
@@ -65,7 +65,7 @@ public class AbstractHiveSearchTest {
 
     private String query;
     private boolean readMetadata;
-    private EsMajorVersion targetVersion;
+    private OpenSearchMajorVersion targetVersion;
 
     public AbstractHiveSearchTest(String query, boolean readMetadata) {
         this.query = query;
@@ -77,7 +77,7 @@ public class AbstractHiveSearchTest {
     public void before() throws Exception {
         provisionEsLib();
         RestUtils.refresh("hive*");
-        targetVersion = TestUtils.getEsClusterInfo().getMajorVersion();
+        targetVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
         new QueryTestParams(tempFolder).provisionQueries(HdpBootstrap.hadoopConfig());
     }
 
@@ -317,7 +317,7 @@ public class AbstractHiveSearchTest {
 
     @Test
     public void testParentChild() throws Exception {
-        EsAssume.versionOnOrBefore(EsMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
+        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         String create = "CREATE EXTERNAL TABLE childload" + testInstance + " ("
                 + "id       BIGINT, "
                 + "name     STRING, "

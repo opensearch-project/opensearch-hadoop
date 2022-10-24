@@ -25,41 +25,43 @@ import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.elasticsearch.hadoop.rest.InitializationUtils;
 import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.elasticsearch.hadoop.util.unit.Booleans;
 import org.junit.rules.ExternalResource;
 
+import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES;
+
 public class LocalEs extends ExternalResource {
 
-    private static EsEmbeddedCluster embeddedCluster;
+    private static OpenSearchEmbeddedCluster embeddedCluster;
 
     @Override
     protected void before() throws Throwable {
-        if (Booleans.parseBoolean(HdpBootstrap.hadoopConfig().get(EsEmbeddedCluster.DISABLE_LOCAL_ES))) {
-            LogFactory.getLog(getClass()).warn("local ES disable; assuming an external instance...");
+        if (Booleans.parseBoolean(HdpBootstrap.hadoopConfig().get(OpenSearchEmbeddedCluster.DISABLE_LOCAL_OPENSEARCH))) {
+            LogFactory.getLog(getClass()).warn("local OpenSearch disable; assuming an external instance...");
             setSingleNodeTemplate();
             clearState();
             return;
         }
 
-        String host = HdpBootstrap.hadoopConfig().get(ConfigurationOptions.ES_NODES);
+        String host = HdpBootstrap.hadoopConfig().get(ConfigurationOptions.OPENSEARCH_NODES);
         if (StringUtils.hasText(host)) {
-            LogFactory.getLog(getClass()).warn("es.nodes/host specified; assuming an external instance...");
+            LogFactory.getLog(getClass()).warn(OPENSEARCH_NODES + "/host specified; assuming an external instance...");
             setSingleNodeTemplate();
             clearState();
             return;
         }
 
         if (embeddedCluster == null) {
-            System.out.println("Locating Embedded Elasticsearch Cluster...");
-            embeddedCluster = new EsEmbeddedCluster();
+            System.out.println("Locating Embedded OpenSearch Cluster...");
+            embeddedCluster = new OpenSearchEmbeddedCluster();
             for (StringUtils.IpAndPort ipAndPort : embeddedCluster.getIpAndPort()) {
-                System.out.println("Found Elasticsearch Node on port " + ipAndPort.port);
+                System.out.println("Found OpenSearch Node on port " + ipAndPort.port);
             }
-            System.setProperty(TestUtils.ES_LOCAL_PORT, String.valueOf(embeddedCluster.getIpAndPort().get(0).port));
+            System.setProperty(TestUtils.OPENSEARCH_LOCAL_PORT, String.valueOf(embeddedCluster.getIpAndPort().get(0).port));
 
             // force initialization of test properties
             new TestSettings();
@@ -70,15 +72,15 @@ public class LocalEs extends ExternalResource {
 
     /**
      * Installs an index template that sets number of shards to 1 and number of replicas to 0.
-     * Note, that this is only needed for ES version prior to 7.0
+     * Note, that this is only needed for version prior to legacy 7.0
      */
     private void setSingleNodeTemplate() throws Exception {
         LogFactory.getLog(getClass()).warn("Installing single node template...");
         ClusterInfo clusterInfo = InitializationUtils.discoverClusterInfo(new TestSettings(), LogFactory.getLog(this.getClass()));
-        if (clusterInfo.getMajorVersion().onOrBefore(EsMajorVersion.V_5_X)) {
+        if (clusterInfo.getMajorVersion().onOrBefore(OpenSearchMajorVersion.V_5_X)) {
             RestUtils.put("_template/single-node-template",
                     "{\"template\": \"*\", \"settings\": {\"number_of_shards\": 1,\"number_of_replicas\": 0}}".getBytes());
-        } else if (clusterInfo.getMajorVersion().onOrBefore(EsMajorVersion.V_6_X)) {
+        } else if (clusterInfo.getMajorVersion().onOrBefore(OpenSearchMajorVersion.V_6_X)) {
             RestUtils.put("_template/single-node-template",
                     "{\"index_patterns\": \"*\", \"settings\": {\"number_of_shards\": 1,\"number_of_replicas\": 0}}".getBytes());
         }
@@ -93,7 +95,7 @@ public class LocalEs extends ExternalResource {
     protected void after() {
         if (embeddedCluster != null) {
             try {
-                System.clearProperty(TestUtils.ES_LOCAL_PORT);
+                System.clearProperty(TestUtils.OPENSEARCH_LOCAL_PORT);
             } catch (Exception ex) {
                 // ignore
             }

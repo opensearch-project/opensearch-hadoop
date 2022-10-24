@@ -33,9 +33,9 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.EsAssume;
+import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.EsMajorVersion;
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
@@ -53,7 +53,7 @@ import org.junit.runners.Parameterized;
 import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE;
 import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_INGEST_PIPELINE;
 import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE;
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_NODES_INGEST_ONLY;
+import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;
@@ -97,7 +97,7 @@ public class AbstractJavaEsSparkStructuredStreamingTest {
 
     private String prefix;
     private String commitLogDir;
-    private EsMajorVersion version = TestUtils.getEsClusterInfo().getMajorVersion();
+    private OpenSearchMajorVersion version = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
 
     public AbstractJavaEsSparkStructuredStreamingTest(String prefix) throws Exception {
         this.prefix = prefix;
@@ -309,7 +309,7 @@ public class AbstractJavaEsSparkStructuredStreamingTest {
 
     @Test
     public void test2WriteToIngestPipeline() throws Exception {
-        EsAssume.versionOnOrAfter(EsMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
+        OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
 
         String pipelineName =  prefix + "-pipeline";
         String pipeline = "{\"description\":\"Test Pipeline\",\"processors\":[{\"set\":{\"field\":\"pipeTEST\",\"value\":true,\"override\":true}}]}";
@@ -340,7 +340,7 @@ public class AbstractJavaEsSparkStructuredStreamingTest {
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
                         .option(ES_INGEST_PIPELINE, pipelineName)
-                        .option(ES_NODES_INGEST_ONLY, "true")
+                        .option(OPENSEARCH_NODES_INGEST_ONLY, "true")
                         .format("es"),
                 target
         );
@@ -438,7 +438,7 @@ public class AbstractJavaEsSparkStructuredStreamingTest {
         // BWC
         String keyword = "keyword";
         String lang = "painless";
-        if (version.onOrBefore(EsMajorVersion.V_2_X)) {
+        if (version.onOrBefore(OpenSearchMajorVersion.V_2_X)) {
             keyword = "string";
             lang = "groovy";
         }
@@ -473,7 +473,7 @@ public class AbstractJavaEsSparkStructuredStreamingTest {
         }
 
         String script1;
-        if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             script1 = "ctx._source.address.add(params.new_address)";
         } else {
             script1 = "ctx._source.address+=new_address";
@@ -503,7 +503,7 @@ public class AbstractJavaEsSparkStructuredStreamingTest {
         }
 
         String script2;
-        if (version.onOrAfter(EsMajorVersion.V_5_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
             script2 = "ctx._source.note = params.new_note";
         } else {
             script2 = "ctx._source.note=new_note";

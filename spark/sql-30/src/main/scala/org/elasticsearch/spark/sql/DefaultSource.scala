@@ -72,7 +72,7 @@ import org.elasticsearch.hadoop.rest.RestRepository
 import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter
 import org.elasticsearch.hadoop.serialization.field.ConstantFieldExtractor
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator
-import org.elasticsearch.hadoop.util.EsMajorVersion
+import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
 import org.elasticsearch.hadoop.util.FastByteArrayOutputStream
 import org.elasticsearch.hadoop.util.IOUtils
 import org.elasticsearch.hadoop.util.SettingsUtils
@@ -619,7 +619,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       InitializationUtils.setFieldExtractorIfNotSet(cfgCopy, classOf[ConstantFieldExtractor], null) //throw away extractor
       cfgCopy.setProperty(ConfigurationOptions.ES_BATCH_FLUSH_MANUAL, "false")
       cfgCopy.setProperty(ConfigurationOptions.ES_BATCH_SIZE_ENTRIES, "1000")
-      cfgCopy.setProperty(ConfigurationOptions.ES_BATCH_SIZE_BYTES, "1mb")
+      cfgCopy.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_BYTES, "1mb")
       val rr = new RestRepository(cfgCopy)
       if (rr.resourceExists(false)) {
         rr.delete()
@@ -638,11 +638,11 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
 
   private[this] def isEs50(cfg: Settings): Boolean = {
     // TODO: Problematic. It's possible that the version is not ever discovered and set before this is needed.
-    val version = if (cfg.getProperty(InternalConfigurationOptions.INTERNAL_ES_VERSION) == null) {
-      EsMajorVersion.LATEST
+    val version = if (cfg.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION) == null) {
+      OpenSearchMajorVersion.LATEST
     } else {
       cfg.getInternalVersionOrThrow
     }
-    version.onOrAfter(EsMajorVersion.V_5_X)
+    version.onOrAfter(OpenSearchMajorVersion.V_5_X)
   }
 }

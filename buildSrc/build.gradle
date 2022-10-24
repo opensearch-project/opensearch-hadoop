@@ -23,8 +23,8 @@ if (JavaVersion.current() < JavaVersion.VERSION_11) {
 boolean localRepo = project.getProperties().containsKey("localRepo")
 
 Properties props = new Properties()
-props.load(project.file('esh-version.properties').newDataInputStream())
-String eshVersion = props.getProperty('eshadoop')
+props.load(project.file('opensearch-hadoop-version.properties').newDataInputStream())
+String opensearchHadoopVersion = props.getProperty('opensearch_hadoop')
 String esVersion = props.getProperty('elasticsearch')
 String buildToolsVersion = props.getProperty('build-tools')
 
@@ -34,7 +34,7 @@ if (qualifier.isEmpty() == false) {
     if (qualifier.matches("(alpha|beta|rc)\\d+") == false) {
         throw new IllegalStateException("Invalid qualifier: " + qualifier)
     }
-    eshVersion += "-" + qualifier
+    opensearchHadoopVersion += "-" + qualifier
     esVersion += "-" + qualifier
     buildToolsVersion += "-" + qualifier
 }
@@ -43,12 +43,12 @@ if (qualifier.isEmpty() == false) {
 boolean snapshot = "true".equals(System.getProperty("build.snapshot", "true"))
 if (snapshot) {
     // we update the version property to reflect if we are building a snapshot or a release build
-    eshVersion += "-SNAPSHOT"
+    opensearchHadoopVersion += "-SNAPSHOT"
     esVersion += "-SNAPSHOT"
     buildToolsVersion += "-SNAPSHOT"
 }
 
-props.put("eshadoop", eshVersion)
+props.put("eshadoop", opensearchHadoopVersion)
 props.put("elasticsearch", esVersion)
 props.put("build-tools", buildToolsVersion)
 
@@ -80,7 +80,7 @@ dependencies {
 }
 
 // write the updated properties to a temp property file
-File tempPropertiesFile = new File(project.buildDir, "esh-version.properties")
+File tempPropertiesFile = new File(project.buildDir, "opensearch-hadoop-version.properties")
 task writeVersionProperties {
     inputs.properties(props)
     outputs.file(tempPropertiesFile)

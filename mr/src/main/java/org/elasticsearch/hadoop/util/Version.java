@@ -102,7 +102,7 @@ public abstract class Version {
 
         Properties build = new Properties();
         try {
-            build = IOUtils.propsFromString(IOUtils.asString(Version.class.getResourceAsStream("/esh-build.properties")));
+            build = IOUtils.propsFromString(IOUtils.asString(Version.class.getResourceAsStream("/opensearch-hadoop-build.properties")));
         } catch (Exception ex) {
             // ignore if no build info was found
         }

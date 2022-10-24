@@ -1,8 +1,8 @@
 import org.elasticsearch.hadoop.gradle.buildtools.ConcatFilesTask
 
-description = 'Elasticsearch for Apache Hadoop'
+description = 'OpenSearch for Apache Hadoop'
 
-apply plugin: 'es.hadoop.build.root'
+apply plugin: 'opensearch.hadoop.build.root'
 
 defaultTasks 'build'
 

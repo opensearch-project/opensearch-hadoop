@@ -39,22 +39,22 @@ package org.elasticsearch.hadoop.serialization.json;
  * limitations under the License.
  */
 
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonFactory;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonGenerator;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonProcessingException;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConfig;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationContext;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.DeserializerProvider;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.JsonDeserializer;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.JsonMappingException;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.deser.StdDeserializationContext;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.introspect.VisibilityChecker;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.jsontype.TypeResolverBuilder;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.type.ArrayType;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.type.TypeFactory;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.type.JavaType;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonFactory;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonGenerator;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonProcessingException;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConfig;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationContext;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializerProvider;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.JsonDeserializer;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.JsonMappingException;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.deser.StdDeserializationContext;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.introspect.VisibilityChecker;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.jsontype.TypeResolverBuilder;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.type.ArrayType;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.type.TypeFactory;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.type.JavaType;
 import org.elasticsearch.hadoop.util.Assert;
 import org.elasticsearch.hadoop.util.ReflectionUtils;
 

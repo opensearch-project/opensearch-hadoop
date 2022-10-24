@@ -46,9 +46,9 @@ import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
 import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.security.SecureSettings;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeoutException;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeoutException;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
 import org.elasticsearch.hadoop.util.IOUtils;
 import org.elasticsearch.hadoop.util.StringUtils;
 

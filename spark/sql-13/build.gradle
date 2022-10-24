@@ -4,7 +4,7 @@ description = "Elasticsearch Spark (for Spark 1.3-1.6)"
 
 apply plugin: 'java-library'
 apply plugin: 'scala'
-apply plugin: 'es.hadoop.build'
+apply plugin: 'opensearch.hadoop.build'
 apply plugin: 'spark.variants'
 
 sparkVariants {
@@ -191,7 +191,7 @@ sparkVariants {
             // TODO: Is there a way to do this lazily? This looks like it resolves the configuration.
             from(project.configurations.getByName(variant.configuration('embedded')).collect { it.isDirectory() ? it : zipTree(it)}) {
                 include "org/elasticsearch/**"
-                include "esh-build.properties"
+                include "opensearch-hadoop-build.properties"
                 include "META-INF/services/*"
             }
         }

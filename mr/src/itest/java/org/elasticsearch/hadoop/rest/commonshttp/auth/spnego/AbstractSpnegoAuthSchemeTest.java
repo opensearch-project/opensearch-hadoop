@@ -25,16 +25,16 @@ import org.apache.hadoop.security.UserGroupInformation;
 import org.elasticsearch.hadoop.mr.security.HadoopUserProvider;
 import org.elasticsearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
 import org.elasticsearch.hadoop.security.UgiUtil;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.Header;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethodBase;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthChallengeParser;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthChallengeProcessor;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthPolicy;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthScheme;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthState;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpClientParams;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpParams;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethodBase;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthChallengeParser;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthChallengeProcessor;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthPolicy;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthScheme;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthState;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpClientParams;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpParams;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.After;
 import org.junit.BeforeClass;
@@ -157,7 +157,7 @@ public class AbstractSpnegoAuthSchemeTest {
 
                 TestMethod method = new TestMethod();
                 method.setHeaders(new Header[]{new Header("WWW-Authenticate", "Negotiate")});
-                method.setURI(new org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.URI("http", null, "es.build.elastic.co", 9200));
+                method.setURI(new org.opensearch.hadoop.thirdparty.apache.commons.httpclient.URI("http", null, "es.build.elastic.co", 9200));
 
                 Credentials credentials = new SpnegoCredentials(HadoopUserProvider.create(new TestSettings()), "HTTP/_HOST@BUILD.ELASTIC.CO");
 
@@ -226,7 +226,7 @@ public class AbstractSpnegoAuthSchemeTest {
 
                 TestMethod method = new TestMethod();
                 method.setHeaders(new Header[]{new Header("WWW-Authenticate", "Negotiate")});
-                method.setURI(new org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.URI("http", null, "127.0.0.1", 9200));
+                method.setURI(new org.opensearch.hadoop.thirdparty.apache.commons.httpclient.URI("http", null, "127.0.0.1", 9200));
 
                 Credentials credentials = new SpnegoCredentials(HadoopUserProvider.create(new TestSettings()), "HTTP/_HOST@BUILD.ELASTIC.CO");
 

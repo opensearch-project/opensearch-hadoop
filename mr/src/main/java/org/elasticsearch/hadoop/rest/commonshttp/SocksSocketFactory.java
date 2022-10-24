@@ -18,9 +18,9 @@
  */
 package org.elasticsearch.hadoop.rest.commonshttp;
 
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeoutException;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
-import org.elasticsearch.hadoop.thirdparty.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeoutException;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
+import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.DefaultProtocolSocketFactory;
 import org.elasticsearch.hadoop.util.StringUtils;
 
 import java.io.IOException;

@@ -4,7 +4,7 @@ pluginManagement {
   }
 }
 
-rootProject.name = "elasticsearch-hadoop"
+rootProject.name = "opensearch-hadoop"
 
 include 'thirdparty'
 

@@ -20,7 +20,7 @@ package org.elasticsearch.hadoop.util;
 
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
 import org.elasticsearch.hadoop.serialization.json.BackportedJsonStringEncoder;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.io.JsonStringEncoder;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.io.JsonStringEncoder;
 
 import java.nio.charset.Charset;
 import java.util.ArrayList;

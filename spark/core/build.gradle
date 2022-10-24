@@ -4,7 +4,7 @@ description = "Elasticsearch Spark Core"
 
 apply plugin: 'java-library'
 apply plugin: 'scala'
-apply plugin: 'es.hadoop.build'
+apply plugin: 'opensearch.hadoop.build'
 apply plugin: 'spark.variants'
 
 sparkVariants {

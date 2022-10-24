@@ -24,8 +24,8 @@ import org.elasticsearch.hadoop.rest.query.QueryBuilder;
 import org.elasticsearch.hadoop.rest.query.TermQueryBuilder;
 import org.elasticsearch.hadoop.rest.request.GetAliasesRequestBuilder;
 import org.elasticsearch.hadoop.serialization.dto.IndicesAliases;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
-import org.elasticsearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
 import org.elasticsearch.hadoop.util.EsMajorVersion;
 import org.junit.Test;
 

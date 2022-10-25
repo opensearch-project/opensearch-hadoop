@@ -26,8 +26,8 @@ import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
-import org.elasticsearch.hadoop.mr.EsInputFormat;
-import org.elasticsearch.hadoop.mr.compat.CompatHandler;
+import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.compat.CompatHandler;
 import org.elasticsearch.hadoop.util.StringUtils;
 
 

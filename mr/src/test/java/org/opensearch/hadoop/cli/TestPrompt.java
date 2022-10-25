@@ -19,8 +19,6 @@
 
 package org.opensearch.hadoop.cli;
 
-import org.elasticsearch.hadoop.cli.Prompt;
-
 import java.util.Deque;
 import java.util.LinkedList;
 

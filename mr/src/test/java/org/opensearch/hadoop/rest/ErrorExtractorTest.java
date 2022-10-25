@@ -26,8 +26,6 @@ import static org.junit.Assert.assertTrue;
 import java.util.Map;
 
 import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.rest.ErrorExtractor;
-import org.elasticsearch.hadoop.rest.EsHadoopRemoteException;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.junit.Test;
 

@@ -20,9 +20,9 @@ package org.elasticsearch.hadoop.util;
 
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.cfg.InternalConfigurationOptions;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.ConfigurationOptions;
+import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.dto.NodeInfo;
 import org.elasticsearch.hadoop.serialization.field.FieldFilter;
 import org.elasticsearch.hadoop.serialization.field.FieldFilter.NumberedInclude;

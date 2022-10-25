@@ -20,7 +20,7 @@
 package org.opensearch.hadoop.serialization.field;
 
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.field.JsonFieldExtractors;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;

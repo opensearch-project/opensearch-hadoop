@@ -31,7 +31,7 @@ import org.apache.hadoop.hive.serde2.io.ShortWritable;
 import org.apache.hadoop.hive.serde2.io.TimestampWritable;
 import org.apache.hadoop.hive.serde2.io.TimestampWritableV2;
 import org.apache.hadoop.io.Writable;
-import org.elasticsearch.hadoop.mr.WritableValueWriter;
+import org.opensearch.hadoop.mr.WritableValueWriter;
 import org.elasticsearch.hadoop.serialization.Generator;
 
 /**

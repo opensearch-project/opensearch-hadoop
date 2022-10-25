@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.SettingsAware;
 import org.elasticsearch.hadoop.serialization.bulk.RawJson;
 import org.elasticsearch.hadoop.util.Assert;

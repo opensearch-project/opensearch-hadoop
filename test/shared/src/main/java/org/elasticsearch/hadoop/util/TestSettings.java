@@ -21,9 +21,9 @@ package org.elasticsearch.hadoop.util;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
+import org.opensearch.hadoop.cfg.PropertiesSettings;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE;
 
 /**
  * Tweaked settings for testing.

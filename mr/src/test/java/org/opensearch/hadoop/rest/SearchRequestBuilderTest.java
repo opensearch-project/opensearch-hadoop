@@ -18,7 +18,6 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.rest.SearchRequestBuilder;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.encoding.HttpEncodingTools;
 import org.junit.Test;

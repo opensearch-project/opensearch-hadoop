@@ -19,7 +19,7 @@
 
 package org.elasticsearch.hadoop.serialization.handler.write.impl;
 
-import org.elasticsearch.hadoop.handler.impl.LogRenderer;
+import org.opensearch.hadoop.handler.impl.LogRenderer;
 import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure;
 
 public class SerializationLogRenderer extends LogRenderer<SerializationFailure> {

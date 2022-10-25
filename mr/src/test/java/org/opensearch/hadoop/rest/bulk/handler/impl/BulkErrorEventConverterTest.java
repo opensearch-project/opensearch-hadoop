@@ -22,9 +22,8 @@ package org.opensearch.hadoop.rest.bulk.handler.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.elasticsearch.hadoop.rest.EsHadoopRemoteException;
-import org.elasticsearch.hadoop.rest.bulk.handler.BulkWriteFailure;
-import org.elasticsearch.hadoop.rest.bulk.handler.impl.BulkErrorEventConverter;
+import org.opensearch.hadoop.rest.EsHadoopRemoteException;
+import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.DateUtils;
 import org.elasticsearch.hadoop.util.StringUtils;

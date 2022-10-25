@@ -21,9 +21,8 @@ package org.elasticsearch.hadoop.serialization.handler.read;
 
 import java.util.Properties;
 
-import org.elasticsearch.hadoop.handler.ErrorCollector;
-import org.elasticsearch.hadoop.handler.ErrorHandler;
-import org.elasticsearch.hadoop.handler.HandlerResult;
+import org.opensearch.hadoop.handler.ErrorCollector;
+import org.opensearch.hadoop.handler.HandlerResult;
 
 public abstract class DeserializationErrorHandler implements IDeserializationErrorHandler {
     @Override

@@ -22,8 +22,8 @@ import java.util.Collections
 import java.util.{Set => JSet}
 
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException
-import org.elasticsearch.hadoop.cfg.Settings
 import org.elasticsearch.hadoop.serialization.SettingsAware
+import org.opensearch.hadoop.cfg.Settings
 
 private[sql] trait RowValueReader extends SettingsAware {
 

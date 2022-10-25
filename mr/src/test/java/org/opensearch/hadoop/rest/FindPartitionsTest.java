@@ -20,11 +20,8 @@ package org.opensearch.hadoop.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.NoOpLog;
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.PartitionDefinition;
-import org.elasticsearch.hadoop.rest.RestClient;
-import org.elasticsearch.hadoop.rest.RestService;
+import org.opensearch.hadoop.cfg.PropertiesSettings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.dto.NodeInfo;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.junit.Assert;
@@ -40,8 +37,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ;
-import static org.elasticsearch.hadoop.rest.query.MatchAllQueryBuilder.MATCH_ALL;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ;
+import static org.opensearch.hadoop.rest.query.MatchAllQueryBuilder.MATCH_ALL;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;

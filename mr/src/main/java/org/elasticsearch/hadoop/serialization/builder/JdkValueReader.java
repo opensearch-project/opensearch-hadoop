@@ -18,7 +18,7 @@
  */
 package org.elasticsearch.hadoop.serialization.builder;
 
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.FieldType;
 import org.elasticsearch.hadoop.serialization.Parser;
 import org.elasticsearch.hadoop.serialization.Parser.Token;

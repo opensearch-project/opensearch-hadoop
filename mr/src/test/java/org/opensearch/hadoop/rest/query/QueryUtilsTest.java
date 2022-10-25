@@ -18,14 +18,13 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.query.QueryBuilder;
+import org.opensearch.hadoop.cfg.PropertiesSettings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.junit.Before;
 import org.junit.Test;
 
-import static org.elasticsearch.hadoop.rest.query.QueryUtils.parseQuery;
-import static org.elasticsearch.hadoop.rest.query.QueryUtils.isExplicitlyRequested;
+import static org.opensearch.hadoop.rest.query.QueryUtils.parseQuery;
+import static org.opensearch.hadoop.rest.query.QueryUtils.isExplicitlyRequested;
 import static org.hamcrest.Matchers.is;
 import static org.junit.Assert.assertThat;
 

@@ -32,18 +32,18 @@ import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Tuple;
 import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.rest.bulk.BulkResponse;
-import org.elasticsearch.hadoop.rest.InitializationUtils;
-import org.elasticsearch.hadoop.rest.RestService;
-import org.elasticsearch.hadoop.rest.RestService.PartitionWriter;
-import org.elasticsearch.hadoop.security.JdkUserProvider;
+import org.opensearch.hadoop.rest.bulk.BulkResponse;
+import org.opensearch.hadoop.rest.InitializationUtils;
+import org.opensearch.hadoop.rest.RestService;
+import org.opensearch.hadoop.rest.RestService.PartitionWriter;
+import org.opensearch.hadoop.security.JdkUserProvider;
 import org.elasticsearch.storm.cfg.StormSettings;
 import org.elasticsearch.storm.security.EsClusterInfoSelector;
 import org.elasticsearch.storm.serialization.StormTupleBytesConverter;
 import org.elasticsearch.storm.serialization.StormTupleFieldExtractor;
 import org.elasticsearch.storm.serialization.StormValueWriter;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.*;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;
 import static org.elasticsearch.storm.cfg.StormConfigurationOptions.ES_STORM_BOLT_ACK;
 
 /**

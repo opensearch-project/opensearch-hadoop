@@ -19,12 +19,6 @@
 package org.opensearch.hadoop.rest;
 
 import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.rest.EsHadoopNoNodesLeftException;
-import org.elasticsearch.hadoop.rest.NetworkClient;
-import org.elasticsearch.hadoop.rest.Request;
-import org.elasticsearch.hadoop.rest.SimpleRequest;
-import org.elasticsearch.hadoop.rest.Transport;
-import org.elasticsearch.hadoop.rest.TransportFactory;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 

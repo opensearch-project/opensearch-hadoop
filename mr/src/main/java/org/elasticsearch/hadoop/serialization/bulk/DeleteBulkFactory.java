@@ -18,8 +18,8 @@
  */
 package org.elasticsearch.hadoop.serialization.bulk;
 
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.ConfigurationOptions;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
 

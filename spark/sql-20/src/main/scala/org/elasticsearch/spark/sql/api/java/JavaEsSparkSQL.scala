@@ -27,8 +27,8 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.SparkSession
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
 import org.elasticsearch.spark.sql.EsSparkSQL
 
 object JavaEsSparkSQL {

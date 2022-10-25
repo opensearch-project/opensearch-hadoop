@@ -24,8 +24,8 @@ import java.util.concurrent.TimeUnit
 
 import org.apache.spark.sql.internal.SQLConf
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
-import org.elasticsearch.hadoop.cfg.Settings
 import org.elasticsearch.hadoop.util.unit.TimeValue
+import org.opensearch.hadoop.cfg.Settings
 
 /**
  * Configurations specifically used for Spark Structured Streaming

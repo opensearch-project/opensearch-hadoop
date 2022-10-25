@@ -18,8 +18,6 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.rest.PartitionDefinition;
-import org.elasticsearch.hadoop.rest.RestService;
 import org.elasticsearch.hadoop.serialization.dto.ShardInfo;
 import org.junit.Before;
 import org.junit.Test;

@@ -18,9 +18,8 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
-import org.elasticsearch.hadoop.rest.PartitionDefinition;
-import org.elasticsearch.hadoop.rest.PartitionDefinition.PartitionDefinitionBuilder;
+import org.opensearch.hadoop.cfg.PropertiesSettings;
+import org.opensearch.hadoop.rest.PartitionDefinition.PartitionDefinitionBuilder;
 import org.elasticsearch.hadoop.serialization.dto.mapping.FieldParser;
 import org.elasticsearch.hadoop.serialization.dto.mapping.Mapping;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;

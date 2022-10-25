@@ -30,7 +30,7 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.execution.SQLExecution
 import org.apache.spark.sql.execution.streaming.MetadataLog
 import org.apache.spark.sql.execution.streaming.Sink
-import org.elasticsearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.cfg.Settings
 
 /**
  * Sink for writing Spark Structured Streaming Queries to an Elasticsearch cluster.

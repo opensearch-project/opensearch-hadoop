@@ -18,13 +18,6 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.rest.query.BoolQueryBuilder;
-import org.elasticsearch.hadoop.rest.query.ConstantScoreQueryBuilder;
-import org.elasticsearch.hadoop.rest.query.FilteredQueryBuilder;
-import org.elasticsearch.hadoop.rest.query.QueryBuilder;
-import org.elasticsearch.hadoop.rest.query.QueryStringQueryBuilder;
-import org.elasticsearch.hadoop.rest.query.RawQueryBuilder;
-import org.elasticsearch.hadoop.rest.query.TermQueryBuilder;
 import org.elasticsearch.hadoop.serialization.Generator;
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator;
 import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
@@ -34,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import static org.elasticsearch.hadoop.rest.query.MatchAllQueryBuilder.MATCH_ALL;
+import static org.opensearch.hadoop.rest.query.MatchAllQueryBuilder.MATCH_ALL;
 
 public class RandomQueryBuilders {
     static final int MAX_LEVEL = 3;

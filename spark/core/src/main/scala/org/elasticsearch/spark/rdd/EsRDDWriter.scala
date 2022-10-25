@@ -22,12 +22,6 @@ import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.spark.TaskContext
 import org.apache.spark.util.TaskCompletionListener
-import org.elasticsearch.hadoop.cfg.PropertiesSettings
-import org.elasticsearch.hadoop.cfg.Settings
-import org.elasticsearch.hadoop.mr.security.HadoopUserProvider
-import org.elasticsearch.hadoop.rest.InitializationUtils
-import org.elasticsearch.hadoop.rest.RestService
-import org.elasticsearch.hadoop.security.UserProvider
 import org.elasticsearch.hadoop.serialization.BytesConverter
 import org.elasticsearch.hadoop.serialization.JdkBytesConverter
 import org.elasticsearch.hadoop.serialization.builder.ValueWriter
@@ -38,6 +32,10 @@ import org.elasticsearch.hadoop.util.ObjectUtils
 import org.elasticsearch.spark.serialization.ScalaMapFieldExtractor
 import org.elasticsearch.spark.serialization.ScalaMetadataExtractor
 import org.elasticsearch.spark.serialization.ScalaValueWriter
+import org.opensearch.hadoop.cfg.{PropertiesSettings, Settings}
+import org.opensearch.hadoop.mr.security.HadoopUserProvider
+import org.opensearch.hadoop.rest.{InitializationUtils, RestService}
+import org.opensearch.hadoop.security.UserProvider
 
 import java.util.Locale
 import scala.reflect.ClassTag

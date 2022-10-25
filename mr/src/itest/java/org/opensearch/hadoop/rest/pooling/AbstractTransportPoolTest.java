@@ -19,17 +19,17 @@
 
 package org.opensearch.hadoop.rest.pooling;
 
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.Transport;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.rest.Transport;
 import org.elasticsearch.hadoop.rest.pooling.TransportPool;
-import org.elasticsearch.hadoop.security.SecureSettings;
+import org.opensearch.hadoop.security.SecureSettings;
 import org.elasticsearch.hadoop.util.SettingsUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
 import java.util.UUID;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT;
 
 public class AbstractTransportPoolTest {
 

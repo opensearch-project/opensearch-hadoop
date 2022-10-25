@@ -19,13 +19,9 @@
 
 package org.opensearch.hadoop.cfg;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Properties;
 
-import org.elasticsearch.hadoop.cfg.CompositeSettings;
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
-import org.elasticsearch.hadoop.cfg.Settings;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

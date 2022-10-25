@@ -23,9 +23,9 @@ import java.util.Iterator;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.security.EsToken;
-import org.elasticsearch.hadoop.security.UserProvider;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.UserProvider;
 import org.elasticsearch.hadoop.util.ClusterInfo;
 import org.elasticsearch.hadoop.util.ClusterName;
 

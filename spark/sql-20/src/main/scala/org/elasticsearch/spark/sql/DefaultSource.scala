@@ -61,14 +61,8 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_WRITE_OPERATION
-import org.elasticsearch.hadoop.cfg.InternalConfigurationOptions
-import org.elasticsearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
-import org.elasticsearch.hadoop.cfg.Settings
-import org.elasticsearch.hadoop.mr.security.HadoopUserProvider
-import org.elasticsearch.hadoop.rest.InitializationUtils
-import org.elasticsearch.hadoop.rest.RestRepository
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_WRITE_OPERATION
+import org.opensearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
 import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter
 import org.elasticsearch.hadoop.serialization.field.ConstantFieldExtractor
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator
@@ -83,6 +77,9 @@ import org.elasticsearch.spark.serialization.ScalaValueWriter
 import org.elasticsearch.spark.sql.streaming.EsSparkSqlStreamingSink
 import org.elasticsearch.spark.sql.streaming.SparkSqlStreamingConfigs
 import org.elasticsearch.spark.sql.streaming.StructuredStreamingVersionLock
+import org.opensearch.hadoop.cfg.{ConfigurationOptions, InternalConfigurationOptions, Settings}
+import org.opensearch.hadoop.mr.security.HadoopUserProvider
+import org.opensearch.hadoop.rest.{InitializationUtils, RestRepository}
 
 import scala.collection.JavaConverters.mapAsJavaMapConverter
 import scala.collection.mutable.LinkedHashMap

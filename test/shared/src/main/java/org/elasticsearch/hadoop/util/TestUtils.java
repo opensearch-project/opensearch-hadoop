@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Locale;
 
-import org.elasticsearch.hadoop.rest.RestClient;
+import org.opensearch.hadoop.rest.RestClient;
 
 public class TestUtils {
 

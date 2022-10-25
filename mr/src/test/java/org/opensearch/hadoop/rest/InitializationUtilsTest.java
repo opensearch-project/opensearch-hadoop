@@ -19,7 +19,7 @@
 package org.opensearch.hadoop.rest;
 
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.util.ClusterInfo;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
@@ -27,8 +27,8 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.*;
-import static org.elasticsearch.hadoop.rest.InitializationUtils.*;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;
+import static org.opensearch.hadoop.rest.InitializationUtils.*;
 
 public class InitializationUtilsTest {
 

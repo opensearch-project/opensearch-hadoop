@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.rest.query.QueryBuilder;
+import org.opensearch.hadoop.rest.query.QueryBuilder;
 import org.elasticsearch.hadoop.serialization.Generator;
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator;
 import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;

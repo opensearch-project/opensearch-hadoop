@@ -28,7 +28,7 @@ import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConfig;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.SerializationConfig;
-import org.elasticsearch.hadoop.rest.EsHadoopParsingException;
+import org.opensearch.hadoop.rest.EsHadoopParsingException;
 import org.elasticsearch.hadoop.util.Assert;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.FastByteArrayInputStream;

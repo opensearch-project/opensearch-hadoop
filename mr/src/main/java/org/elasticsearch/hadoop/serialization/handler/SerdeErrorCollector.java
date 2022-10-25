@@ -20,8 +20,8 @@
 package org.elasticsearch.hadoop.serialization.handler;
 
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
-import org.elasticsearch.hadoop.handler.ErrorCollector;
-import org.elasticsearch.hadoop.handler.HandlerResult;
+import org.opensearch.hadoop.handler.ErrorCollector;
+import org.opensearch.hadoop.handler.HandlerResult;
 
 /**
  * A generic error collector implementation that can be used for retrying either serialization or deserialization errors.

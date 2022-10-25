@@ -28,8 +28,8 @@ import java.util.Map;
 import java.util.UUID;
 
 import com.google.common.base.Charsets;
-import org.elasticsearch.hadoop.rest.Resource;
-import org.elasticsearch.hadoop.rest.RestClient;
+import org.opensearch.hadoop.rest.Resource;
+import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.rest.bulk.BulkOutputGenerator;
 import org.elasticsearch.hadoop.serialization.ParsingUtils;
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonParser;

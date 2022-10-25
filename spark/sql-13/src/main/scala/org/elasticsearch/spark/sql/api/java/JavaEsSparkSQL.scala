@@ -26,8 +26,8 @@ import scala.collection.{Map => SMap}
 import org.apache.spark.annotation.Experimental
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SQLContext
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
 import org.elasticsearch.spark.sql.EsSparkSQL
 
 object JavaEsSparkSQL {

@@ -24,9 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import org.elasticsearch.hadoop.cli.Keytool;
-import org.elasticsearch.hadoop.cli.Prompt;
-import org.elasticsearch.hadoop.security.KeystoreWrapper;
+import org.opensearch.hadoop.security.KeystoreWrapper;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
 import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;

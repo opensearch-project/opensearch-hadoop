@@ -1,6 +1,5 @@
 package org.opensearch.hadoop.cfg;
 
-import org.elasticsearch.hadoop.cfg.Settings;
 import org.junit.Assert;
 import org.junit.Test;
 

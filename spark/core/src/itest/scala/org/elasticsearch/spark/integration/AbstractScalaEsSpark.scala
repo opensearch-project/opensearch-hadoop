@@ -31,16 +31,15 @@ import org.apache.spark.SparkContext
 import org.apache.spark.SparkException
 import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, OpenSearchAssume}
 import org.elasticsearch.hadoop.TestData
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_INPUT_JSON
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_JOIN
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_READ_METADATA
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INPUT_JSON
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_JOIN
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_READ_METADATA
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE
 import org.elasticsearch.hadoop.util.TestUtils.resource
 import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
 import org.elasticsearch.hadoop.rest.RestUtils
@@ -81,6 +80,7 @@ import org.junit.runners.Parameterized.Parameters
 
 import org.elasticsearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import org.elasticsearch.spark.rdd.JDKCollectionConvertersCompat.Converters._
+import org.opensearch.hadoop.cfg.ConfigurationOptions
 
 object AbstractScalaEsScalaSpark {
   @transient val conf = new SparkConf()

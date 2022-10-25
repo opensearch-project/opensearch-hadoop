@@ -21,7 +21,7 @@ package org.elasticsearch.hadoop.serialization.bulk;
 import java.util.EnumMap;
 
 import org.elasticsearch.hadoop.EsHadoopUnsupportedOperationException;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.SettingsAware;
 import org.elasticsearch.hadoop.serialization.field.FieldExtractor;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;

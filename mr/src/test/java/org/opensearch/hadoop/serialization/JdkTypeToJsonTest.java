@@ -28,7 +28,7 @@ import java.util.Date;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException;
 import org.elasticsearch.hadoop.serialization.Generator;
 import org.elasticsearch.hadoop.serialization.builder.ContentBuilder;

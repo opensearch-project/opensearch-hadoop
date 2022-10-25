@@ -37,13 +37,13 @@ import org.apache.spark.sql.types.DataTypes.LongType
 import org.apache.spark.sql.types.DataTypes.ShortType
 import org.apache.spark.sql.types.DataTypes.StringType
 import org.apache.spark.sql.types.DataTypes.TimestampType
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT
-import org.elasticsearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT
 import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException
 import org.elasticsearch.hadoop.serialization.Generator
 import org.elasticsearch.hadoop.serialization.builder.FilteringValueWriter
 import org.elasticsearch.hadoop.serialization.builder.ValueWriter.Result
 import org.elasticsearch.hadoop.util.unit.Booleans
+import org.opensearch.hadoop.cfg.Settings
 
 import scala.None
 

@@ -24,8 +24,7 @@ import org.apache.spark.sql.types.ArrayType
 import org.apache.spark.sql.types.DataTypes._
 import org.apache.spark.sql.types.StructType
 import org.codehaus.jackson.map.ObjectMapper
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions._
-import org.elasticsearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.cfg.ConfigurationOptions._
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.spark.sql.SchemaUtils._
 import org.junit.Assert.assertEquals
@@ -36,6 +35,7 @@ import org.junit.Test
 import java.util.Collections
 
 import org.elasticsearch.hadoop.serialization.dto.mapping.FieldParser
+import org.opensearch.hadoop.cfg.Settings
 
 class SchemaUtilsTest {
 

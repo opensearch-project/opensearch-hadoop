@@ -21,15 +21,15 @@ package org.elasticsearch.hadoop.qa.kerberos;
 
 import java.io.IOException;
 
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.Request;
-import org.elasticsearch.hadoop.rest.Response;
-import org.elasticsearch.hadoop.rest.RestClient;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.rest.Request;
+import org.opensearch.hadoop.rest.Response;
+import org.opensearch.hadoop.rest.RestClient;
 import org.elasticsearch.hadoop.util.ByteSequence;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.IOUtils;
 
-import static org.elasticsearch.hadoop.rest.Request.Method.PUT;
+import static org.opensearch.hadoop.rest.Request.Method.PUT;
 
 public class ExtendedClient extends RestClient {
 

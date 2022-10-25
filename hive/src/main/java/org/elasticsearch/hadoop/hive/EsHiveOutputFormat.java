@@ -31,11 +31,11 @@ import org.apache.hadoop.io.Writable;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.util.Progressable;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.cfg.HadoopSettingsManager;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.mr.EsOutputFormat;
-import org.elasticsearch.hadoop.mr.security.HadoopUserProvider;
-import org.elasticsearch.hadoop.rest.InitializationUtils;
+import org.opensearch.hadoop.cfg.HadoopSettingsManager;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.mr.EsOutputFormat;
+import org.opensearch.hadoop.mr.security.HadoopUserProvider;
+import org.opensearch.hadoop.rest.InitializationUtils;
 
 /**
  * Hive specific OutputFormat.

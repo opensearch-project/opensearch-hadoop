@@ -21,8 +21,8 @@ package org.opensearch.hadoop.rest.bulk;
 
 import java.io.IOException;
 
-import org.elasticsearch.hadoop.rest.Resource;
-import org.elasticsearch.hadoop.rest.RestClient;
+import org.opensearch.hadoop.rest.Resource;
+import org.opensearch.hadoop.rest.RestClient;
 
 /**
  * Test class for producing bulk endpoint output data programatically for different versions.

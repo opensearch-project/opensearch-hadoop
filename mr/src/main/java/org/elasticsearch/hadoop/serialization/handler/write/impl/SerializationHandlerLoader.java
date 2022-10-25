@@ -20,12 +20,12 @@
 package org.elasticsearch.hadoop.serialization.handler.write.impl;
 
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.handler.ErrorCollector;
-import org.elasticsearch.hadoop.handler.ErrorHandler;
-import org.elasticsearch.hadoop.handler.impl.AbortOnFailure;
-import org.elasticsearch.hadoop.handler.impl.AbstractHandlerLoader;
-import org.elasticsearch.hadoop.handler.impl.DropAndLog;
-import org.elasticsearch.hadoop.handler.impl.elasticsearch.ElasticsearchHandler;
+import org.opensearch.hadoop.handler.ErrorCollector;
+import org.opensearch.hadoop.handler.ErrorHandler;
+import org.opensearch.hadoop.handler.impl.AbortOnFailure;
+import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;
+import org.opensearch.hadoop.handler.impl.DropAndLog;
+import org.opensearch.hadoop.handler.impl.elasticsearch.ElasticsearchHandler;
 import org.elasticsearch.hadoop.serialization.handler.write.ISerializationErrorHandler;
 import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure;
 

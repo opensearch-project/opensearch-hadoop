@@ -32,12 +32,12 @@ import org.apache.hadoop.mapred.FileSplit;
 import org.apache.hadoop.mapred.InputSplit;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.Reporter;
-import org.elasticsearch.hadoop.cfg.HadoopSettingsManager;
-import org.elasticsearch.hadoop.cfg.InternalConfigurationOptions;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.mr.EsInputFormat;
-import org.elasticsearch.hadoop.mr.security.HadoopUserProvider;
-import org.elasticsearch.hadoop.rest.InitializationUtils;
+import org.opensearch.hadoop.cfg.HadoopSettingsManager;
+import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.security.HadoopUserProvider;
+import org.opensearch.hadoop.rest.InitializationUtils;
 import org.elasticsearch.hadoop.util.StringUtils;
 
 /**

@@ -21,7 +21,7 @@ package org.elasticsearch.hadoop.serialization.handler.write;
 
 import java.util.List;
 
-import org.elasticsearch.hadoop.handler.impl.BaseExceptional;
+import org.opensearch.hadoop.handler.impl.BaseExceptional;
 
 public class SerializationFailure extends BaseExceptional {
     private final Object record;

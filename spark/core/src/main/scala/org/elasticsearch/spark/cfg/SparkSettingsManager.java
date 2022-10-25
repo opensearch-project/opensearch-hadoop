@@ -19,7 +19,7 @@
 package org.elasticsearch.spark.cfg;
 
 import org.apache.spark.SparkConf;
-import org.elasticsearch.hadoop.cfg.SettingsManager;
+import org.opensearch.hadoop.cfg.SettingsManager;
 
 public class SparkSettingsManager implements SettingsManager<SparkConf> {
 

@@ -24,8 +24,8 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.Resource;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.rest.Resource;
 import org.elasticsearch.hadoop.serialization.ParsingUtils;
 import org.elasticsearch.hadoop.serialization.dto.mapping.MappingUtils;
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonParser;

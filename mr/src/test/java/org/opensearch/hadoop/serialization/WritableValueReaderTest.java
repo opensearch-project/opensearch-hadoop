@@ -25,7 +25,7 @@ import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.BytesWritable;
-import org.elasticsearch.hadoop.mr.WritableValueReader;
+import org.opensearch.hadoop.mr.WritableValueReader;
 import org.elasticsearch.hadoop.serialization.AbstractValueReaderTest;
 import org.elasticsearch.hadoop.serialization.builder.ValueReader;
 

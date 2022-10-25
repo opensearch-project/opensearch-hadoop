@@ -21,7 +21,7 @@ package org.elasticsearch.hadoop.serialization.handler.write.impl;
 
 import java.io.IOException;
 
-import org.elasticsearch.hadoop.handler.impl.elasticsearch.BaseEventConverter;
+import org.opensearch.hadoop.handler.impl.elasticsearch.BaseEventConverter;
 import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure;
 
 public class SerializationEventConverter extends BaseEventConverter<SerializationFailure> {

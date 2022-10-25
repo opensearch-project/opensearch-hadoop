@@ -28,7 +28,7 @@ import org.apache.pig.data.DefaultDataBag;
 import org.apache.pig.data.Tuple;
 import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.util.Utils;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.pig.PigTuple;
 import org.elasticsearch.hadoop.pig.PigValueWriter;
 import org.elasticsearch.hadoop.serialization.builder.ContentBuilder;

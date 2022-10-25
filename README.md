@@ -155,7 +155,7 @@ CREATE EXTERNAL TABLE artists (
     id      BIGINT,
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
-STORED BY 'org.elasticsearch.hadoop.hive.EsStorageHandler'
+STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler'
 TBLPROPERTIES('es.resource' = 'radio/artists', 'es.query' = '?q=me*');
 ```
 The fields defined in the table are mapped to the JSON when communicating with Elasticsearch. Notice the use of `TBLPROPERTIES` to define the location, that is the query used for reading from this table.
@@ -172,7 +172,7 @@ CREATE EXTERNAL TABLE artists (
     id      BIGINT,
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
-STORED BY 'org.elasticsearch.hadoop.hive.EsStorageHandler'
+STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler'
 TBLPROPERTIES('es.resource' = 'radio/artists');
 ```
 
@@ -193,14 +193,14 @@ REGISTER /path_to_jar/es-hadoop-<version>.jar;
 ```
 Additionally one can define an alias to save some chars:
 ```
-%define ESSTORAGE org.elasticsearch.hadoop.pig.EsStorage()
+%define ESSTORAGE org.opensearch.pig.hadoop.EsStorage()
 ```
 and use `$ESSTORAGE` for storage definition.
 
 ### Reading
 To read data from ES, use `EsStorage` and specify the query through the `LOAD` function:
 ```SQL
-A = LOAD 'radio/artists' USING org.elasticsearch.hadoop.pig.EsStorage('es.query=?q=me*');
+A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage('es.query=?q=me*');
 DUMP A;
 ```
 
@@ -209,7 +209,7 @@ Use the same `Storage` to write data to Elasticsearch:
 ```SQL
 A = LOAD 'src/artists.dat' USING PigStorage() AS (id:long, name, url:chararray, picture: chararray);
 B = FOREACH A GENERATE name, TOTUPLE(url, picture) AS links;
-STORE B INTO 'radio/artists' USING org.elasticsearch.hadoop.pig.EsStorage();
+STORE B INTO 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage();
 ```
 ## [Apache Spark][]
 ES-Hadoop provides native (Java and Scala) integration with Spark: for reading a dedicated `RDD` and for writing, methods that work on any `RDD`. Spark SQL is also supported

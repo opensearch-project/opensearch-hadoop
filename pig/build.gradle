@@ -1,7 +1,7 @@
 
 apply plugin: 'opensearch.hadoop.build.integration'
 
-description = "Elasticsearch Hadoop Pig"
+description = "OpenSearch Hadoop Pig"
 
 evaluationDependsOn(':opensearch-hadoop-mr')
 
@@ -55,7 +55,7 @@ tasks.named("test").configure {
 jar {
     dependsOn(project.configurations.embedded)
     from(project.configurations.embedded.collect { it.isDirectory() ? it : zipTree(it)}) {
-        include "org/elasticsearch/hadoop/**"
+        include "org/opensearch/hadoop/**"
         include "opensearch-hadoop-build.properties"
         include "META-INF/services/*"
     }
@@ -65,12 +65,12 @@ itestJar {
     dependsOn(project.configurations.embedded)
     dependsOn(project.configurations.itestEmbedded)
     from(project.configurations.embedded.collect { it.isDirectory() ? it : zipTree(it)}) {
-        include "org/elasticsearch/hadoop/**"
+        include "org/opensearch/hadoop/**"
         include "opensearch-hadoop-build.properties"
         include "META-INF/services/*"
     }
     from(project.configurations.itestEmbedded.collect { it.isDirectory() ? it : zipTree(it)}) {
-        include "org/elasticsearch/hadoop/**"
+        include "org/opensearch/hadoop/**"
         include "opensearch-hadoop-build.properties"
         include "META-INF/services/*"
     }

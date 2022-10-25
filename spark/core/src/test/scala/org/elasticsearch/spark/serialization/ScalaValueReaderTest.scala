@@ -1,10 +1,10 @@
 package org.elasticsearch.spark.serialization
 
-import org.elasticsearch.hadoop.serialization.FieldType.DATE_NANOS
-import org.elasticsearch.hadoop.serialization.Parser
+import org.opensearch.hadoop.serialization.FieldType.DATE_NANOS
 import org.junit.Assert._
 import org.junit.Test
 import org.mockito.Mockito
+import org.opensearch.hadoop.serialization.Parser
 
 import java.sql.Timestamp
 import java.util.Date

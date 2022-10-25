@@ -23,10 +23,10 @@ import java.io.Closeable;
 import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.rest.EsHadoopTransportException;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.StringUtils;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;

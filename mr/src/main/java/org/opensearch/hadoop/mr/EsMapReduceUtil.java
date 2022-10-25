@@ -24,8 +24,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
-import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.Settings;
@@ -35,7 +35,7 @@ import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
-import org.elasticsearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.ClusterInfo;
 
 /**
  * Utility functions for setting up Map Reduce Jobs to read and write from Elasticsearch.

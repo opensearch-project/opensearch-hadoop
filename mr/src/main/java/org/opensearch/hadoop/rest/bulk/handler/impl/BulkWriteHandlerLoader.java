@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.rest.bulk.handler.impl;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
 import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;

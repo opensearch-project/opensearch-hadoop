@@ -20,9 +20,7 @@ package org.opensearch.hadoop.serialization;
 
 import java.io.InputStream;
 
-import org.elasticsearch.hadoop.serialization.ScrollReader;
-import org.elasticsearch.hadoop.serialization.ScrollReaderConfigBuilder;
-import org.elasticsearch.hadoop.serialization.builder.JdkValueReader;
+import org.opensearch.hadoop.serialization.builder.JdkValueReader;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.After;
 import org.junit.Before;

@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.rest.commonshttp.auth.spnego;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
@@ -28,7 +28,7 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.URIException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthScheme;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthenticationException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.MalformedChallengeException;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 import org.ietf.jgss.GSSException;
 
 import javax.security.auth.kerberos.KerberosPrincipal;

@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest.bulk.handler.impl;
 
 import java.util.concurrent.TimeUnit;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.handler.HandlerResult;
@@ -32,7 +32,7 @@ import org.opensearch.hadoop.rest.SimpleHttpRetryPolicy;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteErrorHandler;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.opensearch.hadoop.rest.bulk.handler.DelayableErrorCollector;
-import org.elasticsearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.util.ObjectUtils;
 
 /**
  * Instantiates the configured HTTP Retry Policy and uses it to determine if a request should be retried.

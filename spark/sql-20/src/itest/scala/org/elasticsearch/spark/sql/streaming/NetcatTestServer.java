@@ -30,8 +30,8 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
-import org.elasticsearch.hadoop.util.unit.TimeValue;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.util.unit.TimeValue;
 
 /**
  * Buffers up inputs into an internal queue, and sends them to the first client

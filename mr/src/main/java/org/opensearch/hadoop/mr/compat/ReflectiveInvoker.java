@@ -21,8 +21,8 @@ package org.opensearch.hadoop.mr.compat;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.ReflectionUtils;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.ReflectionUtils;
 
 public class ReflectiveInvoker implements InvocationHandler {
 

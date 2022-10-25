@@ -18,7 +18,6 @@
  */
 package org.opensearch.hadoop.serialization.dto;
 
-import org.elasticsearch.hadoop.serialization.dto.NodeInfo;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;

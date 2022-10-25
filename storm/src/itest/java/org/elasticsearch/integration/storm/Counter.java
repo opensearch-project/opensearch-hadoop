@@ -20,7 +20,7 @@ package org.elasticsearch.integration.storm;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-import org.elasticsearch.hadoop.util.unit.TimeValue;
+import org.opensearch.hadoop.util.unit.TimeValue;
 
 public class Counter {
 

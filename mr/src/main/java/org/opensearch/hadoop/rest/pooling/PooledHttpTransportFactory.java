@@ -20,13 +20,13 @@ package org.opensearch.hadoop.rest.pooling;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Transport;
 import org.opensearch.hadoop.rest.TransportFactory;
 import org.opensearch.hadoop.security.SecureSettings;
-import org.elasticsearch.hadoop.util.SettingsUtils;
+import org.opensearch.hadoop.util.SettingsUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;

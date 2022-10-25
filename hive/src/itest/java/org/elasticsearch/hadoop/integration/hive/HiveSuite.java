@@ -30,7 +30,7 @@ import org.elasticsearch.hadoop.fs.HdfsUtils;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.fixtures.LocalEs;
 import org.elasticsearch.hadoop.Provisioner;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.rules.ChainedExternalResource;

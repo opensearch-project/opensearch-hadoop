@@ -19,10 +19,9 @@
 package org.elasticsearch.spark.serialization
 
 import scala.collection.Map
-
-import org.elasticsearch.hadoop.serialization.MapFieldExtractor
-import org.elasticsearch.hadoop.serialization.field.FieldExtractor._
+import org.opensearch.hadoop.serialization.field.FieldExtractor._
 import org.elasticsearch.spark.serialization.{ ReflectionUtils => RU }
+import org.opensearch.hadoop.serialization.MapFieldExtractor
 
 class ScalaMapFieldExtractor extends MapFieldExtractor {
 

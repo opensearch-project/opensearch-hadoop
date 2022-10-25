@@ -22,8 +22,8 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.io.*;
-import org.elasticsearch.hadoop.serialization.FieldType;
-import org.elasticsearch.hadoop.serialization.builder.JdkValueReader;
+import org.opensearch.hadoop.serialization.FieldType;
+import org.opensearch.hadoop.serialization.builder.JdkValueReader;
 
 public class WritableValueReader extends JdkValueReader {
 

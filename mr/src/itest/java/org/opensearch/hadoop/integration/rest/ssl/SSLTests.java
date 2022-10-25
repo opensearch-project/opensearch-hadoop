@@ -33,7 +33,7 @@ import org.opensearch.hadoop.rest.commonshttp.CommonsHttpTransport;
 import org.elasticsearch.hadoop.rest.ssl.BasicSSLServer;
 import org.opensearch.hadoop.security.KeystoreWrapper;
 import org.opensearch.hadoop.security.SecureSettings;
-import org.elasticsearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.IOUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;

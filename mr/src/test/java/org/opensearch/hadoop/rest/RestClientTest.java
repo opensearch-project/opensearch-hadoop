@@ -19,14 +19,14 @@
 
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.query.MatchAllQueryBuilder;
 import org.opensearch.hadoop.rest.stats.Stats;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.FastByteArrayInputStream;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 import org.mockito.Mockito;

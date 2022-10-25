@@ -19,7 +19,7 @@
 package org.opensearch.hadoop.rest;
 
 import org.elasticsearch.hadoop.rest.ErrorUtils;
-import org.elasticsearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.BytesArray;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

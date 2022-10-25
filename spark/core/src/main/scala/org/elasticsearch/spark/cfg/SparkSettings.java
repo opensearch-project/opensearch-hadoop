@@ -26,10 +26,10 @@ import java.util.Properties;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.spark.SparkConf;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.IOUtils;
 
-import org.elasticsearch.hadoop.util.Version;
+import org.opensearch.hadoop.util.Version;
 import scala.Option;
 import scala.Tuple2;
 

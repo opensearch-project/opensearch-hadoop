@@ -21,7 +21,7 @@ package org.opensearch.hadoop.cfg;
 import java.util.Properties;
 
 import org.apache.hadoop.conf.Configuration;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 
 /**
  * Factory for loading settings based on various configuration objects, such as Properties or Hadoop configuration.

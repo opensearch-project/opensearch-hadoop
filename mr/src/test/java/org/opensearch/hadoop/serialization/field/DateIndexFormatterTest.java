@@ -18,8 +18,6 @@
  */
 package org.opensearch.hadoop.serialization.field;
 
-import org.elasticsearch.hadoop.serialization.field.DateIndexFormatter;
-import org.elasticsearch.hadoop.serialization.field.IndexFormatter;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

@@ -34,9 +34,9 @@ import java.util.Set;
 import javax.security.auth.Subject;
 import javax.security.auth.kerberos.KerberosPrincipal;
 
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.util.ClusterName;
+import org.opensearch.hadoop.util.ClusterName;
 
 public class JdkUser implements User {
 

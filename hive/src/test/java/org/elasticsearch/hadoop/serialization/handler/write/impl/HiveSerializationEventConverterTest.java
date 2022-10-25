@@ -30,10 +30,11 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.elasticsearch.hadoop.hive.HiveType;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
-import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure;
-import org.elasticsearch.hadoop.util.DateUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.handler.write.SerializationFailure;
+import org.opensearch.hadoop.util.DateUtils;
+import org.opensearch.hadoop.util.StringUtils;
 import org.junit.Test;
+import org.opensearch.hadoop.serialization.handler.write.impl.SerializationEventConverter;
 
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.startsWith;

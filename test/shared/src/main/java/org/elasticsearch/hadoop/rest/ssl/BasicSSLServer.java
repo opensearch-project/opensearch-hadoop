@@ -42,7 +42,7 @@ import io.netty.handler.ssl.SslContext;
 import java.io.File;
 import java.nio.file.Paths;
 
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 import static io.netty.handler.codec.http.HttpHeaders.Names.*;
 import static io.netty.handler.codec.http.HttpResponseStatus.*;

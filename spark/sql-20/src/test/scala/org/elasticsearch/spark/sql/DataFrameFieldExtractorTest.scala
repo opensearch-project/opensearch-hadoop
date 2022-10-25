@@ -23,10 +23,10 @@ import org.apache.spark.sql.Row
 import org.apache.spark.sql.types.StringType
 import org.apache.spark.sql.types.StructField
 import org.apache.spark.sql.types.StructType
-import org.elasticsearch.hadoop.serialization.field.ConstantFieldExtractor
 import org.elasticsearch.hadoop.util.TestSettings
 import org.junit.Test
 import org.junit.Assert._
+import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor
 
 class DataFrameFieldExtractorTest {
 

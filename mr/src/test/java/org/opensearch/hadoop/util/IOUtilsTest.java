@@ -34,8 +34,7 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.util.jar.JarFile;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

@@ -26,16 +26,16 @@ import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.Response;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.rest.RestClient.Health;
-import org.elasticsearch.hadoop.serialization.dto.mapping.Mapping;
-import org.elasticsearch.hadoop.serialization.dto.mapping.MappingSet;
-import org.elasticsearch.hadoop.util.ByteSequence;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.dto.mapping.Mapping;
+import org.opensearch.hadoop.serialization.dto.mapping.MappingSet;
+import org.opensearch.hadoop.util.ByteSequence;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
-import org.elasticsearch.hadoop.util.unit.TimeValue;
+import org.opensearch.hadoop.util.unit.TimeValue;
 
 import static org.opensearch.hadoop.rest.Request.Method.*;
 

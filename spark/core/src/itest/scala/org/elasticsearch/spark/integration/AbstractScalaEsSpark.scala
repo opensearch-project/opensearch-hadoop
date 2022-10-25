@@ -29,7 +29,7 @@ import java.{util => ju}
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkException
-import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, OpenSearchAssume}
+import org.elasticsearch.hadoop.OpenSearchAssume
 import org.elasticsearch.hadoop.TestData
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY
@@ -44,9 +44,6 @@ import org.elasticsearch.hadoop.util.TestUtils.resource
 import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
 import org.elasticsearch.hadoop.rest.RestUtils
 import org.elasticsearch.hadoop.rest.RestUtils.ExtendedRestClient
-import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
-import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.hadoop.util.TestUtils
 import org.elasticsearch.spark.rdd.EsSpark
@@ -80,7 +77,10 @@ import org.junit.runners.Parameterized.Parameters
 
 import org.elasticsearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import org.elasticsearch.spark.rdd.JDKCollectionConvertersCompat.Converters._
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.serialization.EsHadoopSerializationException
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
 object AbstractScalaEsScalaSpark {
   @transient val conf = new SparkConf()

@@ -41,12 +41,12 @@ import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
 import org.apache.hadoop.hive.serde2.typeinfo.TypeInfoUtils;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.InitializationUtils;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.FieldAlias;
-import org.elasticsearch.hadoop.util.ObjectUtils;
-import org.elasticsearch.hadoop.util.SettingsUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.unit.Booleans;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.FieldAlias;
+import org.opensearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.util.SettingsUtils;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.unit.Booleans;
 
 abstract class HiveUtils {
 

@@ -25,14 +25,13 @@ import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.catalyst.encoders.ExpressionEncoder
 import org.apache.spark.sql.catalyst.encoders.RowEncoder
 import org.apache.spark.sql.types.StructType
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
-import org.elasticsearch.hadoop.serialization.BytesConverter
-import org.elasticsearch.hadoop.serialization.JdkBytesConverter
-import org.elasticsearch.hadoop.serialization.builder.ValueWriter
-import org.elasticsearch.hadoop.serialization.field.FieldExtractor
 import org.elasticsearch.spark.rdd.EsRDDWriter
 import org.elasticsearch.spark.sql.DataFrameFieldExtractor
 import org.elasticsearch.spark.sql.DataFrameValueWriter
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.serialization.{BytesConverter, JdkBytesConverter}
+import org.opensearch.hadoop.serialization.builder.ValueWriter
+import org.opensearch.hadoop.serialization.field.FieldExtractor
 
 /**
  * Takes in iterator of InternalRow objects from a partition of data, writes it to Elasticsearch, and manages

@@ -27,9 +27,9 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.unit.Booleans;
+import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.unit.Booleans;
 
 import static org.elasticsearch.storm.cfg.StormConfigurationOptions.*;
 

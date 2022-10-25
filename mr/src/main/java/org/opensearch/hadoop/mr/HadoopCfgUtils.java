@@ -27,8 +27,8 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.TaskAttemptID;
 import org.apache.hadoop.mapred.TaskID;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.unit.TimeValue;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.unit.TimeValue;
 
 /**
  * Class which handles the various Hadoop properties, aware of the changes between YARN (Hadoop 2) and 1.

@@ -28,14 +28,14 @@ import org.apache.pig.data.DataBag;
 import org.apache.pig.data.DataByteArray;
 import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException;
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.builder.FilteringValueWriter;
-import org.elasticsearch.hadoop.util.FieldAlias;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.unit.Booleans;
+import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.serialization.builder.FilteringValueWriter;
+import org.opensearch.hadoop.util.FieldAlias;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.unit.Booleans;
 
 public class PigValueWriter extends FilteringValueWriter<PigTuple> {
 

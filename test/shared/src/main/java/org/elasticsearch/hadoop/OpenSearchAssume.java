@@ -20,7 +20,7 @@
 package org.elasticsearch.hadoop;
 
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 
 import static org.junit.Assume.assumeTrue;
 

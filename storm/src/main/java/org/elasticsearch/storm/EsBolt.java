@@ -31,7 +31,7 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Tuple;
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 import org.opensearch.hadoop.rest.bulk.BulkResponse;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.RestService;

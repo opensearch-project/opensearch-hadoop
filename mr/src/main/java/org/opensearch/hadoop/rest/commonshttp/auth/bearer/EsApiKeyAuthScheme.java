@@ -27,7 +27,7 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthenticationException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.BasicScheme;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.MalformedChallengeException;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 /**
  * Performs authentication by sending an auth header that contains an authentication token.

@@ -18,8 +18,8 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.util.ByteSequence;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.ByteSequence;
+import org.opensearch.hadoop.util.StringUtils;
 
 public class SimpleRequest implements Request {
 

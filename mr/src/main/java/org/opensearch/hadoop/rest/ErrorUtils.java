@@ -23,8 +23,8 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.elasticsearch.hadoop.util.ByteSequence;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.ByteSequence;
+import org.opensearch.hadoop.util.StringUtils;
 
 class ErrorUtils {
 

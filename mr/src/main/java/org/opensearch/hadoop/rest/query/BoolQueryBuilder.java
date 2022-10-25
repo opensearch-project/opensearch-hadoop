@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.serialization.Generator;
 
 import java.util.ArrayList;
 import java.util.Collection;

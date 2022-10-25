@@ -26,12 +26,12 @@ import java.util.Map;
 import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.hive.HiveFieldExtractor;
 import org.elasticsearch.hadoop.serialization.HiveTypeToJsonTest.MyHiveType;
-import org.elasticsearch.hadoop.serialization.field.ConstantFieldExtractor;
-import org.elasticsearch.hadoop.serialization.field.FieldExtractor;
+import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor;
+import org.opensearch.hadoop.serialization.field.FieldExtractor;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 

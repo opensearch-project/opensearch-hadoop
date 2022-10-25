@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 
 public abstract class HttpStatus {
 

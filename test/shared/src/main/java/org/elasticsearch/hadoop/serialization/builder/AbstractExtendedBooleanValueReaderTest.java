@@ -22,8 +22,9 @@ package org.elasticsearch.hadoop.serialization.builder;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.elasticsearch.hadoop.serialization.FieldType;
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonParser;
+import org.opensearch.hadoop.serialization.FieldType;
+import org.opensearch.hadoop.serialization.builder.ValueReader;
+import org.opensearch.hadoop.serialization.json.JacksonJsonParser;
 import org.hamcrest.Matcher;
 import org.hamcrest.Matchers;
 import org.junit.Assert;

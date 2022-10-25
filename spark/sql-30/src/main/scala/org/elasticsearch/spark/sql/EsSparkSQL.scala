@@ -23,15 +23,15 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.SparkSession
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_WRITE
-import org.elasticsearch.hadoop.util.ObjectUtils
 import org.elasticsearch.spark.cfg.SparkSettingsManager
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.PropertiesSettings
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.InitializationUtils
+import org.opensearch.hadoop.util.ObjectUtils
 
 import scala.collection.JavaConverters.mapAsJavaMapConverter
 import scala.collection.JavaConverters.propertiesAsScalaMapConverter

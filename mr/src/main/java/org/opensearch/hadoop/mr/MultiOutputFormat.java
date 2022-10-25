@@ -34,7 +34,7 @@ import org.apache.hadoop.mapreduce.RecordWriter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.util.Progressable;
 import org.opensearch.hadoop.mr.compat.CompatHandler;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 public class MultiOutputFormat extends OutputFormat implements org.apache.hadoop.mapred.OutputFormat {
 

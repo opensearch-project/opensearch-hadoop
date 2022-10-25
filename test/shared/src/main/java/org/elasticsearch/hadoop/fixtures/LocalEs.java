@@ -24,12 +24,12 @@ import org.elasticsearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.rest.InitializationUtils;
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
-import org.elasticsearch.hadoop.util.unit.Booleans;
+import org.opensearch.hadoop.util.unit.Booleans;
 import org.junit.rules.ExternalResource;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES;

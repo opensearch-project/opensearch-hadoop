@@ -27,7 +27,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.BytesWritable;
 import org.opensearch.hadoop.mr.WritableValueReader;
 import org.elasticsearch.hadoop.serialization.AbstractValueReaderTest;
-import org.elasticsearch.hadoop.serialization.builder.ValueReader;
+import org.opensearch.hadoop.serialization.builder.ValueReader;
 
 import static org.junit.Assert.*;
 

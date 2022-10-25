@@ -50,9 +50,8 @@ import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.storage.StorageLevel.DISK_ONLY
 import org.apache.spark.storage.StorageLevel.DISK_ONLY_2
-import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException, OpenSearchAssume}
+import org.elasticsearch.hadoop.OpenSearchAssume
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
-import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.hadoop.util.TestUtils
 import org.elasticsearch.hadoop.util.TestUtils.resource
@@ -93,10 +92,11 @@ import org.apache.spark.sql.SparkSession
 import org.elasticsearch.hadoop.TestData
 import org.elasticsearch.hadoop.rest.RestUtils
 import org.elasticsearch.hadoop.serialization.JsonUtils
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
 import org.junit.Assert._
 import org.junit.ClassRule
+import org.opensearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
 object AbstractScalaEsScalaSparkSQL {
   @transient val conf = new SparkConf()

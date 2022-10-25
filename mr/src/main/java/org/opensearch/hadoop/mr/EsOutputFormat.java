@@ -41,8 +41,8 @@ import org.opensearch.hadoop.rest.Resource;
 import org.opensearch.hadoop.rest.RestRepository;
 import org.opensearch.hadoop.rest.RestService;
 import org.opensearch.hadoop.rest.RestService.PartitionWriter;
-import org.elasticsearch.hadoop.serialization.field.MapWritableFieldExtractor;
-import org.elasticsearch.hadoop.util.Assert;
+import org.opensearch.hadoop.serialization.field.MapWritableFieldExtractor;
+import org.opensearch.hadoop.util.Assert;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE;
 

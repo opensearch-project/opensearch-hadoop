@@ -18,8 +18,8 @@
  */
 package org.elasticsearch.hadoop.pig;
 
-import org.elasticsearch.hadoop.serialization.field.DateIndexFormatter;
-import org.elasticsearch.hadoop.serialization.field.IndexFormatter;
+import org.opensearch.hadoop.serialization.field.DateIndexFormatter;
+import org.opensearch.hadoop.serialization.field.IndexFormatter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertThat;

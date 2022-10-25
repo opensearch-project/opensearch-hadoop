@@ -25,13 +25,13 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.rest.stats.Stats;
 import org.opensearch.hadoop.rest.stats.StatsAware;
-import org.elasticsearch.hadoop.serialization.ScrollReader;
-import org.elasticsearch.hadoop.serialization.ScrollReader.Scroll;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.ScrollReader;
+import org.opensearch.hadoop.serialization.ScrollReader.Scroll;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.StringUtils;
 
 /**
  * Result streaming data from a ElasticSearch query using the scan/scroll. Performs batching underneath to retrieve data in chunks.

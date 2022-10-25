@@ -18,12 +18,12 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.SettingsUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.regex.Regex;
+import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.SettingsUtils;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.regex.Regex;
 
 import java.io.IOException;
 import java.io.InputStream;

@@ -27,17 +27,17 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.commonshttp.CommonsHttpTransportFactory;
 import org.opensearch.hadoop.rest.pooling.PooledTransportManager;
 import org.opensearch.hadoop.rest.stats.Stats;
 import org.opensearch.hadoop.rest.stats.StatsAware;
 import org.opensearch.hadoop.security.SecureSettings;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.ByteSequence;
-import org.elasticsearch.hadoop.util.SettingsUtils;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.ByteSequence;
+import org.opensearch.hadoop.util.SettingsUtils;
 
 public class NetworkClient implements StatsAware, Closeable {
     private static Log log = LogFactory.getLog(NetworkClient.class);

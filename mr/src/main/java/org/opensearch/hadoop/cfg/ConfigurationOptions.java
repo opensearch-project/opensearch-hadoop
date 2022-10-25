@@ -18,9 +18,9 @@
  */
 package org.opensearch.hadoop.cfg;
 
-import org.elasticsearch.hadoop.serialization.field.DateIndexFormatter;
-import org.elasticsearch.hadoop.serialization.field.DefaultIndexExtractor;
-import org.elasticsearch.hadoop.serialization.field.DefaultParamsExtractor;
+import org.opensearch.hadoop.serialization.field.DateIndexFormatter;
+import org.opensearch.hadoop.serialization.field.DefaultIndexExtractor;
+import org.opensearch.hadoop.serialization.field.DefaultParamsExtractor;
 
 /**
  * Class providing the various Configuration parameters used by the Elasticsearch Hadoop integration.

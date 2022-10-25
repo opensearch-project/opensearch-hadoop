@@ -22,7 +22,6 @@ package org.opensearch.hadoop.util.unit;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import org.elasticsearch.hadoop.util.unit.Booleans;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

@@ -30,9 +30,9 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.streaming.StreamingQuery
 import org.apache.spark.sql.streaming.StreamingQueryException
 import org.apache.spark.sql.streaming.StreamingQueryListener
-import org.elasticsearch.hadoop.util.IOUtils
-import org.elasticsearch.hadoop.util.unit.TimeValue
 import org.junit.Assert
+import org.opensearch.hadoop.util.IOUtils
+import org.opensearch.hadoop.util.unit.TimeValue
 
 /**
  * Manages the creation and graceful teardown of a Spark Streaming Query

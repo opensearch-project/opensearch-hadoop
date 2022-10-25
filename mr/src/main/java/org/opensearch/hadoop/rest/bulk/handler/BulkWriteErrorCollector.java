@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest.bulk.handler;
 
 import java.util.concurrent.TimeUnit;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.handler.HandlerResult;
 
 /**

@@ -22,7 +22,7 @@ import java.util.Properties;
 
 import org.apache.pig.impl.logicalLayer.schema.Schema;
 import org.apache.pig.impl.util.Utils;
-import org.elasticsearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.IOUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

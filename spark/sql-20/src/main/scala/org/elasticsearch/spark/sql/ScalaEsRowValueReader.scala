@@ -21,13 +21,12 @@ package org.elasticsearch.spark.sql
 import java.sql.Timestamp
 import scala.collection.mutable.LinkedHashMap
 import scala.collection.mutable.Map
-import org.elasticsearch.hadoop.serialization.FieldType
-import org.elasticsearch.hadoop.serialization.Parser
-import org.elasticsearch.hadoop.serialization.builder.ValueParsingCallback
 import org.elasticsearch.spark.serialization.ScalaValueReader
 import org.apache.commons.logging.LogFactory
-import org.elasticsearch.hadoop.util.StringUtils
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.serialization.{FieldType, Parser}
+import org.opensearch.hadoop.serialization.builder.ValueParsingCallback
+import org.opensearch.hadoop.util.StringUtils
 
 class ScalaRowValueReader extends ScalaValueReader with RowValueReader with ValueParsingCallback {
 

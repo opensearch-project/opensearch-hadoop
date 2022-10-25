@@ -24,11 +24,10 @@ import java.util.Map;
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
-import org.elasticsearch.hadoop.serialization.MapFieldExtractor;
-import org.elasticsearch.hadoop.serialization.bulk.RawJson;
-import org.elasticsearch.hadoop.serialization.field.ConstantFieldExtractor;
-import org.elasticsearch.hadoop.serialization.field.FieldExtractor;
-import org.elasticsearch.hadoop.serialization.field.MapWritableFieldExtractor;
+import org.opensearch.hadoop.serialization.bulk.RawJson;
+import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor;
+import org.opensearch.hadoop.serialization.field.FieldExtractor;
+import org.opensearch.hadoop.serialization.field.MapWritableFieldExtractor;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 

@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-import static org.elasticsearch.hadoop.util.StringUtils.*;
+import static org.opensearch.hadoop.util.StringUtils.*;
 
 import static org.hamcrest.Matchers.*;
 

@@ -21,11 +21,10 @@ package org.opensearch.hadoop.serialization.handler.read.impl;
 
 import java.util.ArrayList;
 
-import org.elasticsearch.hadoop.serialization.handler.read.DeserializationFailure;
-import org.elasticsearch.hadoop.serialization.handler.read.impl.DeserializationEventConverter;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.DateUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.handler.read.DeserializationFailure;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.DateUtils;
+import org.opensearch.hadoop.util.StringUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

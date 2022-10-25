@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 
 public class EsHadoopRemoteException extends EsHadoopException {
 	private static final long serialVersionUID = 5402297229024034583L;

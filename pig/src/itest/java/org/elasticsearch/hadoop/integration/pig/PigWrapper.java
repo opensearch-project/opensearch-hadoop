@@ -19,7 +19,6 @@
 package org.elasticsearch.hadoop.integration.pig;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.util.List;
 import java.util.Properties;
 
@@ -28,10 +27,10 @@ import org.apache.pig.ExecType;
 import org.apache.pig.PigServer;
 import org.apache.pig.backend.executionengine.ExecException;
 import org.apache.pig.backend.executionengine.ExecJob;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.QueryTestParams;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 import org.junit.rules.LazyTempFolder;
 
 /**

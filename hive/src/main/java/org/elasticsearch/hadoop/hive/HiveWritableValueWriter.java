@@ -32,7 +32,7 @@ import org.apache.hadoop.hive.serde2.io.TimestampWritable;
 import org.apache.hadoop.hive.serde2.io.TimestampWritableV2;
 import org.apache.hadoop.io.Writable;
 import org.opensearch.hadoop.mr.WritableValueWriter;
-import org.elasticsearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.serialization.Generator;
 
 /**
  * Writer for the Hive specific Writable types (specifically from serde2.io package).

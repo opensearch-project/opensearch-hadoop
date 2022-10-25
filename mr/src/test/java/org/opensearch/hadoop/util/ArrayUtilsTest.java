@@ -19,7 +19,6 @@
 
 package org.opensearch.hadoop.util;
 
-import org.elasticsearch.hadoop.util.ArrayUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

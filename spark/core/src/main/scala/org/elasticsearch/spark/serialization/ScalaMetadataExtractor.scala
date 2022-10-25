@@ -22,9 +22,9 @@ import java.util.EnumMap
 import java.util.{Map => JMap}
 
 import scala.collection.{Map => SMap}
-import org.elasticsearch.hadoop.serialization.bulk.MetadataExtractor.{Metadata => InternalMetadata}
-import org.elasticsearch.hadoop.serialization.bulk.PerEntityPoolingMetadataExtractor
+import org.opensearch.hadoop.serialization.bulk.MetadataExtractor.{Metadata => InternalMetadata}
 import org.elasticsearch.spark.rdd.{Metadata => SparkMetadata}
+import org.opensearch.hadoop.serialization.bulk.PerEntityPoolingMetadataExtractor
 
 private[spark] class ScalaMetadataExtractor extends PerEntityPoolingMetadataExtractor {
 

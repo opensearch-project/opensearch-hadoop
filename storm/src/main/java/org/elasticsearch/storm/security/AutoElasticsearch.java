@@ -39,8 +39,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.storm.security.INimbusCredentialPlugin;
 import org.apache.storm.security.auth.IAutoCredentials;
 import org.apache.storm.security.auth.ICredentialsRenewer;
-import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.CompositeSettings;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
@@ -53,9 +53,9 @@ import org.opensearch.hadoop.security.JdkUser;
 import org.opensearch.hadoop.security.JdkUserProvider;
 import org.opensearch.hadoop.security.LoginUtil;
 import org.opensearch.hadoop.security.User;
-import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
-import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.FastByteArrayInputStream;
+import org.opensearch.hadoop.util.FastByteArrayOutputStream;
+import org.opensearch.hadoop.util.StringUtils;
 import org.elasticsearch.storm.cfg.StormSettings;
 
 /**

@@ -21,7 +21,7 @@ package org.opensearch.hadoop.mr;
 
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.Text;
-import org.elasticsearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.BytesArray;
 
 /**
  *

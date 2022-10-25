@@ -22,7 +22,7 @@ package org.elasticsearch.spark.sql.streaming
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.spark.sql.execution.streaming.MetadataLog
-import org.elasticsearch.hadoop.util.Assert
+import org.opensearch.hadoop.util.Assert
 
 /**
  * Defines job-side and task-side logic for committing batches of writes
@@ -107,6 +107,3 @@ class EsCommitProtocol(@transient val commitLog: MetadataLog[Array[EsSinkStatus]
 case class JobState(jobId: String, batchId: Long)
 case class TaskState(taskId: Int, resource: String)
 case class TaskCommit(statuses: Option[EsSinkStatus])
-
-
-

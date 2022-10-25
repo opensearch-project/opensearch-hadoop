@@ -26,8 +26,8 @@ import org.apache.hadoop.hive.serde2.objectinspector.PrimitiveObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.StructField;
 import org.apache.hadoop.hive.serde2.objectinspector.StructObjectInspector;
 import org.opensearch.hadoop.mr.WritableBytesConverter;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.BytesArray;
 
 public class HiveBytesConverter extends WritableBytesConverter {
 

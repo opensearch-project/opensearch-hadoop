@@ -41,16 +41,16 @@ import org.opensearch.hadoop.rest.Resource;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.rest.RestRepository;
 import org.opensearch.hadoop.rest.RestService;
-import org.elasticsearch.hadoop.serialization.field.IndexExtractor;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.ObjectUtils;
-import org.elasticsearch.hadoop.util.SettingsUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.ecs.ElasticCommonSchema;
-import org.elasticsearch.hadoop.util.ecs.ElasticCommonSchema.TemplateBuilder;
-import org.elasticsearch.hadoop.util.ecs.MessageTemplate;
-import org.elasticsearch.hadoop.util.unit.Booleans;
+import org.opensearch.hadoop.serialization.field.IndexExtractor;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.util.SettingsUtils;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.ecs.ElasticCommonSchema;
+import org.opensearch.hadoop.util.ecs.ElasticCommonSchema.TemplateBuilder;
+import org.opensearch.hadoop.util.ecs.MessageTemplate;
+import org.opensearch.hadoop.util.unit.Booleans;
 
 /**
  * Generic Error Handler that converts error events into JSON documents, and stores them in an Elasticsearch index.

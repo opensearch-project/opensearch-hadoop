@@ -38,7 +38,7 @@ import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.mr.EsInputFormat;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.rest.InitializationUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 /**
  * Hive specific InputFormat. Since Hive code base makes a lot of assumptions about the tables being actual files in HDFS (using instanceof checks without proper else) this class tries to 'fix' this by

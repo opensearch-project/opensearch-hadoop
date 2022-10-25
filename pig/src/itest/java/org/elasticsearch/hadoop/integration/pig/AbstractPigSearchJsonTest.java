@@ -29,7 +29,7 @@ import org.elasticsearch.hadoop.QueryTestParams;
 import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Before;

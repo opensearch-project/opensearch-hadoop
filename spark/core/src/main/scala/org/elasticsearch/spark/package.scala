@@ -23,8 +23,8 @@ import scala.reflect.ClassTag
 
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.elasticsearch.hadoop.util.ObjectUtils
 import org.elasticsearch.spark.rdd.EsSpark
+import org.opensearch.hadoop.util.ObjectUtils
 
 
 package object spark {

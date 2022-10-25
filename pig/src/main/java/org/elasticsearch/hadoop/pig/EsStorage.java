@@ -51,7 +51,7 @@ import org.apache.pig.data.Tuple;
 import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.logicalLayer.FrontendException;
 import org.apache.pig.impl.util.UDFContext;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
@@ -62,9 +62,9 @@ import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
-import org.elasticsearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.ObjectUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 /**
  * Pig storage for reading and writing data into an ElasticSearch index.

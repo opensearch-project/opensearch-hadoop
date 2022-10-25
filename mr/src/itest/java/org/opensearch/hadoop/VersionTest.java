@@ -27,8 +27,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.elasticsearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.OsUtil;
+import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.OsUtil;
 import org.junit.Assume;
 import org.junit.Rule;
 import org.junit.Test;

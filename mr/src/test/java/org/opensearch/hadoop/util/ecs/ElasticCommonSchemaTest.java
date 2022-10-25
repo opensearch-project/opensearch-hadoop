@@ -19,9 +19,7 @@
 
 package org.opensearch.hadoop.util.ecs;
 
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.ecs.ElasticCommonSchema;
-import org.elasticsearch.hadoop.util.ecs.MessageTemplate;
+import org.opensearch.hadoop.util.BytesArray;
 import org.junit.Test;
 
 import static org.junit.Assert.assertNotNull;

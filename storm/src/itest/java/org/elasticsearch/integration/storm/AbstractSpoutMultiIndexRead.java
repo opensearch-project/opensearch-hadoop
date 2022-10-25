@@ -22,7 +22,7 @@ import java.util.Map;
 
 import org.apache.storm.topology.TopologyBuilder;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.unit.TimeValue;
+import org.opensearch.hadoop.util.unit.TimeValue;
 import org.elasticsearch.storm.EsSpout;
 import org.junit.Before;
 import org.junit.Test;

@@ -21,7 +21,7 @@ package org.elasticsearch.hadoop.integration.hive;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -32,7 +32,7 @@ import org.junit.runners.MethodSorters;
 
 import java.sql.SQLException;
 
-import static org.elasticsearch.hadoop.util.OpenSearchMajorVersion.V_5_X;
+import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_5_X;
 import static org.elasticsearch.hadoop.util.TestUtils.docEndpoint;
 import static org.elasticsearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.assertFalse;

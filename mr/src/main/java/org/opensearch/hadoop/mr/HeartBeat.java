@@ -26,8 +26,8 @@ import org.apache.commons.logging.Log;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.TaskID;
 import org.apache.hadoop.util.Progressable;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.unit.TimeValue;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.unit.TimeValue;
 
 /**
  * Utility class acting as a heart-beat to Hadoop to prevent it from killing es-hadoop jobs, especially when indexing data which can take time a long time.

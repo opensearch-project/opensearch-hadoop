@@ -24,9 +24,9 @@ import java.util.ArrayList;
 
 import org.opensearch.hadoop.rest.EsHadoopRemoteException;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.DateUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.DateUtils;
+import org.opensearch.hadoop.util.StringUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

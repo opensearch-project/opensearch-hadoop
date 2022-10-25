@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest.bulk.handler.impl;
 
 import org.opensearch.hadoop.handler.impl.LogRenderer;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
-import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
+import org.opensearch.hadoop.util.FastByteArrayInputStream;
 
 public class BulkLogRenderer extends LogRenderer<BulkWriteFailure> {
     @Override

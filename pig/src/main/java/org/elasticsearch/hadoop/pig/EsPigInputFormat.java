@@ -28,7 +28,7 @@ import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.opensearch.hadoop.mr.EsInputFormat;
 import org.opensearch.hadoop.mr.compat.CompatHandler;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 
 @SuppressWarnings("rawtypes")

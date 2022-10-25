@@ -26,8 +26,8 @@ import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.UserProvider;
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.ClusterName;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.ClusterName;
 
 /**
  * Storm bolts and spouts don't actually ever run anything on the driver side of a topology submission.

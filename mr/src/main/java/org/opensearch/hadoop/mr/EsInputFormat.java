@@ -45,7 +45,7 @@ import org.opensearch.hadoop.rest.RestService.PartitionReader;
 import org.opensearch.hadoop.rest.ScrollQuery;
 import org.opensearch.hadoop.rest.SearchRequestBuilder;
 import org.opensearch.hadoop.rest.stats.Stats;
-import org.elasticsearch.hadoop.serialization.ScrollReader;
+import org.opensearch.hadoop.serialization.ScrollReader;
 
 import java.io.DataInput;
 import java.io.DataOutput;

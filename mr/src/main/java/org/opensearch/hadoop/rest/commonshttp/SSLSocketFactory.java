@@ -41,16 +41,16 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.security.SecureSettings;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeoutException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-import org.elasticsearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 class SSLSocketFactory implements SecureProtocolSocketFactory {
 

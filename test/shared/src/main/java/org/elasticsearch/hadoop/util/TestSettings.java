@@ -22,6 +22,7 @@ import java.io.IOException;
 import java.util.Properties;
 
 import org.opensearch.hadoop.cfg.PropertiesSettings;
+import org.opensearch.hadoop.util.StringUtils;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE;
 

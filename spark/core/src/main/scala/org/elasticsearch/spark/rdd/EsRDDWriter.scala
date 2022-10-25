@@ -22,13 +22,6 @@ import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
 import org.apache.spark.TaskContext
 import org.apache.spark.util.TaskCompletionListener
-import org.elasticsearch.hadoop.serialization.BytesConverter
-import org.elasticsearch.hadoop.serialization.JdkBytesConverter
-import org.elasticsearch.hadoop.serialization.builder.ValueWriter
-import org.elasticsearch.hadoop.serialization.field.FieldExtractor
-import org.elasticsearch.hadoop.serialization.bulk.MetadataExtractor
-import org.elasticsearch.hadoop.serialization.bulk.PerEntityPoolingMetadataExtractor
-import org.elasticsearch.hadoop.util.ObjectUtils
 import org.elasticsearch.spark.serialization.ScalaMapFieldExtractor
 import org.elasticsearch.spark.serialization.ScalaMetadataExtractor
 import org.elasticsearch.spark.serialization.ScalaValueWriter
@@ -36,6 +29,11 @@ import org.opensearch.hadoop.cfg.{PropertiesSettings, Settings}
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.{InitializationUtils, RestService}
 import org.opensearch.hadoop.security.UserProvider
+import org.opensearch.hadoop.serialization.{BytesConverter, JdkBytesConverter}
+import org.opensearch.hadoop.serialization.builder.ValueWriter
+import org.opensearch.hadoop.serialization.bulk.{MetadataExtractor, PerEntityPoolingMetadataExtractor}
+import org.opensearch.hadoop.serialization.field.FieldExtractor
+import org.opensearch.hadoop.util.ObjectUtils
 
 import java.util.Locale
 import scala.reflect.ClassTag

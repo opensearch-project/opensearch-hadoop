@@ -29,9 +29,9 @@ import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConf
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.SerializationConfig;
 import org.opensearch.hadoop.rest.EsHadoopParsingException;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.FastByteArrayInputStream;
 
 /**
  * A set of utilities to parse JSON in tests, the same way that the RestClient might parse json data.

@@ -27,8 +27,8 @@ import org.apache.hadoop.mapreduce.JobContext;
 import org.apache.hadoop.util.VersionInfo;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.HadoopIOUtils;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.Version;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.Version;
 
 public class HadoopSettings extends Settings {
 

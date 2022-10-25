@@ -24,9 +24,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.ClusterName;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

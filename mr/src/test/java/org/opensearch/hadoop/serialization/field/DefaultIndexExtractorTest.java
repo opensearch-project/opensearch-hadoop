@@ -24,14 +24,13 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.Resource;
-import org.elasticsearch.hadoop.serialization.MapFieldExtractor;
-import org.elasticsearch.hadoop.serialization.field.IndexExtractor;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.serialization.MapFieldExtractor;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.ObjectUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 

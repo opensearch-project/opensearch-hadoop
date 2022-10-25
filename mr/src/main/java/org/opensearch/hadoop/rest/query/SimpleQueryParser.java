@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.Assert;
 
 import java.io.IOException;
 

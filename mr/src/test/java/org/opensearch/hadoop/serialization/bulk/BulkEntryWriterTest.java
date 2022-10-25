@@ -19,19 +19,17 @@
 
 package org.opensearch.hadoop.serialization.bulk;
 
-import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.handler.ErrorCollector;
 import org.opensearch.hadoop.handler.EsHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
-import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException;
-import org.elasticsearch.hadoop.serialization.bulk.BulkCommand;
-import org.elasticsearch.hadoop.serialization.bulk.BulkEntryWriter;
-import org.elasticsearch.hadoop.serialization.handler.write.SerializationErrorHandler;
-import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure;
-import org.elasticsearch.hadoop.serialization.handler.write.impl.SerializationHandlerLoader;
-import org.elasticsearch.hadoop.util.BytesRef;
+import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.handler.write.SerializationErrorHandler;
+import org.opensearch.hadoop.serialization.handler.write.SerializationFailure;
+import org.opensearch.hadoop.serialization.handler.write.impl.SerializationHandlerLoader;
+import org.opensearch.hadoop.util.BytesRef;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Assert;
 import org.junit.Test;

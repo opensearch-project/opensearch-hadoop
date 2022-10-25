@@ -22,7 +22,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.TransportFactory;
-import org.elasticsearch.hadoop.util.SettingsUtils;
+import org.opensearch.hadoop.util.SettingsUtils;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

@@ -22,7 +22,7 @@ import java.lang.reflect.Constructor;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Writable;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 
 /**
  * Utility handling the difference in built-in Writable between Hadoop 1 and 2.

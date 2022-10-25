@@ -30,7 +30,7 @@ import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.JobSubmissionFiles;
 import org.elasticsearch.hadoop.fs.HdfsUtils;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
-import org.elasticsearch.hadoop.util.ReflectionUtils;
+import org.opensearch.hadoop.util.ReflectionUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 

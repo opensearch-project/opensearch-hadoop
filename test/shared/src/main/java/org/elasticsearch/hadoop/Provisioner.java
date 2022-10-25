@@ -19,16 +19,15 @@
 package org.elasticsearch.hadoop;
 
 import java.io.File;
-import java.io.FileFilter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.util.GenericOptionsParser;
-import org.elasticsearch.hadoop.util.Assert;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.util.Assert;
 
 /**
  * Builder class for adding jars to the Hadoop environment.

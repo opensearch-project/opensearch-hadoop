@@ -25,8 +25,8 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;

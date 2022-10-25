@@ -23,7 +23,7 @@ import java.util.Iterator;
 import java.util.Properties;
 
 import org.opensearch.hadoop.cfg.PropertiesSettings;
-import org.elasticsearch.hadoop.util.FieldAlias;
+import org.opensearch.hadoop.util.FieldAlias;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

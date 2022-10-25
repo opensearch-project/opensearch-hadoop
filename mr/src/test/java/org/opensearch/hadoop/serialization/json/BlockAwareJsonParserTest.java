@@ -21,9 +21,7 @@ package org.opensearch.hadoop.serialization.json;
 
 import java.nio.charset.Charset;
 
-import org.elasticsearch.hadoop.serialization.Parser;
-import org.elasticsearch.hadoop.serialization.json.BlockAwareJsonParser;
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonParser;
+import org.opensearch.hadoop.serialization.Parser;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;

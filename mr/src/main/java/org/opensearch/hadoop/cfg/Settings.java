@@ -26,16 +26,16 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.security.AuthenticationMethod;
-import org.elasticsearch.hadoop.util.ClusterName;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.unit.Booleans;
-import org.elasticsearch.hadoop.util.unit.ByteSizeValue;
-import org.elasticsearch.hadoop.util.unit.TimeValue;
+import org.opensearch.hadoop.util.ClusterName;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.unit.Booleans;
+import org.opensearch.hadoop.util.unit.ByteSizeValue;
+import org.opensearch.hadoop.util.unit.TimeValue;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_NET_HTTP_HEADER_OPAQUE_ID;

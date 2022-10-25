@@ -25,6 +25,8 @@ import java.io.InputStream;
 import java.util.Locale;
 
 import org.opensearch.hadoop.rest.RestClient;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 
 public class TestUtils {
 

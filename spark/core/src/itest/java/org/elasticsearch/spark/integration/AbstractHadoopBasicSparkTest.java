@@ -43,7 +43,7 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.mr.EsInputFormat;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
-import org.elasticsearch.hadoop.util.WritableUtils;
+import org.opensearch.hadoop.util.WritableUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;

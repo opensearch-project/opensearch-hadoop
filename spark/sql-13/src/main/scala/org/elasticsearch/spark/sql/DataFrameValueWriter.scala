@@ -38,13 +38,11 @@ import org.apache.spark.sql.types.DataTypes.ShortType
 import org.apache.spark.sql.types.DataTypes.StringType
 import org.apache.spark.sql.types.DataTypes.TimestampType
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT
-import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException
-import org.elasticsearch.hadoop.serialization.Generator
-import org.elasticsearch.hadoop.serialization.SettingsAware
-import org.elasticsearch.hadoop.serialization.builder.FilteringValueWriter
-import org.elasticsearch.hadoop.serialization.builder.ValueWriter.Result
-import org.elasticsearch.hadoop.util.unit.Booleans
+import org.opensearch.hadoop.serialization.builder.ValueWriter.Result
 import org.opensearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.serialization.{EsHadoopSerializationException, Generator, SettingsAware}
+import org.opensearch.hadoop.serialization.builder.FilteringValueWriter
+import org.opensearch.hadoop.util.unit.Booleans
 
 
 class DataFrameValueWriter(writeUnknownTypes: Boolean = false) extends FilteringValueWriter[Any] with SettingsAware {

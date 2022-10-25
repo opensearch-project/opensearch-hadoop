@@ -20,12 +20,12 @@ package org.opensearch.hadoop.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.StringUtils;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_OPERATION_UPDATE;
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_OPERATION_UPSERT;

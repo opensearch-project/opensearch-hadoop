@@ -18,8 +18,8 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.serialization.Generator;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
 

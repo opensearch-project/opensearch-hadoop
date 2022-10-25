@@ -35,7 +35,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.security.token.Token;
 import org.apache.hadoop.security.token.TokenRenewer;
 import org.apache.hadoop.security.token.delegation.AbstractDelegationTokenIdentifier;
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 import org.opensearch.hadoop.cfg.CompositeSettings;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.Settings;
@@ -44,8 +44,8 @@ import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.JdkUser;
 import org.opensearch.hadoop.security.JdkUserProvider;
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.ClusterName;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.ClusterName;
 
 /**
  * The Hadoop Token Identifier for any generic token that contains an EsToken within it.

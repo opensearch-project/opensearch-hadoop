@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.serialization.Generator;
 
 /**
  * A query that matches on all documents.

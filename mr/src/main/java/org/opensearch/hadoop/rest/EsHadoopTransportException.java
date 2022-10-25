@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 
 /**
  * Fatal, transport-level exception typically caused by communication/transport errors.

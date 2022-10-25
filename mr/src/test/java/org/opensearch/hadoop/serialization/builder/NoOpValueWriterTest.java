@@ -18,9 +18,7 @@
  */
 package org.opensearch.hadoop.serialization.builder;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
-import org.elasticsearch.hadoop.serialization.builder.NoOpValueWriter;
-import org.elasticsearch.hadoop.serialization.builder.ValueWriter;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.junit.Test;
 
 

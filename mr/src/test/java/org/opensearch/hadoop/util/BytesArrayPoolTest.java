@@ -19,8 +19,6 @@
 
 package org.opensearch.hadoop.util;
 
-import org.elasticsearch.hadoop.util.BytesArrayPool;
-import org.elasticsearch.hadoop.util.BytesRef;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

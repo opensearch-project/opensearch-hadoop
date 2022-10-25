@@ -31,7 +31,7 @@ import org.elasticsearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.After;
 import org.junit.Assert;

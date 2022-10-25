@@ -19,8 +19,8 @@
 package org.opensearch.hadoop.rest.request;
 
 import org.opensearch.hadoop.rest.RestClient;
-import org.elasticsearch.hadoop.serialization.dto.IndicesAliases;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.dto.IndicesAliases;
+import org.opensearch.hadoop.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;

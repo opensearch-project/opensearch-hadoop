@@ -21,8 +21,7 @@ package org.opensearch.hadoop.serialization.json;
 
 import java.io.ByteArrayOutputStream;
 
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator;
+import org.opensearch.hadoop.serialization.Generator;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

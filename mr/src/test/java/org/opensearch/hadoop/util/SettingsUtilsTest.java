@@ -22,8 +22,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.opensearch.hadoop.cfg.PropertiesSettings;
-import org.elasticsearch.hadoop.serialization.field.FieldFilter;
-import org.elasticsearch.hadoop.util.SettingsUtils;
+import org.opensearch.hadoop.serialization.field.FieldFilter;
 import org.junit.Test;
 
 import static org.junit.Assert.assertThat;

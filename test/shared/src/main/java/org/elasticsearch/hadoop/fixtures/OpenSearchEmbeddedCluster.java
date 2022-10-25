@@ -22,9 +22,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.StringUtils.IpAndPort;
+import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils.IpAndPort;
 
 public class OpenSearchEmbeddedCluster {
 

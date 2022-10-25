@@ -18,10 +18,10 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 

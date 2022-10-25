@@ -25,9 +25,9 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.spark.SparkConf;
 import org.apache.spark.TaskContext;
 import org.apache.spark.util.TaskCompletionListener;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
-import org.elasticsearch.hadoop.util.ObjectUtils;
-import org.elasticsearch.hadoop.util.ReflectionUtils;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.util.ReflectionUtils;
 
 import scala.Function0;
 

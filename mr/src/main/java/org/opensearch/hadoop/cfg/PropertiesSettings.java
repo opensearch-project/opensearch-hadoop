@@ -21,8 +21,8 @@ package org.opensearch.hadoop.cfg;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.IOUtils;
 
 /**
  * Properties-based settings - used for testing or local environments (including Cascading-local).

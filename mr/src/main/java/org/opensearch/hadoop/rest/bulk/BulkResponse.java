@@ -22,9 +22,9 @@ package org.opensearch.hadoop.rest.bulk;
 import java.util.Collections;
 import java.util.List;
 
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 import org.opensearch.hadoop.rest.HttpStatus;
-import org.elasticsearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.BytesArray;
 
 /**
  * Simple response object that tracks useful information about a bulk indexing response.

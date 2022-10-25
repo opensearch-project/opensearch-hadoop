@@ -59,27 +59,21 @@ import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_WRITE_OPERATION
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
-import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter
-import org.elasticsearch.hadoop.serialization.field.ConstantFieldExtractor
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
-import org.elasticsearch.hadoop.util.FastByteArrayOutputStream
-import org.elasticsearch.hadoop.util.IOUtils
-import org.elasticsearch.hadoop.util.SettingsUtils
-import org.elasticsearch.hadoop.util.StringUtils
-import org.elasticsearch.hadoop.util.Version
 import org.elasticsearch.spark.cfg.SparkSettingsManager
 import org.elasticsearch.spark.serialization.ScalaValueWriter
 import org.elasticsearch.spark.sql.streaming.EsSparkSqlStreamingSink
 import org.elasticsearch.spark.sql.streaming.SparkSqlStreamingConfigs
 import org.elasticsearch.spark.sql.streaming.StructuredStreamingVersionLock
+import org.opensearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
 import org.opensearch.hadoop.cfg.{ConfigurationOptions, InternalConfigurationOptions, Settings}
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.{InitializationUtils, RestRepository}
+import org.opensearch.hadoop.serialization.builder.JdkValueWriter
+import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor
+import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator
+import org.opensearch.hadoop.util.{FastByteArrayOutputStream, IOUtils, OpenSearchMajorVersion, SettingsUtils, StringUtils, Version}
 
 import scala.collection.JavaConverters.mapAsJavaMapConverter
 import scala.collection.mutable.LinkedHashMap

@@ -18,11 +18,11 @@
  */
 package org.elasticsearch.spark.serialization
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
-import org.elasticsearch.hadoop.serialization.Generator
-import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter
-import org.elasticsearch.hadoop.serialization.builder.ValueWriter.Result
+import org.opensearch.hadoop.serialization.builder.ValueWriter.Result
 import org.elasticsearch.spark.serialization.{ReflectionUtils => RU}
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.serialization.Generator
+import org.opensearch.hadoop.serialization.builder.JdkValueWriter
 
 import scala.collection.immutable.Nil
 import scala.collection.{Map, mutable}

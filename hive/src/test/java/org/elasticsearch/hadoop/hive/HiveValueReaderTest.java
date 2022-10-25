@@ -24,10 +24,10 @@ import java.util.Map;
 
 import org.apache.hadoop.io.Text;
 import org.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.hadoop.serialization.ScrollReader;
-import org.elasticsearch.hadoop.serialization.ScrollReaderConfigBuilder;
-import org.elasticsearch.hadoop.serialization.dto.mapping.FieldParser;
-import org.elasticsearch.hadoop.serialization.dto.mapping.Mapping;
+import org.opensearch.hadoop.serialization.ScrollReader;
+import org.opensearch.hadoop.serialization.ScrollReaderConfigBuilder;
+import org.opensearch.hadoop.serialization.dto.mapping.FieldParser;
+import org.opensearch.hadoop.serialization.dto.mapping.Mapping;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 

@@ -20,16 +20,14 @@
 package org.elasticsearch.spark.serialization.handler.write.imple
 
 import java.util
-
-import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure
-import org.elasticsearch.hadoop.serialization.handler.write.impl.SerializationEventConverter
-import org.elasticsearch.hadoop.util.DateUtils
-import org.elasticsearch.hadoop.util.StringUtils
 import org.hamcrest.Matchers
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
 import org.junit.Assert.assertTrue
 import org.junit.Test
+import org.opensearch.hadoop.serialization.handler.write.SerializationFailure
+import org.opensearch.hadoop.serialization.handler.write.impl.SerializationEventConverter
+import org.opensearch.hadoop.util.{DateUtils, StringUtils}
 
 class ScalaSerializationEventConverterTest {
 

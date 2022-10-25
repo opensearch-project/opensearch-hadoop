@@ -20,7 +20,7 @@ package org.opensearch.hadoop.rest.pooling;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.Response;
@@ -29,7 +29,7 @@ import org.opensearch.hadoop.rest.Transport;
 import org.opensearch.hadoop.rest.commonshttp.CommonsHttpTransport;
 import org.opensearch.hadoop.rest.stats.Stats;
 import org.opensearch.hadoop.security.SecureSettings;
-import org.elasticsearch.hadoop.util.unit.TimeValue;
+import org.opensearch.hadoop.util.unit.TimeValue;
 
 import java.io.IOException;
 import java.util.ArrayList;

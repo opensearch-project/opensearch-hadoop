@@ -26,11 +26,11 @@ import java.io.IOException;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.security.token.Token;
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.User;
-import org.elasticsearch.hadoop.util.ClusterName;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.ClusterName;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 

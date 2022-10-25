@@ -21,13 +21,13 @@ package org.elasticsearch.hadoop.integration.pig;
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.rest.RestClient;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.junit.BeforeClass;

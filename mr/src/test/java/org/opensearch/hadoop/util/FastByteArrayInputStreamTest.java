@@ -21,8 +21,6 @@ package org.opensearch.hadoop.util;
 
 import java.util.Arrays;
 
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
 import org.junit.Assume;
 import org.junit.Before;
 import org.junit.Test;

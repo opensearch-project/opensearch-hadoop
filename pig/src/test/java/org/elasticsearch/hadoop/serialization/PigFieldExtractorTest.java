@@ -26,8 +26,8 @@ import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.util.Utils;
 import org.elasticsearch.hadoop.pig.PigFieldExtractor;
 import org.elasticsearch.hadoop.pig.PigTuple;
-import org.elasticsearch.hadoop.serialization.field.ConstantFieldExtractor;
-import org.elasticsearch.hadoop.serialization.field.FieldExtractor;
+import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor;
+import org.opensearch.hadoop.serialization.field.FieldExtractor;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 

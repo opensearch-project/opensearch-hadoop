@@ -28,7 +28,7 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.SecurityUtil;
 import org.apache.hadoop.security.UserGroupInformation;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.rest.EsHadoopTransportException;
 import org.elasticsearch.hadoop.security.UgiUtil;
 import org.ietf.jgss.GSSContext;

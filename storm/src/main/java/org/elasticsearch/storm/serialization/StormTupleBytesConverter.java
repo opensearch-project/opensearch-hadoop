@@ -19,9 +19,9 @@
 package org.elasticsearch.storm.serialization;
 
 import org.apache.storm.tuple.Tuple;
-import org.elasticsearch.hadoop.serialization.JdkBytesConverter;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.serialization.JdkBytesConverter;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.BytesArray;
 
 public class StormTupleBytesConverter extends JdkBytesConverter {
 

@@ -24,7 +24,7 @@ import java.security.PrivilegedExceptionAction;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 
 /**
  * Provides a platform independent way of accessing user information.

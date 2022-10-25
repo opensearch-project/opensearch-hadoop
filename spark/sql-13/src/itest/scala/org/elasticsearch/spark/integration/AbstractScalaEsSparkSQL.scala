@@ -45,7 +45,6 @@ import org.apache.spark.sql.types.DecimalType
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.storage.StorageLevel._
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
-import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.hadoop.util.TestUtils
 import org.elasticsearch.spark._
@@ -71,12 +70,13 @@ import com.esotericsoftware.kryo.io.{Output => KryoOutput}
 import org.apache.spark.rdd.RDD
 
 import javax.xml.bind.DatatypeConverter
-import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException, OpenSearchAssume}
+import org.elasticsearch.hadoop.OpenSearchAssume
 import org.apache.spark.sql.types.DoubleType
 import org.elasticsearch.hadoop.TestData
 import org.elasticsearch.hadoop.rest.RestUtils
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
 import org.junit.ClassRule
+import org.opensearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
 object AbstractScalaOpenSearchScalaSparkSQL {
   @transient val conf = new SparkConf().set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")

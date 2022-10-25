@@ -20,13 +20,13 @@ package org.opensearch.hadoop.rest;
 
 import org.opensearch.hadoop.cfg.PropertiesSettings;
 import org.opensearch.hadoop.rest.PartitionDefinition.PartitionDefinitionBuilder;
-import org.elasticsearch.hadoop.serialization.dto.mapping.FieldParser;
-import org.elasticsearch.hadoop.serialization.dto.mapping.Mapping;
+import org.opensearch.hadoop.serialization.dto.mapping.FieldParser;
+import org.opensearch.hadoop.serialization.dto.mapping.Mapping;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
-import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.FastByteArrayInputStream;
+import org.opensearch.hadoop.util.FastByteArrayOutputStream;
 import org.junit.Test;
 
 import java.io.DataInputStream;

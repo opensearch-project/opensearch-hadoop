@@ -20,11 +20,7 @@ package org.opensearch.hadoop.util.unit;
 
 import org.junit.Test;
 
-import static org.elasticsearch.hadoop.util.unit.ByteSizeUnit.*;
-
 import static org.hamcrest.Matchers.*;
-
-import static org.hamcrest.MatcherAssert.*;
 
 /**
  *

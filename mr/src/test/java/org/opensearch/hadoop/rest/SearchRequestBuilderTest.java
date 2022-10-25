@@ -18,8 +18,8 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.encoding.HttpEncodingTools;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.encoding.HttpEncodingTools;
 import org.junit.Test;
 
 import static org.junit.Assert.assertTrue;

@@ -25,9 +25,9 @@ import javax.xml.bind.DatatypeConverter;
 
 import org.opensearch.hadoop.handler.Exceptional;
 import org.opensearch.hadoop.rest.EsHadoopRemoteException;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.ecs.ElasticCommonSchema;
-import org.elasticsearch.hadoop.util.ecs.MessageTemplate;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.ecs.ElasticCommonSchema;
+import org.opensearch.hadoop.util.ecs.MessageTemplate;
 
 /**
  * Base implementation for converting failure events into ECS documents

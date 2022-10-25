@@ -31,7 +31,7 @@ import org.apache.hadoop.hive.serde2.io.TimestampWritable;
 import org.apache.hadoop.hive.serde2.io.TimestampWritableV2;
 import org.apache.hadoop.io.Writable;
 import org.opensearch.hadoop.mr.WritableValueReader;
-import org.elasticsearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.util.ObjectUtils;
 
 public class HiveValueReader extends WritableValueReader {
 

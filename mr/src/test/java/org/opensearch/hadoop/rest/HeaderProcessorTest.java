@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;

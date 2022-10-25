@@ -31,12 +31,12 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.security.token.Token;
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.User;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.ClusterName;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.ClusterName;
 
 /**
  * Provides the main logic for obtaining Hadoop specific Tokens containing Elasticsearch authentication

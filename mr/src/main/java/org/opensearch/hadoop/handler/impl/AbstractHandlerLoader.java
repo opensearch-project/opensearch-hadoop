@@ -24,14 +24,14 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.HandlerLoader;
-import org.elasticsearch.hadoop.serialization.SettingsAware;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.ObjectUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.SettingsAware;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 /**
  * Performs the construction and initialization of ErrorHandler instances, implementations of which may be provided

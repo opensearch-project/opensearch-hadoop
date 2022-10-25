@@ -31,16 +31,16 @@ import com.google.common.base.Charsets;
 import org.opensearch.hadoop.rest.Resource;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.rest.bulk.BulkOutputGenerator;
-import org.elasticsearch.hadoop.serialization.ParsingUtils;
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonParser;
-import org.elasticsearch.hadoop.serialization.json.JsonFactory;
-import org.elasticsearch.hadoop.serialization.json.ObjectReader;
+import org.opensearch.hadoop.serialization.ParsingUtils;
+import org.opensearch.hadoop.serialization.json.JacksonJsonParser;
+import org.opensearch.hadoop.serialization.json.JsonFactory;
+import org.opensearch.hadoop.serialization.json.ObjectReader;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConfig;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.SerializationConfig;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.FastByteArrayInputStream;
 
 public abstract class BulkOutputGeneratorBase implements BulkOutputGenerator {
 

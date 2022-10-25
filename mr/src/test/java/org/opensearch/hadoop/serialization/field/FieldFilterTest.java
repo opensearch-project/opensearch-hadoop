@@ -22,8 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.serialization.field.FieldFilter;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 

@@ -26,7 +26,7 @@ import java.lang.reflect.Field;
 import org.apache.hadoop.io.ArrayWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Writable;
-import org.elasticsearch.hadoop.util.ReflectionUtils;
+import org.opensearch.hadoop.util.ReflectionUtils;
 
 // an array writable implementation that actually is writable
 public class WritableArrayWritable extends ArrayWritable {

@@ -1,6 +1,5 @@
 package org.opensearch.hadoop.util;
 
-import org.elasticsearch.hadoop.util.DateUtils;
 import org.junit.Test;
 
 import java.sql.Timestamp;

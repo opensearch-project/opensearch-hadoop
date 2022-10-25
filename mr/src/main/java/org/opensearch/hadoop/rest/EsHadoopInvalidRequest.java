@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 
 /**
  * Exception caused by an invalid request as reported by the Elasticsearch response.

@@ -35,10 +35,10 @@ import java.util.List;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 public class KeystoreWrapper {
 

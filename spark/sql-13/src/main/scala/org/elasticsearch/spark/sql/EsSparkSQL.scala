@@ -29,11 +29,11 @@ import org.apache.spark.sql.SQLContext
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_WRITE
-import org.elasticsearch.hadoop.util.ObjectUtils
 import org.elasticsearch.spark.cfg.SparkSettingsManager
 import org.opensearch.hadoop.cfg.PropertiesSettings
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.InitializationUtils
+import org.opensearch.hadoop.util.ObjectUtils
 
 @deprecated(message="Support for Apache Spark 1 is deprecated. Use Spark 2 or 3.")
 object EsSparkSQL {

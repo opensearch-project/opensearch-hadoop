@@ -24,7 +24,7 @@ import org.apache.pig.ResourceSchema;
 import org.apache.pig.ResourceSchema.ResourceFieldSchema;
 import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 
 /**
  * Wrapper class around a Pig tuple - the value and its associated schema.

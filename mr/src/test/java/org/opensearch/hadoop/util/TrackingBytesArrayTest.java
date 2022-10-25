@@ -20,9 +20,6 @@ package org.opensearch.hadoop.util;
 
 import java.io.ByteArrayOutputStream;
 
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.BytesRef;
-import org.elasticsearch.hadoop.util.TrackingBytesArray;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

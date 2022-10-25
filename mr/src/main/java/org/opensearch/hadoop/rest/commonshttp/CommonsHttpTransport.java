@@ -20,8 +20,8 @@ package org.opensearch.hadoop.rest.commonshttp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.DelegatingInputStream;
@@ -73,10 +73,10 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpMet
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.Protocol;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
-import org.elasticsearch.hadoop.util.ByteSequence;
-import org.elasticsearch.hadoop.util.ReflectionUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.encoding.HttpEncodingTools;
+import org.opensearch.hadoop.util.ByteSequence;
+import org.opensearch.hadoop.util.ReflectionUtils;
+import org.opensearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.encoding.HttpEncodingTools;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 import java.io.ByteArrayInputStream;

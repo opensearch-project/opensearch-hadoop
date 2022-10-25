@@ -22,11 +22,11 @@ import org.apache.pig.ResourceSchema;
 import org.apache.pig.ResourceSchema.ResourceFieldSchema;
 import org.apache.pig.data.DataByteArray;
 import org.apache.pig.data.DataType;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
-import org.elasticsearch.hadoop.serialization.JdkBytesConverter;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.serialization.JdkBytesConverter;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.BytesArray;
 
 public class PigBytesConverter extends JdkBytesConverter {
 

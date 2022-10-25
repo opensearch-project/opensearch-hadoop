@@ -19,7 +19,6 @@
 
 package org.opensearch.hadoop.util.encoding;
 
-import org.elasticsearch.hadoop.util.encoding.HttpEncodingTools;
 import org.junit.Test;
 
 import java.util.Arrays;

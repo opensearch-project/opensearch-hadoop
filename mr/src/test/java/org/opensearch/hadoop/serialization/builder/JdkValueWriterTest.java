@@ -1,7 +1,6 @@
 package org.opensearch.hadoop.serialization.builder;
 
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter;
+import org.opensearch.hadoop.serialization.Generator;
 import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;

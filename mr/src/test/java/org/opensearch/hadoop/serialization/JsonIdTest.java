@@ -21,9 +21,7 @@ package org.opensearch.hadoop.serialization;
 import java.io.InputStream;
 import java.util.List;
 
-import org.elasticsearch.hadoop.serialization.Parser;
-import org.elasticsearch.hadoop.serialization.ParsingUtils;
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonParser;
+import org.opensearch.hadoop.serialization.json.JacksonJsonParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

@@ -43,46 +43,38 @@ import org.apache.spark.sql.types.StringType
 import org.apache.spark.sql.types.StructField
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.types.TimestampType
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
-import org.elasticsearch.hadoop.serialization.FieldType.BINARY
-import org.elasticsearch.hadoop.serialization.FieldType.BOOLEAN
-import org.elasticsearch.hadoop.serialization.FieldType.BYTE
-import org.elasticsearch.hadoop.serialization.FieldType.DATE
-import org.elasticsearch.hadoop.serialization.FieldType.DATE_NANOS
-import org.elasticsearch.hadoop.serialization.FieldType.DOUBLE
-import org.elasticsearch.hadoop.serialization.FieldType.HALF_FLOAT
-import org.elasticsearch.hadoop.serialization.FieldType.SCALED_FLOAT
-import org.elasticsearch.hadoop.serialization.FieldType.FLOAT
-import org.elasticsearch.hadoop.serialization.FieldType.GEO_POINT
-import org.elasticsearch.hadoop.serialization.FieldType.GEO_SHAPE
-import org.elasticsearch.hadoop.serialization.FieldType.INTEGER
-import org.elasticsearch.hadoop.serialization.FieldType.JOIN
-import org.elasticsearch.hadoop.serialization.FieldType.KEYWORD
-import org.elasticsearch.hadoop.serialization.FieldType.LONG
-import org.elasticsearch.hadoop.serialization.FieldType.NESTED
-import org.elasticsearch.hadoop.serialization.FieldType.NULL
-import org.elasticsearch.hadoop.serialization.FieldType.OBJECT
-import org.elasticsearch.hadoop.serialization.FieldType.SHORT
-import org.elasticsearch.hadoop.serialization.FieldType.STRING
-import org.elasticsearch.hadoop.serialization.FieldType.TEXT
-import org.elasticsearch.hadoop.serialization.FieldType.WILDCARD
-import org.elasticsearch.hadoop.serialization.dto.mapping.Field
-import org.elasticsearch.hadoop.serialization.dto.mapping.GeoField
-import org.elasticsearch.hadoop.serialization.dto.mapping.GeoPointType
-import org.elasticsearch.hadoop.serialization.dto.mapping.GeoShapeType
-import org.elasticsearch.hadoop.serialization.dto.mapping.Mapping
-import org.elasticsearch.hadoop.serialization.dto.mapping.MappingUtils
-import org.elasticsearch.hadoop.serialization.field.FieldFilter
-import org.elasticsearch.hadoop.serialization.field.FieldFilter.NumberedInclude
-import org.elasticsearch.hadoop.util.Assert
-import org.elasticsearch.hadoop.util.IOUtils
-import org.elasticsearch.hadoop.util.SettingsUtils
-import org.elasticsearch.hadoop.util.StringUtils
+import org.opensearch.hadoop.serialization.FieldType.BINARY
+import org.opensearch.hadoop.serialization.FieldType.BOOLEAN
+import org.opensearch.hadoop.serialization.FieldType.BYTE
+import org.opensearch.hadoop.serialization.FieldType.DATE
+import org.opensearch.hadoop.serialization.FieldType.DATE_NANOS
+import org.opensearch.hadoop.serialization.FieldType.DOUBLE
+import org.opensearch.hadoop.serialization.FieldType.HALF_FLOAT
+import org.opensearch.hadoop.serialization.FieldType.SCALED_FLOAT
+import org.opensearch.hadoop.serialization.FieldType.FLOAT
+import org.opensearch.hadoop.serialization.FieldType.GEO_POINT
+import org.opensearch.hadoop.serialization.FieldType.GEO_SHAPE
+import org.opensearch.hadoop.serialization.FieldType.INTEGER
+import org.opensearch.hadoop.serialization.FieldType.JOIN
+import org.opensearch.hadoop.serialization.FieldType.KEYWORD
+import org.opensearch.hadoop.serialization.FieldType.LONG
+import org.opensearch.hadoop.serialization.FieldType.NESTED
+import org.opensearch.hadoop.serialization.FieldType.NULL
+import org.opensearch.hadoop.serialization.FieldType.OBJECT
+import org.opensearch.hadoop.serialization.FieldType.SHORT
+import org.opensearch.hadoop.serialization.FieldType.STRING
+import org.opensearch.hadoop.serialization.FieldType.TEXT
+import org.opensearch.hadoop.serialization.FieldType.WILDCARD
+import org.opensearch.hadoop.serialization.field.FieldFilter.NumberedInclude
 import org.elasticsearch.spark.sql.Utils.ROOT_LEVEL_NAME
 import org.elasticsearch.spark.sql.Utils.ROW_INFO_ARRAY_PROPERTY
 import org.elasticsearch.spark.sql.Utils.ROW_INFO_ORDER_PROPERTY
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.{InternalConfigurationOptions, Settings}
 import org.opensearch.hadoop.rest.{InitializationUtils, RestRepository}
+import org.opensearch.hadoop.serialization.dto.mapping.{Field, GeoField, GeoPointType, GeoShapeType, Mapping, MappingUtils}
+import org.opensearch.hadoop.serialization.field.FieldFilter
+import org.opensearch.hadoop.util.{Assert, IOUtils, SettingsUtils, StringUtils}
 
 private[sql] object SchemaUtils {
   case class Schema(mapping: Mapping, struct: StructType)

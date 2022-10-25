@@ -28,10 +28,11 @@ import org.apache.pig.ResourceSchema;
 import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.util.Utils;
 import org.elasticsearch.hadoop.pig.PigTuple;
-import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure;
-import org.elasticsearch.hadoop.util.DateUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.handler.write.SerializationFailure;
+import org.opensearch.hadoop.util.DateUtils;
+import org.opensearch.hadoop.util.StringUtils;
 import org.junit.Test;
+import org.opensearch.hadoop.serialization.handler.write.impl.SerializationEventConverter;
 
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertEquals;

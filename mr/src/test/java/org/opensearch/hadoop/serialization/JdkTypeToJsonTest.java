@@ -29,11 +29,9 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException;
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.builder.ContentBuilder;
-import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter;
-import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
+import org.opensearch.hadoop.serialization.builder.ContentBuilder;
+import org.opensearch.hadoop.serialization.builder.JdkValueWriter;
+import org.opensearch.hadoop.util.FastByteArrayOutputStream;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.After;
 import org.junit.AfterClass;

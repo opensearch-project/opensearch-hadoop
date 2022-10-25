@@ -22,9 +22,9 @@ package org.opensearch.hadoop.handler.impl.elasticsearch;
 import java.io.IOException;
 
 import org.opensearch.hadoop.handler.Exceptional;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.ecs.ElasticCommonSchema;
-import org.elasticsearch.hadoop.util.ecs.MessageTemplate;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.ecs.ElasticCommonSchema;
+import org.opensearch.hadoop.util.ecs.MessageTemplate;
 
 /**
  * Given a failure event that extends Exceptional, provide a mechanism for transforming its fields into an ECS document.

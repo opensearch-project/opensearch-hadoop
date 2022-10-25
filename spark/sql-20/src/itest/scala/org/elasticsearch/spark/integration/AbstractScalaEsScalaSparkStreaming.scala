@@ -26,13 +26,13 @@ import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.scheduler._
 import org.apache.spark.streaming.{Seconds, StreamingContext, StreamingContextState}
 import org.apache.spark.{SparkConf, SparkContext, SparkException}
-import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, OpenSearchAssume}
+import org.elasticsearch.hadoop.OpenSearchAssume
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
 import org.elasticsearch.hadoop.rest.RestUtils
 import org.elasticsearch.hadoop.util.TestUtils
 import org.elasticsearch.hadoop.util.TestUtils.resource
 import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
-import org.elasticsearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings}
+import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.spark.rdd.EsSpark
 import org.elasticsearch.spark.rdd.Metadata._
 import org.elasticsearch.spark.serialization.{Bean, Garbage, ModuleCaseClass, ReflectionUtils, Trip}
@@ -43,7 +43,9 @@ import org.junit._
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.{MethodSorters, Parameterized}
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
 import scala.collection.JavaConversions.propertiesAsScalaMap
 import scala.collection.mutable

@@ -18,6 +18,8 @@
  */
 package org.elasticsearch.hadoop.util;
 
+import org.opensearch.hadoop.util.BytesArray;
+
 import java.util.Arrays;
 
 public abstract class BytesUtils {

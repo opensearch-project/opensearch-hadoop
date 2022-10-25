@@ -19,7 +19,7 @@
 package org.opensearch.hadoop.rest;
 
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.serialization.SettingsAware;
+import org.opensearch.hadoop.serialization.SettingsAware;
 
 public class SimpleHttpRetryPolicy implements HttpRetryPolicy, SettingsAware {
 

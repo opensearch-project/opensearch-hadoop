@@ -21,7 +21,7 @@ package org.opensearch.hadoop.security;
 
 import java.io.IOException;
 
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 

@@ -34,17 +34,13 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.streaming.OutputMode
 import org.apache.spark.sql.types.Decimal
-import org.elasticsearch.hadoop.{EsHadoopIllegalArgumentException, OpenSearchAssume}
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException
+import org.elasticsearch.hadoop.OpenSearchAssume
 import org.elasticsearch.hadoop.TestData
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES
 import org.elasticsearch.hadoop.rest.RestUtils
-import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion
-import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.hadoop.util.TestUtils
 import org.elasticsearch.hadoop.util.TestUtils.resource
@@ -61,7 +57,10 @@ import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
+import org.opensearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.serialization.EsHadoopSerializationException
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
 import scala.collection.JavaConversions.propertiesAsScalaMap
 import scala.collection.JavaConverters.asScalaBufferConverter

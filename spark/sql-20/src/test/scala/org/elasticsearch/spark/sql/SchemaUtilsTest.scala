@@ -33,9 +33,8 @@ import org.junit.Assert.assertTrue
 import org.junit.Before
 import org.junit.Test
 import java.util.Collections
-
-import org.elasticsearch.hadoop.serialization.dto.mapping.FieldParser
 import org.opensearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.serialization.dto.mapping.FieldParser
 
 class SchemaUtilsTest {
 

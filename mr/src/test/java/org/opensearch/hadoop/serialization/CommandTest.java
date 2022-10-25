@@ -18,19 +18,17 @@
  */
 package org.opensearch.hadoop.serialization;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.rest.InitializationUtils;
-import org.elasticsearch.hadoop.serialization.JdkBytesConverter;
-import org.elasticsearch.hadoop.serialization.MapFieldExtractor;
-import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter;
-import org.elasticsearch.hadoop.serialization.bulk.BulkCommand;
-import org.elasticsearch.hadoop.serialization.bulk.BulkCommands;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.builder.JdkValueWriter;
+import org.opensearch.hadoop.serialization.bulk.BulkCommand;
+import org.opensearch.hadoop.serialization.bulk.BulkCommands;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Before;
 import org.junit.Test;

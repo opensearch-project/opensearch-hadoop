@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.handler;
 
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 
 /**
  * Denotes that a handler has decided to abort the job on a potentially retryable value. Instead of displaying the

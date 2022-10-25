@@ -25,9 +25,9 @@ import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.Response;
 import org.opensearch.hadoop.rest.RestClient;
-import org.elasticsearch.hadoop.util.ByteSequence;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.ByteSequence;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.IOUtils;
 
 import static org.opensearch.hadoop.rest.Request.Method.PUT;
 

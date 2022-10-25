@@ -34,13 +34,13 @@ import javax.security.auth.kerberos.KerberosPrincipal;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.security.token.Token;
 import org.apache.hadoop.security.token.TokenIdentifier;
-import org.elasticsearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
-import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException;
-import org.elasticsearch.hadoop.util.ClusterName;
+import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.util.ClusterName;
 
 /**
  * Provides access to user operations from Hadoop's UserGroupInformation class.

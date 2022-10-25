@@ -23,26 +23,26 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.security.UserProvider;
-import org.elasticsearch.hadoop.serialization.BytesConverter;
-import org.elasticsearch.hadoop.serialization.builder.NoOpValueWriter;
-import org.elasticsearch.hadoop.serialization.builder.ValueReader;
-import org.elasticsearch.hadoop.serialization.builder.ValueWriter;
-import org.elasticsearch.hadoop.serialization.bulk.MetadataExtractor;
-import org.elasticsearch.hadoop.serialization.dto.NodeInfo;
-import org.elasticsearch.hadoop.serialization.field.FieldExtractor;
-import org.elasticsearch.hadoop.util.Assert;
-import org.elasticsearch.hadoop.util.ClusterInfo;
-import org.elasticsearch.hadoop.util.ClusterName;
-import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.SettingsUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.BytesConverter;
+import org.opensearch.hadoop.serialization.builder.NoOpValueWriter;
+import org.opensearch.hadoop.serialization.builder.ValueReader;
+import org.opensearch.hadoop.serialization.builder.ValueWriter;
+import org.opensearch.hadoop.serialization.bulk.MetadataExtractor;
+import org.opensearch.hadoop.serialization.dto.NodeInfo;
+import org.opensearch.hadoop.serialization.field.FieldExtractor;
+import org.opensearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.ClusterInfo;
+import org.opensearch.hadoop.util.ClusterName;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
+import org.opensearch.hadoop.util.SettingsUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 public abstract class InitializationUtils {
 

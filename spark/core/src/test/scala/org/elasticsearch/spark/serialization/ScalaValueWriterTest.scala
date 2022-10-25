@@ -18,13 +18,13 @@
  */
 package org.elasticsearch.spark.serialization
 
-import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.spark.serialization.testbeans.{Contact, ContactBook}
 import org.junit.Assert._
 import org.junit.Test
 import org.opensearch.hadoop.cfg.{ConfigurationOptions, Settings}
+import org.opensearch.hadoop.serialization.EsHadoopSerializationException
+import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator
 
 import java.io.ByteArrayOutputStream
 import java.sql.Timestamp

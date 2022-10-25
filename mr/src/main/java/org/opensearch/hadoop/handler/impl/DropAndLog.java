@@ -25,7 +25,7 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.handler.ErrorCollector;
 import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.Exceptional;

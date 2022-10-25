@@ -18,9 +18,9 @@
  */
 package org.elasticsearch.hadoop.serialization;
 
-import org.elasticsearch.hadoop.serialization.builder.JdkValueReader;
-import org.elasticsearch.hadoop.serialization.builder.ValueReader;
-import org.elasticsearch.hadoop.util.DateUtils;
+import org.opensearch.hadoop.serialization.builder.JdkValueReader;
+import org.opensearch.hadoop.serialization.builder.ValueReader;
+import org.opensearch.hadoop.util.DateUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;

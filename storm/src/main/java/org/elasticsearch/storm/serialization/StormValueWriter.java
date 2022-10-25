@@ -20,10 +20,10 @@ package org.elasticsearch.storm.serialization;
 
 import org.apache.storm.tuple.Fields;
 import org.apache.storm.tuple.Tuple;
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.builder.FilteringValueWriter;
-import org.elasticsearch.hadoop.serialization.builder.JdkValueWriter;
-import org.elasticsearch.hadoop.serialization.builder.ValueWriter;
+import org.opensearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.serialization.builder.FilteringValueWriter;
+import org.opensearch.hadoop.serialization.builder.JdkValueWriter;
+import org.opensearch.hadoop.serialization.builder.ValueWriter;
 
 public class StormValueWriter extends FilteringValueWriter<Tuple> {
 

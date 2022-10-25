@@ -25,10 +25,9 @@ import java.util.Map;
 
 import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
-import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure;
-import org.elasticsearch.hadoop.serialization.handler.write.impl.SerializationEventConverter;
-import org.elasticsearch.hadoop.util.DateUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.serialization.handler.write.SerializationFailure;
+import org.opensearch.hadoop.util.DateUtils;
+import org.opensearch.hadoop.util.StringUtils;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

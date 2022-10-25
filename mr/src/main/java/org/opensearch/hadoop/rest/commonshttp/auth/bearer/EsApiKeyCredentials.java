@@ -23,7 +23,7 @@ import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
-import org.elasticsearch.hadoop.util.Assert;
+import org.opensearch.hadoop.util.Assert;
 
 /**
  * Credentials class that produces an EsToken if it is available on the currently logged in user.

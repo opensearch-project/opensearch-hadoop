@@ -18,9 +18,9 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator;
-import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
+import org.opensearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator;
+import org.opensearch.hadoop.util.FastByteArrayOutputStream;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -32,7 +32,7 @@ import org.apache.hadoop.mapreduce.OutputCommitter;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
 import org.apache.hadoop.util.Progressable;
 import org.elasticsearch.hadoop.Stream;
-import org.elasticsearch.hadoop.util.WritableUtils;
+import org.opensearch.hadoop.util.WritableUtils;
 import org.opensearch.hadoop.mr.EsOutputFormat;
 
 

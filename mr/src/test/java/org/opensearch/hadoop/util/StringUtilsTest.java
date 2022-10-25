@@ -18,7 +18,6 @@
  */
 package org.opensearch.hadoop.util;
 
-import org.elasticsearch.hadoop.util.StringUtils;
 import org.junit.Assert;
 import org.junit.Test;
 

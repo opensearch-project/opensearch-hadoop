@@ -21,11 +21,11 @@ package org.opensearch.hadoop.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;

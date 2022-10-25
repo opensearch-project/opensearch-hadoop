@@ -27,8 +27,8 @@ import org.apache.hadoop.io.BinaryComparable;
 import org.apache.hadoop.io.BytesWritable;
 import org.apache.hadoop.io.WritableComparable;
 import org.apache.hadoop.io.WritableComparator;
-import org.elasticsearch.hadoop.util.BytesArray;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.StringUtils;
 
 /**
  * Replacement of {@link BytesWritable} that allows direct access to the underlying byte array without copying.

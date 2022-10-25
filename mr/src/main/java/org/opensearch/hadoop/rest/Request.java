@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.util.ByteSequence;
+import org.opensearch.hadoop.util.ByteSequence;
 
 
 public interface Request {

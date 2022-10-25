@@ -19,11 +19,11 @@
 
 package org.opensearch.hadoop.security;
 
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.serialization.SettingsAware;
-import org.elasticsearch.hadoop.util.ObjectUtils;
+import org.opensearch.hadoop.serialization.SettingsAware;
+import org.opensearch.hadoop.util.ObjectUtils;
 
 /**
  * Provides a platform independent way of retrieving the currently running user.

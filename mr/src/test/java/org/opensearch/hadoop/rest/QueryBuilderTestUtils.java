@@ -19,9 +19,9 @@
 package org.opensearch.hadoop.rest;
 
 import org.opensearch.hadoop.rest.query.QueryBuilder;
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator;
-import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
+import org.opensearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator;
+import org.opensearch.hadoop.util.FastByteArrayOutputStream;
 
 public class QueryBuilderTestUtils {
     public static String printQueryBuilder(QueryBuilder builder, boolean addQuery) {

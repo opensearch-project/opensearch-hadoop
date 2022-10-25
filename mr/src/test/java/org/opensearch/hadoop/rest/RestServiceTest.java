@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.serialization.dto.ShardInfo;
+import org.opensearch.hadoop.serialization.dto.ShardInfo;
 import org.junit.Before;
 import org.junit.Test;
 

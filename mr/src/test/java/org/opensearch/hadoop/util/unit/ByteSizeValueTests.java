@@ -18,8 +18,6 @@
  */
 package org.opensearch.hadoop.util.unit;
 
-import org.elasticsearch.hadoop.util.unit.ByteSizeUnit;
-import org.elasticsearch.hadoop.util.unit.ByteSizeValue;
 import org.hamcrest.MatcherAssert;
 import org.junit.Test;
 

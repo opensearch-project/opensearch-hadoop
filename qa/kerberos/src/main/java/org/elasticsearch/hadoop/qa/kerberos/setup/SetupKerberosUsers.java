@@ -24,7 +24,7 @@ import org.opensearch.hadoop.cfg.PropertiesSettings;
 import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.qa.kerberos.ExtendedClient;
 import org.opensearch.hadoop.rest.InitializationUtils;
-import org.elasticsearch.hadoop.util.StringUtils;
+import org.opensearch.hadoop.util.StringUtils;
 
 public class SetupKerberosUsers {
 

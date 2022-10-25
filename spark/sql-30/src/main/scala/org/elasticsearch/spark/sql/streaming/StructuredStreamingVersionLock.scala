@@ -21,8 +21,7 @@ package org.elasticsearch.spark.sql.streaming
 
 import org.apache.commons.logging.LogFactory
 import org.apache.spark.sql.SparkSession
-import org.elasticsearch.hadoop.EsHadoopException
-import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.{EsHadoopException, EsHadoopIllegalArgumentException}
 
 /**
  * Spark Structured Streaming just recently left "Experimental" mode in Spark 2.2.0. Its underlying interfaces have not

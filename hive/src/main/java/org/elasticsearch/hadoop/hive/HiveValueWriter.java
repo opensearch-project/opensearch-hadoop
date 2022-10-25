@@ -29,9 +29,10 @@ import org.apache.hadoop.hive.serde2.objectinspector.StructField;
 import org.apache.hadoop.hive.serde2.objectinspector.StructObjectInspector;
 import org.apache.hadoop.io.Writable;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.serialization.Generator;
-import org.elasticsearch.hadoop.serialization.builder.FilteringValueWriter;
-import org.elasticsearch.hadoop.util.FieldAlias;
+import org.opensearch.hadoop.serialization.Generator;
+import org.opensearch.hadoop.serialization.builder.FilteringValueWriter;
+import org.opensearch.hadoop.util.FieldAlias;
+import org.opensearch.hadoop.serialization.builder.ValueWriter;
 
 /**
  * Main value writer for hive. However since Hive expects a Writable type to be passed to the record reader,
@@ -139,7 +140,7 @@ public class HiveValueWriter extends FilteringValueWriter<HiveType> {
 
 
     protected Result handleUnknown(Object value, ObjectInspector oi, Generator generator) {
-        return org.elasticsearch.hadoop.serialization.builder.ValueWriter.Result.FAILED(value);
+        return ValueWriter.Result.FAILED(value);
     }
 
     @Override

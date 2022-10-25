@@ -23,7 +23,7 @@ import java.io.IOException;
 
 import org.opensearch.hadoop.handler.impl.elasticsearch.BaseEventConverter;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
-import org.elasticsearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.IOUtils;
 
 /**
  * Event handler used by Elasticsearch Handler to convert bulk failures into ECS fields

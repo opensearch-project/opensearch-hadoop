@@ -2,7 +2,7 @@ import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
 
 apply plugin: 'opensearch.hadoop.build.integration'
 
-description = "Elasticsearch Hadoop Hive"
+description = "OpenSearch Hadoop Hive"
 
 evaluationDependsOn(':opensearch-hadoop-mr')
 
@@ -67,7 +67,7 @@ tasks.named("test").configure {
 jar {
     dependsOn(project.configurations.embedded)
     from(project.configurations.embedded.collect { it.isDirectory() ? it : zipTree(it)}) {
-        include "org/elasticsearch/hadoop/**"
+        include "org/opensearch/hadoop/**"
         include "opensearch-hadoop-build.properties"
         include "META-INF/services/*"
     }
@@ -83,7 +83,7 @@ processItestResources {
 itestJar {
     dependsOn(project.configurations.embedded)
     from(project.configurations.embedded.collect { it.isDirectory() ? it : zipTree(it)}) {
-        include "org/elasticsearch/hadoop/**"
+        include "org/opensearch/hadoop/**"
         include "opensearch-hadoop-build.properties"
         include "META-INF/services/*"
     }

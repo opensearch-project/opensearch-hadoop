@@ -20,7 +20,7 @@ package org.opensearch.hadoop.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.Assert;
@@ -56,7 +56,7 @@ public class Resource {
         // 2) Resource may contain a query, so retrieve it and complain if it's already set
         if (resource.contains("?") || resource.contains("&")) {
             if (StringUtils.hasText(settings.getQuery())) {
-                throw new EsHadoopIllegalArgumentException(String.format(
+                throw new OpenSearchHadoopIllegalArgumentException(String.format(
                         "Cannot specify a query in the target index AND through %s", ConfigurationOptions.ES_QUERY));
             }
 
@@ -85,7 +85,7 @@ public class Resource {
         if (opensearchMajorVersion.after(OpenSearchMajorVersion.V_7_X)) {
             // Types can no longer the specified at all! Index names only!
             if (typeExists) {
-                throw new EsHadoopIllegalArgumentException(String.format(
+                throw new OpenSearchHadoopIllegalArgumentException(String.format(
                         "Detected type name in resource [%s]. Remove type name to continue.",
                         resource
                 ));
@@ -107,7 +107,7 @@ public class Resource {
             // This is important even if we're on a 6.x cluster that enforces a single type per index. 6.x STILL supports opening old 5.x
             // indices in order to ease the upgrade process!!!!
             if (!read && !typeExists) {
-                throw new EsHadoopIllegalArgumentException(String.format(
+                throw new OpenSearchHadoopIllegalArgumentException(String.format(
                         "No type found; Types are required when writing in ES versions 6 and below. Expected [index]/[type], but got [%s]",
                         resource
                 ));

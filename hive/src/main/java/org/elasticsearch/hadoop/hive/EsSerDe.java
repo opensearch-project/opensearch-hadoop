@@ -42,7 +42,7 @@ import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.CompositeSettings;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.Settings;
@@ -138,7 +138,7 @@ public class EsSerDe extends AbstractSerDe {
                 mapContainer.put(jsonFieldName, blob);
                 return (Writable) mapContainer;
             default:
-                throw new EsHadoopIllegalStateException("Could not correctly wrap JSON data for structural type " + structTypeInfo.getCategory());
+                throw new OpenSearchHadoopIllegalStateException("Could not correctly wrap JSON data for structural type " + structTypeInfo.getCategory());
         }
     }
 

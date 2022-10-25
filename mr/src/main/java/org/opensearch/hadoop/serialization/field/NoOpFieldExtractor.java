@@ -18,12 +18,12 @@
  */
 package org.opensearch.hadoop.serialization.field;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 
 public class NoOpFieldExtractor implements FieldExtractor {
 
     @Override
     public String field(Object target) {
-        throw new EsHadoopIllegalStateException("Should not be called - indicates a configuration issue or a bug");
+        throw new OpenSearchHadoopIllegalStateException("Should not be called - indicates a configuration issue or a bug");
     }
 }

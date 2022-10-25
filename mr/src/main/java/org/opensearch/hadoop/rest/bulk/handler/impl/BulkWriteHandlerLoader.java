@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.rest.bulk.handler.impl;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
 import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;
@@ -65,7 +65,7 @@ public class BulkWriteHandlerLoader extends AbstractHandlerLoader<IBulkWriteErro
                 genericHandler = ElasticsearchHandler.create(getSettings(), new BulkErrorEventConverter());
                 break;
             default:
-                throw new EsHadoopIllegalArgumentException(
+                throw new OpenSearchHadoopIllegalArgumentException(
                         "Could not find default implementation for built in handler type [" + handlerName + "]"
                 );
         }

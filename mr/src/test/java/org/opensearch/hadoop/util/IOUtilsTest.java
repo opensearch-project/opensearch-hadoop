@@ -34,7 +34,7 @@ import java.net.URLConnection;
 import java.net.URLStreamHandler;
 import java.util.jar.JarFile;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -65,7 +65,7 @@ public class IOUtilsTest {
         assertEquals("Hello World. This is used by IOUtilsTest.", reader.readLine());
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void openNonExistingFile() throws Exception {
         InputStream inputStream = IOUtils.open("file:///This/Doesnt/Exist");
         fail("Shouldn't pass");

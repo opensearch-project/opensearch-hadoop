@@ -23,8 +23,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 
 public abstract class ReflectionUtils {
 
@@ -53,7 +53,7 @@ public abstract class ReflectionUtils {
         try {
             return (T) field.get(target);
         } catch (IllegalAccessException ex) {
-            throw new EsHadoopIllegalStateException("Unexpected reflection exception - " + ex.getClass().getName() + ": "+ ex.getMessage());
+            throw new OpenSearchHadoopIllegalStateException("Unexpected reflection exception - " + ex.getClass().getName() + ": "+ ex.getMessage());
         }
     }
 
@@ -61,7 +61,7 @@ public abstract class ReflectionUtils {
         try {
             field.set(target, value);
         } catch (IllegalAccessException ex) {
-            throw new EsHadoopIllegalStateException("Unexpected reflection exception - " + ex.getClass().getName() + ": "+ ex.getMessage());
+            throw new OpenSearchHadoopIllegalStateException("Unexpected reflection exception - " + ex.getClass().getName() + ": "+ ex.getMessage());
         }
     }
 
@@ -90,7 +90,7 @@ public abstract class ReflectionUtils {
         try {
             return (T) method.invoke(target, args);
         } catch (Exception ex) {
-            throw new EsHadoopIllegalArgumentException("Cannot invoke method " + method, ex);
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot invoke method " + method, ex);
         }
     }
 }

@@ -32,7 +32,7 @@ import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -159,7 +159,7 @@ public class AbstractJavaEsSparkStructuredStreamingTest {
         }
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void test0FailOnIndexCreationDisabled() throws Exception {
         String target = wrapIndex(resource("test-nonexisting", "data"));
         JavaStreamingQueryTestHarness<RecordBean> test = new JavaStreamingQueryTestHarness<>(spark, Encoders.bean(RecordBean.class));
@@ -180,7 +180,7 @@ public class AbstractJavaEsSparkStructuredStreamingTest {
                 .withInput(doc1)
                 .withInput(doc2)
                 .withInput(doc3)
-                .expectingToThrow(EsHadoopIllegalArgumentException.class)
+                .expectingToThrow(OpenSearchHadoopIllegalArgumentException.class)
                 .stream();
 
         test.run(

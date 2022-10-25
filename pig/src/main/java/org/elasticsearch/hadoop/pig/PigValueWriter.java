@@ -28,9 +28,9 @@ import org.apache.pig.data.DataBag;
 import org.apache.pig.data.DataByteArray;
 import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 import org.opensearch.hadoop.serialization.Generator;
 import org.opensearch.hadoop.serialization.builder.FilteringValueWriter;
 import org.opensearch.hadoop.util.FieldAlias;
@@ -110,10 +110,10 @@ public class PigValueWriter extends FilteringValueWriter<PigTuple> {
             break;
             // DateTime introduced in Pig 12
         case 65: //DataType.BIGINTEGER
-            throw new EsHadoopSerializationException("Big integers are not supported by Elasticsearch - consider using a different type (such as string)");
+            throw new OpenSearchHadoopSerializationException("Big integers are not supported by Elasticsearch - consider using a different type (such as string)");
             // DateTime introduced in Pig 12
         case 70: //DataType.BIGDECIMAL
-            throw new EsHadoopSerializationException("Big decimals are not supported by Elasticsearch - consider using a different type (such as string)");
+            throw new OpenSearchHadoopSerializationException("Big decimals are not supported by Elasticsearch - consider using a different type (such as string)");
         case DataType.MAP:
             ResourceSchema nestedSchema = field.getSchema();
 
@@ -274,7 +274,7 @@ public class PigValueWriter extends FilteringValueWriter<PigTuple> {
             Map<?, ?> map = (Map<?, ?>) fieldValue;
             return schema.getSchema() == null && !(map == null || map.isEmpty());
         } catch (ExecException e) {
-            throw new EsHadoopIllegalStateException(e);
+            throw new OpenSearchHadoopIllegalStateException(e);
         }
     }
 

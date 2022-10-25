@@ -22,7 +22,7 @@ package org.opensearch.hadoop.rest;
 import java.util.List;
 import java.util.Map;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.util.ByteSequence;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 
@@ -38,17 +38,17 @@ public class ErrorExtractor {
     }
     
     @SuppressWarnings("rawtypes")
-	public EsHadoopException extractErrorWithCause(Map m) {
+	public OpenSearchHadoopException extractErrorWithCause(Map m) {
     	Object type = m.get("type");
     	Object reason = m.get("reason");
     	Object causedBy = m.get("caused_by");
     	
-    	EsHadoopException ex = null;
+    	OpenSearchHadoopException ex = null;
     	if(reason != null) {
     		if(type != null) {
-    			ex = new EsHadoopRemoteException(type.toString(), reason.toString());
+    			ex = new OpenSearchHadoopRemoteException(type.toString(), reason.toString());
     		} else {
-    			ex = new EsHadoopRemoteException(reason.toString());
+    			ex = new OpenSearchHadoopRemoteException(reason.toString());
     		}
     	}
     	if(causedBy != null) {
@@ -60,16 +60,16 @@ public class ErrorExtractor {
     	}
     	
     	if(ex == null) {
-    		ex = new EsHadoopRemoteException(m.toString());
+    		ex = new OpenSearchHadoopRemoteException(m.toString());
     	}
     	
     	return ex;
     }
 
     @SuppressWarnings("rawtypes")
-	public EsHadoopException extractError(Map jsonMap) {
+	public OpenSearchHadoopException extractError(Map jsonMap) {
         Object err = jsonMap.get("error");
-        EsHadoopException error = null;
+        OpenSearchHadoopException error = null;
         if (err != null) {
             // part of ES 2.0
             if (err instanceof Map) {
@@ -87,20 +87,20 @@ public class ErrorExtractor {
                             	error = extractErrorWithCause(nestedM);
                             }
                             else {
-                                error = new EsHadoopRemoteException(nested.toString());
+                                error = new OpenSearchHadoopRemoteException(nested.toString());
                             }
                         }
                         else {
-                        	error = new EsHadoopRemoteException(nested.toString());
+                        	error = new OpenSearchHadoopRemoteException(nested.toString());
                         }
                     }
                     else {
-                    	error = new EsHadoopRemoteException(err.toString());
+                    	error = new OpenSearchHadoopRemoteException(err.toString());
                     }
                 }
             }
             else {
-            	error = new EsHadoopRemoteException(err.toString());
+            	error = new OpenSearchHadoopRemoteException(err.toString());
             }
         }
         return error;

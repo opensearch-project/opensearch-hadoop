@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.serialization.handler.write.impl;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.handler.ErrorCollector;
 import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
@@ -62,7 +62,7 @@ public class SerializationHandlerLoader extends AbstractHandlerLoader<ISerializa
                 genericHandler = ElasticsearchHandler.create(getSettings(), new SerializationEventConverter());
                 break;
             default:
-                throw new EsHadoopIllegalArgumentException(
+                throw new OpenSearchHadoopIllegalArgumentException(
                         "Could not find default implementation for built in handler type [" + handlerName + "]"
                 );
         }

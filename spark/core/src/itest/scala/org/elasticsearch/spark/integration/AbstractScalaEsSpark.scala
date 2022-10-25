@@ -77,9 +77,9 @@ import org.junit.runners.Parameterized.Parameters
 
 import org.elasticsearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import org.elasticsearch.spark.rdd.JDKCollectionConvertersCompat.Converters._
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.ConfigurationOptions
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
 object AbstractScalaEsScalaSpark {
@@ -158,7 +158,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     sc.emptyRDD.saveToEs(target, cfg)
   }
 
-  @Test(expected=classOf[EsHadoopIllegalArgumentException])
+  @Test(expected=classOf[OpenSearchHadoopIllegalArgumentException])
   def testEsRDDWriteIndexCreationDisabled() {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."))
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran")
@@ -264,7 +264,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     assertThat(RestUtils.get(target + "/_search?"), containsString("SFO"))
   }
 
-  @Test(expected = classOf[EsHadoopSerializationException])
+  @Test(expected = classOf[OpenSearchHadoopSerializationException])
   def testEsRDDWriteWithUnsupportedMapping() {
     OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "TTL only removed in v6 and up.")
 
@@ -461,7 +461,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     assertThat(RestUtils.get(wrapIndex(resource("spark-test-json-otp", "data", version) + "/_search?")), containsString("participants"))
   }
 
-  @Test(expected = classOf[EsHadoopIllegalArgumentException ])
+  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException ])
   def testEsRDDBreakOnFileScript(): Unit = {
     OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "File scripts are only removed in 6.x and on")
     val props = Map("es.write.operation" -> "upsert", "es.update.script.file" -> "break")
@@ -874,7 +874,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
       val count = multipleMissingIndicesWithoutSetting.count
       fail("Should have thrown an exception instead of returning " + count)
     } catch {
-      case e: EsHadoopIllegalArgumentException => //Expected
+      case e: OpenSearchHadoopIllegalArgumentException => //Expected
     }
 
     val index1 = prefix + "spark-test-read-missing-as-empty-1"
@@ -903,7 +903,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
       val count = mixedWithoutSetting.count
       fail("Should have thrown an exception instead of returning " + count)
     } catch {
-      case e: EsHadoopIllegalArgumentException => //Expected
+      case e: OpenSearchHadoopIllegalArgumentException => //Expected
     }
   }
 

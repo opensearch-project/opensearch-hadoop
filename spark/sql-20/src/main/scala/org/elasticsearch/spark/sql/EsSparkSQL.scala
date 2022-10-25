@@ -27,7 +27,7 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_WRITE
 import org.elasticsearch.spark.cfg.SparkSettingsManager
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.PropertiesSettings
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.InitializationUtils
@@ -86,7 +86,7 @@ object EsSparkSQL {
   def saveToEs(srdd: Dataset[_], cfg: Map[String, String]): Unit = {
     if (srdd != null) {
       if (srdd.isStreaming) {
-        throw new EsHadoopIllegalArgumentException("Streaming Datasets should not be saved with 'saveToEs()'. Instead, use " +
+        throw new OpenSearchHadoopIllegalArgumentException("Streaming Datasets should not be saved with 'saveToEs()'. Instead, use " +
           "the 'writeStream().format(\"es\").save()' methods.")
       }
       val sparkCtx = srdd.sqlContext.sparkContext

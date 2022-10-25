@@ -22,7 +22,7 @@ package org.opensearch.hadoop.rest.bulk;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.rest.HttpStatus;
 import org.opensearch.hadoop.util.BytesArray;
 
@@ -61,9 +61,9 @@ public class BulkResponse {
         private final int originalPosition;
         private final BytesArray document;
         private final int documentStatus;
-        private final EsHadoopException error;
+        private final OpenSearchHadoopException error;
 
-        public BulkError(int originalPosition, BytesArray document, int documentStatus, EsHadoopException error) {
+        public BulkError(int originalPosition, BytesArray document, int documentStatus, OpenSearchHadoopException error) {
             this.originalPosition = originalPosition;
             this.document = document;
             this.documentStatus = documentStatus;
@@ -88,7 +88,7 @@ public class BulkResponse {
             return documentStatus;
         }
 
-        public EsHadoopException getError() {
+        public OpenSearchHadoopException getError() {
             return error;
         }
     }

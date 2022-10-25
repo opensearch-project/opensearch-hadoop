@@ -34,7 +34,7 @@ import java.util.Set;
 import javax.security.auth.Subject;
 import javax.security.auth.kerberos.KerberosPrincipal;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.ClusterName;
 
@@ -73,14 +73,14 @@ public class JdkUser implements User {
     }
 
     @Override
-    public <T> T doAs(PrivilegedExceptionAction<T> action) throws EsHadoopException {
+    public <T> T doAs(PrivilegedExceptionAction<T> action) throws OpenSearchHadoopException {
         try {
             return Subject.doAs(subject, action);
         } catch (PrivilegedActionException e) {
-            if (e.getCause() instanceof EsHadoopException) {
-                throw ((EsHadoopException) e.getCause());
+            if (e.getCause() instanceof OpenSearchHadoopException) {
+                throw ((OpenSearchHadoopException) e.getCause());
             } else {
-                throw new EsHadoopException(e.getCause());
+                throw new OpenSearchHadoopException(e.getCause());
             }
         }
     }

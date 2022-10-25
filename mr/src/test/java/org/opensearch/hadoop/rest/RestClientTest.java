@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.query.MatchAllQueryBuilder;
 import org.opensearch.hadoop.rest.stats.Stats;
@@ -117,7 +117,7 @@ public class RestClientTest {
         assertEquals("AbcDefGhiJklMnoPqrS_", id);
     }
 
-    @Test(expected = EsHadoopInvalidRequest.class)
+    @Test(expected = OpenSearchHadoopInvalidRequest.class)
     public void testPostDocumentFailure() throws Exception {
         String index = "index/type";
         Settings settings = new TestSettings();
@@ -156,7 +156,7 @@ public class RestClientTest {
         fail("Request should have failed");
     }
 
-    @Test(expected = EsHadoopInvalidRequest.class)
+    @Test(expected = OpenSearchHadoopInvalidRequest.class)
     public void testPostTypelessDocumentFailure() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
@@ -195,7 +195,7 @@ public class RestClientTest {
         fail("Request should have failed");
     }
 
-    @Test(expected = EsHadoopInvalidRequest.class)
+    @Test(expected = OpenSearchHadoopInvalidRequest.class)
     public void testPostDocumentWeirdness() throws Exception {
         String index = "index/type";
         Settings settings = new TestSettings();
@@ -231,7 +231,7 @@ public class RestClientTest {
         assertEquals("AbcDefGhiJklMnoPqrS_", id);
     }
 
-    @Test(expected = EsHadoopInvalidRequest.class)
+    @Test(expected = OpenSearchHadoopInvalidRequest.class)
     public void testPostTypelessDocumentWeirdness() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
@@ -390,7 +390,7 @@ public class RestClientTest {
         assertEquals(5L, count);
     }
 
-    @Test(expected = EsHadoopParsingException.class)
+    @Test(expected = OpenSearchHadoopParsingException.class)
     public void testCount7xBadRelation() throws Exception {
         String index = "index";
 
@@ -473,7 +473,7 @@ public class RestClientTest {
         try {
             client.mainInfo();
             fail("Shouldn't operate on main version that is too old.");
-        } catch (EsHadoopIllegalStateException e) {
+        } catch (OpenSearchHadoopIllegalStateException e) {
             assertEquals("Invalid major version [2.0.0]. Version is lower than minimum required version [6.x].", e.getMessage());
         }
     }
@@ -499,7 +499,7 @@ public class RestClientTest {
         try {
             client.mainInfo();
             fail("Shouldn't operate on request that does not contain the required headers.");
-        } catch (EsHadoopTransportException e) {
+        } catch (OpenSearchHadoopTransportException e) {
             assertEquals("Connected, but could not verify server is Elasticsearch. Response missing [X-elastic-product] header. " +
                     "Please check that you are connecting to an Elasticsearch instance, and that any networking filters are " +
                     "preserving that header.", e.getMessage());

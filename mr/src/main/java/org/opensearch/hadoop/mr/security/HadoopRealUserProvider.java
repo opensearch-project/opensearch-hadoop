@@ -24,7 +24,7 @@ import java.io.IOException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.security.UserGroupInformation;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
 
@@ -58,7 +58,7 @@ public class HadoopRealUserProvider extends UserProvider {
                 }
                 // If there is no real user underneath the proxy user, we should treat this like an error case.
                 if (realUser == null) {
-                    throw new EsHadoopException("Could not locate a real user under the current user [" + currentUser + "].");
+                    throw new OpenSearchHadoopException("Could not locate a real user under the current user [" + currentUser + "].");
                 } else {
                     if (LOG.isDebugEnabled()) {
                         LOG.debug("Found real user [" + realUser.getUserName() + "] with auth method of [" +
@@ -68,7 +68,7 @@ public class HadoopRealUserProvider extends UserProvider {
                 }
             }
         } catch (IOException e) {
-            throw new EsHadoopException("Could not retrieve the current user", e);
+            throw new OpenSearchHadoopException("Could not retrieve the current user", e);
         }
     }
 }

@@ -21,7 +21,7 @@ package org.elasticsearch.spark.sql.streaming
 
 import org.apache.commons.logging.LogFactory
 import org.apache.spark.sql.SparkSession
-import org.opensearch.hadoop.{EsHadoopException, EsHadoopIllegalArgumentException}
+import org.opensearch.hadoop.{OpenSearchHadoopException, OpenSearchHadoopIllegalArgumentException}
 
 /**
  * Spark Structured Streaming just recently left "Experimental" mode in Spark 2.2.0. Its underlying interfaces have not
@@ -46,15 +46,15 @@ object StructuredStreamingVersionLock {
       session.version match {
         case supported(version) => if (LOG.isDebugEnabled) LOG.debug(s"Running against supported version of Spark [$version]")
         case _ =>
-          throw new EsHadoopIllegalArgumentException(s"Spark version mismatch. Expected at least Spark version [2.2.0] " +
+          throw new OpenSearchHadoopIllegalArgumentException(s"Spark version mismatch. Expected at least Spark version [2.2.0] " +
             s"but found [${session.version}]. Spark Structured Streaming is a feature that is only supported on Spark " +
             s"[2.2.0] and up for this version of ES-Hadoop/Spark.")
       }
     } catch {
-      case e: EsHadoopException =>
+      case e: OpenSearchHadoopException =>
         throw e
       case t: Throwable =>
-        throw new EsHadoopIllegalArgumentException("Could not determine the version of Spark for compatibility", t)
+        throw new OpenSearchHadoopIllegalArgumentException("Could not determine the version of Spark for compatibility", t)
     }
   }
 }

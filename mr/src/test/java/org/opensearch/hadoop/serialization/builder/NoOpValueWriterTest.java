@@ -18,13 +18,13 @@
  */
 package org.opensearch.hadoop.serialization.builder;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.junit.Test;
 
 
 public class NoOpValueWriterTest {
 
-    @Test(expected = EsHadoopIllegalStateException.class)
+    @Test(expected = OpenSearchHadoopIllegalStateException.class)
     public void testWrite() {
         ValueWriter writer = new NoOpValueWriter();
         writer.write(null, null);

@@ -24,7 +24,7 @@ import java.util.Scanner;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.rest.RestUtils;
@@ -184,7 +184,7 @@ public class AbstractRestSaveTest {
         writer.close();
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testCreatePartitionWriterWithMultipleIndices() throws Exception {
         Settings settings = new TestSettings();
         settings.setProperty(ConfigurationOptions.ES_RESOURCE, "alias_index1,alias_index2/doc");
@@ -217,7 +217,7 @@ public class AbstractRestSaveTest {
         writer.close();
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testCreatePartitionWriterWithAliasUsingMultipleIndices() throws Exception {
         RestUtils.postData("_aliases", ("{" +
                     "\"actions\": [" +
@@ -274,7 +274,7 @@ public class AbstractRestSaveTest {
         writer.close();
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testCreatePartitionWriterWithMultipleAliases() throws Exception {
         RestUtils.postData("_aliases", ("{" +
                     "\"actions\": [" +
@@ -315,7 +315,7 @@ public class AbstractRestSaveTest {
         fail("Multiple alias names are not supported. Only singular aliases.");
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testCreatePartitionWriterWithMultipleWritableAliases() throws Exception {
         RestUtils.postData("_aliases", ("{" +
                     "\"actions\": [" +

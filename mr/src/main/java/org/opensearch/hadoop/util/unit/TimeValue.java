@@ -45,7 +45,7 @@ package org.opensearch.hadoop.util.unit;
 
 import java.util.concurrent.TimeUnit;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.util.StringUtils;
 
 public class TimeValue {
@@ -254,7 +254,7 @@ public class TimeValue {
             }
             return new TimeValue(millis, TimeUnit.MILLISECONDS);
         } catch (NumberFormatException e) {
-            throw new EsHadoopIllegalArgumentException("Failed to parse [" + sValue + "]", e);
+            throw new OpenSearchHadoopIllegalArgumentException("Failed to parse [" + sValue + "]", e);
         }
     }
 

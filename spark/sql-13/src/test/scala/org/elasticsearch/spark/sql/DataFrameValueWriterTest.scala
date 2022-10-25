@@ -34,7 +34,7 @@ import org.junit.Assert._
 import org.junit.Ignore
 import org.junit.Test
 import org.opensearch.hadoop.cfg.{ConfigurationOptions, Settings}
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
 import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator
 
 class DataFrameValueWriterTest {
@@ -51,7 +51,7 @@ class DataFrameValueWriterTest {
     }
     val result = writer.write((value, schema), generator)
     if (result.isSuccesful == false) {
-      throw new EsHadoopSerializationException("Could not serialize [" + result.getUnknownValue + "]")
+      throw new OpenSearchHadoopSerializationException("Could not serialize [" + result.getUnknownValue + "]")
     }
     generator.flush()
 

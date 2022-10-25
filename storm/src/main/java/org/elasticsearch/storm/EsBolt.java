@@ -31,7 +31,7 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.IRichBolt;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Tuple;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.rest.bulk.BulkResponse;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.RestService;
@@ -170,7 +170,7 @@ public class EsBolt implements IRichBolt {
             for (BulkResponse.BulkError documentError : documentErrors) {
                 flush.set(documentError.getOriginalPosition());
             }
-        } catch (EsHadoopException ex) {
+        } catch (OpenSearchHadoopException ex) {
             // fail all recorded tuples
             for (Tuple input : inflightTuples) {
                 collector.fail(input);

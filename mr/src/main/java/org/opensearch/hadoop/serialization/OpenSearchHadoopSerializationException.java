@@ -16,26 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.opensearch.hadoop;
+package org.opensearch.hadoop.serialization;
 
-/**
- * Base class for Elasticsearch Hadoop exceptions.
- */
-public class EsHadoopException extends RuntimeException {
+import org.opensearch.hadoop.OpenSearchHadoopException;
 
-    public EsHadoopException() {
+public class OpenSearchHadoopSerializationException extends OpenSearchHadoopException {
+
+    public OpenSearchHadoopSerializationException() {
         super();
     }
 
-    public EsHadoopException(String message, Throwable cause) {
+    public OpenSearchHadoopSerializationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopException(String message) {
+    public OpenSearchHadoopSerializationException(String message) {
         super(message);
     }
 
-    public EsHadoopException(Throwable cause) {
+    public OpenSearchHadoopSerializationException(Throwable cause) {
         super(cause);
     }
+
 }

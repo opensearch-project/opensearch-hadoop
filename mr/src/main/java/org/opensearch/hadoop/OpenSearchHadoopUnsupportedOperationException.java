@@ -23,21 +23,21 @@ package org.opensearch.hadoop;
  * Denotes an operation that is not allowed to be performed, often due to the feature support of
  * the version of Elasticsearch being used.
  */
-public class EsHadoopUnsupportedOperationException extends EsHadoopException {
+public class OpenSearchHadoopUnsupportedOperationException extends OpenSearchHadoopException {
 
-    public EsHadoopUnsupportedOperationException() {
+    public OpenSearchHadoopUnsupportedOperationException() {
         super();
     }
 
-    public EsHadoopUnsupportedOperationException(String message, Throwable cause) {
+    public OpenSearchHadoopUnsupportedOperationException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopUnsupportedOperationException(String message) {
+    public OpenSearchHadoopUnsupportedOperationException(String message) {
         super(message);
     }
 
-    public EsHadoopUnsupportedOperationException(Throwable cause) {
+    public OpenSearchHadoopUnsupportedOperationException(Throwable cause) {
         super(cause);
     }
 }

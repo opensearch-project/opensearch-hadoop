@@ -27,8 +27,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.commonshttp.CommonsHttpTransportFactory;
 import org.opensearch.hadoop.rest.pooling.PooledTransportManager;
@@ -120,16 +120,16 @@ public class NetworkClient implements StatsAware, Closeable {
                 }
             } catch (Exception ex) {
                 // configuration error - including SSL/PKI - bail out
-                if (ex instanceof EsHadoopIllegalStateException) {
-                    throw (EsHadoopException) ex;
+                if (ex instanceof OpenSearchHadoopIllegalStateException) {
+                    throw (OpenSearchHadoopException) ex;
                 }
                 // issues with the SSL handshake, bail out instead of retry, for security reasons
                 if (ex instanceof javax.net.ssl.SSLException) {
-                    throw new EsHadoopTransportException(ex);
+                    throw new OpenSearchHadoopTransportException(ex);
                 }
                 // check for fatal, non-recoverable network exceptions
                 if (ex instanceof BindException) {
-                    throw new EsHadoopTransportException(ex);
+                    throw new OpenSearchHadoopTransportException(ex);
                 }
 
                 if (log.isTraceEnabled()) {
@@ -149,7 +149,7 @@ public class NetworkClient implements StatsAware, Closeable {
                     String message =
                             String.format("Node [%s] failed (%s); Retrying has been disabled. Aborting...", failed, ex.getMessage());
                     log.error(message);
-                    throw new EsHadoopException(message, ex);
+                    throw new OpenSearchHadoopException(message, ex);
                 }
 
                 log.error(String.format("Node [%s] failed (%s); "
@@ -157,7 +157,7 @@ public class NetworkClient implements StatsAware, Closeable {
                         failed, ex.getMessage()));
 
                 if (!newNode) {
-                    throw new EsHadoopNoNodesLeftException(failedNodes);
+                    throw new OpenSearchHadoopNoNodesLeftException(failedNodes);
                 }
             }
         } while (newNode);

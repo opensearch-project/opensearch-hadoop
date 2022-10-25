@@ -18,8 +18,8 @@
  */
 package org.opensearch.hadoop.util;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
@@ -80,7 +80,7 @@ public abstract class SettingsUtils {
                 String hostAddress = InetAddress.getByName(name).getHostAddress() + port;
                 return StringUtils.hasText(schema) ? schema + schemaDelimiter + hostAddress : hostAddress;
             } catch (UnknownHostException ex) {
-                throw new EsHadoopIllegalArgumentException("Cannot resolve ip for hostname: " + name);
+                throw new OpenSearchHadoopIllegalArgumentException("Cannot resolve ip for hostname: " + name);
             }
         }
         return host;
@@ -106,7 +106,7 @@ public abstract class SettingsUtils {
 
     public static void ensureJobTransportPoolingKey(Settings settings) {
         if (!hasJobTransportPoolingKey(settings)) {
-            throw new EsHadoopIllegalStateException("Job has not been assigned a transport pooling key. Required `"+InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY+"` to be set but it was not assigned.");
+            throw new OpenSearchHadoopIllegalStateException("Job has not been assigned a transport pooling key. Required `"+InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY+"` to be set but it was not assigned.");
         }
     }
 
@@ -189,7 +189,7 @@ public abstract class SettingsUtils {
 
         if (StringUtils.hasText(userProvided) && StringUtils.hasText(internalScrollFields)) {
             // Conflict found
-            throw new EsHadoopIllegalStateException("User specified source filters were found ["+userProvided+"], " +
+            throw new OpenSearchHadoopIllegalStateException("User specified source filters were found ["+userProvided+"], " +
                     "but the connector is executing in a state where it has provided its own source filtering " +
                     "["+internalScrollFields+"]. Please clear the user specified source fields under the " +
                     "["+ConfigurationOptions.ES_READ_SOURCE_FILTER+"] property to continue. Bailing out...");
@@ -223,8 +223,8 @@ public abstract class SettingsUtils {
         List<String> includes = StringUtils.tokenize(includeString);
         try {
             return FieldFilter.toNumberedFilter(includes);
-        } catch (EsHadoopIllegalArgumentException iae) {
-            throw new EsHadoopIllegalArgumentException("Failed to parse [" +
+        } catch (OpenSearchHadoopIllegalArgumentException iae) {
+            throw new OpenSearchHadoopIllegalArgumentException("Failed to parse [" +
                     ConfigurationOptions.ES_READ_FIELD_AS_ARRAY_INCLUDE + "] option with value of [" +
                     includeString + "]", iae);
         }

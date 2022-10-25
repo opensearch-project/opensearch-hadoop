@@ -68,7 +68,7 @@ import org.opensearch.hadoop.serialization.field.FieldFilter.NumberedInclude
 import org.elasticsearch.spark.sql.Utils.ROOT_LEVEL_NAME
 import org.elasticsearch.spark.sql.Utils.ROW_INFO_ARRAY_PROPERTY
 import org.elasticsearch.spark.sql.Utils.ROW_INFO_ORDER_PROPERTY
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.{InternalConfigurationOptions, Settings}
 import org.opensearch.hadoop.rest.{InitializationUtils, RestRepository}
 import org.opensearch.hadoop.serialization.dto.mapping.{Field, GeoField, GeoPointType, GeoShapeType, Mapping, MappingUtils}
@@ -93,7 +93,7 @@ private[sql] object SchemaUtils {
       if (repo.resourceExists(true)) {
         var mappingSet = repo.getMappings
         if (mappingSet == null || mappingSet.isEmpty) {
-          throw new EsHadoopIllegalArgumentException(s"Cannot find mapping for ${cfg.getResourceRead} - one is required before using Spark SQL")
+          throw new OpenSearchHadoopIllegalArgumentException(s"Cannot find mapping for ${cfg.getResourceRead} - one is required before using Spark SQL")
         }
         var mapping = mappingSet.getResolvedView
         mapping = MappingUtils.filterMapping(mapping, cfg)
@@ -108,7 +108,7 @@ private[sql] object SchemaUtils {
         (mapping, geoInfo)
       }
       else {
-        throw new EsHadoopIllegalArgumentException(s"Cannot find mapping for ${cfg.getResourceRead} - one is required before using Spark SQL")
+        throw new OpenSearchHadoopIllegalArgumentException(s"Cannot find mapping for ${cfg.getResourceRead} - one is required before using Spark SQL")
       }
     } finally {
       repo.close()
@@ -195,7 +195,7 @@ private[sql] object SchemaUtils {
           case GeoShapeType.MULTI_POINT         => fields.add(DataTypes.createStructField(COORD, createNestedArray(DoubleType, 2), true))
           case GeoShapeType.MULTI_LINE_STRING   => fields.add(DataTypes.createStructField(COORD, createNestedArray(DoubleType, 3), true))
           case GeoShapeType.MULTI_POLYGON       => fields.add(DataTypes.createStructField(COORD, createNestedArray(DoubleType, 4), true))
-          case GeoShapeType.GEOMETRY_COLLECTION => throw new EsHadoopIllegalArgumentException(s"Geoshape $geoInfo not supported")
+          case GeoShapeType.GEOMETRY_COLLECTION => throw new OpenSearchHadoopIllegalArgumentException(s"Geoshape $geoInfo not supported")
           case GeoShapeType.ENVELOPE            => fields.add(DataTypes.createStructField(COORD, createNestedArray(DoubleType, 2), true))
           case GeoShapeType.CIRCLE              => {
             fields.add(DataTypes.createStructField(COORD, DataTypes.createArrayType(DoubleType), true))
@@ -210,7 +210,7 @@ private[sql] object SchemaUtils {
         geoShape
       }
       // fall back to String
-      case _         => StringType //throw new EsHadoopIllegalStateException("Unknown field type " + field);
+      case _         => StringType //throw new OpenSearchHadoopIllegalStateException("Unknown field type " + field);
     }
 
     if (createArray) {

@@ -20,8 +20,8 @@ package org.opensearch.hadoop.rest.pooling;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Transport;
 import org.opensearch.hadoop.rest.TransportFactory;
@@ -65,7 +65,7 @@ final class PooledHttpTransportFactory implements TransportFactory {
         SettingsUtils.ensureJobTransportPoolingKey(settings);
         String requestingJobKey = SettingsUtils.getJobTransportPoolingKey(settings);
         if (!jobKey.equals(requestingJobKey)) {
-            throw new EsHadoopIllegalArgumentException("Settings object passed does not have the same job " +
+            throw new OpenSearchHadoopIllegalArgumentException("Settings object passed does not have the same job " +
                     "pooling key property as when this pool was created. Job key requested was [" +
                     requestingJobKey + "] but this pool services job [" + jobKey + "]. This could be a " +
                     "different job incorrectly polluting the TransportPool. Bailing out...");
@@ -100,13 +100,13 @@ final class PooledHttpTransportFactory implements TransportFactory {
      */
     private Transport borrowFrom(TransportPool pool, String hostInfo) {
         if (!pool.getJobPoolingKey().equals(jobKey)) {
-            throw new EsHadoopIllegalArgumentException("PooledTransportFactory found a pool with a different owner than this job. " +
+            throw new OpenSearchHadoopIllegalArgumentException("PooledTransportFactory found a pool with a different owner than this job. " +
                     "This could be a different job incorrectly polluting the TransportPool. Bailing out...");
         }
         try {
             return pool.borrowTransport();
         } catch (Exception ex) {
-            throw new EsHadoopException(
+            throw new OpenSearchHadoopException(
                     String.format("Could not get a Transport from the Transport Pool for host [%s]", hostInfo),
                     ex
             );

@@ -24,7 +24,7 @@ import java.util.Collection;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.QueryTestParams;
 import org.elasticsearch.hadoop.OpenSearchAssume;
@@ -247,7 +247,7 @@ public class AbstractPigSearchTest extends AbstractPigTests {
         assertThat(results, containsString("Foo Fighters"));
     }
 
-    @Test(expected = EsHadoopIllegalStateException.class)
+    @Test(expected = OpenSearchHadoopIllegalStateException.class)
     public void testSourceFilterCollisionWithSchemaAndProjectionPushdown() throws Exception {
         String script =
                         "DEFINE EsStorage org.elasticsearch.hadoop.pig.EsStorage('es.query=" + query + "','es.read.metadata=" + readMetadata +"','es.read.source.filter=name');" +

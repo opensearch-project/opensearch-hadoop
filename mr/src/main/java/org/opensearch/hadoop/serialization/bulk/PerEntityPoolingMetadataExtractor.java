@@ -20,7 +20,7 @@ package org.opensearch.hadoop.serialization.bulk;
 
 import java.util.EnumMap;
 
-import org.opensearch.hadoop.EsHadoopUnsupportedOperationException;
+import org.opensearch.hadoop.OpenSearchHadoopUnsupportedOperationException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.serialization.SettingsAware;
 import org.opensearch.hadoop.serialization.field.FieldExtractor;
@@ -78,7 +78,7 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
 
         @Override
         public Object field(Object target) {
-            throw new EsHadoopUnsupportedOperationException("Unsupported metadata tag [" + unsupportedMetadata.getName()
+            throw new OpenSearchHadoopUnsupportedOperationException("Unsupported metadata tag [" + unsupportedMetadata.getName()
                     + "] for Elasticsearch version [" + version.toString() + "]. Bailing out...");
         }
     }

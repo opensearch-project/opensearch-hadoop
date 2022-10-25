@@ -51,7 +51,7 @@ import org.apache.pig.data.Tuple;
 import org.apache.pig.data.TupleFactory;
 import org.apache.pig.impl.logicalLayer.FrontendException;
 import org.apache.pig.impl.util.UDFContext;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
@@ -115,7 +115,7 @@ public class EsStorage extends LoadFunc implements LoadMetadata, LoadPushDown, S
                     log.trace(properties.toString());
                 }
             } catch (IOException ex) {
-                throw new EsHadoopIllegalArgumentException("Cannot parse options " + Arrays.toString(configuration), ex);
+                throw new OpenSearchHadoopIllegalArgumentException("Cannot parse options " + Arrays.toString(configuration), ex);
             }
         }
         log.warn("Support for Apache Pig has been deprecated and will be removed in a future release.");
@@ -220,7 +220,7 @@ public class EsStorage extends LoadFunc implements LoadMetadata, LoadPushDown, S
         try {
             writer.write(null, pigTuple);
         } catch (InterruptedException ex) {
-            throw new EsHadoopIllegalArgumentException("interrupted", ex);
+            throw new OpenSearchHadoopIllegalArgumentException("interrupted", ex);
         }
     }
 

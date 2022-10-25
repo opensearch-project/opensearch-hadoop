@@ -21,7 +21,7 @@ package org.opensearch.hadoop.serialization.builder;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 
 /**
  * A base implementation of a value reader that keeps track of which field is the current field being read.
@@ -74,10 +74,10 @@ public abstract class AbstractValueReader implements ValueReader {
     public void endField(String fieldName) {
         FieldContext ctx = nestedFieldContexts.pop();
         if (ctx == null) {
-            throw new EsHadoopIllegalStateException("Trying to end parsing of field [" + fieldName + "] but no field has been marked to begin parsing.");
+            throw new OpenSearchHadoopIllegalStateException("Trying to end parsing of field [" + fieldName + "] but no field has been marked to begin parsing.");
         }
         if (!ctx.fieldName.equals(fieldName)) {
-            throw new EsHadoopIllegalStateException("Trying to end parsing of field [" + fieldName + "] but the current field [" + ctx.fieldName + "] is being parsed.");
+            throw new OpenSearchHadoopIllegalStateException("Trying to end parsing of field [" + fieldName + "] but the current field [" + ctx.fieldName + "] is being parsed.");
         }
     }
 }

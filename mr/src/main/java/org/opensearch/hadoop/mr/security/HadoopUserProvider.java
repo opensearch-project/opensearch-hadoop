@@ -22,7 +22,7 @@ package org.opensearch.hadoop.mr.security;
 import java.io.IOException;
 
 import org.apache.hadoop.security.UserGroupInformation;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
@@ -53,7 +53,7 @@ public class HadoopUserProvider extends UserProvider {
         try {
             return new HadoopUser(UserGroupInformation.getCurrentUser(), getSettings());
         } catch (IOException e) {
-            throw new EsHadoopException("Could not retrieve the current user", e);
+            throw new OpenSearchHadoopException("Could not retrieve the current user", e);
         }
     }
 }

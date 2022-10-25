@@ -35,7 +35,7 @@ import java.util.List;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.IOUtils;
 import org.opensearch.hadoop.util.StringUtils;
@@ -193,10 +193,10 @@ public class KeystoreWrapper {
                 try {
                     keystoreFile = IOUtils.open(path);
                     if (keystoreFile == null) {
-                        throw new EsHadoopIllegalArgumentException(String.format("Could not locate [%s] on classpath", path));
+                        throw new OpenSearchHadoopIllegalArgumentException(String.format("Could not locate [%s] on classpath", path));
                     }
                 } catch (Exception e) {
-                    throw new EsHadoopIllegalArgumentException(String.format("Expected to find keystore file at [%s] but " +
+                    throw new OpenSearchHadoopIllegalArgumentException(String.format("Expected to find keystore file at [%s] but " +
                             "was unable to. Make sure that it is available on the classpath, or if not, that you have " +
                             "specified a valid file URI.", path));
                 }

@@ -16,28 +16,23 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.opensearch.hadoop.rest;
+package org.opensearch.hadoop;
 
-import org.opensearch.hadoop.EsHadoopException;
+public class OpenSearchHadoopIllegalStateException extends OpenSearchHadoopException {
 
-/**
- * Fatal, transport-level exception typically caused by communication/transport errors.
- */
-public class EsHadoopTransportException extends EsHadoopException {
-
-    public EsHadoopTransportException() {
+    public OpenSearchHadoopIllegalStateException() {
         super();
     }
 
-    public EsHadoopTransportException(String message, Throwable cause) {
+    public OpenSearchHadoopIllegalStateException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopTransportException(String message) {
+    public OpenSearchHadoopIllegalStateException(String message) {
         super(message);
     }
 
-    public EsHadoopTransportException(Throwable cause) {
+    public OpenSearchHadoopIllegalStateException(Throwable cause) {
         super(cause);
     }
 }

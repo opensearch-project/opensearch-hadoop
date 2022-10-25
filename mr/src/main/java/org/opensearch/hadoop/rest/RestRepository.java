@@ -20,7 +20,7 @@ package org.opensearch.hadoop.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.bulk.BulkProcessor;
 import org.opensearch.hadoop.rest.bulk.BulkResponse;
@@ -249,7 +249,7 @@ public class RestRepository implements Closeable, StatsAware {
                 return result;
             }
         }
-        throw new EsHadoopIllegalStateException("Cluster state volatile; cannot find node backing shards - please check whether your cluster is stable");
+        throw new OpenSearchHadoopIllegalStateException("Cluster state volatile; cannot find node backing shards - please check whether your cluster is stable");
     }
 
     protected List<List<Map<String, Object>>> doGetReadTargetShards() {
@@ -263,7 +263,7 @@ public class RestRepository implements Closeable, StatsAware {
                 return map;
             }
         }
-        throw new EsHadoopIllegalStateException("Cluster state volatile; cannot find node backing shards - please check whether your cluster is stable");
+        throw new OpenSearchHadoopIllegalStateException("Cluster state volatile; cannot find node backing shards - please check whether your cluster is stable");
     }
 
     protected Map<ShardInfo, NodeInfo> doGetWriteTargetPrimaryShards(boolean clientNodesOnly) {
@@ -359,7 +359,7 @@ public class RestRepository implements Closeable, StatsAware {
                 // make sure the mapping is null since the index might exist but the type might be missing
                 MappingSet mappings = client.getMappings(res);
                 exists = mappings != null && !mappings.isEmpty();
-            } catch (EsHadoopInvalidRequest ex) {
+            } catch (OpenSearchHadoopInvalidRequest ex) {
                 exists = false;
             }
         }
@@ -384,7 +384,7 @@ public class RestRepository implements Closeable, StatsAware {
                 } else {
                     client.delete(resources.getResourceWrite().index() + "/_query?q=*");
                 }
-            } catch (EsHadoopInvalidRequest ehir) {
+            } catch (OpenSearchHadoopInvalidRequest ehir) {
                 log.info("Skipping delete by query as the plugin is not installed...");
             }
 

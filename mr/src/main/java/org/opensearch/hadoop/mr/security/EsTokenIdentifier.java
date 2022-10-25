@@ -35,7 +35,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.security.token.Token;
 import org.apache.hadoop.security.token.TokenRenewer;
 import org.apache.hadoop.security.token.delegation.AbstractDelegationTokenIdentifier;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.CompositeSettings;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.Settings;
@@ -73,7 +73,7 @@ public class EsTokenIdentifier extends AbstractDelegationTokenIdentifier {
         try {
             esToken.writeOut(new DataOutputStream(buffer));
         } catch (IOException e) {
-            throw new EsHadoopException("Could not serialize token information", e);
+            throw new OpenSearchHadoopException("Could not serialize token information", e);
         }
         byte[] id = identifier.getBytes();
         byte[] pw = buffer.toByteArray();

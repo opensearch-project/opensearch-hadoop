@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.ClusterInfo;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -55,7 +55,7 @@ public class InitializationUtilsTest {
         assertFalse(set.getNodesClientOnly());
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateWANOnlyWithDiscovery() throws Exception {
         Settings set = new TestSettings();
         set.setProperty(OPENSEARCH_NODES_WAN_ONLY, "true");
@@ -70,7 +70,7 @@ public class InitializationUtilsTest {
         validateSettings(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDefaultDataVsClientOnlyNodes() throws Exception {
         Settings set = new TestSettings();
         set.setProperty(OPENSEARCH_NODES_CLIENT_ONLY, "true");
@@ -85,7 +85,7 @@ public class InitializationUtilsTest {
         validateSettings(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateIngestOnlyVsDataOnly() throws Exception {
         Settings set = new TestSettings();
         set.setProperty(OPENSEARCH_NODES_INGEST_ONLY, "true");
@@ -94,7 +94,7 @@ public class InitializationUtilsTest {
     }
 
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateIngestOnlyVsClientOnly() throws Exception {
         Settings set = new TestSettings();
         set.setProperty(OPENSEARCH_NODES_INGEST_ONLY, "true");
@@ -103,7 +103,7 @@ public class InitializationUtilsTest {
     }
 
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateAllRestrictionsBreak() throws Exception {
         Settings set = new TestSettings();
         set.setProperty(OPENSEARCH_NODES_CLIENT_ONLY, "true");
@@ -112,7 +112,7 @@ public class InitializationUtilsTest {
         validateSettings(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateMultipleScripts() throws Exception {
         Settings set = new TestSettings();
         set.setProperty(ES_UPDATE_SCRIPT_FILE, "test");
@@ -121,7 +121,7 @@ public class InitializationUtilsTest {
         validateSettings(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateWriteV6PlusTTLRemoved() throws Exception {
         Settings set = new TestSettings();
         set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_6_X));
@@ -129,7 +129,7 @@ public class InitializationUtilsTest {
         validateSettingsForWriting(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateWriteV6PlusTimestampRemoved() throws Exception {
         Settings set = new TestSettings();
         set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_6_X));
@@ -137,7 +137,7 @@ public class InitializationUtilsTest {
         validateSettingsForWriting(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsInputAsJson() {
         Settings set = new TestSettings();
         set.setProperty(ES_WRITE_OPERATION, "delete");
@@ -145,7 +145,7 @@ public class InitializationUtilsTest {
         validateSettings(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsIncludeFields() {
         Settings set = new TestSettings();
         set.setProperty(ES_WRITE_OPERATION, "delete");
@@ -153,7 +153,7 @@ public class InitializationUtilsTest {
         validateSettings(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsExcludeFields() {
         Settings set = new TestSettings();
         set.setProperty(ES_WRITE_OPERATION, "delete");
@@ -161,14 +161,14 @@ public class InitializationUtilsTest {
         validateSettings(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsIdNotSet() {
         Settings set = new TestSettings();
         set.setProperty(ES_WRITE_OPERATION, "delete");
         validateSettings(set);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsEmptyId() {
         Settings set = new TestSettings();
         set.setProperty(ES_WRITE_OPERATION, "delete");

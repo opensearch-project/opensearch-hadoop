@@ -18,26 +18,26 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 
 /**
- * Exception indicating an unrecoverable parsing error processing answers from Elasticsearch.
- * This might be caused by an unsupported Elasticsearch version or potential proxying
- * across the network.
+ * Fatal, transport-level exception typically caused by communication/transport errors.
  */
-public class EsHadoopParsingException extends EsHadoopException {
+public class OpenSearchHadoopTransportException extends OpenSearchHadoopException {
 
-    public EsHadoopParsingException() {}
+    public OpenSearchHadoopTransportException() {
+        super();
+    }
 
-    public EsHadoopParsingException(String message, Throwable cause) {
+    public OpenSearchHadoopTransportException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopParsingException(String message) {
+    public OpenSearchHadoopTransportException(String message) {
         super(message);
     }
 
-    public EsHadoopParsingException(Throwable cause) {
+    public OpenSearchHadoopTransportException(Throwable cause) {
         super(cause);
     }
 }

@@ -20,7 +20,7 @@ package org.opensearch.hadoop.serialization.bulk;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Resource;
@@ -107,7 +107,7 @@ public abstract class AbstractBulkFactory implements BulkFactory {
             Object value = extractor.field(object);
             if (value == FieldExtractor.NOT_FOUND) {
                 String obj = (extractor instanceof FieldExplainer ? ((FieldExplainer) extractor).toString(object) : object.toString());
-                throw new EsHadoopIllegalArgumentException(String.format("[%s] cannot extract value from entity [%s] | instance [%s]", extractor, obj.getClass(), obj));
+                throw new OpenSearchHadoopIllegalArgumentException(String.format("[%s] cannot extract value from entity [%s] | instance [%s]", extractor, obj.getClass(), obj));
             } else if (value == FieldExtractor.SKIP) {
                 // Skip it
                 return pool;

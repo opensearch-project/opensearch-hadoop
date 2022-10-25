@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
@@ -44,8 +44,8 @@ public class NetworkClientTest {
             networkClient.execute(simpleRequest);
             fail("exception should have been thrown");
         } catch (Exception e) {
-            // EsHadoopNoNodesLeftException indicates we tried to retry (even if there is just a single node)
-            assertEquals(EsHadoopNoNodesLeftException.class, e.getClass());
+            // OpenSearchHadoopNoNodesLeftException indicates we tried to retry (even if there is just a single node)
+            assertEquals(OpenSearchHadoopNoNodesLeftException.class, e.getClass());
         }
     }
 
@@ -63,7 +63,7 @@ public class NetworkClientTest {
             fail("exception should have been thrown");
         } catch (Exception e) {
             assertTrue(e.getMessage().contains("Retrying has been disabled. Aborting..."));
-            assertEquals(EsHadoopException.class, e.getClass());
+            assertEquals(OpenSearchHadoopException.class, e.getClass());
         }
     }
 

@@ -22,7 +22,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import org.apache.hadoop.conf.Configuration;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.Provisioner;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
@@ -206,7 +206,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
                         : is("*/*=[id=LONG, links=STRING, name=STRING]"));
     }
 
-    @Test(expected = EsHadoopIllegalStateException.class)
+    @Test(expected = OpenSearchHadoopIllegalStateException.class)
     public void testCreateWithIdShouldFailOnDuplicate() throws Exception {
         testCreateWithId();
     }
@@ -240,7 +240,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
                         : is("*/*=[id=LONG, links=STRING, name=STRING]"));
     }
 
-    @Test(expected = EsHadoopIllegalStateException.class)
+    @Test(expected = OpenSearchHadoopIllegalStateException.class)
     public void testUpdateWithoutUpsert() throws Exception {
         String script =
                 loadArtistSource() +

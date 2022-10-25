@@ -26,7 +26,7 @@ import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.util.GenericOptionsParser;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.util.Assert;
 
 /**
@@ -91,7 +91,7 @@ public abstract class Provisioner {
 
             new GenericOptionsParser(cfg, list.toArray(new String[list.size()]));
         } catch (Exception ex) {
-            throw new EsHadoopIllegalStateException(ex);
+            throw new OpenSearchHadoopIllegalStateException(ex);
         }
     }
 }

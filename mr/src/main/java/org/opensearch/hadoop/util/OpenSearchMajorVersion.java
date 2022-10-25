@@ -20,7 +20,7 @@ package org.opensearch.hadoop.util;
 
 import java.io.Serializable;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 
 /**
  * Elasticsearch major version information, useful to check client's query compatibility with the Rest API.
@@ -92,27 +92,27 @@ public class OpenSearchMajorVersion implements Serializable {
         if (version.startsWith("8.")) {
             return new OpenSearchMajorVersion((byte) 8, version);
         }
-        throw new EsHadoopIllegalArgumentException("Unsupported/Unknown Elasticsearch version [" + version + "]." +
+        throw new OpenSearchHadoopIllegalArgumentException("Unsupported/Unknown Elasticsearch version [" + version + "]." +
                 "Highest supported version is [" + LATEST.version + "]. You may need to upgrade ES-Hadoop.");
     }
 
     public int parseMinorVersion(String versionString) {
         String majorPrefix = "" + major + ".";
         if (versionString.startsWith(majorPrefix) == false) {
-            throw new EsHadoopIllegalArgumentException("Invalid version string for major version; " +
+            throw new OpenSearchHadoopIllegalArgumentException("Invalid version string for major version; " +
                     "Received [" + versionString + "] for major version [" + version + "]");
         }
         String minorRemainder = versionString.substring(majorPrefix.length());
         int dot = minorRemainder.indexOf('.');
         if (dot < 1) {
-            throw new EsHadoopIllegalArgumentException("Could not parse Elasticsearch minor version [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Could not parse Elasticsearch minor version [" +
                     versionString + "]. Invalid version format.");
         }
         String rawMinorVersion = minorRemainder.substring(0, dot);
         try {
             return Integer.parseInt(rawMinorVersion);
         } catch (NumberFormatException e) {
-            throw new EsHadoopIllegalArgumentException("Could not parse Elasticsearch minor version [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Could not parse Elasticsearch minor version [" +
                     versionString + "]. Non-numeric minor version [" + rawMinorVersion + "].", e);
         }
     }

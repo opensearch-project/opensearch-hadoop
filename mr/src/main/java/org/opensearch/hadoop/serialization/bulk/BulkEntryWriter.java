@@ -24,11 +24,11 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.handler.EsHadoopAbortHandlerException;
+import org.opensearch.hadoop.handler.OpenSearchHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 import org.opensearch.hadoop.serialization.handler.SerdeErrorCollector;
 import org.opensearch.hadoop.serialization.handler.write.ISerializationErrorHandler;
 import org.opensearch.hadoop.serialization.handler.write.SerializationFailure;
@@ -81,14 +81,14 @@ public class BulkEntryWriter {
                     HandlerResult result;
                     try {
                         result = serializationErrorHandler.onError(entry, errorCollector);
-                    } catch (EsHadoopAbortHandlerException ahe) {
+                    } catch (OpenSearchHadoopAbortHandlerException ahe) {
                         // Count this as an abort operation. Wrap cause in a serialization exception.
                         result = HandlerResult.ABORT;
-                        abortException = new EsHadoopSerializationException(ahe.getMessage(), ahe.getCause());
+                        abortException = new OpenSearchHadoopSerializationException(ahe.getMessage(), ahe.getCause());
                     } catch (Exception e) {
                         LOG.error("Could not handle serialization error event due to an exception in error handler. " +
                                 "Serialization exception:", serializationException);
-                        throw new EsHadoopException("Encountered unexpected exception during error handler execution.", e);
+                        throw new OpenSearchHadoopException("Encountered unexpected exception during error handler execution.", e);
                     }
 
                     switch (result) {
@@ -107,7 +107,7 @@ public class BulkEntryWriter {
 
                                 // Limit the number of retries though to like 50
                                 if (attempts >= 50) {
-                                    throw new EsHadoopException("Maximum retry attempts (50) reached for serialization errors.");
+                                    throw new OpenSearchHadoopException("Maximum retry attempts (50) reached for serialization errors.");
                                 } else {
                                     retryWrite = true;
                                     attempts++;
@@ -130,10 +130,10 @@ public class BulkEntryWriter {
                             continue handlerloop;
                         case ABORT:
                             errorCollector.getAndClearMessage(); // Sanity clearing
-                            if (abortException instanceof EsHadoopSerializationException) {
-                                throw (EsHadoopSerializationException) abortException;
+                            if (abortException instanceof OpenSearchHadoopSerializationException) {
+                                throw (OpenSearchHadoopSerializationException) abortException;
                             } else {
-                                throw new EsHadoopSerializationException(abortException);
+                                throw new OpenSearchHadoopSerializationException(abortException);
                             }
                     }
                 }
@@ -141,7 +141,7 @@ public class BulkEntryWriter {
         } while (retryWrite);
 
         if (writeResult == null && skip == false) {
-            throw new EsHadoopSerializationException("Could not write record to bulk request.");
+            throw new OpenSearchHadoopSerializationException("Could not write record to bulk request.");
         }
 
         return writeResult;

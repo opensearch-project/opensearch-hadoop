@@ -32,7 +32,7 @@ import org.apache.pig.ResourceSchema.ResourceFieldSchema;
 import org.apache.pig.data.DataType;
 import org.apache.pig.impl.logicalLayer.schema.Schema;
 import org.apache.pig.impl.logicalLayer.schema.Schema.FieldSchema;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.PropertiesSettings;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.DateUtils;
@@ -80,7 +80,7 @@ class PigUtils {
             if (pigDate instanceof String) {
                 return ((String) pigDate);
             }
-            throw new EsHadoopIllegalArgumentException(String.format("Cannot convert [%s] to date", pigDate));
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot convert [%s] to date", pigDate));
         }
 
         static Object convertFromES(String esDate) {

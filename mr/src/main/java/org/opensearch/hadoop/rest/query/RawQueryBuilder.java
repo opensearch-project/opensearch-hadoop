@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.serialization.Generator;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
@@ -74,7 +74,7 @@ public class RawQueryBuilder extends QueryBuilder {
         int begin = raw.indexOf('{');
         int end = raw.lastIndexOf('}');
         if (begin == -1 || end == -1) {
-            throw new EsHadoopIllegalArgumentException("failed to parse query: " + raw);
+            throw new OpenSearchHadoopIllegalArgumentException("failed to parse query: " + raw);
         }
         this.queryString = raw.substring(begin+1, end);
     }

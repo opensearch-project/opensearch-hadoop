@@ -24,7 +24,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.serialization.FieldType;
 
 /**
@@ -68,13 +68,13 @@ public final class FieldParser {
         // The value should be a singleton map with the key "mappings" mapped to the types/mappings
         // Get the singleton map first
         if (!(indexToMappings.getValue() instanceof Map)) {
-            throw new EsHadoopIllegalArgumentException("invalid mapping received " + indexToMappings + "; Invalid mapping structure for [" + indexName + "]");
+            throw new OpenSearchHadoopIllegalArgumentException("invalid mapping received " + indexToMappings + "; Invalid mapping structure for [" + indexName + "]");
         }
         Map<String, Object> mappingsObject = (Map<String, Object>) indexToMappings.getValue();
 
         // Get the types/mappings from the singleton map
         if (!(mappingsObject.get("mappings") instanceof Map)) {
-            throw new EsHadoopIllegalArgumentException("invalid mapping received " + indexToMappings + "; Missing mappings under [" + indexName + "]");
+            throw new OpenSearchHadoopIllegalArgumentException("invalid mapping received " + indexToMappings + "; Missing mappings under [" + indexName + "]");
         }
         Map<String, Object> mappingEntries = (Map<String, Object>) mappingsObject.get("mappings");
 
@@ -93,7 +93,7 @@ public final class FieldParser {
             String typeName = MappingSet.TYPELESS_MAPPING_NAME;
             // I can't even describe in english what I'm doing anymore
             if (mappingsObject.entrySet().size() > 1) {
-                throw new EsHadoopIllegalArgumentException("invalid mapping received " + indexToMappings + "; Index [" + indexName +
+                throw new OpenSearchHadoopIllegalArgumentException("invalid mapping received " + indexToMappings + "; Index [" + indexName +
                         "] contains invalid mapping structure.");
             }
             Map.Entry<String, Object> unnamedMapping = mappingsObject.entrySet().iterator().next();
@@ -106,7 +106,7 @@ public final class FieldParser {
         // Parse the mapping fields
         Field field = parseField(mapping, null);
         if (field == null) {
-            throw new EsHadoopIllegalArgumentException("Could not parse mapping contents from [" + mapping + "]");
+            throw new OpenSearchHadoopIllegalArgumentException("Could not parse mapping contents from [" + mapping + "]");
         }
         return new Mapping(indexName, typeName, field.properties());
     }
@@ -162,7 +162,7 @@ public final class FieldParser {
         }
 
 
-        throw new EsHadoopIllegalArgumentException("invalid map received " + entry);
+        throw new OpenSearchHadoopIllegalArgumentException("invalid map received " + entry);
     }
 
     private static boolean isFieldNamedProperties(Object fieldValue){

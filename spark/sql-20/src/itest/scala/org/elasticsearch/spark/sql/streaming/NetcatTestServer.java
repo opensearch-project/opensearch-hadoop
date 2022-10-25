@@ -30,7 +30,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.util.unit.TimeValue;
 
 /**
@@ -62,7 +62,7 @@ public class NetcatTestServer {
 
     public void start() throws IOException {
         if (!currentState.equals(State.INIT)) {
-            throw new EsHadoopIllegalStateException("Expected state INIT but was "+currentState);
+            throw new OpenSearchHadoopIllegalStateException("Expected state INIT but was "+currentState);
         }
 
         // Initiate resources
@@ -77,7 +77,7 @@ public class NetcatTestServer {
 
     public void sendData(String data) {
         if (!currentState.equals(State.RUNNING)) {
-            throw new EsHadoopIllegalStateException("Expected state RUNNING but was "+currentState);
+            throw new OpenSearchHadoopIllegalStateException("Expected state RUNNING but was "+currentState);
         }
         outputQueue.add(data);
     }

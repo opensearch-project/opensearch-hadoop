@@ -24,7 +24,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.util.regex.Regex;
 
 public abstract class FieldFilter {
@@ -185,7 +185,7 @@ public abstract class FieldFilter {
                     }
                 }
             } catch (NumberFormatException ex) {
-                throw new EsHadoopIllegalArgumentException(
+                throw new OpenSearchHadoopIllegalArgumentException(
                     String.format(Locale.ROOT, "Invalid parameter [%s] specified in inclusion configuration", include),
                     ex
                 );

@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.StringUtils.IpAndPort;
 
@@ -57,7 +57,7 @@ public class OpenSearchEmbeddedCluster {
             }
             Collections.shuffle(ipAndPorts);
         } catch (Exception e) {
-            throw new EsHadoopException("Encountered exception during embedded node startup", e);
+            throw new OpenSearchHadoopException("Encountered exception during embedded node startup", e);
         }
     }
 

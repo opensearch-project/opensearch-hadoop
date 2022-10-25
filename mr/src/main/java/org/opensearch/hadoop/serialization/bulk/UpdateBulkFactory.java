@@ -20,7 +20,7 @@ package org.opensearch.hadoop.serialization.bulk;
 
 import java.util.List;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.Assert;
@@ -82,7 +82,7 @@ class UpdateBulkFactory extends AbstractBulkFactory {
                 SCRIPT_2X = "{\"script\":{\"id\":\"" + settings.getUpdateScriptStored() + "\"";
                 SCRIPT_1X = "\"script_id\":\"" + settings.getUpdateScriptStored() + "\"";
             } else {
-                throw new EsHadoopIllegalStateException("No update script found...");
+                throw new OpenSearchHadoopIllegalStateException("No update script found...");
             }
         } else {
             SCRIPT_5X = null;

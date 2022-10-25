@@ -26,10 +26,10 @@ import java.util.Collection;
 import java.util.List;
 
 import com.google.common.base.Charsets;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.handler.EsHadoopAbortHandlerException;
+import org.opensearch.hadoop.handler.OpenSearchHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
 import org.opensearch.hadoop.rest.Resource;
 import org.opensearch.hadoop.rest.RestClient;
@@ -677,7 +677,7 @@ public class BulkProcessorTest {
         }
     }
 
-    @Test(expected = EsHadoopException.class)
+    @Test(expected = OpenSearchHadoopException.class)
     public void testBulk07_HandlerThrowsExceptions() throws Exception {
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "exception");
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".exception", ExceptionThrowingHandler.class.getName());
@@ -705,7 +705,7 @@ public class BulkProcessorTest {
     public static class AbortingExceptionThrowingHandler extends BulkWriteErrorHandler {
         @Override
         public HandlerResult onError(BulkWriteFailure entry, DelayableErrorCollector<byte[]> collector) throws Exception {
-            throw new EsHadoopAbortHandlerException("Abort the handler!!");
+            throw new OpenSearchHadoopAbortHandlerException("Abort the handler!!");
         }
     }
 
@@ -757,7 +757,7 @@ public class BulkProcessorTest {
         }
     }
 
-    @Test(expected = EsHadoopException.class)
+    @Test(expected = OpenSearchHadoopException.class)
     public void testBulk08_HandlerLoopsForever() throws Exception {
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "looper");
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".looper", NeverSurrenderHandler.class.getName());
@@ -861,7 +861,7 @@ public class BulkProcessorTest {
         assertEquals(5, stats.docsAccepted);
     }
 
-    @Test(expected = EsHadoopException.class)
+    @Test(expected = OpenSearchHadoopException.class)
     public void testBulk09_HandlerReturnsGarbage() throws Exception {
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "garbage");
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".garbage", GarbageHandler.class.getName());
@@ -883,7 +883,7 @@ public class BulkProcessorTest {
         fail("This should fail since the retry handler returned garbage");
     }
 
-    @Test(expected = EsHadoopException.class)
+    @Test(expected = OpenSearchHadoopException.class)
     public void testBulk09_HandlerStillReturnsGarbage() throws Exception {
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "garbage");
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".garbage", StillGarbageHandler.class.getName());

@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.util;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.serialization.json.BackportedJsonStringEncoder;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.io.JsonStringEncoder;
 
@@ -438,7 +438,7 @@ public abstract class StringUtils {
                 endIp = httpAddr.length();
             }
             if (startIp < 0) {
-                throw new EsHadoopIllegalStateException("Cannot parse http address " + httpAddr);
+                throw new OpenSearchHadoopIllegalStateException("Cannot parse http address " + httpAddr);
             }
             httpAddr = httpAddr.substring(startIp, endIp);
         }

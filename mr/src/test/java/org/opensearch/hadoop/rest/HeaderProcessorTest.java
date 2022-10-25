@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
@@ -58,7 +58,7 @@ public class HeaderProcessorTest {
         ));
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void applyReservedHeader() throws Exception {
         Settings settings = new TestSettings();
         settings.setProperty("es.net.http.header.Content-Type", "application/x-ldjson");
@@ -68,7 +68,7 @@ public class HeaderProcessorTest {
         fail("Should not execute since we tried to set a reserved header");
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void applyEmptyHeaderName() throws Exception {
         Settings settings = new TestSettings();
         settings.setProperty("es.net.http.header.", "application/x-ldjson");

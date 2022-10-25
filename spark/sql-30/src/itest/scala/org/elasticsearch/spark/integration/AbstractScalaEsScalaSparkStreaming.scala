@@ -42,7 +42,7 @@ import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.{MethodSorters, Parameterized}
 import org.elasticsearch.spark.integration.ScalaUtils.propertiesAsScalaMap
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
@@ -107,7 +107,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
 
   @Test
   def testEsRDDWriteIndexCreationDisabled(): Unit = {
-    val expecting = ExpectingToThrow(classOf[EsHadoopIllegalArgumentException]).from(ssc)
+    val expecting = ExpectingToThrow(classOf[OpenSearchHadoopIllegalArgumentException]).from(ssc)
 
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."))
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran")

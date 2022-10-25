@@ -20,9 +20,9 @@ package org.opensearch.hadoop.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Request.Method;
@@ -191,7 +191,7 @@ public class RestClient implements Closeable, StatsAware {
                 countStreamStats(content);
             }
         } catch (IOException ex) {
-            throw new EsHadoopParsingException(ex);
+            throw new OpenSearchHadoopParsingException(ex);
         }
 
         return (T) (string != null ? map.get(string) : map);
@@ -261,7 +261,7 @@ public class RestClient implements Closeable, StatsAware {
                 countStreamStats(content);
             }
         } catch (IOException ex) {
-            throw new EsHadoopParsingException(ex);
+            throw new OpenSearchHadoopParsingException(ex);
         }
     }
 
@@ -271,7 +271,7 @@ public class RestClient implements Closeable, StatsAware {
         Response response = execute(request, true);
         Object id = parseContent(response.body(), "_id");
         if (id == null || !StringUtils.hasText(id.toString())) {
-            throw new EsHadoopInvalidRequest(
+            throw new OpenSearchHadoopInvalidRequest(
                     String.format("Could not determine successful write operation. Request[%s > %s] Response[%s]",
                             request.method(), request.path(),
                             IOUtils.asString(response.body())
@@ -466,7 +466,7 @@ public class RestClient implements Closeable, StatsAware {
         	String msg = null;
             // try to parse the answer
             try {
-            	EsHadoopException ex = errorExtractor.extractError(this.<Map> parseContent(response.body(), null));
+            	OpenSearchHadoopException ex = errorExtractor.extractError(this.<Map> parseContent(response.body(), null));
                 msg = (ex != null) ? ex.toString() : null;
                 if (response.isClientError()) {
                     msg = msg + "\n" + request.body();
@@ -484,7 +484,7 @@ public class RestClient implements Closeable, StatsAware {
                         IOUtils.asStringAlways(response.body()));
             }
 
-            throw new EsHadoopInvalidRequest(msg);
+            throw new OpenSearchHadoopInvalidRequest(msg);
         }
     }
 
@@ -565,7 +565,7 @@ public class RestClient implements Closeable, StatsAware {
                 }
 
                 if (StringUtils.hasText(msg) && !msg.contains("IndexAlreadyExistsException")) {
-                    throw new EsHadoopIllegalStateException(msg);
+                    throw new OpenSearchHadoopIllegalStateException(msg);
                 }
             }
             return response.hasSucceeded();
@@ -639,7 +639,7 @@ public class RestClient implements Closeable, StatsAware {
             Number count = (Number) totalObject.get("value");
             if (count != null) {
                 if (!"eq".equals(relation)) {
-                    throw new EsHadoopParsingException("Count operation returned non-exact count of [" + relation + "][" + count + "]");
+                    throw new OpenSearchHadoopParsingException("Count operation returned non-exact count of [" + relation + "][" + count + "]");
                 }
                 finalCount = count.longValue();
             } else {
@@ -727,10 +727,10 @@ public class RestClient implements Closeable, StatsAware {
         }
         String serviceForToken = tokenToCancel.getClusterName();
         if (!StringUtils.hasText(serviceForToken)) {
-            throw new EsHadoopIllegalArgumentException("Attempting to cancel access token that has no service name");
+            throw new OpenSearchHadoopIllegalArgumentException("Attempting to cancel access token that has no service name");
         }
         if (!serviceForToken.equals(remoteInfo.getClusterName().getName())) {
-            throw new EsHadoopIllegalArgumentException(String.format(
+            throw new OpenSearchHadoopIllegalArgumentException(String.format(
                     "Attempting to cancel access token for a cluster named [%s] through a differently named cluster [%s]",
                     serviceForToken,
                     remoteInfo.getClusterName().getName()
@@ -755,19 +755,19 @@ public class RestClient implements Closeable, StatsAware {
         Response response = execute(GET, "", true);
         Map<String, Object> result = parseContent(response.body(), null);
         if (result == null) {
-            throw new EsHadoopIllegalStateException("Unable to retrieve elasticsearch main cluster info.");
+            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve elasticsearch main cluster info.");
         }
         String clusterName = result.get("cluster_name").toString();
         String clusterUUID = (String)result.get("cluster_uuid");
         @SuppressWarnings("unchecked")
         Map<String, String> versionBody = (Map<String, String>) result.get("version");
         if (versionBody == null || !StringUtils.hasText(versionBody.get("number"))) {
-            throw new EsHadoopIllegalStateException("Unable to retrieve elasticsearch version.");
+            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve elasticsearch version.");
         }
         String versionNumber = versionBody.get("number");
         OpenSearchMajorVersion major = OpenSearchMajorVersion.parse(versionNumber);
         if (major.before(OpenSearchMajorVersion.V_6_X)) {
-            throw new EsHadoopIllegalStateException("Invalid major version [" + major + "]. " +
+            throw new OpenSearchHadoopIllegalStateException("Invalid major version [" + major + "]. " +
                     "Version is lower than minimum required version [" + OpenSearchMajorVersion.V_6_X + "].");
         } else if (major.onOrAfter(V_6_X)) {
             String tagline = result.get("tagline").toString();
@@ -785,7 +785,7 @@ public class RestClient implements Closeable, StatsAware {
                 boolean verifyServer = (major.on(V_7_X) && major.parseMinorVersion(versionNumber) >= 14) || major.onOrAfter(V_8_X);
                 if (validElasticsearchHeader == false) {
                     if (verifyServer) {
-                        throw new EsHadoopTransportException("Connected, but could not verify server is Elasticsearch. Response missing [" +
+                        throw new OpenSearchHadoopTransportException("Connected, but could not verify server is Elasticsearch. Response missing [" +
                                 ELASTIC_PRODUCT_HEADER + "] header. Please check that you are connecting to an Elasticsearch instance, and " +
                                 "that any networking filters are preserving that header.");
                     } else {
@@ -811,7 +811,7 @@ public class RestClient implements Closeable, StatsAware {
         sb.append(index);
         String status = get(sb.toString(), "status");
         if (status == null) {
-            throw new EsHadoopIllegalStateException("Could not determine index health, returned status was null. Bailing out...");
+            throw new OpenSearchHadoopIllegalStateException("Could not determine index health, returned status was null. Bailing out...");
         }
         return Health.valueOf(status.toUpperCase());
     }

@@ -20,7 +20,7 @@ package org.elasticsearch.spark.serialization
 
 import org.opensearch.hadoop.serialization.builder.ValueWriter.Result
 import org.elasticsearch.spark.serialization.{ReflectionUtils => RU}
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
 import org.opensearch.hadoop.serialization.Generator
 import org.opensearch.hadoop.serialization.builder.JdkValueWriter
 
@@ -128,7 +128,7 @@ class ScalaValueWriter(writeUnknownTypes: Boolean = false) extends JdkValueWrite
       case _ => {
         // check if it's called by accident on a DataFrame/SchemaRDD (happens)
         if (value.getClass().getName().startsWith("org.apache.spark.sql.")) {
-          throw new EsHadoopIllegalArgumentException("Spark SQL types are not handled through basic RDD saveToEs() calls; typically this is a mistake(as the SQL schema will be ignored). Use 'org.elasticsearch.spark.sql' package instead")
+          throw new OpenSearchHadoopIllegalArgumentException("Spark SQL types are not handled through basic RDD saveToEs() calls; typically this is a mistake(as the SQL schema will be ignored). Use 'org.elasticsearch.spark.sql' package instead")
         }
 
         val result = super.doWrite(value, generator, parentField)

@@ -26,7 +26,7 @@ import java.util.Map;
 import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.hive.HiveFieldExtractor;
 import org.elasticsearch.hadoop.serialization.HiveTypeToJsonTest.MyHiveType;
@@ -63,7 +63,7 @@ public class HiveFieldExtractorTests {
         assertEquals(FieldExtractor.NOT_FOUND, extract("key", m));
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testHiveFieldExtractorNested() throws Exception {
         List<String> nested = Arrays.asList(new String[] { "bar", "bor" });
         List<TypeInfo> types = Arrays.asList(new TypeInfo[] { stringTypeInfo, intTypeInfo });

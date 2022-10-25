@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.Map;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.junit.Test;
 
@@ -46,7 +46,7 @@ public class ErrorExtractorTest {
 		
 		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_5_X);
 		
-		final EsHadoopException ex = extractor.extractErrorWithCause(cause);
+		final OpenSearchHadoopException ex = extractor.extractErrorWithCause(cause);
 		checkException(ex, cause);
 		
 	}
@@ -68,7 +68,7 @@ public class ErrorExtractorTest {
 		
 		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_5_X);
 		
-		final EsHadoopException ex = extractor.extractError(error);
+		final OpenSearchHadoopException ex = extractor.extractError(error);
 		checkException(ex, cause);
 		
 	}
@@ -85,7 +85,7 @@ public class ErrorExtractorTest {
 		
 		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_2_X);
 		
-		final EsHadoopException ex = extractor.extractError(error);
+		final OpenSearchHadoopException ex = extractor.extractError(error);
 		checkException(ex, cause);
 		
 	}
@@ -97,10 +97,10 @@ public class ErrorExtractorTest {
 		
 		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_1_X);
 		
-		final EsHadoopException ex = extractor.extractError(error);
+		final OpenSearchHadoopException ex = extractor.extractError(error);
 		
 		assertNotNull(ex);
-		assertTrue(EsHadoopRemoteException.class.isAssignableFrom(ex.getClass()));
+		assertTrue(OpenSearchHadoopRemoteException.class.isAssignableFrom(ex.getClass()));
 		assertEquals(error.get("error"), ex.getMessage());
 		
 	}
@@ -108,9 +108,9 @@ public class ErrorExtractorTest {
 	@SuppressWarnings("unchecked")
 	protected void checkException(Throwable ex, Map<String, ?> json) {
 		assertNotNull(ex);
-		assertTrue(EsHadoopRemoteException.class.isAssignableFrom(ex.getClass()));
+		assertTrue(OpenSearchHadoopRemoteException.class.isAssignableFrom(ex.getClass()));
 		
-		final EsHadoopRemoteException exRemote = (EsHadoopRemoteException)ex;
+		final OpenSearchHadoopRemoteException exRemote = (OpenSearchHadoopRemoteException)ex;
 		
 		assertEquals(json.get("type"), exRemote.getType());
 		assertEquals(json.get("reason"), exRemote.getMessage());

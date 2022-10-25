@@ -20,7 +20,7 @@ package org.opensearch.hadoop.rest.pooling;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.Response;
@@ -167,7 +167,7 @@ final class TransportPool {
         } else if (returning instanceof PooledTransport) {
             unwrapped = (PooledTransport) returning;
         } else {
-            throw new EsHadoopIllegalStateException("Cannot return a non-poolable Transport to the pool");
+            throw new OpenSearchHadoopIllegalStateException("Cannot return a non-poolable Transport to the pool");
         }
 
         // make sure that this is even a leased transport before returning it
@@ -175,7 +175,7 @@ final class TransportPool {
             leased.remove(unwrapped);
             idle.put(unwrapped, now);
         } else {
-            throw new EsHadoopIllegalStateException("Cannot return a Transport object to a pool that was not sourced from the pool");
+            throw new OpenSearchHadoopIllegalStateException("Cannot return a Transport object to a pool that was not sourced from the pool");
         }
     }
 
@@ -228,7 +228,7 @@ final class TransportPool {
         @Override
         public Response execute(Request request) throws IOException {
             if (!open) {
-                throw new EsHadoopIllegalStateException("Calling execute on a closed Transport object");
+                throw new OpenSearchHadoopIllegalStateException("Calling execute on a closed Transport object");
             }
             return delegate.execute(request);
         }

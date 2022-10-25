@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.opensearch.hadoop.rest.EsHadoopParsingException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopParsingException;
 import org.opensearch.hadoop.serialization.builder.JdkValueReader;
 import org.opensearch.hadoop.serialization.dto.mapping.FieldParser;
 import org.opensearch.hadoop.serialization.dto.mapping.MappingSet;
@@ -246,7 +246,7 @@ public class ScrollReaderJsonTest {
         }
     }
 
-    @Test(expected = EsHadoopParsingException.class)
+    @Test(expected = OpenSearchHadoopParsingException.class)
     public void testScrollWithParsingValueException() throws IOException {
         InputStream stream = getClass().getResourceAsStream(mappingData("numbers-as-strings"));
         MappingSet fl = FieldParser.parseTypelessMappings(new ObjectMapper().readValue(stream, Map.class));

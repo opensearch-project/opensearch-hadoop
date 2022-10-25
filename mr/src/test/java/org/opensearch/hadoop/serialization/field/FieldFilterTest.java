@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 
@@ -130,7 +130,7 @@ public class FieldFilterTest {
         return FieldFilter.filter(path, FieldFilter.toNumberedFilter(includes), excludes, true).matched;
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testCreateMalformedFilter() {
         FieldFilter.toNumberedFilter(Arrays.asList("a:broken"));
     }

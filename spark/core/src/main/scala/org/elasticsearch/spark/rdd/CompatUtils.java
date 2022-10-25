@@ -25,7 +25,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.spark.SparkConf;
 import org.apache.spark.TaskContext;
 import org.apache.spark.util.TaskCompletionListener;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.util.ObjectUtils;
 import org.opensearch.hadoop.util.ReflectionUtils;
 
@@ -74,16 +74,16 @@ abstract class CompatUtils {
 
             if (errorMessage != null) {
                 if (throwOnIncompatible) {
-                    throw new EsHadoopIllegalStateException(errorMessage);
+                    throw new OpenSearchHadoopIllegalStateException(errorMessage);
                 } else {
                     LogFactory.getLog("org.elasticsearch.spark.rdd.EsSpark").warn(errorMessage);
                 }
             }
-        } catch (EsHadoopIllegalStateException noClass) {
+        } catch (OpenSearchHadoopIllegalStateException noClass) {
             // In the event that someone is using the core jar without sql support, (like in our tests) this will be logged instead.
             String errorMessage = "Elasticsearch Spark SQL support could not be verified.";
             if (throwOnIncompatible) {
-                throw new EsHadoopIllegalStateException(errorMessage, noClass);
+                throw new OpenSearchHadoopIllegalStateException(errorMessage, noClass);
             } else {
                 LogFactory.getLog("org.elasticsearch.spark.rdd.EsSpark").info(errorMessage + " Continuing with core support.");
             }

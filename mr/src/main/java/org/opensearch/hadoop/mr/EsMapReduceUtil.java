@@ -24,8 +24,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.Settings;
@@ -71,8 +71,8 @@ public final class EsMapReduceUtil {
                 }
                 // Add the token to the job
                 TokenUtil.addTokenForJob(bootstrap, clusterInfo.getClusterName(), user, job);
-            } catch (EsHadoopException ex) {
-                throw new EsHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
+            } catch (OpenSearchHadoopException ex) {
+                throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
                         + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
                         + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {
@@ -106,8 +106,8 @@ public final class EsMapReduceUtil {
                 }
                 // Add the token to the job
                 TokenUtil.addTokenForJobConf(bootstrap, clusterInfo.getClusterName(), user, jobConf);
-            } catch (EsHadoopException ex) {
-                throw new EsHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
+            } catch (OpenSearchHadoopException ex) {
+                throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
                         + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
                         + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {

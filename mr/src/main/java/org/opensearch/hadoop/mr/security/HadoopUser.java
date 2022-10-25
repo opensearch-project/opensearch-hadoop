@@ -34,12 +34,12 @@ import javax.security.auth.kerberos.KerberosPrincipal;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.security.token.Token;
 import org.apache.hadoop.security.token.TokenIdentifier;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 import org.opensearch.hadoop.util.ClusterName;
 
 /**
@@ -61,15 +61,15 @@ public class HadoopUser implements User {
     }
 
     @Override
-    public <T> T doAs(PrivilegedExceptionAction<T> action) throws EsHadoopException {
+    public <T> T doAs(PrivilegedExceptionAction<T> action) throws OpenSearchHadoopException {
         try {
             return ugi.doAs(action);
         } catch (IOException e) {
-            throw new EsHadoopException(e);
+            throw new OpenSearchHadoopException(e);
         } catch (InterruptedException e) {
-            throw new EsHadoopException(e);
+            throw new OpenSearchHadoopException(e);
         } catch (UndeclaredThrowableException e) {
-            throw new EsHadoopException(e);
+            throw new OpenSearchHadoopException(e);
         }
     }
 
@@ -84,7 +84,7 @@ public class HadoopUser implements User {
                 try {
                     return new EsToken(new DataInputStream(new ByteArrayInputStream(token.getPassword())));
                 } catch (IOException e) {
-                    throw new EsHadoopSerializationException("Could not read token information from UGI", e);
+                    throw new OpenSearchHadoopSerializationException("Could not read token information from UGI", e);
                 }
             }
         }
@@ -99,7 +99,7 @@ public class HadoopUser implements User {
                 try {
                     tokens.add(new EsToken(new DataInputStream(new ByteArrayInputStream(token.getPassword()))));
                 } catch (IOException e) {
-                    throw new EsHadoopSerializationException("Could not read token information from UGI", e);
+                    throw new OpenSearchHadoopSerializationException("Could not read token information from UGI", e);
                 }
             }
         }

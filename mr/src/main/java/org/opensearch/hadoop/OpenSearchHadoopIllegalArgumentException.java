@@ -18,21 +18,22 @@
  */
 package org.opensearch.hadoop;
 
-public class EsHadoopIllegalStateException extends EsHadoopException {
 
-    public EsHadoopIllegalStateException() {
+public class OpenSearchHadoopIllegalArgumentException extends OpenSearchHadoopException {
+
+    public OpenSearchHadoopIllegalArgumentException() {
         super();
     }
 
-    public EsHadoopIllegalStateException(String message, Throwable cause) {
+    public OpenSearchHadoopIllegalArgumentException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopIllegalStateException(String message) {
+    public OpenSearchHadoopIllegalArgumentException(String message) {
         super(message);
     }
 
-    public EsHadoopIllegalStateException(Throwable cause) {
+    public OpenSearchHadoopIllegalArgumentException(Throwable cause) {
         super(cause);
     }
 }

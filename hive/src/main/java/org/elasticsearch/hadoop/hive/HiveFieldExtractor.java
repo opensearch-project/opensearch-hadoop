@@ -27,7 +27,7 @@ import org.apache.hadoop.hive.serde2.objectinspector.ObjectInspector;
 import org.apache.hadoop.hive.serde2.objectinspector.StructField;
 import org.apache.hadoop.hive.serde2.objectinspector.StructObjectInspector;
 import org.apache.hadoop.io.NullWritable;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor;
 import org.opensearch.hadoop.serialization.field.FieldExtractor;
@@ -82,7 +82,7 @@ public class HiveFieldExtractor extends ConstantFieldExtractor {
         }
 
         if (!settings.getInputAsJson() && fl.isEmpty()) {
-            throw new EsHadoopIllegalArgumentException(
+            throw new OpenSearchHadoopIllegalArgumentException(
                     String.format(
                             "Cannot find field [%s] in mapping %s ; maybe a value was specified without '<','>' or there is a typo?",
                             fl, columnNames.keySet()));

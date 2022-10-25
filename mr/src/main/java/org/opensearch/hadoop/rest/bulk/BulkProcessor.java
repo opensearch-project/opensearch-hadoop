@@ -27,12 +27,12 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.handler.EsHadoopAbortHandlerException;
+import org.opensearch.hadoop.handler.OpenSearchHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
 import org.opensearch.hadoop.rest.ErrorExtractor;
 import org.opensearch.hadoop.rest.Resource;
@@ -132,7 +132,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                 flush();
             }
             else {
-                throw new EsHadoopIllegalStateException(
+                throw new OpenSearchHadoopIllegalStateException(
                         String.format("Auto-flush disabled and bulk buffer full; disable manual flush or increase " +
                                 "capacity [current size %s]; bailing out", ba.capacity()));
             }
@@ -148,7 +148,7 @@ public class BulkProcessor implements Closeable, StatsAware {
             else {
                 // handle the corner case of manual flush that occurs only after the buffer is completely full (think size of 1)
                 if (dataEntries > bufferEntriesThreshold) {
-                    throw new EsHadoopIllegalStateException(
+                    throw new OpenSearchHadoopIllegalStateException(
                             String.format(
                                     "Auto-flush disabled and maximum number of entries surpassed; disable manual " +
                                             "flush or increase capacity [current size %s]; bailing out",
@@ -176,7 +176,7 @@ public class BulkProcessor implements Closeable, StatsAware {
      * Attempts a flush operation, handling failed documents based on configured error listeners.
      * @return A result object detailing the success or failure of the request, including information about any
      * failed documents.
-     * @throws EsHadoopException in the event that the bulk operation fails or is aborted.
+     * @throws OpenSearchHadoopException in the event that the bulk operation fails or is aborted.
      */
     public BulkResponse tryFlush() {
         BulkResponse bulkResult = null;
@@ -200,7 +200,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                 do {
                     // Throw to break out of a possible infinite loop, but only if the limit is a positive number
                     if (retryLimit >= 0 && totalAttempts > retryLimit) {
-                        throw new EsHadoopException("Executed too many bulk requests without success. Attempted [" +
+                        throw new OpenSearchHadoopException("Executed too many bulk requests without success. Attempted [" +
                                 totalAttempts + "] write operations, which exceeds the bulk request retry limit specified" +
                                 "by [" + ConfigurationOptions.ES_BATCH_WRITE_RETRY_LIMIT + "], and found data still " +
                                 "not accepted. Perhaps there is an error handler that is not terminating? Bailing out..."
@@ -261,7 +261,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                             // Get the underlying document information as a map and extract the error information.
                             Map values = (Map) map.values().iterator().next();
                             Integer docStatus = (Integer) values.get("status");
-                            EsHadoopException error = errorExtractor.extractError(values);
+                            OpenSearchHadoopException error = errorExtractor.extractError(values);
 
                             if (error == null){
                                 // Write operation for this entry succeeded
@@ -303,7 +303,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                                     HandlerResult result;
                                     try {
                                         result = errorHandler.onError(failure, errorCollector);
-                                    } catch (EsHadoopAbortHandlerException ahe) {
+                                    } catch (OpenSearchHadoopAbortHandlerException ahe) {
                                         // Count this as an abort operation, but capture the error message from the
                                         // exception as the reason. Log any cause since it will be swallowed.
                                         Throwable cause = ahe.getCause();
@@ -313,7 +313,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                                         result = HandlerResult.ABORT;
                                         error = ahe;
                                     } catch (Exception e) {
-                                        throw new EsHadoopException("Encountered exception during error handler.", e);
+                                        throw new OpenSearchHadoopException("Encountered exception during error handler.", e);
                                     }
 
                                     switch (result) {
@@ -401,7 +401,7 @@ public class BulkProcessor implements Closeable, StatsAware {
             } else {
                 bulkResult = BulkResponse.complete();
             }
-        } catch (EsHadoopException ex) {
+        } catch (OpenSearchHadoopException ex) {
             debugLog(bulkLoggingID, "Failed. %s", ex.getMessage());
             hadWriteErrors = true;
             throw ex;
@@ -425,7 +425,7 @@ public class BulkProcessor implements Closeable, StatsAware {
      * Validate the byte contents of a bulk entry that has been edited before being submitted for retry.
      * @param retryDataBuffer The new entry contents
      * @return A BytesRef that contains the entry contents, potentially cleaned up.
-     * @throws EsHadoopIllegalArgumentException In the event that the document data cannot be simply cleaned up.
+     * @throws OpenSearchHadoopIllegalArgumentException In the event that the document data cannot be simply cleaned up.
      */
     private BytesRef validateEditedEntry(byte[] retryDataBuffer) {
         BytesRef result = new BytesRef();
@@ -447,13 +447,13 @@ public class BulkProcessor implements Closeable, StatsAware {
         if (lastByte == newline) {
             // If last byte is a newline, make sure there are two newlines present in the data
             if (newlines != 2) {
-                throw new EsHadoopIllegalArgumentException("Encountered malformed data entry for bulk write retry. " +
+                throw new OpenSearchHadoopIllegalArgumentException("Encountered malformed data entry for bulk write retry. " +
                         "Data contains [" + newlines + "] newline characters (\\n) but expected to have [2].");
             }
         } else if (lastByte == closeBrace) {
             // If the last byte is a closed brace, make sure there is only one newline in the data
             if (newlines != 1) {
-                throw new EsHadoopIllegalArgumentException("Encountered malformed data entry for bulk write retry. " +
+                throw new OpenSearchHadoopIllegalArgumentException("Encountered malformed data entry for bulk write retry. " +
                         "Data contains [" + newlines + "] newline characters (\\n) but expected to have [1].");
             }
 
@@ -477,7 +477,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                     Thread.sleep(waitTime);
                 } catch (InterruptedException e) {
                     debugLog(bulkLoggingID, "Thread interrupted - giving up on retrying...");
-                    throw new EsHadoopException("Thread interrupted - giving up on retrying...", e);
+                    throw new OpenSearchHadoopException("Thread interrupted - giving up on retrying...", e);
                 }
             } else {
                 debugLog(bulkLoggingID, "Retrying [%d] entries immediately (without backoff)", retriedDocs);
@@ -512,7 +512,7 @@ public class BulkProcessor implements Closeable, StatsAware {
 
     /**
      * Attempts a flush operation, handling failed documents based on configured error listeners.
-     * @throws EsHadoopException in the event that the bulk operation fails, is aborted, or its errors could not be handled.
+     * @throws OpenSearchHadoopException in the event that the bulk operation fails, is aborted, or its errors could not be handled.
      */
     public void flush() {
         BulkResponse bulk = tryFlush();
@@ -535,7 +535,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                 i++;
             }
             message.append("Bailing out...");
-            throw new EsHadoopException(message.toString());
+            throw new OpenSearchHadoopException(message.toString());
         }
     }
     

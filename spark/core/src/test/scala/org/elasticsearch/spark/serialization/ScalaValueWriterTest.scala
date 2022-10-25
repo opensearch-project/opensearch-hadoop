@@ -23,7 +23,7 @@ import org.elasticsearch.spark.serialization.testbeans.{Contact, ContactBook}
 import org.junit.Assert._
 import org.junit.Test
 import org.opensearch.hadoop.cfg.{ConfigurationOptions, Settings}
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
 import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator
 
 import java.io.ByteArrayOutputStream
@@ -46,7 +46,7 @@ class ScalaValueWriterTest {
     }
     val result = writer.write(value, generator)
     if (result.isSuccesful == false) {
-      throw new EsHadoopSerializationException("Could not serialize [" + result.getUnknownValue + "]")
+      throw new OpenSearchHadoopSerializationException("Could not serialize [" + result.getUnknownValue + "]")
     }
     generator.flush()
 
@@ -106,14 +106,14 @@ class ScalaValueWriterTest {
     assertEquals("""{"contacts":{"Benny":{"name":"Benny","relation":"Some guy"},"The Jets":{"name":"The Jets","relation":"Benny's associates"}},"owner":"me"}""", serialize(new ContactBook("me", contacts)))
   }
 
-  @Test(expected = classOf[EsHadoopSerializationException])
+  @Test(expected = classOf[OpenSearchHadoopSerializationException])
   def testMapWithInvalidObject(): Unit = {
     val map = new java.util.HashMap[String, Object]()
     map.put("test", new Garbage(42))
     serialize(map)
   }
 
-  @Test(expected = classOf[EsHadoopSerializationException])
+  @Test(expected = classOf[OpenSearchHadoopSerializationException])
   def testNestedUnknownValue(): Unit = {
     val map = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A" -> "B" -> "C"), "unknown" -> new Garbage(0))
     serialize(map)
@@ -142,7 +142,7 @@ class ScalaValueWriterTest {
     assertEquals("""{"info":"value"}""", serialize(node))
   }
 
-  @Test(expected = classOf[EsHadoopSerializationException])
+  @Test(expected = classOf[OpenSearchHadoopSerializationException])
   def testRingOfData(): Unit = {
     val node1 = new Node("value1")
     val node2 = new Node("value2")

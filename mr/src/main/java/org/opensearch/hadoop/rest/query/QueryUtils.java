@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.IOUtils;
 import org.opensearch.hadoop.util.SettingsUtils;
@@ -47,7 +47,7 @@ public abstract class QueryUtils {
                 }
                 query = IOUtils.asString(in);
             } catch (IOException ex) {
-                throw new EsHadoopIllegalArgumentException(
+                throw new OpenSearchHadoopIllegalArgumentException(
                         String.format(
                                 "Cannot determine specified query - doesn't appear to be URI or JSON based and location [%s] cannot be opened",
                                 query));

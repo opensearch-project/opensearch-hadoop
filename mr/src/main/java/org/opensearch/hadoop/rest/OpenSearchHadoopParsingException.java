@@ -16,24 +16,28 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.opensearch.hadoop;
+package org.opensearch.hadoop.rest;
 
+import org.opensearch.hadoop.OpenSearchHadoopException;
 
-public class EsHadoopIllegalArgumentException extends EsHadoopException {
+/**
+ * Exception indicating an unrecoverable parsing error processing answers from Elasticsearch.
+ * This might be caused by an unsupported Elasticsearch version or potential proxying
+ * across the network.
+ */
+public class OpenSearchHadoopParsingException extends OpenSearchHadoopException {
 
-    public EsHadoopIllegalArgumentException() {
-        super();
-    }
+    public OpenSearchHadoopParsingException() {}
 
-    public EsHadoopIllegalArgumentException(String message, Throwable cause) {
+    public OpenSearchHadoopParsingException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopIllegalArgumentException(String message) {
+    public OpenSearchHadoopParsingException(String message) {
         super(message);
     }
 
-    public EsHadoopIllegalArgumentException(Throwable cause) {
+    public OpenSearchHadoopParsingException(Throwable cause) {
         super(cause);
     }
 }

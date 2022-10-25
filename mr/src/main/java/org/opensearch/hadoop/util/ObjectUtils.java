@@ -20,8 +20,8 @@ package org.opensearch.hadoop.util;
 
 import java.lang.reflect.Array;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.serialization.SettingsAware;
 
@@ -35,12 +35,12 @@ public abstract class ObjectUtils {
         try {
             clz = cl.loadClass(className);
         } catch (ClassNotFoundException e) {
-            throw new EsHadoopIllegalStateException(String.format("Cannot load class [%s]", className), e);
+            throw new OpenSearchHadoopIllegalStateException(String.format("Cannot load class [%s]", className), e);
         }
         try {
             return (T) clz.newInstance();
         } catch (Exception ex) {
-            throw new EsHadoopIllegalStateException(String.format("Cannot instantiate class [%s]", className), ex);
+            throw new OpenSearchHadoopIllegalStateException(String.format("Cannot instantiate class [%s]", className), ex);
         }
     }
 
@@ -72,7 +72,7 @@ public abstract class ObjectUtils {
         try {
             return Class.forName(className, true, cl);
         } catch (ClassNotFoundException ex) {
-            throw new EsHadoopIllegalArgumentException(String.format("Cannot load class [%s]", className), ex);
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot load class [%s]", className), ex);
         }
     }
 

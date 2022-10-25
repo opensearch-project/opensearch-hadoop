@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 
 public abstract class HttpStatus {
 
@@ -29,7 +29,7 @@ public abstract class HttpStatus {
 
     public static String getText(int code) {
         if (code < 100 || code / 100 > 5) {
-            throw new EsHadoopIllegalArgumentException("Invalid http code");
+            throw new OpenSearchHadoopIllegalArgumentException("Invalid http code");
         }
 
         return CODE_TO_TEXT.get(Integer.valueOf(code));

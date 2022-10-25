@@ -25,7 +25,7 @@ import java.util.Deque;
 import java.util.LinkedList;
 
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 import org.opensearch.hadoop.serialization.Generator;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonEncoding;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonFactory;
@@ -65,7 +65,7 @@ public class JacksonJsonGenerator implements Generator {
             // use dedicated method to lower Jackson requirement
             this.generator = JSON_FACTORY.createJsonGenerator(out, JsonEncoding.UTF8);
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -79,7 +79,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeStartArray();
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -89,7 +89,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeEndArray();
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -104,7 +104,7 @@ public class JacksonJsonGenerator implements Generator {
             }
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -116,7 +116,7 @@ public class JacksonJsonGenerator implements Generator {
             currentPathCached = null;
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -127,7 +127,7 @@ public class JacksonJsonGenerator implements Generator {
             currentName = name;
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -137,7 +137,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeString(text);
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -152,7 +152,7 @@ public class JacksonJsonGenerator implements Generator {
             }
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -167,7 +167,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeBinary(data, offset, len);
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -192,7 +192,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeNumber(i);
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -202,7 +202,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeNumber(l);
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -212,7 +212,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeNumber(d);
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -222,7 +222,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeNumber(f);
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -232,7 +232,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeBoolean(b);
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -242,7 +242,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeNull();
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -252,7 +252,7 @@ public class JacksonJsonGenerator implements Generator {
             generator.writeRaw(value);
             return this;
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -261,7 +261,7 @@ public class JacksonJsonGenerator implements Generator {
         try {
             generator.flush();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -270,7 +270,7 @@ public class JacksonJsonGenerator implements Generator {
         try {
             generator.close();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 

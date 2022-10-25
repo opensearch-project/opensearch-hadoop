@@ -19,8 +19,8 @@
 
 package org.elasticsearch.hadoop.serialization.handler.write;
 
-import org.elasticsearch.hadoop.handler.ErrorCollector;
-import org.elasticsearch.hadoop.handler.ErrorHandler;
+import org.opensearch.hadoop.handler.ErrorCollector;
+import org.opensearch.hadoop.handler.ErrorHandler;
 
 public interface ISerializationErrorHandler extends ErrorHandler<SerializationFailure, Object, ErrorCollector<Object>> {
 }

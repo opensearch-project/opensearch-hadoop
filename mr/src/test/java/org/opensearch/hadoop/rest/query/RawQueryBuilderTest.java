@@ -18,8 +18,6 @@
  */
 package org.opensearch.hadoop.rest.query;
 
-import org.elasticsearch.hadoop.rest.query.QueryBuilder;
-import org.elasticsearch.hadoop.rest.query.RawQueryBuilder;
 import org.junit.Test;
 
 import java.io.IOException;

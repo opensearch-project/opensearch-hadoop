@@ -26,11 +26,10 @@ import java.net.UnknownHostException;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.Request;
-import org.elasticsearch.hadoop.rest.SimpleRequest;
-import org.elasticsearch.hadoop.rest.commonshttp.CommonsHttpTransport;
+import org.opensearch.hadoop.cfg.ConfigurationOptions;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.rest.Request;
+import org.opensearch.hadoop.rest.SimpleRequest;
 import org.elasticsearch.hadoop.rest.commonshttp.DelegatedProtocol;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeoutException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;

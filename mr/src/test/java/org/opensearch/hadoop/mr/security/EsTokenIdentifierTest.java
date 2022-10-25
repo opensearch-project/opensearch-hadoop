@@ -22,7 +22,6 @@ package org.opensearch.hadoop.mr.security;
 import java.util.ServiceLoader;
 
 import org.apache.hadoop.security.token.TokenRenewer;
-import org.elasticsearch.hadoop.mr.security.EsTokenIdentifier;
 import org.junit.Assert;
 import org.junit.Test;
 

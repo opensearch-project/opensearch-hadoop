@@ -19,7 +19,7 @@
 
 package org.elasticsearch.hadoop.serialization.handler.read.impl;
 
-import org.elasticsearch.hadoop.handler.impl.LogRenderer;
+import org.opensearch.hadoop.handler.impl.LogRenderer;
 import org.elasticsearch.hadoop.serialization.handler.read.DeserializationFailure;
 import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
 

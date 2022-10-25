@@ -44,7 +44,7 @@ import org.apache.spark.sql.types.Decimal
 import org.apache.spark.sql.types.DecimalType
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.storage.StorageLevel._
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions._
+import org.opensearch.hadoop.cfg.ConfigurationOptions._
 import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.hadoop.util.TestUtils

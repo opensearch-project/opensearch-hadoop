@@ -31,8 +31,8 @@ import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.cfg.FieldPresenceValidation;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.FieldPresenceValidation;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.FieldType;
 import org.elasticsearch.hadoop.serialization.dto.mapping.GeoField.GeoType;
 import org.elasticsearch.hadoop.util.StringUtils;

@@ -25,13 +25,12 @@ import org.apache.spark.Partition
 import org.apache.spark.SparkContext
 import org.apache.spark.TaskContext
 import org.apache.spark.sql.Row
-import org.elasticsearch.hadoop.cfg.Settings
-import org.elasticsearch.hadoop.mr.security.HadoopUserProvider
-import org.elasticsearch.hadoop.rest.InitializationUtils
-import org.elasticsearch.hadoop.rest.PartitionDefinition
 import org.elasticsearch.spark.rdd.AbstractEsRDD
 import org.elasticsearch.spark.rdd.AbstractEsRDDIterator
 import org.elasticsearch.spark.rdd.EsPartition
+import org.opensearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.mr.security.HadoopUserProvider
+import org.opensearch.hadoop.rest.{InitializationUtils, PartitionDefinition}
 
 import scala.annotation.meta.param
 

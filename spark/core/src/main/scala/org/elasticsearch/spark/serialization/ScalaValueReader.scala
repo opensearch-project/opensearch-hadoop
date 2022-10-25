@@ -25,7 +25,6 @@ import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.Seq
 import scala.collection.mutable.LinkedHashMap
 import scala.collection.mutable.Map
-import org.elasticsearch.hadoop.cfg.Settings
 import org.elasticsearch.hadoop.serialization.FieldType
 import org.elasticsearch.hadoop.serialization.FieldType.BINARY
 import org.elasticsearch.hadoop.serialization.FieldType.BOOLEAN
@@ -60,6 +59,7 @@ import org.elasticsearch.hadoop.util.DateUtils
 import org.elasticsearch.hadoop.util.SettingsUtils
 import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.hadoop.util.unit.Booleans
+import org.opensearch.hadoop.cfg.Settings
 
 import java.sql.Timestamp
 import java.time.Instant

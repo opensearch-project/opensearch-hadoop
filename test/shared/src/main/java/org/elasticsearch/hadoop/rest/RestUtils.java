@@ -21,8 +21,11 @@ package org.elasticsearch.hadoop.rest;
 import java.io.IOException;
 import java.util.List;
 
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.RestClient.Health;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.rest.Request;
+import org.opensearch.hadoop.rest.Response;
+import org.opensearch.hadoop.rest.RestClient;
+import org.opensearch.hadoop.rest.RestClient.Health;
 import org.elasticsearch.hadoop.serialization.dto.mapping.Mapping;
 import org.elasticsearch.hadoop.serialization.dto.mapping.MappingSet;
 import org.elasticsearch.hadoop.util.ByteSequence;
@@ -34,7 +37,7 @@ import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
 import org.elasticsearch.hadoop.util.unit.TimeValue;
 
-import static org.elasticsearch.hadoop.rest.Request.Method.*;
+import static org.opensearch.hadoop.rest.Request.Method.*;
 
 public class RestUtils {
 

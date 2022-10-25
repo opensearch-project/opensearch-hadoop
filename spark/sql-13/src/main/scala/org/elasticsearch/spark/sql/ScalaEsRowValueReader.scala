@@ -26,7 +26,7 @@ import org.elasticsearch.hadoop.serialization.Parser
 import org.elasticsearch.hadoop.serialization.builder.ValueParsingCallback
 import org.elasticsearch.spark.serialization.ScalaValueReader
 import org.apache.commons.logging.LogFactory
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.cfg.ConfigurationOptions
 
 class ScalaRowValueReader extends ScalaValueReader with RowValueReader with ValueParsingCallback {
 

@@ -18,7 +18,7 @@
  */
 package org.elasticsearch.hadoop.serialization;
 
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 
 /**
  * Whether a ValueReader/Writer need extra configuration properties.

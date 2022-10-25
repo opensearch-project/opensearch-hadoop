@@ -24,15 +24,15 @@ import java.io.OutputStream;
 import java.util.Properties;
 
 import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
-import org.elasticsearch.hadoop.rest.Request;
-import org.elasticsearch.hadoop.rest.Request.Method;
-import org.elasticsearch.hadoop.rest.Response;
-import org.elasticsearch.hadoop.rest.SimpleRequest;
-import org.elasticsearch.hadoop.rest.commonshttp.CommonsHttpTransport;
+import org.opensearch.hadoop.cfg.PropertiesSettings;
+import org.opensearch.hadoop.rest.Request;
+import org.opensearch.hadoop.rest.Request.Method;
+import org.opensearch.hadoop.rest.Response;
+import org.opensearch.hadoop.rest.SimpleRequest;
+import org.opensearch.hadoop.rest.commonshttp.CommonsHttpTransport;
 import org.elasticsearch.hadoop.rest.ssl.BasicSSLServer;
-import org.elasticsearch.hadoop.security.KeystoreWrapper;
-import org.elasticsearch.hadoop.security.SecureSettings;
+import org.opensearch.hadoop.security.KeystoreWrapper;
+import org.opensearch.hadoop.security.SecureSettings;
 import org.elasticsearch.hadoop.util.IOUtils;
 import org.junit.After;
 import org.junit.Before;
@@ -43,7 +43,7 @@ import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.*;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.*;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;
 
 public class SSLTests {
 

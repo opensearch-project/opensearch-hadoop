@@ -29,7 +29,7 @@ import java.net.URI;
 
 import com.google.common.io.ByteStreams;
 import org.apache.hadoop.conf.Configuration;
-import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
+import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.junit.rules.LazyTempFolder;
 
 /**

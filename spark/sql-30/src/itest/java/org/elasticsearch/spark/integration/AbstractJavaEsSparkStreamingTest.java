@@ -73,7 +73,7 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.*;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;
 import static org.elasticsearch.hadoop.util.TestUtils.docEndpoint;
 import static org.elasticsearch.hadoop.util.TestUtils.resource;
 import static org.hamcrest.Matchers.*;

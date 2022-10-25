@@ -31,8 +31,8 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import org.elasticsearch.hadoop.mr.EsInputFormat;
-import org.elasticsearch.hadoop.mr.EsMapReduceUtil;
+import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.EsMapReduceUtil;
 import org.elasticsearch.hadoop.qa.kerberos.security.KeytabLogin;
 
 public class ReadFromES extends Configured implements Tool {

@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.Properties;
 
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
+import org.opensearch.hadoop.cfg.PropertiesSettings;
 import org.elasticsearch.hadoop.util.FieldAlias;
 import org.junit.Test;
 

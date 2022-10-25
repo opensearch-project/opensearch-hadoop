@@ -21,9 +21,9 @@ package org.elasticsearch.hadoop.fixtures;
 
 import org.apache.commons.logging.LogFactory;
 import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
+import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.rest.RestUtils;
-import org.elasticsearch.hadoop.rest.InitializationUtils;
+import org.opensearch.hadoop.rest.InitializationUtils;
 import org.elasticsearch.hadoop.util.ClusterInfo;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.StringUtils;
@@ -32,7 +32,7 @@ import org.elasticsearch.hadoop.util.TestUtils;
 import org.elasticsearch.hadoop.util.unit.Booleans;
 import org.junit.rules.ExternalResource;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES;
 
 public class LocalEs extends ExternalResource {
 

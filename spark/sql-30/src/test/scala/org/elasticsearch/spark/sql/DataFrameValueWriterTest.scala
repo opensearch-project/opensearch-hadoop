@@ -29,14 +29,13 @@ import org.apache.spark.sql.types.MapType
 import org.apache.spark.sql.types.StringType
 import org.apache.spark.sql.types.StructField
 import org.apache.spark.sql.types.StructType
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions
-import org.elasticsearch.hadoop.cfg.Settings
 import org.elasticsearch.hadoop.serialization.EsHadoopSerializationException
 import org.elasticsearch.hadoop.serialization.json.JacksonJsonGenerator
 import org.elasticsearch.hadoop.util.TestSettings
 import org.junit.Assert._
 import org.junit.Ignore
 import org.junit.Test
+import org.opensearch.hadoop.cfg.{ConfigurationOptions, Settings}
 
 class DataFrameValueWriterTest {
 

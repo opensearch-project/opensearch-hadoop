@@ -24,7 +24,7 @@ import org.junit.Test
 import org.junit.Assert._
 import org.hamcrest.Matchers._
 import org.apache.spark.SparkConf
-import org.elasticsearch.hadoop.cfg.PropertiesSettings
+import org.opensearch.hadoop.cfg.PropertiesSettings
 
 import java.util.Locale
 

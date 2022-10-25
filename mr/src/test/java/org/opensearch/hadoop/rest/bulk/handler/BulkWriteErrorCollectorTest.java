@@ -21,8 +21,7 @@ package org.opensearch.hadoop.rest.bulk.handler;
 
 import java.util.concurrent.TimeUnit;
 
-import org.elasticsearch.hadoop.handler.HandlerResult;
-import org.elasticsearch.hadoop.rest.bulk.handler.BulkWriteErrorCollector;
+import org.opensearch.hadoop.handler.HandlerResult;
 import org.junit.Before;
 import org.junit.Test;
 

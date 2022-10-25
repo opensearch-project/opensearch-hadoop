@@ -21,7 +21,7 @@ package org.elasticsearch.spark.sql.streaming
 
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.execution.streaming.CompactibleFileStreamLog
-import org.elasticsearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.cfg.Settings
 
 /**
  * Provides logic for managing batch ID committing as well as cleaning up

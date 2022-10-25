@@ -30,7 +30,7 @@ import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.mapred.JobConf;
 import org.elasticsearch.hadoop.fs.HdfsUtils;
-import org.elasticsearch.hadoop.mr.HadoopCfgUtils;
+import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.junit.rules.LazyTempFolder;
 
 public class QueryTestParams {

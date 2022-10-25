@@ -27,7 +27,7 @@ import org.apache.hadoop.hive.serde2.typeinfo.TypeInfo;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Text;
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.hive.HiveFieldExtractor;
 import org.elasticsearch.hadoop.serialization.HiveTypeToJsonTest.MyHiveType;
 import org.elasticsearch.hadoop.serialization.field.ConstantFieldExtractor;

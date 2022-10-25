@@ -25,7 +25,7 @@ import java.util.Properties;
 
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.spark.SparkConf;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.util.Assert;
 import org.elasticsearch.hadoop.util.IOUtils;
 

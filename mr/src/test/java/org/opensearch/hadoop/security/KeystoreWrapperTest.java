@@ -22,7 +22,6 @@ package org.opensearch.hadoop.security;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 
-import org.elasticsearch.hadoop.security.KeystoreWrapper;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.is;

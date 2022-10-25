@@ -20,18 +20,9 @@
 package org.opensearch.hadoop.rest;
 
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.EsHadoopInvalidRequest;
-import org.elasticsearch.hadoop.rest.EsHadoopParsingException;
-import org.elasticsearch.hadoop.rest.EsHadoopTransportException;
-import org.elasticsearch.hadoop.rest.NetworkClient;
-import org.elasticsearch.hadoop.rest.Request;
-import org.elasticsearch.hadoop.rest.Resource;
-import org.elasticsearch.hadoop.rest.RestClient;
-import org.elasticsearch.hadoop.rest.SimpleRequest;
-import org.elasticsearch.hadoop.rest.SimpleResponse;
-import org.elasticsearch.hadoop.rest.query.MatchAllQueryBuilder;
-import org.elasticsearch.hadoop.rest.stats.Stats;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.rest.query.MatchAllQueryBuilder;
+import org.opensearch.hadoop.rest.stats.Stats;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.ClusterInfo;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;

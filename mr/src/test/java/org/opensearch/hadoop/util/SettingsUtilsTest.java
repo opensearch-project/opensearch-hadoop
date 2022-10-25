@@ -21,7 +21,7 @@ package org.opensearch.hadoop.util;
 import java.util.List;
 import java.util.Properties;
 
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
+import org.opensearch.hadoop.cfg.PropertiesSettings;
 import org.elasticsearch.hadoop.serialization.field.FieldFilter;
 import org.elasticsearch.hadoop.util.SettingsUtils;
 import org.junit.Test;
@@ -30,8 +30,8 @@ import static org.junit.Assert.assertThat;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES;
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES_DISCOVERY;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES_DISCOVERY;
 
 public class SettingsUtilsTest {
 

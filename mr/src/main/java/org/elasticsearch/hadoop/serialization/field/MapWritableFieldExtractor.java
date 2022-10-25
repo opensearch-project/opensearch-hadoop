@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.io.Text;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 
 public class MapWritableFieldExtractor extends ConstantFieldExtractor implements FieldExplainer {
 

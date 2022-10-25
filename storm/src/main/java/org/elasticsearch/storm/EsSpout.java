@@ -35,18 +35,18 @@ import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Fields;
 import org.elasticsearch.hadoop.EsHadoopIllegalStateException;
-import org.elasticsearch.hadoop.rest.InitializationUtils;
-import org.elasticsearch.hadoop.rest.PartitionDefinition;
-import org.elasticsearch.hadoop.rest.RestService;
-import org.elasticsearch.hadoop.rest.RestService.MultiReaderIterator;
-import org.elasticsearch.hadoop.security.JdkUserProvider;
+import org.opensearch.hadoop.rest.InitializationUtils;
+import org.opensearch.hadoop.rest.PartitionDefinition;
+import org.opensearch.hadoop.rest.RestService;
+import org.opensearch.hadoop.rest.RestService.MultiReaderIterator;
+import org.opensearch.hadoop.security.JdkUserProvider;
 import org.elasticsearch.hadoop.serialization.builder.JdkValueReader;
 import org.elasticsearch.hadoop.util.StringUtils;
 import org.elasticsearch.storm.cfg.StormSettings;
 import org.elasticsearch.storm.cfg.TupleFailureHandling;
 import org.elasticsearch.storm.security.EsClusterInfoSelector;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.*;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;
 
 /**
  * @deprecated Support for Apache Storm is deprecated and will be removed in the future. Consider moving to Spark or Mapreduce.

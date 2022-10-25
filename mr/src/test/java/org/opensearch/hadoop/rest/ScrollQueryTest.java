@@ -19,16 +19,11 @@
 
 package org.opensearch.hadoop.rest;
 
-import java.io.IOException;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import com.google.common.collect.Lists;
-import org.elasticsearch.hadoop.rest.RestClient;
-import org.elasticsearch.hadoop.rest.RestRepository;
-import org.elasticsearch.hadoop.rest.ScrollQuery;
-import org.elasticsearch.hadoop.rest.stats.Stats;
+import org.opensearch.hadoop.rest.stats.Stats;
 import org.elasticsearch.hadoop.serialization.JsonUtils;
 import org.elasticsearch.hadoop.serialization.ScrollReader;
 import org.elasticsearch.hadoop.util.BytesArray;

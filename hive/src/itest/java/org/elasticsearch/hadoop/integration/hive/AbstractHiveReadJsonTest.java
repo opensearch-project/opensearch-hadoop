@@ -21,7 +21,7 @@ package org.elasticsearch.hadoop.integration.hive;
 
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.QueryTestParams;
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
+import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;

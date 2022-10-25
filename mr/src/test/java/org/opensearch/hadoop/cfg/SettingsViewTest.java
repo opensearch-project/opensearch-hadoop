@@ -21,12 +21,8 @@ package org.opensearch.hadoop.cfg;
 
 import java.util.Properties;
 
-import org.elasticsearch.hadoop.cfg.PropertiesSettings;
-import org.elasticsearch.hadoop.cfg.Settings;
 import org.junit.Assert;
 import org.junit.Test;
-
-import static org.junit.Assert.*;
 
 public class SettingsViewTest {
     @Test

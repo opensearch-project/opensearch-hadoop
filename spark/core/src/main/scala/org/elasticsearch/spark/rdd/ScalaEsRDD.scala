@@ -24,11 +24,10 @@ import org.apache.commons.logging.LogFactory
 import org.apache.spark.Partition
 import org.apache.spark.SparkContext
 import org.apache.spark.TaskContext
-import org.elasticsearch.hadoop.cfg.Settings
-import org.elasticsearch.hadoop.mr.security.HadoopUserProvider
-import org.elasticsearch.hadoop.rest.InitializationUtils
-import org.elasticsearch.hadoop.rest.PartitionDefinition
 import org.elasticsearch.spark.serialization.ScalaValueReader
+import org.opensearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.mr.security.HadoopUserProvider
+import org.opensearch.hadoop.rest.{InitializationUtils, PartitionDefinition}
 
 import scala.annotation.meta.param
 

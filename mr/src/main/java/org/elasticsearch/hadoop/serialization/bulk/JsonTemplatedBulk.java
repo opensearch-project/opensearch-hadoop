@@ -22,7 +22,7 @@ import java.util.Collection;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.serialization.BytesConverter;
 import org.elasticsearch.hadoop.serialization.builder.NoOpValueWriter;
 import org.elasticsearch.hadoop.serialization.builder.ValueWriter;

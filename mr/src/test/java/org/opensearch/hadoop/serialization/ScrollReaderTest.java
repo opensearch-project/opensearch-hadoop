@@ -27,12 +27,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.elasticsearch.hadoop.EsHadoopException;
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.handler.ErrorCollector;
-import org.elasticsearch.hadoop.handler.EsHadoopAbortHandlerException;
-import org.elasticsearch.hadoop.handler.HandlerResult;
-import org.elasticsearch.hadoop.rest.EsHadoopParsingException;
+import org.opensearch.hadoop.cfg.ConfigurationOptions;
+import org.opensearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.handler.ErrorCollector;
+import org.opensearch.hadoop.handler.EsHadoopAbortHandlerException;
+import org.opensearch.hadoop.handler.HandlerResult;
+import org.opensearch.hadoop.rest.EsHadoopParsingException;
 import org.elasticsearch.hadoop.serialization.JsonUtils;
 import org.elasticsearch.hadoop.serialization.ScrollReader;
 import org.elasticsearch.hadoop.serialization.ScrollReaderConfigBuilder;

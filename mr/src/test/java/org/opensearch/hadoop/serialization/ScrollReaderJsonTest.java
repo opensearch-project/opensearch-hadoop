@@ -25,7 +25,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-import org.elasticsearch.hadoop.rest.EsHadoopParsingException;
+import org.opensearch.hadoop.rest.EsHadoopParsingException;
 import org.elasticsearch.hadoop.serialization.ScrollReader;
 import org.elasticsearch.hadoop.serialization.ScrollReaderConfigBuilder;
 import org.elasticsearch.hadoop.serialization.builder.JdkValueReader;

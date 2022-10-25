@@ -25,8 +25,6 @@ import org.apache.hadoop.io.ArrayWritable;
 import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
-import org.elasticsearch.hadoop.mr.LinkedMapWritable;
-import org.elasticsearch.hadoop.mr.WritableArrayWritable;
 import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
 import org.elasticsearch.hadoop.util.FastByteArrayOutputStream;
 import org.junit.Test;

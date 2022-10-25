@@ -50,10 +50,10 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized;
 
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE;
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_INGEST_PIPELINE;
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE;
-import static org.elasticsearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INGEST_PIPELINE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.not;

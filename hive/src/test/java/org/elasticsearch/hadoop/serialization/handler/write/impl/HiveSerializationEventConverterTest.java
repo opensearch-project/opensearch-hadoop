@@ -29,7 +29,7 @@ import org.apache.hadoop.io.MapWritable;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.io.Writable;
 import org.elasticsearch.hadoop.hive.HiveType;
-import org.elasticsearch.hadoop.mr.LinkedMapWritable;
+import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.elasticsearch.hadoop.serialization.handler.write.SerializationFailure;
 import org.elasticsearch.hadoop.util.DateUtils;
 import org.elasticsearch.hadoop.util.StringUtils;

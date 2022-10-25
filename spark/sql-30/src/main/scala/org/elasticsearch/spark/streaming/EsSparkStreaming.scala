@@ -22,8 +22,8 @@ package org.elasticsearch.spark.streaming
 import java.util.UUID
 
 import org.apache.spark.streaming.dstream.DStream
-import org.elasticsearch.hadoop.cfg.ConfigurationOptions._
-import org.elasticsearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
+import org.opensearch.hadoop.cfg.ConfigurationOptions._
+import org.opensearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
 import org.elasticsearch.spark.rdd.EsSpark
 
 import scala.collection.Map

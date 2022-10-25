@@ -18,13 +18,11 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.rest.RestService;
-import org.elasticsearch.hadoop.rest.SearchRequestBuilder;
-import org.elasticsearch.hadoop.rest.query.BoolQueryBuilder;
-import org.elasticsearch.hadoop.rest.query.ConstantScoreQueryBuilder;
-import org.elasticsearch.hadoop.rest.query.QueryBuilder;
-import org.elasticsearch.hadoop.rest.query.TermQueryBuilder;
-import org.elasticsearch.hadoop.rest.request.GetAliasesRequestBuilder;
+import org.opensearch.hadoop.rest.query.BoolQueryBuilder;
+import org.opensearch.hadoop.rest.query.ConstantScoreQueryBuilder;
+import org.opensearch.hadoop.rest.query.QueryBuilder;
+import org.opensearch.hadoop.rest.query.TermQueryBuilder;
+import org.opensearch.hadoop.rest.request.GetAliasesRequestBuilder;
 import org.elasticsearch.hadoop.serialization.dto.IndicesAliases;
 import org.elasticsearch.hadoop.util.OpenSearchMajorVersion;
 import org.junit.Assert;

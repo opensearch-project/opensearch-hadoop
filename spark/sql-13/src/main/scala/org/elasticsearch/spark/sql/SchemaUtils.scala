@@ -43,10 +43,6 @@ import org.apache.spark.sql.types.StructField
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.types.TimestampType
 import org.elasticsearch.hadoop.EsHadoopIllegalArgumentException
-import org.elasticsearch.hadoop.cfg.InternalConfigurationOptions
-import org.elasticsearch.hadoop.cfg.Settings
-import org.elasticsearch.hadoop.rest.InitializationUtils
-import org.elasticsearch.hadoop.rest.RestRepository
 import org.elasticsearch.hadoop.serialization.FieldType.BINARY
 import org.elasticsearch.hadoop.serialization.FieldType.BOOLEAN
 import org.elasticsearch.hadoop.serialization.FieldType.BYTE
@@ -84,6 +80,8 @@ import org.elasticsearch.hadoop.util.StringUtils
 import org.elasticsearch.spark.sql.Utils.ROOT_LEVEL_NAME
 import org.elasticsearch.spark.sql.Utils.ROW_INFO_ARRAY_PROPERTY
 import org.elasticsearch.spark.sql.Utils.ROW_INFO_ORDER_PROPERTY
+import org.opensearch.hadoop.cfg.{InternalConfigurationOptions, Settings}
+import org.opensearch.hadoop.rest.{InitializationUtils, RestRepository}
 
 private[sql] object SchemaUtils {
   case class Schema(mapping: Mapping, struct: StructType)

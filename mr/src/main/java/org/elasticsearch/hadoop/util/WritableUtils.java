@@ -28,7 +28,7 @@ import java.util.SortedSet;
 import java.util.TreeMap;
 
 import org.apache.hadoop.io.*;
-import org.elasticsearch.hadoop.mr.WritableCompatUtil;
+import org.opensearch.hadoop.mr.WritableCompatUtil;
 
 /**
  * Utility class converting standard objects to and from {@link Writable}s.

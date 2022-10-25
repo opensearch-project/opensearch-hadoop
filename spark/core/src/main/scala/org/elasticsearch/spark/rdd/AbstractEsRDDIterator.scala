@@ -21,9 +21,8 @@ package org.elasticsearch.spark.rdd
 import org.apache.commons.logging.Log
 import org.apache.spark.TaskContext
 import org.apache.spark.TaskKilledException
-import org.elasticsearch.hadoop.cfg.Settings
-import org.elasticsearch.hadoop.rest.RestService
-import org.elasticsearch.hadoop.rest.PartitionDefinition
+import org.opensearch.hadoop.cfg.Settings
+import org.opensearch.hadoop.rest.{PartitionDefinition, RestService}
 
 import java.util.Locale
 

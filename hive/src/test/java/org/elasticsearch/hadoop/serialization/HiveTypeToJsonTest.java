@@ -19,7 +19,6 @@
 package org.elasticsearch.hadoop.serialization;
 
 import java.math.BigDecimal;
-import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.LinkedHashMap;
@@ -41,7 +40,7 @@ import org.apache.hadoop.io.FloatWritable;
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.LongWritable;
 import org.apache.hadoop.io.Text;
-import org.elasticsearch.hadoop.cfg.Settings;
+import org.opensearch.hadoop.cfg.Settings;
 import org.elasticsearch.hadoop.hive.HiveType;
 import org.elasticsearch.hadoop.hive.HiveValueWriter;
 import org.elasticsearch.hadoop.serialization.builder.ContentBuilder;

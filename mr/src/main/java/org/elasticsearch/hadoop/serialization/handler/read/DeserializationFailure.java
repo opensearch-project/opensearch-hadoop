@@ -20,10 +20,9 @@
 package org.elasticsearch.hadoop.serialization.handler.read;
 
 import java.io.InputStream;
-import java.util.Collections;
 import java.util.List;
 
-import org.elasticsearch.hadoop.handler.impl.BaseExceptional;
+import org.opensearch.hadoop.handler.impl.BaseExceptional;
 import org.elasticsearch.hadoop.util.BytesArray;
 import org.elasticsearch.hadoop.util.FastByteArrayInputStream;
 

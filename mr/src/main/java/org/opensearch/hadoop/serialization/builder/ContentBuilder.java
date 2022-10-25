@@ -20,7 +20,7 @@ package org.opensearch.hadoop.serialization.builder;
 
 import java.io.OutputStream;
 
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 import org.opensearch.hadoop.serialization.Generator;
 import org.opensearch.hadoop.serialization.builder.ValueWriter.Result;
 import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator;
@@ -60,7 +60,7 @@ public class ContentBuilder {
                 message = String.format("Cannot handle type [%s] within type [%s], instance [%s] within instance [%s] using writer [%s]",
                         result.unknownValue.getClass(), value.getClass(), result.unknownValue, value, writer);
             }
-            throw new EsHadoopSerializationException(message);
+            throw new OpenSearchHadoopSerializationException(message);
         }
         return this;
     }

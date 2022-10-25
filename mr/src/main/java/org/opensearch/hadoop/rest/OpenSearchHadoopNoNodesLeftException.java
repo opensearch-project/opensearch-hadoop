@@ -26,16 +26,16 @@ import java.util.Map;
  * Exception indicating that due to errors, all available nodes have been processed and no
  * other nodes are left for retrying.
  */
-public class EsHadoopNoNodesLeftException extends EsHadoopTransportException {
+public class OpenSearchHadoopNoNodesLeftException extends OpenSearchHadoopTransportException {
 
     private final Map<String, Throwable> nodesUsed;
 
-    public EsHadoopNoNodesLeftException() {
+    public OpenSearchHadoopNoNodesLeftException() {
         super(initMessage(Collections.<String, Throwable> emptyMap()));
         nodesUsed = Collections.emptyMap();
     }
 
-    public EsHadoopNoNodesLeftException(Map<String, Throwable> nodesUsed) {
+    public OpenSearchHadoopNoNodesLeftException(Map<String, Throwable> nodesUsed) {
         super(initMessage(nodesUsed));
         this.nodesUsed = nodesUsed;
     }

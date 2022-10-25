@@ -24,7 +24,7 @@ import java.security.PrivilegedExceptionAction;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 
 /**
  * Provides a platform independent way of accessing user information.
@@ -44,9 +44,9 @@ public interface User {
      * @param action To execute
      * @param <T> The return type from the action
      * @return Whatever was returned from the action
-     * @throws EsHadoopException Should an exception be thrown during the operation
+     * @throws OpenSearchHadoopException Should an exception be thrown during the operation
      */
-    <T> T doAs(PrivilegedExceptionAction<T> action) throws EsHadoopException;
+    <T> T doAs(PrivilegedExceptionAction<T> action) throws OpenSearchHadoopException;
 
     /**
      * @param clusterName The cluster name

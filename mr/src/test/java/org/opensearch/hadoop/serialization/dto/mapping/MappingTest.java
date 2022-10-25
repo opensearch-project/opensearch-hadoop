@@ -26,7 +26,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -436,7 +436,7 @@ public class MappingTest {
         assertEquals(INTEGER, mapping.getFields()[8].type());
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testMultipleIndexMultipleConflictingFields() throws Exception {
         MappingSet mappings = getMappingsForResource("multiple-indices-multiple-conflicting-types.json");
 

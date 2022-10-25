@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.serialization.field;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -49,7 +49,7 @@ public class JsonFieldExtractorsTest {
         assertThat(jsonFieldExtractors.indexAndType().field(data).toString(), equalTo("\"_index\":\"test\",\"_type\":\"data\""));
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void indexAndTypeNull() {
         Settings settings = new TestSettings();
         settings.setInternalVersion(OpenSearchMajorVersion.LATEST);
@@ -66,7 +66,7 @@ public class JsonFieldExtractorsTest {
         fail();
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void indexAndTypeFailure() {
         Settings settings = new TestSettings();
         settings.setInternalVersion(OpenSearchMajorVersion.LATEST);

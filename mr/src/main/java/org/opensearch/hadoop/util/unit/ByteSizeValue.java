@@ -43,7 +43,7 @@ package org.opensearch.hadoop.util.unit;
  * under the License.
  */
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.util.StringUtils;
 
 public class ByteSizeValue {
@@ -61,10 +61,10 @@ public class ByteSizeValue {
         this.sizeUnit = sizeUnit;
     }
 
-    public int bytesAsInt() throws EsHadoopIllegalArgumentException {
+    public int bytesAsInt() throws OpenSearchHadoopIllegalArgumentException {
         long bytes = bytes();
         if (bytes > Integer.MAX_VALUE) {
-            throw new EsHadoopIllegalArgumentException("size [" + toString() + "] is bigger than max int");
+            throw new OpenSearchHadoopIllegalArgumentException("size [" + toString() + "] is bigger than max int");
         }
         return (int) bytes;
     }
@@ -145,7 +145,7 @@ public class ByteSizeValue {
         return Strings.format1Decimals(value, suffix);
     }
 
-    public static ByteSizeValue parseBytesSizeValue(String sValue) throws EsHadoopIllegalArgumentException {
+    public static ByteSizeValue parseBytesSizeValue(String sValue) throws OpenSearchHadoopIllegalArgumentException {
         long bytes;
         sValue = StringUtils.deleteWhitespace(sValue);
 
@@ -175,7 +175,7 @@ public class ByteSizeValue {
                 bytes = Long.parseLong(sValue);
             }
         } catch (NumberFormatException e) {
-            throw new EsHadoopIllegalArgumentException("Failed to parse [" + sValue + "]", e);
+            throw new OpenSearchHadoopIllegalArgumentException("Failed to parse [" + sValue + "]", e);
         }
         return new ByteSizeValue(bytes, ByteSizeUnit.BYTES);
     }

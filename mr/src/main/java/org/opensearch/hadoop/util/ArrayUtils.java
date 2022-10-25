@@ -41,7 +41,7 @@ package org.opensearch.hadoop.util;
  * limitations under the License.
  */
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 
 public abstract class ArrayUtils {
 
@@ -102,7 +102,7 @@ public abstract class ArrayUtils {
 
         if (minTargetSize < 0) {
             // catch usage that accidentally overflows int
-            throw new EsHadoopIllegalArgumentException("invalid array size " + minTargetSize);
+            throw new OpenSearchHadoopIllegalArgumentException("invalid array size " + minTargetSize);
         }
 
         if (minTargetSize == 0) {

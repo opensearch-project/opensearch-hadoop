@@ -28,7 +28,7 @@ import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.DeserializationConfig;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.SerializationConfig;
-import org.opensearch.hadoop.rest.EsHadoopParsingException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopParsingException;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.FastByteArrayInputStream;
@@ -63,7 +63,7 @@ public final class JsonUtils {
             JsonParser jsonParser = MAPPER.getJsonFactory().createJsonParser(inputStream);
             map = MAPPER.readValue(jsonParser, Map.class);
         } catch (IOException ex) {
-            throw new EsHadoopParsingException(ex);
+            throw new OpenSearchHadoopParsingException(ex);
         }
         return map;
     }

@@ -34,7 +34,7 @@ import org.apache.storm.task.TopologyContext;
 import org.apache.storm.topology.IRichSpout;
 import org.apache.storm.topology.OutputFieldsDeclarer;
 import org.apache.storm.tuple.Fields;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.PartitionDefinition;
 import org.opensearch.hadoop.rest.RestService;
@@ -184,7 +184,7 @@ public class EsSpout implements IRichSpout {
             if (ackReads) {
                 if (queueSize > 0) {
                     if (inTransitQueue.size() >= queueSize) {
-                        throw new EsHadoopIllegalStateException(String.format("Ack-tuples queue has exceeded the specified size [%s]", inTransitQueue.size()));
+                        throw new OpenSearchHadoopIllegalStateException(String.format("Ack-tuples queue has exceeded the specified size [%s]", inTransitQueue.size()));
                     }
                     inTransitQueue.put(next[0], next[1]);
                 }
@@ -237,7 +237,7 @@ public class EsSpout implements IRichSpout {
         int primitive = attempts.intValue();
         if (primitive == 0) {
             switch (tupleFailure) {
-            case ABORT: throw new EsHadoopIllegalStateException(String.format("Tuple [%s] has failed to be fully processed after [%d] retries; aborting...", tuple, attempts));
+            case ABORT: throw new OpenSearchHadoopIllegalStateException(String.format("Tuple [%s] has failed to be fully processed after [%d] retries; aborting...", tuple, attempts));
             case WARN: log.warn(String.format("Tuple [%s] has failed to be fully processed after [%d] retries; aborting...", tuple, attempts));
             case IGNORE: // move on
             }

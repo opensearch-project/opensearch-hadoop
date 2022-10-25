@@ -41,7 +41,7 @@ import org.apache.hadoop.mapred.TextInputFormat;
 import org.apache.hadoop.mapred.lib.IdentityMapper;
 import org.apache.hadoop.mapred.lib.IdentityReducer;
 import org.apache.hadoop.mapreduce.OutputFormat;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.Stream;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
@@ -287,7 +287,7 @@ public class AbstractMROldApiSaveTest {
     }
 
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testUpdateWithoutId() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
@@ -509,7 +509,7 @@ public class AbstractMROldApiSaveTest {
     }
 
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testIndexAutoCreateDisabled() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.ES_RESOURCE, resource("mroldapi-non-existing", "data", clusterInfo.getMajorVersion()));

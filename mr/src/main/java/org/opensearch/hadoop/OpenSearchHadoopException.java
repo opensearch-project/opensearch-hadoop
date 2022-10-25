@@ -16,26 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.opensearch.hadoop.rest;
-
-import org.opensearch.hadoop.EsHadoopException;
+package org.opensearch.hadoop;
 
 /**
- * Exception caused by an invalid request as reported by the Elasticsearch response.
+ * Base class for Elasticsearch Hadoop exceptions.
  */
-public class EsHadoopInvalidRequest extends EsHadoopException {
+public class OpenSearchHadoopException extends RuntimeException {
 
-    public EsHadoopInvalidRequest() {}
+    public OpenSearchHadoopException() {
+        super();
+    }
 
-    public EsHadoopInvalidRequest(String message, Throwable cause) {
+    public OpenSearchHadoopException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopInvalidRequest(String message) {
+    public OpenSearchHadoopException(String message) {
         super(message);
     }
 
-    public EsHadoopInvalidRequest(Throwable cause) {
+    public OpenSearchHadoopException(Throwable cause) {
         super(cause);
     }
 }

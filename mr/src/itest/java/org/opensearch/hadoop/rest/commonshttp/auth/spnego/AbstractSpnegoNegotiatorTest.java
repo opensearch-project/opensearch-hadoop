@@ -28,8 +28,8 @@ import org.apache.commons.codec.binary.Base64;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.SecurityUtil;
 import org.apache.hadoop.security.UserGroupInformation;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
-import org.opensearch.hadoop.rest.EsHadoopTransportException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopTransportException;
 import org.elasticsearch.hadoop.security.UgiUtil;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
@@ -58,7 +58,7 @@ public class AbstractSpnegoNegotiatorTest {
         UgiUtil.resetUGI();
     }
 
-    @Test(expected = EsHadoopIllegalStateException.class)
+    @Test(expected = OpenSearchHadoopIllegalStateException.class)
     public void testPreemptNegotiatorWithChallengeFails() throws IOException, InterruptedException {
         // Configure logins
         Configuration configuration = new Configuration();
@@ -113,7 +113,7 @@ public class AbstractSpnegoNegotiatorTest {
         fail("Defective token given to Negotiator and accepted.");
     }
 
-    @Test(expected = EsHadoopTransportException.class)
+    @Test(expected = OpenSearchHadoopTransportException.class)
     public void testMissingNegotiationTokenFails() throws IOException, GSSException, InterruptedException {
         // Configure logins
         Configuration configuration = new Configuration();

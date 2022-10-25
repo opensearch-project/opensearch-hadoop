@@ -21,7 +21,7 @@ package org.elasticsearch.hadoop.integration.pig;
 import java.io.IOException;
 
 import org.apache.hadoop.conf.Configuration;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.elasticsearch.hadoop.OpenSearchAssume;
@@ -87,7 +87,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
         pig.executeScript(script);
     }
 
-    @Test(expected = EsHadoopIllegalStateException.class)
+    @Test(expected = OpenSearchHadoopIllegalStateException.class)
     public void testCreateWithIdShouldFailOnDuplicate() throws Exception {
         testCreateWithId();
     }
@@ -113,7 +113,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
         pig.executeScript(script);
     }
 
-    @Test(expected = EsHadoopIllegalStateException.class)
+    @Test(expected = OpenSearchHadoopIllegalStateException.class)
     public void testUpdateWithoutUpsert() throws Exception {
         String script =
                 loadSource() +

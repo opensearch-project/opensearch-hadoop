@@ -19,24 +19,24 @@
 
 package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 
-public class EsHadoopRemoteException extends EsHadoopException {
+public class OpenSearchHadoopRemoteException extends OpenSearchHadoopException {
 	private static final long serialVersionUID = 5402297229024034583L;
 	
 	private String type=null;
 	
-	public EsHadoopRemoteException(String message) {
+	public OpenSearchHadoopRemoteException(String message) {
 		super(message);
 	}
-	public EsHadoopRemoteException(String message, Throwable throwable) {
+	public OpenSearchHadoopRemoteException(String message, Throwable throwable) {
 		super(message, throwable);
 	}
-	public EsHadoopRemoteException(String type, String message) {
+	public OpenSearchHadoopRemoteException(String type, String message) {
 		super(message);
 		this.type = type;
 	}
-	public EsHadoopRemoteException(String type, String message, Throwable throwable) {
+	public OpenSearchHadoopRemoteException(String type, String message, Throwable throwable) {
 		super(message, throwable);
 		this.type = type;
 	}

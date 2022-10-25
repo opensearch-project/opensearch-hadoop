@@ -37,9 +37,9 @@ import java.util.Properties;
 
 import javax.xml.bind.DatatypeConverter;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 
 /**
  * Utility class used internally for the Pig support.
@@ -63,7 +63,7 @@ public abstract class IOUtils {
             oos = new ObjectOutputStream(baos);
             oos.writeObject(object);
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException("Cannot serialize object " + object, ex);
+            throw new OpenSearchHadoopSerializationException("Cannot serialize object " + object, ex);
         } finally {
             close(oos);
         }
@@ -83,9 +83,9 @@ public abstract class IOUtils {
             Object o = ois.readObject();
             return (T) o;
         } catch (ClassNotFoundException ex) {
-            throw new EsHadoopIllegalStateException("cannot deserialize object", ex);
+            throw new OpenSearchHadoopIllegalStateException("cannot deserialize object", ex);
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException("cannot deserialize object", ex);
+            throw new OpenSearchHadoopSerializationException("cannot deserialize object", ex);
         } finally {
             close(ois);
         }
@@ -97,7 +97,7 @@ public abstract class IOUtils {
             try {
                 props.store(sw, "");
             } catch (IOException ex) {
-                throw new EsHadoopIllegalArgumentException(ex);
+                throw new OpenSearchHadoopIllegalArgumentException(ex);
             }
         }
         return sw.toString();
@@ -109,7 +109,7 @@ public abstract class IOUtils {
             try {
                 copy.load(new StringReader(source));
             } catch (IOException ex) {
-                throw new EsHadoopIllegalArgumentException(ex);
+                throw new OpenSearchHadoopIllegalArgumentException(ex);
             }
         }
         return copy;
@@ -181,7 +181,7 @@ public abstract class IOUtils {
             }
             return new URL(resource).openStream();
         } catch (IOException ex) {
-            throw new EsHadoopIllegalArgumentException(String.format("Cannot open stream for resource %s", resource), ex);
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot open stream for resource %s", resource), ex);
         }
     }
 

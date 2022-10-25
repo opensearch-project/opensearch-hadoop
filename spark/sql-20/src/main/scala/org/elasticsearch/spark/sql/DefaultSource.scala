@@ -66,7 +66,7 @@ import org.elasticsearch.spark.serialization.ScalaValueWriter
 import org.elasticsearch.spark.sql.streaming.EsSparkSqlStreamingSink
 import org.elasticsearch.spark.sql.streaming.SparkSqlStreamingConfigs
 import org.elasticsearch.spark.sql.streaming.StructuredStreamingVersionLock
-import org.opensearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
+import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
 import org.opensearch.hadoop.cfg.{ConfigurationOptions, InternalConfigurationOptions, Settings}
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.{InitializationUtils, RestRepository}
@@ -99,7 +99,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
       case Overwrite      => relation.insert(data, true)
       case ErrorIfExists  => {
         if (relation.isEmpty()) relation.insert(data, false)
-        else throw new EsHadoopIllegalStateException(s"SaveMode is set to ErrorIfExists and " + 
+        else throw new OpenSearchHadoopIllegalStateException(s"SaveMode is set to ErrorIfExists and " +
                 s"index ${relation.cfg.getResourceWrite} exists and contains data. Consider changing the SaveMode")
       }
       case Ignore         => if (relation.isEmpty()) { relation.insert(data, false) }
@@ -117,7 +117,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
     // indices with the index pattern functionality. Potentially could add this later if a need
     // arises by appending patterns to the provided index, but that's probably feature overload.
     if (partitionColumns != Nil) {
-      throw new EsHadoopIllegalArgumentException("Partition columns are not supported for Elasticsearch. " +
+      throw new OpenSearchHadoopIllegalArgumentException("Partition columns are not supported for Elasticsearch. " +
         "If you need to partition your data by column values on Elasticsearch, please use an index pattern instead.")
     }
 
@@ -133,10 +133,10 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
       if (writeOperation == null) {
         jobSettings.setProperty(ES_WRITE_OPERATION, ConfigurationOptions.ES_OPERATION_UPSERT)
       } else if (writeOperation != ConfigurationOptions.ES_OPERATION_UPSERT) {
-        throw new EsHadoopIllegalArgumentException("Output mode update is only supported if es.write.operation is unset or set to upsert")
+        throw new OpenSearchHadoopIllegalArgumentException("Output mode update is only supported if es.write.operation is unset or set to upsert")
       }
     } else if (outputMode != OutputMode.Append()) {
-      throw new EsHadoopIllegalArgumentException("Append and update are the only supported OutputModes for Elasticsearch. " +
+      throw new OpenSearchHadoopIllegalArgumentException("Append and update are the only supported OutputModes for Elasticsearch. " +
         s"Cannot continue with [$outputMode].")
     }
 
@@ -184,7 +184,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // validate path is available
     finalParams.getOrElse(ConfigurationOptions.ES_RESOURCE_READ,
-      finalParams.getOrElse(ConfigurationOptions.ES_RESOURCE, throw new EsHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
+      finalParams.getOrElse(ConfigurationOptions.ES_RESOURCE, throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
 
     finalParams
   }
@@ -209,7 +209,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
     // validate path
     params.getOrElse(ConfigurationOptions.ES_RESOURCE_WRITE,
       params.getOrElse(ConfigurationOptions.ES_RESOURCE,
-        throw new EsHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
+        throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
 
     params
   }

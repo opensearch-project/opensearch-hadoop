@@ -16,26 +16,26 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.opensearch.hadoop.serialization;
+package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 
-public class EsHadoopSerializationException extends EsHadoopException {
+/**
+ * Exception caused by an invalid request as reported by the Elasticsearch response.
+ */
+public class OpenSearchHadoopInvalidRequest extends OpenSearchHadoopException {
 
-    public EsHadoopSerializationException() {
-        super();
-    }
+    public OpenSearchHadoopInvalidRequest() {}
 
-    public EsHadoopSerializationException(String message, Throwable cause) {
+    public OpenSearchHadoopInvalidRequest(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopSerializationException(String message) {
+    public OpenSearchHadoopInvalidRequest(String message) {
         super(message);
     }
 
-    public EsHadoopSerializationException(Throwable cause) {
+    public OpenSearchHadoopInvalidRequest(Throwable cause) {
         super(cause);
     }
-
 }

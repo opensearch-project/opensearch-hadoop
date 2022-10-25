@@ -22,7 +22,7 @@ import java.lang.reflect.Constructor;
 
 import org.apache.hadoop.io.IntWritable;
 import org.apache.hadoop.io.Writable;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 
 /**
  * Utility handling the difference in built-in Writable between Hadoop 1 and 2.
@@ -56,7 +56,7 @@ public abstract class WritableCompatUtil {
             try {
                 return SHORT_CTOR.newInstance(value);
             } catch (Exception e) {
-                throw new EsHadoopIllegalStateException(e);
+                throw new OpenSearchHadoopIllegalStateException(e);
             }
         }
         return new IntWritable(value);

@@ -20,13 +20,13 @@ package org.opensearch.hadoop.rest.commonshttp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.DelegatingInputStream;
-import org.opensearch.hadoop.rest.EsHadoopInvalidRequest;
-import org.opensearch.hadoop.rest.EsHadoopTransportException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopInvalidRequest;
+import org.opensearch.hadoop.rest.OpenSearchHadoopTransportException;
 import org.opensearch.hadoop.rest.HeaderProcessor;
 import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.Response;
@@ -155,7 +155,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             try {
                 return (reusable ? method.getResponseBodyAsStream() : null);
             } catch (IOException ex) {
-                throw new EsHadoopIllegalStateException(ex);
+                throw new OpenSearchHadoopIllegalStateException(ex);
             }
         }
 
@@ -248,7 +248,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         try {
             hostConfig.setHost(new URI(escapeUri(host, sslEnabled), false));
         } catch (IOException ex) {
-            throw new EsHadoopTransportException("Invalid target URI " + host, ex);
+            throw new OpenSearchHadoopTransportException("Invalid target URI " + host, ex);
         }
         client = new HttpClient(params, new SocketTrackingConnectionManager());
         client.setHostConfiguration(hostConfig);
@@ -336,7 +336,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 // could be running in a remote JVM that does not have the
                 // Kerberos credentials available.
                 if (!StringUtils.hasText(settings.getNetworkSpnegoAuthElasticsearchPrincipal())) {
-                    throw new EsHadoopIllegalArgumentException("Missing Elasticsearch Kerberos Principal name. " +
+                    throw new OpenSearchHadoopIllegalArgumentException("Missing Elasticsearch Kerberos Principal name. " +
                             "Specify one with [" + ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL + "]");
                 }
 
@@ -352,7 +352,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                     User realUser = proxyUserProvider.getUser();
                     KerberosPrincipal realPrincipal = realUser.getKerberosPrincipal();
                     if (realPrincipal == null) {
-                        throw new EsHadoopIllegalArgumentException("Could not locate Kerberos Principal on real user [" +
+                        throw new OpenSearchHadoopIllegalArgumentException("Could not locate Kerberos Principal on real user [" +
                                 realUser.getUserName() + "] underneath proxy user [" + runAsUser + "]");
                     }
 
@@ -368,7 +368,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                     }
                     credentialUserProvider = userProvider;
                 } else {
-                    throw new EsHadoopIllegalArgumentException("Could not locate Kerberos Principal on currently logged in user.");
+                    throw new OpenSearchHadoopIllegalArgumentException("Could not locate Kerberos Principal on currently logged in user.");
                 }
 
                 // Add the user provider to credentials
@@ -590,13 +590,13 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             break;
 
         default:
-            throw new EsHadoopTransportException("Unknown request method " + request.method());
+            throw new OpenSearchHadoopTransportException("Unknown request method " + request.method());
         }
 
         CharSequence uri = request.uri();
         if (StringUtils.hasText(uri)) {
             if (String.valueOf(uri).contains("?")) {
-                throw new EsHadoopInvalidRequest("URI has query portion on it: [" + uri + "]");
+                throw new OpenSearchHadoopInvalidRequest("URI has query portion on it: [" + uri + "]");
             }
             http.setURI(new URI(escapeUri(uri.toString(), sslEnabled), false));
         }
@@ -605,7 +605,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         // add node prefix (if specified)
         String path = pathPrefix + addLeadingSlashIfNeeded(request.path().toString());
         if (path.contains("?")) {
-            throw new EsHadoopInvalidRequest("Path has query portion on it: [" + path + "]");
+            throw new OpenSearchHadoopInvalidRequest("Path has query portion on it: [" + path + "]");
         }
 
         path = HttpEncodingTools.encodePath(path);
@@ -616,7 +616,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             // validate new URI
             uri = http.getURI().toString();
         } catch (URIException uriex) {
-            throw new EsHadoopTransportException("Invalid target URI " + request, uriex);
+            throw new OpenSearchHadoopTransportException("Invalid target URI " + request, uriex);
         }
 
         CharSequence params = request.params();

@@ -26,13 +26,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.handler.ErrorCollector;
-import org.opensearch.hadoop.handler.EsHadoopAbortHandlerException;
+import org.opensearch.hadoop.handler.OpenSearchHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
-import org.opensearch.hadoop.rest.EsHadoopParsingException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopParsingException;
 import org.elasticsearch.hadoop.serialization.JsonUtils;
 import org.opensearch.hadoop.serialization.builder.JdkValueReader;
 import org.opensearch.hadoop.serialization.dto.mapping.FieldParser;
@@ -452,7 +452,7 @@ public class ScrollReaderTest {
         assertEquals(Collections.emptyList(), JsonUtils.query("status_code").apply(scroll.getHits().get(2)[1]));
     }
 
-    @Test(expected = EsHadoopParsingException.class)
+    @Test(expected = OpenSearchHadoopParsingException.class)
     public void testScrollWithBreakOnInvalidMapping() throws IOException {
         MappingSet mappings = getMappingSet("numbers-as-strings");
 
@@ -471,7 +471,7 @@ public class ScrollReaderTest {
         fail("Should not be able to parse string as long");
     }
 
-    @Test(expected = EsHadoopException.class)
+    @Test(expected = OpenSearchHadoopException.class)
     public void testScrollWithThrowingErrorHandler() throws IOException {
         MappingSet mappings = getMappingSet("numbers-as-strings");
 
@@ -492,7 +492,7 @@ public class ScrollReaderTest {
         fail("Should not be able to parse string as long");
     }
 
-    @Test(expected = EsHadoopParsingException.class)
+    @Test(expected = OpenSearchHadoopParsingException.class)
     public void testScrollWithThrowingAbortErrorHandler() throws IOException {
         MappingSet mappings = getMappingSet("numbers-as-strings");
 
@@ -513,7 +513,7 @@ public class ScrollReaderTest {
         fail("Should not be able to parse string as long");
     }
 
-    @Test(expected = EsHadoopException.class)
+    @Test(expected = OpenSearchHadoopException.class)
     public void testScrollWithNeverendingHandler() throws IOException {
         MappingSet mappings = getMappingSet("numbers-as-strings");
 
@@ -640,7 +640,7 @@ public class ScrollReaderTest {
     public static class AbortingExceptionThrowingHandler extends DeserializationErrorHandler {
         @Override
         public HandlerResult onError(DeserializationFailure entry, ErrorCollector<byte[]> collector) throws Exception {
-            throw new EsHadoopAbortHandlerException("Abort the handler!!");
+            throw new OpenSearchHadoopAbortHandlerException("Abort the handler!!");
         }
     }
 
@@ -684,7 +684,7 @@ public class ScrollReaderTest {
             if (entry.previousHandlerMessages().contains("MARCO!")) {
                 return collector.pass("POLO!");
             }
-            throw new EsHadoopAbortHandlerException("FISH OUT OF WATER!");
+            throw new OpenSearchHadoopAbortHandlerException("FISH OUT OF WATER!");
         }
     }
 

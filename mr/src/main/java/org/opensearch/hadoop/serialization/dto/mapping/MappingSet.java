@@ -27,7 +27,7 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.serialization.FieldType;
 
 /**
@@ -73,7 +73,7 @@ public class MappingSet implements Serializable {
                         message = String.format("Invalid mapping set given. Multiple mappings of the same name [%s] in the index [%s].",
                                 typeName, indexName);
                     }
-                    throw new EsHadoopIllegalArgumentException(message);
+                    throw new OpenSearchHadoopIllegalArgumentException(message);
                 }
 
                 mappingsToSchema.put(typeName, mapping);
@@ -158,7 +158,7 @@ public class MappingSet implements Serializable {
             }
         }
         // If none of the above options succeed, the fields are conflicting
-        throw new EsHadoopIllegalArgumentException("Incompatible types found in multi-mapping: " +
+        throw new OpenSearchHadoopIllegalArgumentException("Incompatible types found in multi-mapping: " +
                 "Field ["+fullName+"] has conflicting types of ["+existing+"] and ["+
                 incoming+"].");
     }

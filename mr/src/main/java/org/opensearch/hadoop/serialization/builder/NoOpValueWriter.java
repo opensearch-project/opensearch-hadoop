@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.serialization.builder;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.serialization.Generator;
 
 /**
@@ -29,6 +29,6 @@ public class NoOpValueWriter implements ValueWriter<Object> {
 
     @Override
     public Result write(Object object, Generator generator) {
-        throw new EsHadoopIllegalStateException("Incorrect configuration - NoOpValueWriter should not have been called");
+        throw new OpenSearchHadoopIllegalStateException("Incorrect configuration - NoOpValueWriter should not have been called");
     }
 }

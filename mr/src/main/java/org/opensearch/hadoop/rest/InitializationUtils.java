@@ -23,9 +23,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
@@ -60,7 +60,7 @@ public abstract class InitializationUtils {
     public static void checkIndexNameForRead(Settings settings) {
         Resource readResource = new Resource(settings, true);
         if (readResource.index().contains("{") && readResource.index().contains("}")) {
-            throw new EsHadoopIllegalArgumentException("Cannot read indices that have curly brace field extraction patterns in them: " + readResource.index());
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot read indices that have curly brace field extraction patterns in them: " + readResource.index());
         }
     }
 
@@ -73,7 +73,7 @@ public abstract class InitializationUtils {
                 if (bootstrap.indexExists(readResource.index())) {
                     RestClient.Health status = bootstrap.getHealth(readResource.index());
                     if (status == RestClient.Health.RED) {
-                        throw new EsHadoopIllegalStateException("Index specified [" + readResource.index() + "] is either red or " +
+                        throw new OpenSearchHadoopIllegalStateException("Index specified [" + readResource.index() + "] is either red or " +
                                 "includes an index that is red, and thus all requested data cannot be safely and fully loaded. " +
                                 "Bailing out...");
                     }
@@ -114,7 +114,7 @@ public abstract class InitializationUtils {
             String message = "Client-only routing specified but no client nodes with HTTP-enabled available";
             List<NodeInfo> clientNodes = bootstrap.getHttpClientNodes();
             if (clientNodes.isEmpty()) {
-                throw new EsHadoopIllegalArgumentException(message);
+                throw new OpenSearchHadoopIllegalArgumentException(message);
             }
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Found client nodes %s", clientNodes));
@@ -137,7 +137,7 @@ public abstract class InitializationUtils {
                 else {
                     message += String.format("; node discovery is disabled and none of nodes specified fit the criterion %s", SettingsUtils.discoveredOrDeclaredNodes(settings));
                 }
-                throw new EsHadoopIllegalArgumentException(message);
+                throw new OpenSearchHadoopIllegalArgumentException(message);
             }
 
             SettingsUtils.setDiscoveredNodes(settings, ddNodes);
@@ -156,7 +156,7 @@ public abstract class InitializationUtils {
             String message = "No data nodes with HTTP-enabled available";
             List<NodeInfo> dataNodes = bootstrap.getHttpDataNodes();
             if (dataNodes.isEmpty()) {
-                throw new EsHadoopIllegalArgumentException(message);
+                throw new OpenSearchHadoopIllegalArgumentException(message);
             }
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Found data nodes %s", dataNodes));
@@ -179,7 +179,7 @@ public abstract class InitializationUtils {
                 else {
                     message += String.format("; node discovery is disabled and none of nodes specified fit the criterion %s", SettingsUtils.discoveredOrDeclaredNodes(settings));
                 }
-                throw new EsHadoopIllegalArgumentException(message);
+                throw new OpenSearchHadoopIllegalArgumentException(message);
             }
 
             SettingsUtils.setDiscoveredNodes(settings, ddNodes);
@@ -198,7 +198,7 @@ public abstract class InitializationUtils {
             String message = "Ingest-only routing specified but no ingest nodes with HTTP-enabled available";
             List<NodeInfo> clientNodes = bootstrap.getHttpIngestNodes();
             if (clientNodes.isEmpty()) {
-                throw new EsHadoopIllegalArgumentException(message);
+                throw new OpenSearchHadoopIllegalArgumentException(message);
             }
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Found ingest nodes %s", clientNodes));
@@ -221,7 +221,7 @@ public abstract class InitializationUtils {
                 else {
                     message += String.format("; node discovery is disabled and none of nodes specified fit the criterion %s", SettingsUtils.discoveredOrDeclaredNodes(settings));
                 }
-                throw new EsHadoopIllegalArgumentException(message);
+                throw new OpenSearchHadoopIllegalArgumentException(message);
             }
 
             SettingsUtils.setDiscoveredNodes(settings, ddNodes);
@@ -286,17 +286,17 @@ public abstract class InitializationUtils {
         if (version.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
             // File Scripts
             if (StringUtils.hasText(settings.getUpdateScriptFile())) {
-                throw new EsHadoopIllegalArgumentException("Cannot use file scripts on ES 6.x and above. Please use " +
+                throw new OpenSearchHadoopIllegalArgumentException("Cannot use file scripts on ES 6.x and above. Please use " +
                         "stored scripts with [" + ConfigurationOptions.ES_UPDATE_SCRIPT_STORED + "] instead.");
             }
 
             // Timestamp and TTL in index/updates
             if (StringUtils.hasText(settings.getMappingTimestamp())) {
-                throw new EsHadoopIllegalArgumentException("Cannot use timestamps on index/update requests in ES 6.x " +
+                throw new OpenSearchHadoopIllegalArgumentException("Cannot use timestamps on index/update requests in ES 6.x " +
                         "and above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TIMESTAMP + "] setting.");
             }
             if (StringUtils.hasText(settings.getMappingTtl())) {
-                throw new EsHadoopIllegalArgumentException("Cannot use TTL on index/update requests in ES 6.x and " +
+                throw new OpenSearchHadoopIllegalArgumentException("Cannot use TTL on index/update requests in ES 6.x and " +
                         "above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TTL + "] setting.");
             }
         } else {
@@ -331,8 +331,8 @@ public abstract class InitializationUtils {
                         mainInfo.getClusterName().getUUID(),
                         mainInfo.getMajorVersion()));
             }
-        } catch (EsHadoopException ex) {
-            throw new EsHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
+        } catch (OpenSearchHadoopException ex) {
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
                     + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
                     + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
         } finally {
@@ -399,8 +399,8 @@ public abstract class InitializationUtils {
             }
             settings.setInternalClusterInfo(mainInfo);
             return mainInfo;
-        } catch (EsHadoopException ex) {
-            throw new EsHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
+        } catch (OpenSearchHadoopException ex) {
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
                     + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
                     + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
         } finally {
@@ -437,7 +437,7 @@ public abstract class InitializationUtils {
     private static void doCheckIndexExistence(Settings settings, RestRepository client) {
         // check index existence
         if (!client.resourceExists(false)) {
-            throw new EsHadoopIllegalArgumentException(String.format("Target index [%s] does not exist and auto-creation is disabled [setting '%s' is '%s']",
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Target index [%s] does not exist and auto-creation is disabled [setting '%s' is '%s']",
                     settings.getResourceWrite(), ConfigurationOptions.ES_INDEX_AUTO_CREATE, settings.getIndexAutoCreate()));
         }
     }

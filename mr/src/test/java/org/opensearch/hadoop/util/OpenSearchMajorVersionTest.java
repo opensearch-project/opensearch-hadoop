@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
@@ -113,21 +113,21 @@ public class OpenSearchMajorVersionTest {
         try {
             OpenSearchMajorVersion.V_7_X.parseMinorVersion("6.0.0");
             fail("Invalid major version");
-        } catch (EsHadoopIllegalArgumentException e) {
+        } catch (OpenSearchHadoopIllegalArgumentException e) {
             assertEquals("Invalid version string for major version; Received [6.0.0] for major version [7.x]",
                     e.getMessage());
         }
         try {
             OpenSearchMajorVersion.V_7_X.parseMinorVersion("7.");
             fail("Invalid major version");
-        } catch (EsHadoopIllegalArgumentException e) {
+        } catch (OpenSearchHadoopIllegalArgumentException e) {
             assertEquals("Could not parse Elasticsearch minor version [7.]. Invalid version format.",
                     e.getMessage());
         }
         try {
             OpenSearchMajorVersion.V_7_X.parseMinorVersion("7.4-abcd.4");
             fail("Invalid major version");
-        } catch (EsHadoopIllegalArgumentException e) {
+        } catch (OpenSearchHadoopIllegalArgumentException e) {
             assertEquals("Could not parse Elasticsearch minor version [7.4-abcd.4]. Non-numeric minor version [4-abcd].",
                     e.getMessage());
         }

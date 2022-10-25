@@ -28,7 +28,7 @@ import org.apache.spark.sql.types.StructType
 import org.elasticsearch.spark.rdd.EsRDDWriter
 import org.elasticsearch.spark.sql.DataFrameFieldExtractor
 import org.elasticsearch.spark.sql.DataFrameValueWriter
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
 import org.opensearch.hadoop.serialization.{BytesConverter, JdkBytesConverter}
 import org.opensearch.hadoop.serialization.builder.ValueWriter
 import org.opensearch.hadoop.serialization.field.FieldExtractor
@@ -51,7 +51,7 @@ private [sql] class EsStreamQueryWriter(serializedSettings: String,
 
   override def write(taskContext: TaskContext, data: Iterator[InternalRow]): Unit = {
     // Keep clients from using this method, doesn't return task commit information.
-    throw new EsHadoopIllegalArgumentException("Use run(taskContext, data) instead to retrieve the commit information")
+    throw new OpenSearchHadoopIllegalArgumentException("Use run(taskContext, data) instead to retrieve the commit information")
   }
 
   def run(taskContext: TaskContext, data: Iterator[InternalRow]): TaskCommit = {

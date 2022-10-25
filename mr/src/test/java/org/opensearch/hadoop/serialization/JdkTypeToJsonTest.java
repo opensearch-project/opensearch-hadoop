@@ -229,7 +229,7 @@ public class JdkTypeToJsonTest {
         assertThat(jdkTypeToJson(ts), containsString(new SimpleDateFormat("yyyy-MM-dd").format(d)));
     }
 
-    @Test(expected = EsHadoopSerializationException.class)
+    @Test(expected = OpenSearchHadoopSerializationException.class)
     public void testUnknown() {
         jdkTypeToJson(new Object());
     }

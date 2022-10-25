@@ -38,7 +38,7 @@ import org.apache.spark.streaming.scheduler.StreamingListenerReceiverError;
 import org.apache.spark.streaming.scheduler.StreamingListenerReceiverStarted;
 import org.apache.spark.streaming.scheduler.StreamingListenerReceiverStopped;
 import org.apache.spark.streaming.scheduler.StreamingListenerStreamingStarted;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.OpenSearchAssume;
 import org.elasticsearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -137,7 +137,7 @@ public class AbstractJavaEsSparkStreamingTest implements Serializable {
 
     @Test
     public void testEsRDDWriteIndexCreationDisabled() throws Exception {
-        ExpectingToThrow expecting = expectingToThrow(EsHadoopIllegalArgumentException.class).from(ssc);
+        ExpectingToThrow expecting = expectingToThrow(OpenSearchHadoopIllegalArgumentException.class).from(ssc);
 
         Map<String, Object> doc1 = new HashMap<>();
         doc1.put("one", null);

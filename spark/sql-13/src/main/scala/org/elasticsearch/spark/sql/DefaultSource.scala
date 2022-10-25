@@ -59,7 +59,7 @@ import org.elasticsearch.spark.cfg.SparkSettingsManager
 import org.elasticsearch.spark.serialization.ScalaValueWriter
 import javax.xml.bind.DatatypeConverter
 import org.apache.commons.logging.LogFactory
-import org.opensearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
+import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
 import org.opensearch.hadoop.cfg.{ConfigurationOptions, InternalConfigurationOptions, Settings}
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.{InitializationUtils, RestClient, RestRepository}
@@ -87,7 +87,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
       case Overwrite      => relation.insert(data, true)
       case ErrorIfExists  => {
         if (relation.isEmpty()) relation.insert(data, false)
-        else throw new EsHadoopIllegalStateException(s"SaveMode is set to ErrorIfExists and " + 
+        else throw new OpenSearchHadoopIllegalStateException(s"SaveMode is set to ErrorIfExists and " +
                 s"index ${relation.cfg.getResourceWrite} exists and contains data. Consider changing the SaveMode")
       }
       case Ignore         => if (relation.isEmpty()) { relation.insert(data, false) }
@@ -131,7 +131,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // validate path
     finalParams.getOrElse(ConfigurationOptions.ES_RESOURCE_READ,
-      finalParams.getOrElse(ConfigurationOptions.ES_RESOURCE, throw new EsHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
+      finalParams.getOrElse(ConfigurationOptions.ES_RESOURCE, throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
 
     finalParams
   }

@@ -33,7 +33,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.OutputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.elasticsearch.hadoop.HdpBootstrap;
 import org.elasticsearch.hadoop.Stream;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
@@ -210,7 +210,7 @@ public class AbstractMRNewApiSaveTest {
         runJob(conf);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testUpdateWithoutId() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
@@ -355,7 +355,7 @@ public class AbstractMRNewApiSaveTest {
         runJob(conf);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testIndexAutoCreateDisabled() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-non-existing", "data", clusterInfo.getMajorVersion()));

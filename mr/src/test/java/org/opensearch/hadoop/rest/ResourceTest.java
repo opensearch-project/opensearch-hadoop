@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -159,7 +159,7 @@ public class ResourceTest {
         assertEquals("?somequery&bla=bla", s.getQuery());
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testQueryUriConflict() throws Exception {
         assumeTyped();
         Settings s = new TestSettings();
@@ -168,7 +168,7 @@ public class ResourceTest {
         assertEquals("foo/bar", res.toString());
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testQueryUriConflictTypeless() throws Exception {
         assumeTypeless();
         Settings s = new TestSettings();
@@ -177,7 +177,7 @@ public class ResourceTest {
         assertEquals("foo", res.toString());
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testQueryUriConflictWithParams() throws Exception {
         assumeTyped();
         Settings s = new TestSettings();
@@ -186,7 +186,7 @@ public class ResourceTest {
         assertEquals("foo/bar", res.toString());
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testQueryUriConflictWithParamsTypeless() throws Exception {
         assumeTypeless();
         Settings s = new TestSettings();
@@ -209,13 +209,13 @@ public class ResourceTest {
         res = createResource("foo-{F}");
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testNoWhitespaceAllowed() throws Exception {
         assumeTyped();
         createResource("foo, bar/far");
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testNoWhitespaceAllowedTypeless() throws Exception {
         assumeTypeless();
         createResource("foo, bar");
@@ -246,7 +246,7 @@ public class ResourceTest {
     }
 
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testBulkWithBadIngestPipeline() throws Exception {
         assumeTyped();
         Settings settings = new TestSettings();
@@ -254,7 +254,7 @@ public class ResourceTest {
         createResource("pipeline/test", settings);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testBulkUpdateBreaksWithIngestPipeline() throws Exception {
         assumeTyped();
         Settings settings = new TestSettings();
@@ -263,7 +263,7 @@ public class ResourceTest {
         createResource("pipeline/test", settings);
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testBulkUpsertBreaksWithIngestPipeline() throws Exception {
         assumeTyped();
         Settings settings = new TestSettings();

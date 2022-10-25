@@ -24,7 +24,7 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.Resource;
@@ -62,7 +62,7 @@ public class DefaultIndexExtractorTest {
         assertThat(field.toString(), equalTo("\"_index\":\"test\",\"_type\":\"data\""));
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void createFieldExtractorNull() {
         Settings settings = new TestSettings();
         settings.setResourceWrite("test/{field}");
@@ -82,7 +82,7 @@ public class DefaultIndexExtractorTest {
         fail();
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void createFieldExtractorFailure() {
         Settings settings = new TestSettings();
         settings.setResourceWrite("test/{optional}");

@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 import org.opensearch.hadoop.serialization.Parser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonParser;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.JsonFactory;
@@ -51,7 +51,7 @@ public class JacksonJsonParser implements Parser {
             this.parser = JSON_FACTORY.createJsonParser(in);
             richerParser = (parser instanceof JsonParserBase ? (JsonParserBase) parser : null);
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -64,7 +64,7 @@ public class JacksonJsonParser implements Parser {
             this.parser = JSON_FACTORY.createJsonParser(content, offset, length);
             richerParser = (parser instanceof JsonParserBase ? (JsonParserBase) parser : null);
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -83,7 +83,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return (parser.getCurrentToken().isNumeric() ? parser.getNumberValue() : parser.getText());
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -92,7 +92,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return convertToken(parser.nextToken());
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -126,7 +126,7 @@ public class JacksonJsonParser implements Parser {
         case NOT_AVAILABLE:
             throw new UnsupportedOperationException();
         }
-        throw new EsHadoopSerializationException("No matching token for json_token [" + token + "]");
+        throw new OpenSearchHadoopSerializationException("No matching token for json_token [" + token + "]");
     }
 
     @Override
@@ -134,7 +134,7 @@ public class JacksonJsonParser implements Parser {
         try {
             parser.skipChildren();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -162,7 +162,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getCurrentName();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -172,7 +172,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getText();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -186,7 +186,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getNumberValue();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -195,7 +195,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return convertNumberType(parser.getNumberType());
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -204,7 +204,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getShortValue();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -213,7 +213,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getIntValue();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -222,7 +222,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getLongValue();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -231,7 +231,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getFloatValue();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -240,7 +240,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getDoubleValue();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -249,7 +249,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getBooleanValue();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -258,7 +258,7 @@ public class JacksonJsonParser implements Parser {
         try {
             return parser.getBinaryValue();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -267,7 +267,7 @@ public class JacksonJsonParser implements Parser {
         try {
             parser.close();
         } catch (IOException ex) {
-            throw new EsHadoopSerializationException(ex);
+            throw new OpenSearchHadoopSerializationException(ex);
         }
     }
 
@@ -286,7 +286,7 @@ public class JacksonJsonParser implements Parser {
         case BIG_DECIMAL:
             return NumberType.DOUBLE;
         }
-        throw new EsHadoopSerializationException("No matching token for number_type [" + numberType + "]");
+        throw new OpenSearchHadoopSerializationException("No matching token for number_type [" + numberType + "]");
     }
 
     @Override

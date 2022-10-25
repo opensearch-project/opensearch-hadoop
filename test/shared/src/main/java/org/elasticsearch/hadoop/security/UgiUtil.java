@@ -23,7 +23,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.apache.hadoop.security.UserGroupInformation;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 
 /**
  * Utility methods for dealing with Hadoop UGI in integration tests
@@ -40,11 +40,11 @@ public class UgiUtil {
             reset.setAccessible(true);
             reset.invoke(null);
         } catch (NoSuchMethodException e) {
-            throw new EsHadoopException("Could not reset UGI", e);
+            throw new OpenSearchHadoopException("Could not reset UGI", e);
         } catch (IllegalAccessException e) {
-            throw new EsHadoopException("Could not reset UGI", e);
+            throw new OpenSearchHadoopException("Could not reset UGI", e);
         } catch (InvocationTargetException e) {
-            throw new EsHadoopException("Could not reset UGI", e);
+            throw new OpenSearchHadoopException("Could not reset UGI", e);
         }
     }
 

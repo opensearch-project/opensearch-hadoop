@@ -41,8 +41,8 @@ import javax.net.ssl.X509TrustManager;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.security.SecureSettings;
@@ -167,12 +167,12 @@ class SSLSocketFactory implements SecureProtocolSocketFactory {
         try {
             ctx = SSLContext.getInstance(sslProtocol);
         } catch (NoSuchAlgorithmException ex) {
-            throw new EsHadoopIllegalStateException("Cannot instantiate SSL - " + ex.getMessage(), ex);
+            throw new OpenSearchHadoopIllegalStateException("Cannot instantiate SSL - " + ex.getMessage(), ex);
         }
         try {
             ctx.init(loadKeyManagers(), loadTrustManagers(), null);
         } catch (Exception ex) {
-            throw new EsHadoopIllegalStateException("Cannot initialize SSL - " + ex.getMessage(), ex);
+            throw new OpenSearchHadoopIllegalStateException("Cannot initialize SSL - " + ex.getMessage(), ex);
         }
 
         return ctx;
@@ -189,10 +189,10 @@ class SSLSocketFactory implements SecureProtocolSocketFactory {
             try {
                 in = IOUtils.open(location);
                 if (in == null) {
-                    throw new EsHadoopIllegalArgumentException(String.format("Could not locate [%s] on classpath", location));
+                    throw new OpenSearchHadoopIllegalArgumentException(String.format("Could not locate [%s] on classpath", location));
                 }
             } catch (Exception e) {
-                throw new EsHadoopIllegalArgumentException(String.format("Expected to find keystore file at [%s] but " +
+                throw new OpenSearchHadoopIllegalArgumentException(String.format("Expected to find keystore file at [%s] but " +
                         "was unable to. Make sure that it is available on the classpath, or if not, that you have " +
                         "specified a valid URI.", location));
             }

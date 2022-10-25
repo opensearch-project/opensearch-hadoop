@@ -21,7 +21,7 @@ package org.opensearch.hadoop.security;
 
 import java.io.IOException;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 
@@ -43,9 +43,9 @@ public class SecureSettings {
             try {
                 this.keystoreWrapper = builder.build();
             } catch (EsHadoopSecurityException e) {
-                throw new EsHadoopException("Could not load keystore", e);
+                throw new OpenSearchHadoopException("Could not load keystore", e);
             } catch (IOException e) {
-                throw new EsHadoopException("Could not load keystore", e);
+                throw new OpenSearchHadoopException("Could not load keystore", e);
             }
         } else {
             this.keystoreWrapper = null;
@@ -63,7 +63,7 @@ public class SecureSettings {
             try {
                 value = keystoreWrapper.getSecureSetting(key);
             } catch (EsHadoopSecurityException e) {
-                throw new EsHadoopException("Could not read secure setting [" + key + "]", e);
+                throw new OpenSearchHadoopException("Could not read secure setting [" + key + "]", e);
             }
         }
         if (value == null) {

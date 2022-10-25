@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.rest.commonshttp.auth.spnego;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
@@ -114,7 +114,7 @@ public class SpnegoAuthScheme implements AuthScheme, Closeable {
             User userInfo = spnegoCredentials.getUserProvider().getUser();
             KerberosPrincipal principal = userInfo.getKerberosPrincipal();
             if (principal == null) {
-                throw new EsHadoopIllegalArgumentException("Could not locate Kerberos Principal on currently logged in user.");
+                throw new OpenSearchHadoopIllegalArgumentException("Could not locate Kerberos Principal on currently logged in user.");
             }
             spnegoNegotiator = new SpnegoNegotiator(principal.getName(), servicePrincipal);
         }

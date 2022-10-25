@@ -22,7 +22,7 @@ package org.opensearch.hadoop.rest.bulk.handler.impl;
 import java.io.IOException;
 import java.util.ArrayList;
 
-import org.opensearch.hadoop.rest.EsHadoopRemoteException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopRemoteException;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.DateUtils;
@@ -40,7 +40,7 @@ public class BulkErrorEventConverterTest {
         BulkErrorEventConverter eventConverter = new BulkErrorEventConverter();
 
         BulkWriteFailure iaeFailure = new BulkWriteFailure(400, new IllegalArgumentException("garbage"), bytes, 4, new ArrayList<String>());
-        BulkWriteFailure remoteFailure = new BulkWriteFailure(400, new EsHadoopRemoteException("io_exception", "Faiiiil"), bytes, 4, new ArrayList<String>());
+        BulkWriteFailure remoteFailure = new BulkWriteFailure(400, new OpenSearchHadoopRemoteException("io_exception", "Faiiiil"), bytes, 4, new ArrayList<String>());
 
         String rawEvent = eventConverter.getRawEvent(iaeFailure);
         assertEquals(bytes.toString(), rawEvent);

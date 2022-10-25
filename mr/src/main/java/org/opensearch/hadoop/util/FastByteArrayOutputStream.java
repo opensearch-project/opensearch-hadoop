@@ -46,7 +46,7 @@ package org.opensearch.hadoop.util;
 import java.io.IOException;
 import java.io.OutputStream;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 
 /**
  * Taken from Elasticsearch - copy of org.elasticsearch.common.io.FastByteArrayOutputStream with some enhancements, mainly in allowing access to the underlying byte[].
@@ -73,7 +73,7 @@ public class FastByteArrayOutputStream extends OutputStream {
      * the specified size, in bytes.
      *
      * @param size the initial size.
-     * @throws EsHadoopIllegalArgumentException if size is negative.
+     * @throws OpenSearchHadoopIllegalArgumentException if size is negative.
      */
     public FastByteArrayOutputStream(int size) {
         Assert.isTrue(size >= 0, "Negative initial size: " + size);

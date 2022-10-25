@@ -19,7 +19,7 @@
 package org.opensearch.hadoop.rest;
 
 import org.apache.commons.logging.Log;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.FieldPresenceValidation;
 import org.opensearch.hadoop.cfg.Settings;
@@ -229,7 +229,7 @@ public abstract class RestService implements Serializable {
             boolean allIndicesExist = client.resourceExists(true);
 
             if (!allIndicesExist && !settings.getIndexReadMissingAsEmpty()) {
-                throw new EsHadoopIllegalArgumentException(
+                throw new OpenSearchHadoopIllegalArgumentException(
                         String.format("Index [%s] missing and settings [%s] is set to false", settings.getResourceRead(), ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY));
             }
             /*
@@ -498,7 +498,7 @@ public abstract class RestService implements Serializable {
                     try {
                         aliasFilters.add(new RawQueryBuilder(alias.getFilter(), false));
                     } catch (IOException e) {
-                        throw new EsHadoopIllegalArgumentException("Failed to parse alias filter: [" + alias.getFilter() + "]");
+                        throw new OpenSearchHadoopIllegalArgumentException("Failed to parse alias filter: [" + alias.getFilter() + "]");
                     }
                 }
             }
@@ -610,7 +610,7 @@ public abstract class RestService implements Serializable {
         } else {
             // Make sure the resource name is a valid singular index name string candidate
             if (!StringUtils.isValidSingularIndexName(resource.index())) {
-                throw new EsHadoopIllegalArgumentException("Illegal write index name [" + resource.index() + "]. Write resources must " +
+                throw new OpenSearchHadoopIllegalArgumentException("Illegal write index name [" + resource.index() + "]. Write resources must " +
                         "be lowercase singular index names, with no illegal pattern characters except for multi-resource writes.");
             }
             // Determine if the configured index is an alias.
@@ -618,7 +618,7 @@ public abstract class RestService implements Serializable {
             GetAliasesRequestBuilder.Response response = null;
             try {
                 response = new GetAliasesRequestBuilder(bootstrap).aliases(resource.index()).execute();
-            } catch (EsHadoopInvalidRequest remoteException) {
+            } catch (OpenSearchHadoopInvalidRequest remoteException) {
                 // For now, the get alias call throws if it does not find an alias that matches. Just log and continue.
                 if (log.isDebugEnabled()) {
                     log.debug(String.format("Provided index name [%s] is not an alias. Reason: [%s]",
@@ -763,7 +763,7 @@ public abstract class RestService implements Serializable {
 
         if (indexAliasTable.size() < 1) {
             // Sanity check
-            throw new EsHadoopIllegalArgumentException("Cannot initialize alias write resource [" + resource.index() +
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot initialize alias write resource [" + resource.index() +
                     "] if it does not have any alias entries.");
         } else if (indexAliasTable.size() > 1) {
             // Multiple indices, validate that one index-alias relation has its write index flag set
@@ -778,7 +778,7 @@ public abstract class RestService implements Serializable {
                 }
             }
             if (currentWriteIndex == null) {
-                throw new EsHadoopIllegalArgumentException("Attempting to write to alias [" + resource.index() + "], " +
+                throw new OpenSearchHadoopIllegalArgumentException("Attempting to write to alias [" + resource.index() + "], " +
                         "but detected multiple indices [" + indexAliasTable.size() + "] with no write index selected. " +
                         "Bailing out...");
             } else {

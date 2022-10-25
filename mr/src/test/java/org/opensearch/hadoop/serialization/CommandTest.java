@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.serialization;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
@@ -286,7 +286,7 @@ public class CommandTest {
         assertEquals(result, ba.toString());
     }
 
-    @Test(expected = EsHadoopIllegalArgumentException.class)
+    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testIdMandatory() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
         Settings set = settings();

@@ -39,8 +39,8 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.storm.security.INimbusCredentialPlugin;
 import org.apache.storm.security.auth.IAutoCredentials;
 import org.apache.storm.security.auth.ICredentialsRenewer;
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.CompositeSettings;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
@@ -108,19 +108,19 @@ public class AutoElasticsearch implements IAutoCredentials, ICredentialsRenewer,
         final Settings topologyAndClusterSettings = new CompositeSettings(Arrays.asList(topologyConf, clusterSettings));
 
         if (!AuthenticationMethod.KERBEROS.equals(topologyAndClusterSettings.getSecurityAuthenticationMethod())) {
-            throw new EsHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not enable ES Kerberos [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not enable ES Kerberos [" +
                     ConfigurationOptions.ES_SECURITY_AUTHENTICATION + "]. Bailing out...");
         }
 
         String userPrincipal = topologyAndClusterSettings.getProperty(USER_PRINCIPAL);
         if (userPrincipal == null) {
-            throw new EsHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not provide [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not provide [" +
                     USER_PRINCIPAL + "] setting. Bailing out...");
         }
 
         String userKeytab = topologyAndClusterSettings.getProperty(USER_KEYTAB);
         if (userKeytab == null) {
-            throw new EsHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not provide [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not provide [" +
                     USER_KEYTAB + "] setting. Bailing out...");
         }
 
@@ -131,7 +131,7 @@ public class AutoElasticsearch implements IAutoCredentials, ICredentialsRenewer,
         try {
             loginContext = LoginUtil.keytabLogin(userPrincipal, userKeytab);
         } catch (LoginException e) {
-            throw new EsHadoopException("Could not perform keytab login", e);
+            throw new OpenSearchHadoopException("Could not perform keytab login", e);
         }
 
         // Ensure that the user provider is configured
@@ -154,7 +154,7 @@ public class AutoElasticsearch implements IAutoCredentials, ICredentialsRenewer,
                 }
             });
         } catch (PrivilegedActionException e) {
-            throw new EsHadoopException("Could not retrieve delegation token", e);
+            throw new OpenSearchHadoopException("Could not retrieve delegation token", e);
         } finally {
             try {
                 loginContext.logout();
@@ -285,7 +285,7 @@ public class AutoElasticsearch implements IAutoCredentials, ICredentialsRenewer,
         try {
             token.writeOut(output);
         } catch (IOException e) {
-            throw new EsHadoopException("Could not serialize EsToken", e);
+            throw new OpenSearchHadoopException("Could not serialize EsToken", e);
         }
         String credential = new String(Base64.encodeBase64(stream.bytes().bytes()), StringUtils.UTF_8);
         credentials.put(key, credential);
@@ -299,7 +299,7 @@ public class AutoElasticsearch implements IAutoCredentials, ICredentialsRenewer,
             try {
                 token = new EsToken(new DataInputStream(new FastByteArrayInputStream(rawData)));
             } catch (IOException e) {
-                throw new EsHadoopException("Could not deserialize EsToken", e);
+                throw new OpenSearchHadoopException("Could not deserialize EsToken", e);
             }
         }
         return token;

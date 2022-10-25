@@ -26,7 +26,7 @@ import java.io.IOException;
 import org.apache.hadoop.io.Text;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.security.token.Token;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.util.ClusterName;
@@ -67,7 +67,7 @@ public class HadoopUserTest {
             try {
                 token.writeOut(new DataOutputStream(buffer));
             } catch (IOException e) {
-                throw new EsHadoopException("Could not serialize token information", e);
+                throw new OpenSearchHadoopException("Could not serialize token information", e);
             }
             byte[] pw = buffer.toByteArray();
 

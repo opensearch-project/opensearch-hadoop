@@ -28,7 +28,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 
 public abstract class HadoopIOUtils {
 
@@ -77,7 +77,7 @@ public abstract class HadoopIOUtils {
             FileSystem fs = p.getFileSystem(conf);
             return fs.open(p);
         } catch (IOException ex) {
-            throw new EsHadoopIllegalArgumentException(String.format("Cannot open stream for resource %s", resource), ex);
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot open stream for resource %s", resource), ex);
         }
     }
 }

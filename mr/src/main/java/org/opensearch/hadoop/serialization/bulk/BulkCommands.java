@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.serialization.bulk;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -49,7 +49,7 @@ public abstract class BulkCommands {
             factory = new DeleteBulkFactory(settings, metaExtractor, version);
         }
         else {
-            throw new EsHadoopIllegalArgumentException("Unsupported bulk operation " + operation);
+            throw new OpenSearchHadoopIllegalArgumentException("Unsupported bulk operation " + operation);
         }
 
         return factory.createBulk();

@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
@@ -140,7 +140,7 @@ public final class HeaderProcessor {
 
     private void validateName(String headerName, Map.Entry<Object, Object> property) {
         if (!StringUtils.hasText(headerName)){
-            throw new EsHadoopIllegalArgumentException(String.format(
+            throw new OpenSearchHadoopIllegalArgumentException(String.format(
                     "Found configuration entry denoting a header prefix, but no header was given after the prefix. " +
                             "Please add a header name for the configuration entry : [%s] = [%s]",
                     property.getKey(),
@@ -151,7 +151,7 @@ public final class HeaderProcessor {
 
     private void ensureNotReserved(String headerName, Map<String, String> existingHeaders) {
         if (existingHeaders.containsKey(headerName)) {
-            throw new EsHadoopIllegalArgumentException(String.format(
+            throw new OpenSearchHadoopIllegalArgumentException(String.format(
                     "Could not set header [%s]: Header value [%s] is already present from a previous setting. " +
                             "Please submit multiple header values as a comma (,) separated list on the property" +
                             "value.",
@@ -161,7 +161,7 @@ public final class HeaderProcessor {
         }
 
         if (ReservedHeaders.byName().containsKey(headerName)) {
-            throw new EsHadoopIllegalArgumentException(String.format(
+            throw new OpenSearchHadoopIllegalArgumentException(String.format(
                     "Could not set header [%s]: This header is a reserved header. Reason: %s.",
                     headerName,
                     ReservedHeaders.byName().get(headerName).getReasonReserved()

@@ -26,7 +26,7 @@ import java.util.Map.Entry;
 import java.util.Properties;
 
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.security.AuthenticationMethod;
 import org.opensearch.hadoop.util.ClusterName;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -690,7 +690,7 @@ public abstract class Settings {
             authMode = AuthenticationMethod.get(authSetting);
             if (authMode == null) {
                 // Property was set but was invalid auth mode value
-                throw new EsHadoopIllegalArgumentException("Could not determine auth mode. Property [" +
+                throw new OpenSearchHadoopIllegalArgumentException("Could not determine auth mode. Property [" +
                         ConfigurationOptions.ES_SECURITY_AUTHENTICATION + "] was set to unknown mode [" + authSetting + "]. " +
                         "Use a valid auth mode from the following: " + AuthenticationMethod.getAvailableMethods());
             }

@@ -19,13 +19,13 @@
 
 package org.opensearch.hadoop.serialization.bulk;
 
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.handler.ErrorCollector;
-import org.opensearch.hadoop.handler.EsHadoopAbortHandlerException;
+import org.opensearch.hadoop.handler.OpenSearchHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 import org.opensearch.hadoop.serialization.handler.write.SerializationErrorHandler;
 import org.opensearch.hadoop.serialization.handler.write.SerializationFailure;
 import org.opensearch.hadoop.serialization.handler.write.impl.SerializationHandlerLoader;
@@ -39,10 +39,10 @@ import static org.junit.Assert.fail;
 
 public class BulkEntryWriterTest {
 
-    @Test(expected = EsHadoopSerializationException.class)
+    @Test(expected = OpenSearchHadoopSerializationException.class)
     public void testWriteBulkEntryThatAbortsByDefault() {
         BulkCommand command = Mockito.mock(BulkCommand.class);
-        Mockito.when(command.write(1)).thenThrow(new EsHadoopIllegalStateException("Things broke"));
+        Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
 
@@ -52,10 +52,10 @@ public class BulkEntryWriterTest {
         fail("Should abort on error by default");
     }
 
-    @Test(expected = EsHadoopException.class)
+    @Test(expected = OpenSearchHadoopException.class)
     public void testWriteBulkEntryWithHandlerThrowingException() {
         BulkCommand command = Mockito.mock(BulkCommand.class);
-        Mockito.when(command.write(1)).thenThrow(new EsHadoopIllegalStateException("Things broke"));
+        Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
         settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "thrower");
@@ -67,10 +67,10 @@ public class BulkEntryWriterTest {
         fail("Should fail from unexpected handler exception");
     }
 
-    @Test(expected = EsHadoopSerializationException.class)
+    @Test(expected = OpenSearchHadoopSerializationException.class)
     public void testWriteBulkEntryWithHandlerThrowingAbortException() {
         BulkCommand command = Mockito.mock(BulkCommand.class);
-        Mockito.when(command.write(1)).thenThrow(new EsHadoopIllegalStateException("Things broke"));
+        Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
         settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "thrower");
@@ -82,10 +82,10 @@ public class BulkEntryWriterTest {
         fail("Should fail from aborting handler exception");
     }
 
-    @Test(expected = EsHadoopException.class)
+    @Test(expected = OpenSearchHadoopException.class)
     public void testWriteBulkEntryWithNeverEndingHandler() {
         BulkCommand command = Mockito.mock(BulkCommand.class);
-        Mockito.when(command.write(1)).thenThrow(new EsHadoopIllegalStateException("Things broke"));
+        Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
         settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "evil");
@@ -100,7 +100,7 @@ public class BulkEntryWriterTest {
     @Test
     public void testWriteBulkEntryWithIgnoreFailure() {
         BulkCommand command = Mockito.mock(BulkCommand.class);
-        Mockito.when(command.write(1)).thenThrow(new EsHadoopIllegalStateException("Things broke"));
+        Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
         settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "skip");
@@ -115,7 +115,7 @@ public class BulkEntryWriterTest {
     @Test
     public void testWriteBulkEntryWithHandlersThatPassMessages() {
         BulkCommand command = Mockito.mock(BulkCommand.class);
-        Mockito.when(command.write(1)).thenThrow(new EsHadoopIllegalStateException("Things broke"));
+        Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
         settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "marco,polo,skip");
@@ -134,7 +134,7 @@ public class BulkEntryWriterTest {
         BytesRef response = new BytesRef();
         response.add("abcdefg".getBytes());
         BulkCommand command = Mockito.mock(BulkCommand.class);
-        Mockito.when(command.write(1)).thenThrow(new EsHadoopIllegalStateException("Things broke"));
+        Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
         Mockito.when(command.write(10)).thenReturn(response);
 
         Settings settings = new TestSettings();
@@ -167,7 +167,7 @@ public class BulkEntryWriterTest {
     public static class AbortingExceptionThrowingHandler extends SerializationErrorHandler {
         @Override
         public HandlerResult onError(SerializationFailure entry, ErrorCollector<Object> collector) throws Exception {
-            throw new EsHadoopAbortHandlerException("Abort the handler!!");
+            throw new OpenSearchHadoopAbortHandlerException("Abort the handler!!");
         }
     }
 
@@ -211,7 +211,7 @@ public class BulkEntryWriterTest {
             if (entry.previousHandlerMessages().contains("MARCO!")) {
                 return collector.pass("POLO!");
             }
-            throw new EsHadoopAbortHandlerException("FISH OUT OF WATER!");
+            throw new OpenSearchHadoopAbortHandlerException("FISH OUT OF WATER!");
         }
     }
 

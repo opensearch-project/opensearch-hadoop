@@ -18,7 +18,7 @@
  */
 package org.elasticsearch.spark.sql
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException
 import java.util.Collections
 import java.util.{Set => JSet}
 import org.opensearch.hadoop.cfg.Settings
@@ -47,7 +47,7 @@ private[sql] trait RowValueReader extends SettingsAware {
   def rowColumns(currentField: String): Seq[String] = {
     rowColumnsMap.get(currentField) match {
       case Some(v) => v
-      case None => throw new EsHadoopIllegalStateException(s"Field '$currentField' not found; typically this occurs with arrays which are not mapped as single value")
+      case None => throw new OpenSearchHadoopIllegalStateException(s"Field '$currentField' not found; typically this occurs with arrays which are not mapped as single value")
     }
   }
 
@@ -57,10 +57,10 @@ private[sql] trait RowValueReader extends SettingsAware {
       // geo types allow fields which are ignored - need to skip these if they are not part of the schema
       if (pos >= 0 || !currentFieldIsGeo) {
         if (key.toString().contains(".")) {
-          throw new EsHadoopIllegalStateException(
+          throw new OpenSearchHadoopIllegalStateException(
             s"Found field '$sparkRowField'. Fields containing dots ('.') are not supported in es-hadoop")
         } else {
-          throw new EsHadoopIllegalStateException(s"Position for '$sparkRowField' not found in row; typically this is caused by a mapping inconsistency")
+          throw new OpenSearchHadoopIllegalStateException(s"Position for '$sparkRowField' not found in row; typically this is caused by a mapping inconsistency")
         }
       }
     } else {

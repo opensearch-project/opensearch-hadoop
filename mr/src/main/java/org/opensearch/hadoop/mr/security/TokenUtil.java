@@ -31,7 +31,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.security.token.Token;
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.User;
@@ -122,7 +122,7 @@ public class TokenUtil {
     public static void obtainTokenForJob(final RestClient client, User user, Job job) {
         Token<EsTokenIdentifier> token = obtainToken(client, user);
         if (token == null) {
-            throw new EsHadoopException("No token returned for user " + user.getKerberosPrincipal().getName());
+            throw new OpenSearchHadoopException("No token returned for user " + user.getKerberosPrincipal().getName());
         }
         Text clusterName = token.getService();
         if (LOG.isDebugEnabled()) {
@@ -145,7 +145,7 @@ public class TokenUtil {
     public static void obtainTokenForJob(final RestClient client, User user, JobConf jobConf) {
         Token<EsTokenIdentifier> token = obtainToken(client, user);
         if (token == null) {
-            throw new EsHadoopException("No token returned for user " + user.getKerberosPrincipal().getName());
+            throw new OpenSearchHadoopException("No token returned for user " + user.getKerberosPrincipal().getName());
         }
         Text clusterName = token.getService();
         if (LOG.isDebugEnabled()) {

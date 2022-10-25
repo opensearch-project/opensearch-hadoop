@@ -21,7 +21,7 @@ package org.opensearch.hadoop.serialization.field;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.serialization.SettingsAware;
 import org.opensearch.hadoop.serialization.bulk.RawJson;
@@ -118,9 +118,9 @@ public abstract class AbstractIndexExtractor implements IndexExtractor, Settings
             if (object instanceof FieldExtractor) {
                 Object field = ((FieldExtractor) object).field(target);
                 if (field == null) {
-                    throw new EsHadoopIllegalArgumentException(String.format("Found null value for pattern element in %s", pattern));
+                    throw new OpenSearchHadoopIllegalArgumentException(String.format("Found null value for pattern element in %s", pattern));
                 } else if (field == NOT_FOUND) {
-                    throw new EsHadoopIllegalArgumentException(String.format("Cannot find match for %s", pattern));
+                    throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot find match for %s", pattern));
                 } else {
                     sb.append(StringUtils.jsonEncoding(field.toString()));
                 }

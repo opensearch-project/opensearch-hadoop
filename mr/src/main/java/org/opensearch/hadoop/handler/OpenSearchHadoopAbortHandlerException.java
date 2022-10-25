@@ -19,19 +19,19 @@
 
 package org.opensearch.hadoop.handler;
 
-import org.opensearch.hadoop.EsHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
 
 /**
  * Denotes that a handler has decided to abort the job on a potentially retryable value. Instead of displaying the
  * original error as the reason for aborting the operation, the message specified from this exception is used.
  */
-public class EsHadoopAbortHandlerException extends EsHadoopException {
+public class OpenSearchHadoopAbortHandlerException extends OpenSearchHadoopException {
 
-    public EsHadoopAbortHandlerException(String message, Throwable cause) {
+    public OpenSearchHadoopAbortHandlerException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopAbortHandlerException(String message) {
+    public OpenSearchHadoopAbortHandlerException(String message) {
         super(message);
     }
 }

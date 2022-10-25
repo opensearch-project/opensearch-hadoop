@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.junit.Before;
@@ -70,12 +70,12 @@ public class QueryTest {
         assertFalse(builder.fields("").excludeSource(false).toString().contains("\"_source\""));
     }
 
-    @Test(expected=EsHadoopIllegalArgumentException.class)
+    @Test(expected= OpenSearchHadoopIllegalArgumentException.class)
     public void testExcludeSourceAndGetFields() {
         builder.fields("a,b").excludeSource(true);
     }
 
-    @Test(expected=EsHadoopIllegalArgumentException.class)
+    @Test(expected= OpenSearchHadoopIllegalArgumentException.class)
     public void testGetFieldsAndExcludeSource() {
         builder.excludeSource(true).fields("a,b");
     }

@@ -23,8 +23,8 @@ import java.io.Closeable;
 import java.io.IOException;
 
 import org.apache.commons.codec.binary.Base64;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
-import org.opensearch.hadoop.rest.EsHadoopTransportException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopTransportException;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.StringUtils;
 import org.ietf.jgss.GSSContext;
@@ -70,7 +70,7 @@ public class SpnegoNegotiator implements Closeable {
 
     public void setTokenData(String data) {
         if (gssContext == null) {
-            throw new EsHadoopIllegalStateException("GSS Context not yet initialized. Client must be the initiator.");
+            throw new OpenSearchHadoopIllegalStateException("GSS Context not yet initialized. Client must be the initiator.");
         }
         token = Base64.decodeBase64(data);
     }
@@ -90,7 +90,7 @@ public class SpnegoNegotiator implements Closeable {
             sendData = gssContext.initSecContext(token, 0, token.length);
             token = null;
         } else {
-            throw new EsHadoopTransportException("Missing required negotiation token");
+            throw new OpenSearchHadoopTransportException("Missing required negotiation token");
         }
 
         if (sendData == null) {

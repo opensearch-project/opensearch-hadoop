@@ -57,9 +57,9 @@ import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import org.opensearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
+import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
-import org.opensearch.hadoop.serialization.EsHadoopSerializationException
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
 import scala.collection.JavaConversions.propertiesAsScalaMap
@@ -141,7 +141,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
   def tempFolder: TemporaryFolder = tempFolderRule
 
   val spark: SparkSession = AbstractScalaEsSparkStructuredStreaming.spark
-    .getOrElse(throw new EsHadoopIllegalStateException("Spark not started..."))
+    .getOrElse(throw new OpenSearchHadoopIllegalStateException("Spark not started..."))
   val version: OpenSearchMajorVersion = TestUtils.getOpenSearchClusterInfo.getMajorVersion
 
   import org.elasticsearch.spark.integration.Products._
@@ -191,7 +191,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
         }
   }
 
-  @Test(expected = classOf[EsHadoopIllegalArgumentException])
+  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def test1FailOnIncorrectSaveCall(): Unit = {
     import org.elasticsearch.spark.sql._
     val target = wrapIndex(resource("failed-on-save-call", "data", version))
@@ -202,7 +202,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
     Assert.fail("Should not launch job with saveToEs() method")
   }
 
-  @Test(expected = classOf[EsHadoopIllegalArgumentException])
+  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def test1FailOnCompleteMode(): Unit = {
     val target = wrapIndex(resource("failed-on-complete-mode", "data", version))
     val test = new StreamingQueryTestHarness[Record](spark)
@@ -221,7 +221,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
     Assert.fail("Should not launch job with Complete mode specified")
   }
 
-  @Test(expected = classOf[EsHadoopIllegalArgumentException])
+  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def test1FailOnPartitions(): Unit = {
     val target = wrapIndex(resource("failed-on-partitions", "data", version))
     val test = new StreamingQueryTestHarness[Record](spark)
@@ -358,7 +358,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
     }
   }
 
-  @Test(expected = classOf[EsHadoopIllegalArgumentException])
+  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def test1FailOnIndexCreationDisabled(): Unit = {
     val target = wrapIndex(resource("test-write-index-create-disabled", "data", version))
     val test = new StreamingQueryTestHarness[Record](spark)
@@ -575,7 +575,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
     val test = new StreamingQueryTestHarness[DecimalData](spark)
 
     test.withInput(DecimalData(Decimal(10)))
-      .expectingToThrow(classOf[EsHadoopSerializationException])
+      .expectingToThrow(classOf[OpenSearchHadoopSerializationException])
       .runTest {
         test.stream
           .writeStream

@@ -24,7 +24,7 @@ import org.apache.pig.ResourceSchema.ResourceFieldSchema;
 import org.apache.pig.backend.executionengine.ExecException;
 import org.apache.pig.data.DataType;
 import org.apache.pig.data.Tuple;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor;
 import org.opensearch.hadoop.util.Assert;
 
@@ -64,7 +64,7 @@ public class PigFieldExtractor extends ConstantFieldExtractor {
                                 Assert.isTrue(false, String.format("Unsupported data type [%s] for field [%s]; use only 'primitives' or 'tuples'", DataType.findTypeName(type), fieldName));
                             }
                         } catch (ExecException ex) {
-                            throw new EsHadoopIllegalStateException(String.format("Cannot retrieve field [%s]", fieldName), ex);
+                            throw new OpenSearchHadoopIllegalStateException(String.format("Cannot retrieve field [%s]", fieldName), ex);
                         }
                     }
                 }

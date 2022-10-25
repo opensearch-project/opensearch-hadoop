@@ -19,9 +19,9 @@
 
 package org.opensearch.hadoop.util.encoding;
 
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.URIException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.util.URIUtil;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
 import org.opensearch.hadoop.util.StringUtils;
 
 import java.io.UnsupportedEncodingException;
@@ -54,7 +54,7 @@ public final class HttpEncodingTools {
         try {
             return URIUtil.encodePathQuery(uri);
         } catch (URIException ex) {
-            throw new EsHadoopIllegalArgumentException("Cannot escape uri [" + uri + "]", ex);
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot escape uri [" + uri + "]", ex);
         }
     }
 
@@ -70,7 +70,7 @@ public final class HttpEncodingTools {
         try {
             return URIUtil.encodePath(path, "UTF-8");
         } catch (URIException ex) {
-            throw new EsHadoopIllegalArgumentException("Cannot encode path segment [" + path + "]", ex);
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot encode path segment [" + path + "]", ex);
         }
     }
 
@@ -87,7 +87,7 @@ public final class HttpEncodingTools {
             // TODO: Potentially fix the plus signs that come out of encoding to be "%20"
             return URLEncoder.encode(value, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new EsHadoopIllegalArgumentException("Cannot encode string [" + value + "]", e);
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot encode string [" + value + "]", e);
         }
     }
 
@@ -101,7 +101,7 @@ public final class HttpEncodingTools {
         try {
             return URLDecoder.decode(encoded, "UTF-8");
         } catch (UnsupportedEncodingException e) {
-            throw new EsHadoopIllegalArgumentException("Cannot decode string [" + encoded + "]", e);
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot decode string [" + encoded + "]", e);
         }
     }
 

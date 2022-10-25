@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.security;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.serialization.SettingsAware;
@@ -33,7 +33,7 @@ public abstract class UserProvider implements SettingsAware {
     public static UserProvider create(Settings settings) {
         String className = settings.getSecurityUserProviderClass();
         if (className == null) {
-            throw new EsHadoopIllegalArgumentException("Could not locate classname for UserProvider. One must be set with " +
+            throw new OpenSearchHadoopIllegalArgumentException("Could not locate classname for UserProvider. One must be set with " +
                     ConfigurationOptions.ES_SECURITY_USER_PROVIDER_CLASS);
         }
         return ObjectUtils.instantiate(className, settings);

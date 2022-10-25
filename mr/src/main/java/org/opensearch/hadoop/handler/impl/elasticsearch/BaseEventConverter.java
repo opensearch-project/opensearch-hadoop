@@ -24,7 +24,7 @@ import java.util.Calendar;
 import javax.xml.bind.DatatypeConverter;
 
 import org.opensearch.hadoop.handler.Exceptional;
-import org.opensearch.hadoop.rest.EsHadoopRemoteException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopRemoteException;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.ecs.ElasticCommonSchema;
 import org.opensearch.hadoop.util.ecs.MessageTemplate;
@@ -85,8 +85,8 @@ public abstract class BaseEventConverter<E extends Exceptional> implements Event
     public String renderExceptionType(E event) {
         Exception exception = event.getException();
 
-        if (exception instanceof EsHadoopRemoteException) {
-            EsHadoopRemoteException remoteException = ((EsHadoopRemoteException) exception);
+        if (exception instanceof OpenSearchHadoopRemoteException) {
+            OpenSearchHadoopRemoteException remoteException = ((OpenSearchHadoopRemoteException) exception);
             return remoteException.getType();
         } else {
             String classText = exception.getClass().getSimpleName();

@@ -23,7 +23,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 
 import org.apache.spark.sql.internal.SQLConf
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.Settings
 import org.opensearch.hadoop.util.unit.TimeValue
 
@@ -93,7 +93,7 @@ object SparkSqlStreamingConfigs {
       // Same as above, but the query name is specified.
       case (None, None, Some(sessionCheckpoint), Some(query)) => s"$sessionCheckpoint/$query/sinks/elasticsearch"
       // Case 5) throw because we don't know where to store things...
-      case (None, None, None, _) => throw new EsHadoopIllegalArgumentException(
+      case (None, None, None, _) => throw new OpenSearchHadoopIllegalArgumentException(
         "Could not determine path for the Elasticsearch commit log. Specify the commit log location by setting the " +
         "[checkpointLocation] option on your DataStreamWriter. If you do not want to persist the Elasticsearch " +
         "commit log in the regular checkpoint location for your streaming query then you can specify a location to " +

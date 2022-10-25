@@ -30,7 +30,7 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.logging.Log;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.FieldPresenceValidation;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.serialization.FieldType;
@@ -69,7 +69,7 @@ public abstract class MappingUtils {
             log.warn(message);
         }
         else {
-            throw new EsHadoopIllegalArgumentException(message);
+            throw new OpenSearchHadoopIllegalArgumentException(message);
         }
     }
 
@@ -174,7 +174,7 @@ public abstract class MappingUtils {
             return doParseGeoShapeInfo(parsedContent);
         }
 
-        throw new EsHadoopIllegalArgumentException(String.format(Locale.ROOT, "Unknown GeoType %s", geoType));
+        throw new OpenSearchHadoopIllegalArgumentException(String.format(Locale.ROOT, "Unknown GeoType %s", geoType));
     }
 
     private static GeoField doParseGeoPointInfo(Object parsedContent) {
@@ -197,7 +197,7 @@ public abstract class MappingUtils {
             Map<String, Object> geoShape = (Map<String, Object>) parsedContent;
             Object typ = geoShape.get("type");
             if (typ == null) {
-                throw new EsHadoopIllegalArgumentException(String.format(
+                throw new OpenSearchHadoopIllegalArgumentException(String.format(
                         Locale.ROOT, "Invalid GeoShape [%s]", parsedContent));
             }
             String type = typ.toString();
@@ -206,7 +206,7 @@ public abstract class MappingUtils {
                 return found;
             }
         }
-        throw new EsHadoopIllegalArgumentException(String.format(Locale.ROOT, "Unknown GeoShape [%s]", parsedContent));
+        throw new OpenSearchHadoopIllegalArgumentException(String.format(Locale.ROOT, "Unknown GeoShape [%s]", parsedContent));
     }
 
     /**

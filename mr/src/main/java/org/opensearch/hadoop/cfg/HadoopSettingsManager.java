@@ -21,7 +21,7 @@ package org.opensearch.hadoop.cfg;
 import java.util.Properties;
 
 import org.apache.hadoop.conf.Configuration;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 
 /**
  * Factory for loading settings based on various configuration objects, such as Properties or Hadoop configuration.
@@ -55,7 +55,7 @@ public class HadoopSettingsManager implements SettingsManager<Object> {
         if (HADOOP_CONFIGURATION != null && HADOOP_CONFIGURATION.isInstance(configuration)) {
             return FromHadoopConfiguration.create(configuration);
         }
-        throw new EsHadoopIllegalArgumentException("Don't know how to create Settings from configuration " + configuration);
+        throw new OpenSearchHadoopIllegalArgumentException("Don't know how to create Settings from configuration " + configuration);
     }
 
     public Settings load(Object configuration) {

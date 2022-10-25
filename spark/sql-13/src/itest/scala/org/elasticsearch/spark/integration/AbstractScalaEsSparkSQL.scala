@@ -75,7 +75,7 @@ import org.apache.spark.sql.types.DoubleType
 import org.elasticsearch.hadoop.TestData
 import org.elasticsearch.hadoop.rest.RestUtils
 import org.junit.ClassRule
-import org.opensearch.hadoop.{EsHadoopIllegalArgumentException, EsHadoopIllegalStateException}
+import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
 
 object AbstractScalaOpenSearchScalaSparkSQL {
@@ -221,13 +221,13 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     println(serialized.rowOrder)
   }
 
-  @Test(expected = classOf[EsHadoopIllegalArgumentException])
+  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def testNoIndexExists() {
     val idx = sqc.read.format("org.elasticsearch.spark.sql").load("not_existing_index")
     idx.printSchema()
   }
 
-  @Test(expected = classOf[EsHadoopIllegalArgumentException])
+  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def testNoMappingExists() {
     OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_6_X, "types are unnamed in ES 7.0 and will be removed in a later release.")
     val index = wrapIndex("spark-index-ex")
@@ -282,7 +282,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val idx = sqc.emptyDataFrame.saveToEs(target)
   }
 
-  @Test(expected = classOf[EsHadoopIllegalArgumentException])
+  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def testIndexCreationDisabled() {
     val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_INDEX_AUTO_CREATE -> "no")
     val index = wrapIndex("spark-test-non-existing")
@@ -651,7 +651,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     assertEquals(10, nameRDD.count)
   }
 
-  @Test(expected = classOf[EsHadoopIllegalStateException])
+  @Test(expected = classOf[OpenSearchHadoopIllegalStateException])
   def testEsDataFrame2ReadWithUserSchemaSpecified() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")

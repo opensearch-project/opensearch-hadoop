@@ -29,11 +29,11 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopException;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.handler.EsHadoopAbortHandlerException;
+import org.opensearch.hadoop.OpenSearchHadoopException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.handler.OpenSearchHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
-import org.opensearch.hadoop.rest.EsHadoopParsingException;
+import org.opensearch.hadoop.rest.OpenSearchHadoopParsingException;
 import org.opensearch.hadoop.serialization.Parser.NumberType;
 import org.opensearch.hadoop.serialization.Parser.Token;
 import org.opensearch.hadoop.serialization.builder.ValueParsingCallback;
@@ -456,15 +456,15 @@ public class ScrollReader implements Closeable {
                     HandlerResult result;
                     try {
                         result = deserializationErrorHandler.onError(event, errorCollector);
-                    } catch (EsHadoopAbortHandlerException ahe) {
+                    } catch (OpenSearchHadoopAbortHandlerException ahe) {
                         // Count this as an abort operation. Translate the exception into a parsing exception.
                         result = HandlerResult.ABORT;
-                        abortException = new EsHadoopParsingException(ahe.getMessage(), ahe.getCause());
+                        abortException = new OpenSearchHadoopParsingException(ahe.getMessage(), ahe.getCause());
                     } catch (Exception e) {
                         // Log the error we're handling before we throw for the handler being broken.
                         log.error("Could not handle deserialization error event due to an exception in error handler. " +
                                 "Deserialization exception:", deserializationException);
-                        throw new EsHadoopException("Encountered unexpected exception during error handler execution.", e);
+                        throw new OpenSearchHadoopException("Encountered unexpected exception during error handler execution.", e);
                     }
 
                     switch (result) {
@@ -486,7 +486,7 @@ public class ScrollReader implements Closeable {
 
                                 // Limit the number of retries though to like 50
                                 if (attempts >= 50) {
-                                    throw new EsHadoopException("Maximum retry attempts (50) reached for deserialization errors.");
+                                    throw new OpenSearchHadoopException("Maximum retry attempts (50) reached for deserialization errors.");
                                 } else {
                                     retryRead = true;
                                     // Advance to the first token, as it will be expected to be on a start object.
@@ -512,10 +512,10 @@ public class ScrollReader implements Closeable {
                             continue handlerLoop;
                         case ABORT:
                             errorCollector.getAndClearMessage(); // Sanity clearing
-                            if (abortException instanceof EsHadoopParsingException) {
-                                throw (EsHadoopParsingException) abortException;
+                            if (abortException instanceof OpenSearchHadoopParsingException) {
+                                throw (OpenSearchHadoopParsingException) abortException;
                             } else {
-                                throw new EsHadoopParsingException(abortException);
+                                throw new OpenSearchHadoopParsingException(abortException);
                             }
                     }
                 }
@@ -523,7 +523,7 @@ public class ScrollReader implements Closeable {
         } while (retryRead);
 
         if (readResult == null && skip == false) {
-            throw new EsHadoopParsingException("Could not read hit from scroll response.");
+            throw new OpenSearchHadoopParsingException("Could not read hit from scroll response.");
         }
 
         return readResult;
@@ -791,7 +791,7 @@ public class ScrollReader implements Closeable {
                     snippet.addDoc(JsonFragment.EMPTY);
                     break;
                 default:
-                    throw new EsHadoopIllegalArgumentException("unexpected token in _source: " + t);
+                    throw new OpenSearchHadoopIllegalArgumentException("unexpected token in _source: " + t);
             }
         }
 
@@ -855,9 +855,9 @@ public class ScrollReader implements Closeable {
                 token = parser.nextToken();
             }
             if (relation == null) {
-                throw new EsHadoopParsingException("Could not discern relative value of total hits. Response missing [relation] field.");
+                throw new OpenSearchHadoopParsingException("Could not discern relative value of total hits. Response missing [relation] field.");
             } else if (!"eq".equals(relation)) {
-                throw new EsHadoopParsingException(
+                throw new OpenSearchHadoopParsingException(
                         String.format("Could not discern exact hit count for search response. Received [%s][%s]",
                                 relation,
                                 hits
@@ -869,7 +869,7 @@ public class ScrollReader implements Closeable {
         }
 
         if (hits == Long.MIN_VALUE) {
-            throw new EsHadoopParsingException("Could not locate total number of hits for search result.");
+            throw new OpenSearchHadoopParsingException("Could not locate total number of hits for search result.");
         }
 
         return hits;
@@ -909,7 +909,7 @@ public class ScrollReader implements Closeable {
                     return parseValue(parser, esType);
                 }
             } catch (Exception ex) {
-                throw new EsHadoopParsingException(String.format(Locale.ROOT, "Cannot parse value [%s] for field [%s]", rawValue, fieldName), ex);
+                throw new OpenSearchHadoopParsingException(String.format(Locale.ROOT, "Cannot parse value [%s] for field [%s]", rawValue, fieldName), ex);
             }
         }
         return null;
@@ -933,7 +933,7 @@ public class ScrollReader implements Closeable {
             try {
                 return parseValue(parser, esType);
             } catch (Exception ex) {
-                throw new EsHadoopParsingException(String.format(Locale.ROOT, "Cannot parse value [%s] for field [%s]", rawValue, fieldName), ex);
+                throw new OpenSearchHadoopParsingException(String.format(Locale.ROOT, "Cannot parse value [%s] for field [%s]", rawValue, fieldName), ex);
             }
         }
         return null;
@@ -1033,7 +1033,7 @@ public class ScrollReader implements Closeable {
             String absoluteName = StringUtils.stripFieldNameSourcePrefix(parser.absoluteName());
 
             if (!absoluteName.equals(nodeMapping)) {
-                throw new EsHadoopParsingException("Different node mapping " + absoluteName + "|" + nodeMapping);
+                throw new OpenSearchHadoopParsingException("Different node mapping " + absoluteName + "|" + nodeMapping);
             }
 
             if (shouldSkip(absoluteName)) {

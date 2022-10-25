@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.HandlerLoader;
@@ -99,7 +99,7 @@ public abstract class AbstractHandlerLoader<E extends ErrorHandler> implements S
 
             if (handler != null) {
                 if (!expected.isAssignableFrom(handler.getClass())) {
-                    throw new EsHadoopIllegalArgumentException("Invalid handler configuration. Expected a handler that " +
+                    throw new OpenSearchHadoopIllegalArgumentException("Invalid handler configuration. Expected a handler that " +
                             "extends or is of type [" + expected + "] but was given a handler named [" + handlerName + "] " +
                             "that is an instance of type [" + handler.getClass() + "] which is not compatible.");
                 }

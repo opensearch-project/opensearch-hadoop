@@ -25,7 +25,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.rest.stats.Stats;
 import org.opensearch.hadoop.rest.stats.StatsAware;
 import org.opensearch.hadoop.serialization.ScrollReader;
@@ -102,7 +102,7 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
                 batch = scroll.getHits();
                 finished = scroll.isConcluded();
             } catch (IOException ex) {
-                throw new EsHadoopIllegalStateException(String.format("Cannot create scroll for query [%s/%s]", query, body), ex);
+                throw new OpenSearchHadoopIllegalStateException(String.format("Cannot create scroll for query [%s/%s]", query, body), ex);
             }
             read += batch.size();
             stats.docsReceived += batch.size();
@@ -127,7 +127,7 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
                 batch = scroll.getHits();
                 finished = scroll.isConcluded();
             } catch (IOException ex) {
-                throw new EsHadoopIllegalStateException("Cannot retrieve scroll [" + scrollId + "]", ex);
+                throw new OpenSearchHadoopIllegalStateException("Cannot retrieve scroll [" + scrollId + "]", ex);
             }
             read += batch.size();
             stats.docsReceived += batch.size();

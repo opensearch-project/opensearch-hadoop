@@ -21,7 +21,7 @@ package org.opensearch.hadoop.serialization.bulk;
 import java.util.Collection;
 import java.util.List;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.serialization.builder.ContentBuilder;
 import org.opensearch.hadoop.serialization.builder.ValueWriter;
 import org.opensearch.hadoop.serialization.bulk.AbstractBulkFactory.DynamicContentRef;
@@ -85,7 +85,7 @@ class TemplatedBulk implements BulkCommand {
                 writeTemplate(dynamicContent, object);
             }
             else {
-                throw new EsHadoopIllegalArgumentException(String.format("Unknown object type received [%s][%s]", item, item.getClass()));
+                throw new OpenSearchHadoopIllegalArgumentException(String.format("Unknown object type received [%s][%s]", item, item.getClass()));
             }
         }
     }

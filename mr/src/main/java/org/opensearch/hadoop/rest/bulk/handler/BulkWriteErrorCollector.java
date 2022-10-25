@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest.bulk.handler;
 
 import java.util.concurrent.TimeUnit;
 
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.handler.HandlerResult;
 
 /**
@@ -77,7 +77,7 @@ public class BulkWriteErrorCollector implements DelayableErrorCollector<byte[]> 
         if (currentMessage == null) {
             currentMessage = reason;
         } else {
-            throw new EsHadoopIllegalStateException("Error Handler is attempting to pass with a reason, but a " +
+            throw new OpenSearchHadoopIllegalStateException("Error Handler is attempting to pass with a reason, but a " +
                     "reason already exists! Be sure to return the result of your call to errorCollector.pass(String), " +
                     "and call it only once per call to your Handler!");
         }

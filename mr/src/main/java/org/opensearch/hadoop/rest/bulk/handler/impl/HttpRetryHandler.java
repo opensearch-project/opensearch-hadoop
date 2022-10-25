@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest.bulk.handler.impl;
 
 import java.util.concurrent.TimeUnit;
 
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.handler.HandlerResult;
@@ -42,7 +42,7 @@ import org.opensearch.hadoop.util.ObjectUtils;
 public class HttpRetryHandler extends BulkWriteErrorHandler {
 
     public HttpRetryHandler() {
-        throw new EsHadoopIllegalArgumentException("HttpRetryHandler is not loadable through the default handler " +
+        throw new OpenSearchHadoopIllegalArgumentException("HttpRetryHandler is not loadable through the default handler " +
                 "loader logic. Set the HttpRetryPolicy instead.");
     }
 

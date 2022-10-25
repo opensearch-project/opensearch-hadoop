@@ -22,8 +22,8 @@ import org.apache.pig.ResourceSchema;
 import org.apache.pig.ResourceSchema.ResourceFieldSchema;
 import org.apache.pig.data.DataByteArray;
 import org.apache.pig.data.DataType;
-import org.opensearch.hadoop.EsHadoopIllegalArgumentException;
-import org.opensearch.hadoop.EsHadoopIllegalStateException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.serialization.JdkBytesConverter;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.BytesArray;
@@ -60,7 +60,7 @@ public class PigBytesConverter extends JdkBytesConverter {
             object = pt.getTuple().get(0);
             type = pt.getTuple().getType(0);
         } catch (Exception ex) {
-            throw new EsHadoopIllegalStateException("Encountered exception while processing tuple", ex);
+            throw new OpenSearchHadoopIllegalStateException("Encountered exception while processing tuple", ex);
         }
 
 
@@ -74,6 +74,6 @@ public class PigBytesConverter extends JdkBytesConverter {
             return;
         }
 
-        throw new EsHadoopIllegalArgumentException(String.format("Cannot handle Pig type [%s]; expecting [%s,%s]", object.getClass(), String.class, DataByteArray.class));
+        throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot handle Pig type [%s]; expecting [%s,%s]", object.getClass(), String.class, DataByteArray.class));
     }
 }

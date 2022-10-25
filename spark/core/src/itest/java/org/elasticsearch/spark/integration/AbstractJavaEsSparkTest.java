@@ -333,7 +333,7 @@ public class AbstractJavaEsSparkTest implements Serializable {
         assertThat(JavaEsSpark.esJsonRDD(sc, target).groupBy(pair -> pair._2).count(), is(2L));
     }
 
-    // @Test(expected = EsHadoopIllegalArgumentException.class)
+    // @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testNoResourceSpecified() throws Exception {
         JavaRDD<Map<String, Object>> rdd = JavaEsSpark.esRDD(sc).values();
         rdd.count();

@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * Java API for OpenSearch Spark RDD.
- */
-package org.opensearch.spark.rdd.api.java;
+
+package org.opensearch.spark.serialization
+
+class Garbage(i: Int) {
+  def doNothing(): Unit = ()
+}

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.spark.sql
+package org.opensearch.spark.sql
 
 import scala.collection.Map
 import org.apache.commons.logging.Log
@@ -26,8 +26,8 @@ import org.apache.spark.SparkContext
 import org.apache.spark.TaskContext
 import org.apache.spark.sql.Row
 import org.opensearch.spark.rdd.AbstractOpenSearchRDD
-import org.elasticsearch.spark.rdd.AbstractEsRDDIterator
-import org.elasticsearch.spark.rdd.EsPartition
+import org.opensearch.spark.rdd.AbstractOpenSearchRDDIterator
+import org.opensearch.spark.rdd.EsPartition
 import org.opensearch.hadoop.cfg.Settings
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.{InitializationUtils, PartitionDefinition}
@@ -40,7 +40,7 @@ private[spark] class ScalaEsRowRDD(
   @(transient @param) sc: SparkContext,
   params: Map[String, String] = Map.empty,
   schema: SchemaUtils.Schema)
-  extends AbstractEsRDD[Row](sc, params) {
+  extends AbstractOpenSearchRDD[Row](sc, params) {
 
   override def compute(split: Partition, context: TaskContext): ScalaEsRowRDDIterator = {
     new ScalaEsRowRDDIterator(context, split.asInstanceOf[EsPartition].esPartition, schema)
@@ -51,7 +51,7 @@ private[spark] class ScalaEsRowRDDIterator(
   context: TaskContext,
   partition: PartitionDefinition,
   schema: SchemaUtils.Schema)
-  extends AbstractEsRDDIterator[Row](context, partition) {
+  extends AbstractOpenSearchRDDIterator[Row](context, partition) {
 
   override def getLogger() = LogFactory.getLog(classOf[ScalaEsRowRDD])
 
@@ -66,6 +66,6 @@ private[spark] class ScalaEsRowRDDIterator(
 
   override def createValue(value: Array[Object]): Row = {
     // drop the ID
-    value(1).asInstanceOf[ScalaEsRow]
+    value(1).asInstanceOf[ScalaOpenSearchRow]
   }
 }

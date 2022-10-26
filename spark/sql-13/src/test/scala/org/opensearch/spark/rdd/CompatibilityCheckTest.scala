@@ -16,7 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.opensearch.spark.rdd
+
+import org.junit.Test
+
 /**
- * Java API for OpenSearch Spark RDD.
- */
-package org.opensearch.spark.rdd.api.java;
+  * Created by james.baiera on 8/17/16.
+  */
+class CompatibilityCheckTest {
+
+  @Test
+  def checkCompatibility: Unit = {
+    CompatUtils.checkSparkLibraryCompatibility(true)
+  }
+
+}

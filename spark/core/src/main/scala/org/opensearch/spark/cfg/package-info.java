@@ -19,4 +19,4 @@
 /**
  * Configuration package, specific for Apache Spark.
  */
-package org.elasticsearch.spark.cfg;
+package org.opensearch.spark.cfg;

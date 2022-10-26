@@ -16,7 +16,14 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+package org.opensearch.spark.sql
+
+import org.elasticsearch.spark.rdd.CompatibilityLevel
+
 /**
- * Java API for OpenSearch Spark RDD.
- */
-package org.opensearch.spark.rdd.api.java;
+  * For determining Spark Version Compatibility
+  */
+class SparkSQLCompatibilityLevel extends CompatibilityLevel {
+  val versionId = "13"
+  val versionDescription = "1.3-1.6"
+}

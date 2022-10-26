@@ -17,11 +17,11 @@ project(":pig").name = "opensearch-hadoop-pig"
 
 include 'spark-core'
 project(":spark-core").projectDir = new File(settingsDir, "spark/core")
-project(":spark-core").name = "elasticsearch-spark"
+project(":spark-core").name = "opensearch-spark"
 
 include 'sql-13'
 project(":sql-13").projectDir = new File(settingsDir, "spark/sql-13")
-project(":sql-13").name = "elasticsearch-spark-13"
+project(":sql-13").name = "opensearch-spark-13"
 
 include 'sql-20'
 project(":sql-20").projectDir = new File(settingsDir, "spark/sql-20")

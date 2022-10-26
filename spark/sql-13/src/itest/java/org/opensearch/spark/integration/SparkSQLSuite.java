@@ -16,7 +16,19 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * Java API for OpenSearch Spark RDD.
- */
-package org.opensearch.spark.rdd.api.java;
+package org.opensearch.spark.integration;
+
+import org.elasticsearch.hadoop.fixtures.LocalEs;
+import org.junit.ClassRule;
+import org.junit.rules.ExternalResource;
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+
+@RunWith(Suite.class)
+@Suite.SuiteClasses({ AbstractJavaOpenSearchSparkSQLTest.class })
+public class SparkSQLSuite {
+
+    @ClassRule
+    public static ExternalResource resource = new LocalEs();
+
+}

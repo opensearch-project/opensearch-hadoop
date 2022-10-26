@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.hive;
+package org.opensearch.hadoop.qa.kerberos.hive;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 import java.security.PrivilegedExceptionAction;
 import java.util.Arrays;
 
-import org.elasticsearch.hadoop.qa.kerberos.security.KeytabLogin;
+import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
 public class SecureBeeline {
     public static void main(final String[] args) throws Exception {

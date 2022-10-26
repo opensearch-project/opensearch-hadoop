@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.setup;
+package org.opensearch.hadoop.qa.kerberos.setup;
 
 import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.cfg.PropertiesSettings;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.qa.kerberos.ExtendedClient;
+import org.opensearch.hadoop.qa.kerberos.ExtendedClient;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.util.StringUtils;
 

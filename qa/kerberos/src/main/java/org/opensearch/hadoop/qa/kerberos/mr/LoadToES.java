@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.mr;
+package org.opensearch.hadoop.qa.kerberos.mr;
 
 import java.io.IOException;
 import java.security.PrivilegedExceptionAction;
@@ -39,7 +39,7 @@ import org.apache.hadoop.util.ToolRunner;
 import org.opensearch.hadoop.mr.EsMapReduceUtil;
 import org.opensearch.hadoop.mr.EsOutputFormat;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
-import org.elasticsearch.hadoop.qa.kerberos.security.KeytabLogin;
+import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
 public class LoadToES extends Configured implements Tool {
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.mr;
+package org.opensearch.hadoop.qa.kerberos.mr;
 
 import java.util.Arrays;
 import java.util.Map;

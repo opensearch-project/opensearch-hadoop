@@ -608,7 +608,7 @@ if (disableTests) {
         useCluster(testClusters.integTest)
         dependsOn(jar, setupUsers, copyData, patchBeeline)
         hivePrincipal = hivePrincipalName + realm
-        script = new File(resourceDir, 'hive/load_to_es.sql')
+        script = new File(resourceDir, 'hive/load_to_opensearch.sql')
         libJars(hiveJar.archivePath, kerberosItestJar.archivePath)
         environmentVariables.putAll([
                 'HADOOP_CLIENT_OPTS':
@@ -625,7 +625,7 @@ if (disableTests) {
         useCluster(testClusters.integTest)
         dependsOn(hiveLoadData)
         hivePrincipal = hivePrincipalName + realm
-        script = new File(resourceDir, 'hive/read_from_es.sql')
+        script = new File(resourceDir, 'hive/read_from_opensearch.sql')
         libJars(hiveJar.archivePath, kerberosItestJar.archivePath)
         environmentVariables.putAll([
                 'HADOOP_CLIENT_OPTS':
@@ -645,7 +645,7 @@ if (disableTests) {
         clusterConfiguration = config
         useCluster(testClusters.integTest)
         dependsOn(jar, setupUsers, copyData)
-        script = new File(resourceDir, 'pig/load_to_es.pig')
+        script = new File(resourceDir, 'pig/load_to_opensearch.pig')
         libJars(pigJar.archivePath, kerberosItestJar.archivePath)
         environmentVariables.putAll([
                 'PIG_OPTS': "-Djava.security.krb5.conf=${krb5Conf.toString()}"
@@ -657,7 +657,7 @@ if (disableTests) {
         clusterConfiguration = config
         useCluster(testClusters.integTest)
         dependsOn(pigLoadData)
-        script = new File(resourceDir, 'pig/read_from_es.pig')
+        script = new File(resourceDir, 'pig/read_from_opensearch.pig')
         libJars(pigJar.archivePath, kerberosItestJar.archivePath)
         environmentVariables.putAll([
                 'PIG_OPTS': "-Djava.security.krb5.conf=${krb5Conf.toString()}"

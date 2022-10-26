@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.mr;
+package org.opensearch.hadoop.qa.kerberos.mr;
 
 import java.io.IOException;
 import java.security.PrivilegedExceptionAction;
@@ -33,7 +33,7 @@ import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.opensearch.hadoop.mr.EsInputFormat;
 import org.opensearch.hadoop.mr.EsMapReduceUtil;
-import org.elasticsearch.hadoop.qa.kerberos.security.KeytabLogin;
+import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
 public class ReadFromES extends Configured implements Tool {
 

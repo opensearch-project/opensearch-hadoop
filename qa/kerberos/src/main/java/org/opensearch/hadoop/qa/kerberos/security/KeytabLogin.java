@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.security;
+package org.opensearch.hadoop.qa.kerberos.security;
 
 import java.security.PrivilegedExceptionAction;
 

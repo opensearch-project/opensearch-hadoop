@@ -23,9 +23,9 @@ import java.security.PrivilegedExceptionAction
 
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
-import org.elasticsearch.hadoop.qa.kerberos.security.KeytabLogin
 import org.elasticsearch.spark._
 import org.elasticsearch.spark.sql._
+import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin
 
 class ReadFromES(args: Array[String]) {
 

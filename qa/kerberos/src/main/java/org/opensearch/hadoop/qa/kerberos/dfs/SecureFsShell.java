@@ -17,12 +17,12 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.dfs;
+package org.opensearch.hadoop.qa.kerberos.dfs;
 
 import java.security.PrivilegedExceptionAction;
 
 import org.apache.hadoop.fs.FsShell;
-import org.elasticsearch.hadoop.qa.kerberos.security.KeytabLogin;
+import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
 /**
  * Using FsShell requires you to be logged into Kerberos from the command line (kinit).

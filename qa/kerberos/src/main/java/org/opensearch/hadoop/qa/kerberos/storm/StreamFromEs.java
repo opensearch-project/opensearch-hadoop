@@ -17,27 +17,23 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.storm;
+package org.opensearch.hadoop.qa.kerberos.storm;
 
 import java.security.PrivilegedExceptionAction;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
-
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginContext;
 
 import org.apache.storm.Config;
 import org.apache.storm.StormSubmitter;
-import org.apache.storm.shade.com.google.common.collect.ImmutableList;
 import org.apache.storm.topology.TopologyBuilder;
-import org.apache.storm.tuple.Fields;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.security.LoginUtil;
-import org.elasticsearch.storm.EsBolt;
+import org.elasticsearch.storm.EsSpout;
 import org.elasticsearch.storm.security.AutoElasticsearch;
 
-public class StreamToEs {
+public class StreamFromEs {
     public static void main(String[] args) throws Exception {
         final String submitPrincipal = args[0];
         final String submitKeytab = args[1];
@@ -57,14 +53,9 @@ public class StreamToEs {
     }
 
     public static void submitJob(String principal, String keytab, String esNodes) throws Exception {
-        List doc1 = Collections.singletonList("{\"reason\" : \"business\",\"airport\" : \"SFO\"}");
-        List doc2 = Collections.singletonList("{\"participants\" : 5,\"airport\" : \"OTP\"}");
-
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("Input", new TestSpout(ImmutableList.of(doc1, doc2), new Fields("json"), true));
-        builder.setBolt("ES", new EsBolt("storm-test"))
-                .shuffleGrouping("Input")
-                .addConfiguration(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS, 2);
+        builder.setSpout("ES", new EsSpout("storm-test"));
+        builder.setBolt("Output", new CapturingBolt()).shuffleGrouping("ES");
 
         // Nimbus needs to be started with the cred renewer and credentials plugins set in its config file
 
@@ -76,6 +67,6 @@ public class StreamToEs {
         conf.put(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");
         conf.put(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL, "HTTP/build.elastic.co@BUILD.ELASTIC.CO");
         conf.put(ConfigurationOptions.ES_INPUT_JSON, "true");
-        StormSubmitter.submitTopology("test-run", conf, builder.createTopology());
+        StormSubmitter.submitTopology("test-read", conf, builder.createTopology());
     }
 }

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos;
+package org.opensearch.hadoop.qa.kerberos;
 
 import org.elasticsearch.hadoop.fixtures.LocalEs;
 import org.junit.ClassRule;

@@ -16,7 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.hadoop.qa.kerberos.storm;
+package org.opensearch.hadoop.qa.kerberos.storm;
 
 import java.util.ArrayList;
 import java.util.Collections;

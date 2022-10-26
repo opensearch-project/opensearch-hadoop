@@ -58,7 +58,6 @@ import org.junit.runners.MethodSorters
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
 
-import org.elasticsearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
@@ -143,7 +142,6 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
     .getOrElse(throw new OpenSearchHadoopIllegalStateException("Spark not started..."))
   val version: OpenSearchMajorVersion = TestUtils.getOpenSearchClusterInfo.getMajorVersion
 
-  import org.elasticsearch.spark.integration.Products._
   import spark.implicits._
 
   def wrapIndex(name: String): String = {

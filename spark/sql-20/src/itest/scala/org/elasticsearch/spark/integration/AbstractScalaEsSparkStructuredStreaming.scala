@@ -144,7 +144,6 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
     .getOrElse(throw new OpenSearchHadoopIllegalStateException("Spark not started..."))
   val version: OpenSearchMajorVersion = TestUtils.getOpenSearchClusterInfo.getMajorVersion
 
-  import org.elasticsearch.spark.integration.Products._
   import spark.implicits._
 
   def wrapIndex(name: String): String = {

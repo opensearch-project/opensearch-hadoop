@@ -27,7 +27,6 @@ import java.nio.file.Paths
 import java.sql.Timestamp
 import java.{util => ju}
 import java.util.concurrent.TimeUnit
-import org.elasticsearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import org.elasticsearch.spark.rdd.JDKCollectionConvertersCompat.Converters._
 
 import scala.collection.Map

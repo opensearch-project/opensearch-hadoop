@@ -41,7 +41,6 @@ import org.junit._
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.{MethodSorters, Parameterized}
-import org.elasticsearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}

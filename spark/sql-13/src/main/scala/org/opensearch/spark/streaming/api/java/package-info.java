@@ -16,7 +16,8 @@
  * specific language governing permissions and limitations
  * under the License.
  */
+
 /**
- * Java API for OpenSearch Spark RDD.
+ * Java API for Elasticsearch Spark Streaming.
  */
-package org.opensearch.spark.rdd.api.java;
+package org.opensearch.spark.streaming.api.java;

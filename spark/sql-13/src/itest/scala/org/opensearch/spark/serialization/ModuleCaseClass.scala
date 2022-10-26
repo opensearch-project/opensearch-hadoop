@@ -16,7 +16,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * Java API for OpenSearch Spark RDD.
- */
-package org.opensearch.spark.rdd.api.java;
+
+package org.opensearch.spark.serialization
+
+case class ModuleCaseClass(id: Integer, departure: String, var arrival: String) {
+  var l = math.Pi
+}

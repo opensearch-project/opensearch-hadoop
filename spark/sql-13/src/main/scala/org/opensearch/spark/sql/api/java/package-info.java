@@ -17,6 +17,6 @@
  * under the License.
  */
 /**
- * Java API for OpenSearch Spark RDD.
+ * Java API for Elasticsearch Spark SQL.
  */
-package org.opensearch.spark.rdd.api.java;
+package org.opensearch.spark.sql.api.java;

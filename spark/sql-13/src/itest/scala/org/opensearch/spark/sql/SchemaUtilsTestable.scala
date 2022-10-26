@@ -16,7 +16,18 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * Java API for OpenSearch Spark RDD.
- */
-package org.opensearch.spark.rdd.api.java;
+package org.opensearch.spark.sql
+
+import org.elasticsearch.spark.sql.SchemaUtils
+import org.opensearch.hadoop.cfg.Settings
+
+object SchemaUtilsTestable {
+
+  def discoverMapping(cfg: Settings) = SchemaUtils.discoverMapping(cfg)
+
+  def rowInfo(cfg: Settings) = {
+    val schema = SchemaUtils.discoverMapping(cfg)
+    SchemaUtils.setRowInfo(cfg, schema.struct)
+    SchemaUtils.getRowInfo(cfg)
+  }
+}

@@ -46,7 +46,7 @@ sparkVariants {
 
         dependencies {
             add(variant.configuration('embedded'), project(":opensearch-hadoop-mr"))
-            add(variant.configuration('embedded'), project(":elasticsearch-spark")) {
+            add(variant.configuration('embedded'), project(":opensearch-spark")) {
                 capabilities {
                     requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
                 }
@@ -106,12 +106,12 @@ sparkVariants {
             add(variant.configuration('additionalSources'), project(":opensearch-hadoop-mr"))
             add(variant.configuration('javadocSources'), project(":opensearch-hadoop-mr"))
 
-            add(variant.configuration('additionalSources'), project(":elasticsearch-spark")) {
+            add(variant.configuration('additionalSources'), project(":opensearch-spark")) {
                 capabilities {
                     requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
                 }
             }
-            add(variant.configuration('javadocSources'), project(":elasticsearch-spark")) {
+            add(variant.configuration('javadocSources'), project(":opensearch-spark")) {
                 capabilities {
                     requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
                 }

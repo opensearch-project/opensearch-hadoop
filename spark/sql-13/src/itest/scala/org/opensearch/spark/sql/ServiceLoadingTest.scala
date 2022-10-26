@@ -16,7 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * Java API for OpenSearch Spark RDD.
- */
-package org.opensearch.spark.rdd.api.java;
+
+package org.opensearch.spark.sql
+
+import java.util.ServiceLoader
+
+import org.apache.spark.sql.sources.DataSourceRegister
+import org.junit.{Assert, Test}
+
+import scala.collection.JavaConverters._
+
+class ServiceLoadingTest {
+
+  @Test
+  def serviceLoadingTest(): Unit = {
+    val serviceLoader = ServiceLoader.load(classOf[DataSourceRegister], Thread.currentThread().getContextClassLoader)
+    if (serviceLoader.asScala.map(_.shortName()).exists(_.equals("es")) == false) {
+      Assert.fail("Cannot locate 'es' data source")
+    }
+  }
+
+}

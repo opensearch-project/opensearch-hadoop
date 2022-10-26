@@ -16,7 +16,24 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-/**
- * Java API for OpenSearch Spark RDD.
- */
-package org.opensearch.spark.rdd.api.java;
+package org.opensearch.spark.sql;
+
+import org.elasticsearch.spark.sql.Utils;
+import org.junit.Assert;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
+
+public class UtilsTest {
+
+    @Test
+    public void testCamelCase() throws Exception {
+        Assert.assertEquals("foo.bar", Utils.camelCaseToDotNotation("foo.bar"));
+        assertEquals("foo.bar", Utils.camelCaseToDotNotation("fooBar"));
+        assertEquals("foo.bar", Utils.camelCaseToDotNotation("fooBAr"));
+        assertEquals("foo", Utils.camelCaseToDotNotation("FOO"));
+        assertEquals("foo.bar", Utils.camelCaseToDotNotation("FOO.BAR"));
+        assertEquals("foo.bar", Utils.camelCaseToDotNotation("FOO.BAR"));
+        assertEquals("es.port", Utils.camelCaseToDotNotation("esPort"));
+    }
+}

@@ -47,7 +47,7 @@ sparkVariants {
 
         dependencies {
             add(variant.configuration('embedded'), project(":opensearch-hadoop-mr"))
-            add(variant.configuration('embedded'), project(":elasticsearch-spark")) {
+            add(variant.configuration('embedded'), project(":opensearch-spark")) {
                 capabilities {
                     requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
                 }
@@ -118,12 +118,12 @@ sparkVariants {
             add(variant.configuration('additionalSources'), project(":opensearch-hadoop-mr"))
             add(variant.configuration('javadocSources'), project(":opensearch-hadoop-mr"))
 
-            add(variant.configuration('additionalSources'), project(":elasticsearch-spark")) {
+            add(variant.configuration('additionalSources'), project(":opensearch-spark")) {
                 capabilities {
                     requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
                 }
             }
-            add(variant.configuration('javadocSources'), project(":elasticsearch-spark")) {
+            add(variant.configuration('javadocSources'), project(":opensearch-spark")) {
                 capabilities {
                     requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
                 }
@@ -211,7 +211,7 @@ sparkVariants {
             dependsOn(project.configurations.getByName(variant.configuration('embedded')))
             // TODO: Is there a way to do this lazily? This looks like it resolves the configuration.
             from(project.configurations.getByName(variant.configuration('embedded')).collect { it.isDirectory() ? it : zipTree(it)}) {
-                include "org/elasticsearch/**"
+                include "org/opensearch/**"
                 include "opensearch-hadoop-build.properties"
                 include "META-INF/services/*"
             }

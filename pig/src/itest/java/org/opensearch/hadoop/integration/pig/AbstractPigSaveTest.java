@@ -284,7 +284,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
         RestUtils.refresh("pig-join");
 
         String script =
-                "REGISTER " + Provisioner.ESHADOOP_TESTING_JAR + ";" +
+                "REGISTER " + Provisioner.OPENSEARCHHADOOP_TESTING_JAR + ";" +
                         loadJoinSource()
                         + "CHILDREN = FILTER A BY NOT(parent IS NULL);"
 //                        + "CHILDREN = FOREACH A GENERATE id, name, company, TOTUPLE(relation, parent) as joiner;"

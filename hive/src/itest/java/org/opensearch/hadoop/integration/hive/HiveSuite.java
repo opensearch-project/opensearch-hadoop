@@ -89,7 +89,7 @@ public class HiveSuite {
             server.start();
 
             if (isLocal) {
-                HdfsUtils.copyFromLocal(Provisioner.ESHADOOP_TESTING_JAR, Provisioner.HDFS_ES_HDP_LIB);
+                HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_ES_HDP_LIB);
                 String jar = "ADD JAR " + HdfsUtils.qualify(Provisioner.HDFS_ES_HDP_LIB, HdpBootstrap.hadoopConfig());
                 server.execute(jar);
             }
@@ -117,7 +117,7 @@ public class HiveSuite {
         if (!isLocal) {
             hadoopConfig = HdpBootstrap.hadoopConfig();
 
-            HdfsUtils.copyFromLocal(Provisioner.ESHADOOP_TESTING_JAR, Provisioner.HDFS_ES_HDP_LIB);
+            HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_ES_HDP_LIB);
             hdfsEsLib = HdfsUtils.qualify(Provisioner.HDFS_ES_HDP_LIB, hadoopConfig);
             // copy jar to DistributedCache
             try {

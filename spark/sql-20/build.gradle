@@ -1,6 +1,6 @@
 import org.opensearch.hadoop.gradle.scala.SparkVariantPlugin
 
-description = "Elasticsearch Spark (for Spark 2.X)"
+description = "OpenSearch Spark (for Spark 2.X)"
 
 apply plugin: 'java-library'
 apply plugin: 'scala'

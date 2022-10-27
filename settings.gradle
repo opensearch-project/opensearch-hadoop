@@ -29,7 +29,7 @@ project(":sql-20").name = "opensearch-spark-20"
 
 include 'sql-30'
 project(":sql-30").projectDir = new File(settingsDir, "spark/sql-30")
-project(":sql-30").name = "elasticsearch-spark-30"
+project(":sql-30").name = "opensearch-spark-30"
 
 include 'storm'
 project(":storm").name = "elasticsearch-storm"

@@ -615,7 +615,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       }
       rr.close()
     }
-    EsSparkSQL.saveToEs(data, parameters)
+    OpenSearchSparkSQL.saveToEs(data, parameters)
   }
 
   def isEmpty(): Boolean = {

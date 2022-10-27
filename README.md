@@ -301,16 +301,16 @@ Map<String, ?> numbers = ImmutableMap.of("one", 1, "two", 2);
 Map<String, ?> airports = ImmutableMap.of("OTP", "Otopeni", "SFO", "San Fran");
 
 JavaRDD<Map<String, ?>> javaRDD = jsc.parallelize(ImmutableList.of(numbers, airports));
-JavaEsSpark.saveToEs(javaRDD, "spark/docs");
+JavaOpenSearchSpark.saveToEs(javaRDD, "spark/docs");
 ```
 
 #### Spark SQL
 
 ```java
-import org.elasticsearch.spark.sql.api.java.JavaEsSparkSQL;
+import org.opensearch.spark.sql.api.java.JavaOpenSearchSparkSQL;
 
 DataFrame df = sqlContext.read.json("examples/people.json")
-JavaEsSparkSQL.saveToEs(df, "spark/docs")
+JavaOpenSearchSparkSQL.saveToEs(df, "spark/docs")
 ```
 
 ## [Apache Storm][]

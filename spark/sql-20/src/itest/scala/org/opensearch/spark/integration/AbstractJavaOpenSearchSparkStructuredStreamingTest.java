@@ -39,7 +39,7 @@ import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
 import org.elasticsearch.hadoop.util.TestSettings;
 import org.elasticsearch.hadoop.util.TestUtils;
-import org.opensearch.spark.rdd.api.java.JavaEsSpark;
+import org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark;
 import org.opensearch.spark.sql.streaming.api.java.JavaStreamingQueryTestHarness;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

@@ -56,14 +56,14 @@ import org.elasticsearch.hadoop.util.TestSettings
 import org.elasticsearch.hadoop.util.TestUtils
 import org.elasticsearch.hadoop.util.TestUtils.resource
 import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
-import org.elasticsearch.spark.cfg.SparkSettingsManager
-import org.elasticsearch.spark.sparkRDDFunctions
-import org.elasticsearch.spark.sparkStringJsonRDDFunctions
-import org.elasticsearch.spark.sql.EsSparkSQL
-import org.elasticsearch.spark.sql.ScalaEsRow
-import org.elasticsearch.spark.sql.api.java.JavaEsSparkSQL
-import org.elasticsearch.spark.sql.sparkDatasetFunctions
-import org.elasticsearch.spark.sql.sqlContextFunctions
+import org.opensearch.spark.cfg.SparkSettingsManager
+import org.opensearch.spark.sparkRDDFunctions
+import org.opensearch.spark.sparkStringJsonRDDFunctions
+import org.opensearch.spark.sql.OpenSearchSparkSQL
+import org.opensearch.spark.sql.ScalaOpenSearchRow
+import org.opensearch.spark.sql.api.java.JavaOpenSearchSparkSQL
+import org.opensearch.spark.sql.sparkDatasetFunctions
+import org.opensearch.spark.sql.sqlContextFunctions
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.is
 import org.hamcrest.Matchers.not
@@ -715,10 +715,10 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val dfNoQuery = JavaEsSparkSQL.esDF(sqc, target, cfg.asJava)
+    val dfNoQuery = JavaOpenSearchSparkSQL.esDF(sqc, target, cfg.asJava)
     val query = s"""{ "query" : { "query_string" : { "query" : "name:me*" } } //, "fields" : ["name"]
                 }"""
-    val dfWQuery = JavaEsSparkSQL.esDF(sqc, target, query, cfg.asJava)
+    val dfWQuery = JavaOpenSearchSparkSQL.esDF(sqc, target, query, cfg.asJava)
 
     println(dfNoQuery.head())
     println(dfWQuery.head())
@@ -730,7 +730,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
   @Test
   def testEsDataFrame3WriteWithRichMapping() {
-    val path = Paths.get(AbstractScalaEsScalaSparkSQL.testData.sampleArtistsDatUri())
+    val path = Paths.get(AbstractScalaOpenSearchScalaSparkSQL.testData.sampleArtistsDatUri())
     // because Windows... 
     val lines = Files.readAllLines(path, StandardCharsets.ISO_8859_1).asScala
 
@@ -1442,8 +1442,8 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val (target, _) = makeTargets(index, "data")
     val table = wrapIndex("save_mode_append")
 
-    srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Append).save(target)
-    val df = EsSparkSQL.esDF(sqc, target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Append).save(target)
+    val df = OpenSearchSparkSQL.esDF(sqc, target)
 
     assertEquals(3, df.count())
     srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Append).save(target)
@@ -1457,8 +1457,8 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val (target, _) = makeTargets(index, "data")
     val table = wrapIndex("save_mode_overwrite")
 
-    srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Overwrite).save(target)
-    val df = EsSparkSQL.esDF(sqc, target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).save(target)
+    val df = OpenSearchSparkSQL.esDF(sqc, target)
 
     assertEquals(3, df.count())
     srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Overwrite).save(target)
@@ -1471,11 +1471,11 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val index = wrapIndex("sparksql-test-savemode_overwrite_id")
     val (target, _) = makeTargets(index, "data")
 
-    srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Overwrite).option("es.mapping.id", "number").save(target)
-    val df = EsSparkSQL.esDF(sqc, target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("es.mapping.id", "number").save(target)
+    val df = OpenSearchSparkSQL.esDF(sqc, target)
 
     assertEquals(3, df.count())
-    srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Overwrite).option("es.mapping.id", "number").save(target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("es.mapping.id", "number").save(target)
     assertEquals(3, df.count())
   }
 
@@ -1486,8 +1486,8 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val (target, docPath) = makeTargets(index, "data")
     val table = wrapIndex("save_mode_ignore")
 
-    srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Ignore).save(target)
-    val df = EsSparkSQL.esDF(sqc, target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Ignore).save(target)
+    val df = OpenSearchSparkSQL.esDF(sqc, target)
 
     assertEquals(3, df.count())
     // should not go through

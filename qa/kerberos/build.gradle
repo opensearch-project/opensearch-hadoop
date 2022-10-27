@@ -68,7 +68,7 @@ dependencies {
 
     implementation("org.scala-lang:scala-library:${scala212Version}")
     implementation("org.scala-lang:scala-reflect:${scala212Version}")
-    implementation(project(":elasticsearch-spark-30")) {
+    implementation(project(":opensearch-spark-30")) {
         capabilities {
             // Spark 3.x on Scala 2.12
             requireCapability("org.elasticsearch.spark.sql.variant:spark30scala212:$project.version")
@@ -259,7 +259,7 @@ if (disableTests) {
     def mrJar = project(':opensearch-hadoop-mr').tasks.getByName('jar') as Jar
     def hiveJar = project(':opensearch-hadoop-hive').tasks.getByName('jar') as Jar
     def pigJar = project(':opensearch-hadoop-pig').tasks.getByName('jar') as Jar
-    def sparkJar = project(':elasticsearch-spark-30').tasks.getByName('jar') as Jar
+    def sparkJar = project(':opensearch-spark-30').tasks.getByName('jar') as Jar
 
     // Need these for SSL items, test data, and scripts
     File resourceDir = project.sourceSets.main.resources.getSrcDirs().head()
@@ -270,7 +270,7 @@ if (disableTests) {
         doLast {
             project.javaexec {
                 executable = project.runtimeJavaHome.toString() + "/bin/java"
-                mainClass = 'org.elasticsearch.hadoop.qa.kerberos.setup.SetupKerberosUsers'
+                mainClass = 'org.opensearch.hadoop.qa.kerberos.setup.SetupKerberosUsers'
                 classpath = sourceSets.main.runtimeClasspath
                 systemProperty('opensearch.nodes', opensearchAddress)
                 systemProperty('es.net.http.auth.user', 'test_admin')

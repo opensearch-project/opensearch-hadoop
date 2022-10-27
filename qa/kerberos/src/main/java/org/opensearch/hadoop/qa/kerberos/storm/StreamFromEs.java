@@ -30,8 +30,8 @@ import org.apache.storm.StormSubmitter;
 import org.apache.storm.topology.TopologyBuilder;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.security.LoginUtil;
-import org.elasticsearch.storm.EsSpout;
-import org.elasticsearch.storm.security.AutoElasticsearch;
+import org.opensearch.storm.OpenSearchSpout;
+import org.opensearch.storm.security.AutoOpenSearch;
 
 public class StreamFromEs {
     public static void main(String[] args) throws Exception {
@@ -54,14 +54,14 @@ public class StreamFromEs {
 
     public static void submitJob(String principal, String keytab, String esNodes) throws Exception {
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("ES", new EsSpout("storm-test"));
+        builder.setSpout("ES", new OpenSearchSpout("storm-test"));
         builder.setBolt("Output", new CapturingBolt()).shuffleGrouping("ES");
 
         // Nimbus needs to be started with the cred renewer and credentials plugins set in its config file
 
         Config conf = new Config();
         List<Object> plugins = new ArrayList<Object>();
-        plugins.add(AutoElasticsearch.class.getName());
+        plugins.add(AutoOpenSearch.class.getName());
         conf.put(Config.TOPOLOGY_AUTO_CREDENTIALS, plugins);
         conf.put(ConfigurationOptions.OPENSEARCH_NODES, esNodes);
         conf.put(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");

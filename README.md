@@ -319,7 +319,7 @@ ES-Hadoop provides native integration with Storm: for reading a dedicated `Spout
 ### Reading
 To read data from ES, use `EsSpout`:
 ```java
-import org.elasticsearch.storm.EsSpout;
+import org.opensearch.storm.OpenSearchSpout;
 
 TopologyBuilder builder = new TopologyBuilder();
 builder.setSpout("es-spout", new EsSpout("storm/docs", "?q=me*"), 5);
@@ -330,7 +330,7 @@ builder.setBolt("bolt", new PrinterBolt()).shuffleGrouping("es-spout");
 To index data to ES, use `EsBolt`:
 
 ```java
-import org.elasticsearch.storm.EsBolt;
+import org.opensearch.storm.OpenSearchBolt;
 
 TopologyBuilder builder = new TopologyBuilder();
 builder.setSpout("spout", new RandomSentenceSpout(), 10);

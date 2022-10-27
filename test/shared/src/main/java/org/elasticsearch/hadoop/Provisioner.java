@@ -34,7 +34,7 @@ import org.opensearch.hadoop.util.Assert;
  */
 public abstract class Provisioner {
 
-    public static final String ESHADOOP_TESTING_JAR;
+    public static final String OPENSEARCHHADOOP_TESTING_JAR;
     public static final String HDFS_ES_HDP_LIB = "/eshdp/libs/es-hadoop.jar";
     public static final String SYS_PROP_JOB_JAR = "es.hadoop.job.jar";
 
@@ -50,7 +50,7 @@ public abstract class Provisioner {
             File testJar = new File(jobJarLocation).getCanonicalFile();
             Assert.isTrue(testJar.exists(),
                     String.format("Cannot find elasticsearch hadoop jar. File not found [%s]", testJar));
-            ESHADOOP_TESTING_JAR = testJar.getAbsolutePath();
+            OPENSEARCHHADOOP_TESTING_JAR = testJar.getAbsolutePath();
         } catch (IOException ex) {
             throw new RuntimeException("Cannot find required files", ex);
         }
@@ -59,7 +59,7 @@ public abstract class Provisioner {
 
     public static JobConf provision(JobConf conf) {
         // set job jar
-        conf.set("mapred.jar", ESHADOOP_TESTING_JAR);
+        conf.set("mapred.jar", OPENSEARCHHADOOP_TESTING_JAR);
         return conf;
     }
 

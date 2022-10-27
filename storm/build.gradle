@@ -1,7 +1,7 @@
 
 apply plugin: 'opensearch.hadoop.build.integration'
 
-description = "Elasticsearch Storm"
+description = "OpenSearch Storm"
 
 evaluationDependsOn(':opensearch-hadoop-mr')
 

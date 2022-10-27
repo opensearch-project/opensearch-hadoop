@@ -34,8 +34,8 @@ import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.tuple.Fields;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.security.LoginUtil;
-import org.elasticsearch.storm.EsBolt;
-import org.elasticsearch.storm.security.AutoElasticsearch;
+import org.opensearch.storm.OpenSearchBolt;
+import org.opensearch.storm.security.AutoOpenSearch;
 
 public class StreamToEs {
     public static void main(String[] args) throws Exception {
@@ -62,7 +62,7 @@ public class StreamToEs {
 
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("Input", new TestSpout(ImmutableList.of(doc1, doc2), new Fields("json"), true));
-        builder.setBolt("ES", new EsBolt("storm-test"))
+        builder.setBolt("ES", new OpenSearchBolt("storm-test"))
                 .shuffleGrouping("Input")
                 .addConfiguration(Config.TOPOLOGY_TICK_TUPLE_FREQ_SECS, 2);
 
@@ -70,7 +70,7 @@ public class StreamToEs {
 
         Config conf = new Config();
         List<Object> plugins = new ArrayList<Object>();
-        plugins.add(AutoElasticsearch.class.getName());
+        plugins.add(AutoOpenSearch.class.getName());
         conf.put(Config.TOPOLOGY_AUTO_CREDENTIALS, plugins);
         conf.put(ConfigurationOptions.OPENSEARCH_NODES, esNodes);
         conf.put(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");

@@ -31,7 +31,7 @@ import org.opensearch.hadoop.security.EsToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.util.ClusterName;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;

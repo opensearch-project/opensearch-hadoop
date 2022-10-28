@@ -337,7 +337,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 // Kerberos credentials available.
                 if (!StringUtils.hasText(settings.getNetworkSpnegoAuthElasticsearchPrincipal())) {
                     throw new OpenSearchHadoopIllegalArgumentException("Missing Elasticsearch Kerberos Principal name. " +
-                            "Specify one with [" + ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL + "]");
+                            "Specify one with [" + ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL + "]");
                 }
 
                 // Pick the appropriate user provider to get credentials from for SPNEGO auth

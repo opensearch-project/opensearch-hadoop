@@ -24,7 +24,7 @@ import org.opensearch.hadoop.rest.Transport;
 import org.elasticsearch.hadoop.rest.pooling.TransportPool;
 import org.opensearch.hadoop.security.SecureSettings;
 import org.opensearch.hadoop.util.SettingsUtils;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
 import java.util.UUID;

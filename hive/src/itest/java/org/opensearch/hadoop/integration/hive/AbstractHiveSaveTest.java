@@ -19,10 +19,10 @@
 package org.opensearch.hadoop.integration.hive;
 
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.OpenSearchAssume;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.OpenSearchAssume;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -33,8 +33,8 @@ import org.junit.runners.MethodSorters;
 import java.sql.SQLException;
 
 import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_5_X;
-import static org.elasticsearch.hadoop.util.TestUtils.docEndpoint;
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.docEndpoint;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertThat;
 

@@ -28,7 +28,7 @@ import org.opensearch.hadoop.pig.PigFieldExtractor;
 import org.opensearch.hadoop.pig.PigTuple;
 import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor;
 import org.opensearch.hadoop.serialization.field.FieldExtractor;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;

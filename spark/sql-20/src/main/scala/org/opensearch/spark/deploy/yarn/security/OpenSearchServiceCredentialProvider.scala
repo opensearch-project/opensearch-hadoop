@@ -29,7 +29,7 @@ import org.apache.hadoop.security.Credentials
 import org.apache.hadoop.security.UserGroupInformation
 import org.apache.spark.SparkConf
 import org.apache.spark.deploy.yarn.security.ServiceCredentialProvider
-import org.elasticsearch.spark.cfg.SparkSettingsManager
+import org.opensearch.spark.cfg.SparkSettingsManager
 import org.opensearch.hadoop.cfg.{CompositeSettings, HadoopSettingsManager}
 import org.opensearch.hadoop.mr.security.{EsTokenIdentifier, HadoopUserProvider, TokenUtil}
 import org.opensearch.hadoop.rest.{InitializationUtils, RestClient}

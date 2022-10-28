@@ -117,12 +117,12 @@ class BuildPlugin implements Plugin<Project>  {
 
     /**
      * Applies a closure to all dependencies in a configuration (currently or in the future) that disables the
-     * resolution of transitive dependencies except for projects in the group <code>org.elasticsearch</code>.
+     * resolution of transitive dependencies except for projects in the group <code>org.opensearch</code>.
      * @param configuration to disable transitive dependencies on
      */
     static void disableTransitiveDependencies(Project project, Configuration configuration) {
         configuration.dependencies.all { Dependency dep ->
-            if (dep instanceof ModuleDependency && !(dep instanceof ProjectDependency) && dep.group.startsWith('org.elasticsearch') == false) {
+            if (dep instanceof ModuleDependency && !(dep instanceof ProjectDependency) && dep.group.startsWith('org.opensearch') == false) {
                 dep.transitive = false
 
                 // also create a configuration just for this dependency version, so that later

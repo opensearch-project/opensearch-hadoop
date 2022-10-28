@@ -1,6 +1,6 @@
 A = LOAD '/data/artists' USING PigStorage('\t') AS (number: chararray, name: chararray, uri: chararray, picture: chararray, timestamp: chararray, tag: chararray);
 
-STORE A INTO 'qa_kerberos_pig_data' USING org.opensearch.pig.hadoop.EsStorage(
+STORE A INTO 'qa_kerberos_pig_data' USING org.opensearch.pig.hadoop.OpenSearchStorage(
     'es.security.authentication = kerberos',
-    'es.net.spnego.auth.elasticsearch.principal = HTTP/build.elastic.co@BUILD.ELASTIC.CO'
+    'opensearch.net.spnego.auth.opensearch.principal = HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG'
 );

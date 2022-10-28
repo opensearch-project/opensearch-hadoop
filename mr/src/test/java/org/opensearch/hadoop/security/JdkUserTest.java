@@ -24,7 +24,7 @@ import javax.security.auth.kerberos.KerberosPrincipal;
 
 import org.opensearch.hadoop.util.ClusterName;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;

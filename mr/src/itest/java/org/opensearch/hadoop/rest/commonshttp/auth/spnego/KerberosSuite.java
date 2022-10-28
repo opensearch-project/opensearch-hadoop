@@ -21,9 +21,9 @@ package org.opensearch.hadoop.rest.commonshttp.auth.spnego;
 
 import java.io.File;
 
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.fixtures.KDCFixture;
-import org.elasticsearch.hadoop.security.UgiUtil;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.fixtures.KDCFixture;
+import org.opensearch.hadoop.security.UgiUtil;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -39,8 +39,8 @@ public class KerberosSuite {
 
     public static String PRINCIPAL_CLIENT = "client";
     public static String PRINCIPAL_SERVER = "server";
-    public static String PRINCIPAL_HTTP = "HTTP/es.build.elastic.co";
-    public static String DEFAULT_REALM = "BUILD.ELASTIC.CO";
+    public static String PRINCIPAL_HTTP = "HTTP/opensearch.build.ci.opensearch.org";
+    public static String DEFAULT_REALM = "BUILD.CI.OPENSEARCH.ORG";
 
     private static TemporaryFolder temporaryFolder = new TemporaryFolder();
     private static KDCFixture kdcFixture = new KDCFixture(temporaryFolder);

@@ -26,10 +26,10 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
-import org.elasticsearch.hadoop.fs.HdfsUtils;
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.fixtures.LocalEs;
-import org.elasticsearch.hadoop.Provisioner;
+import org.opensearch.hadoop.fs.HdfsUtils;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.Provisioner;
 import org.opensearch.hadoop.util.StringUtils;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
@@ -138,7 +138,7 @@ public class HiveSuite {
 
 
     public static String tableProps(String resource, String query, String... params) {
-        StringBuilder sb = new StringBuilder("STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler' ");
+        StringBuilder sb = new StringBuilder("STORED BY 'org.opensearch.hive.hadoop.OpenSearchStorageHandler' ");
 
         sb.append("TBLPROPERTIES('es.resource'='" + resource + "'");
 

@@ -35,7 +35,7 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeout
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.Protocol;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.ProtocolSocketFactory;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;

@@ -33,7 +33,6 @@ import org.opensearch.hadoop.handler.ErrorCollector;
 import org.opensearch.hadoop.handler.OpenSearchHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
 import org.opensearch.hadoop.rest.OpenSearchHadoopParsingException;
-import org.elasticsearch.hadoop.serialization.JsonUtils;
 import org.opensearch.hadoop.serialization.builder.JdkValueReader;
 import org.opensearch.hadoop.serialization.dto.mapping.FieldParser;
 import org.opensearch.hadoop.serialization.dto.mapping.MappingSet;
@@ -41,7 +40,7 @@ import org.opensearch.hadoop.serialization.handler.read.DeserializationErrorHand
 import org.opensearch.hadoop.serialization.handler.read.DeserializationFailure;
 import org.opensearch.hadoop.serialization.handler.read.impl.DeserializationHandlerLoader;
 import org.opensearch.hadoop.util.ObjectUtils;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.joda.time.format.ISODateTimeFormat;
 import org.junit.Test;
 import org.junit.runner.RunWith;

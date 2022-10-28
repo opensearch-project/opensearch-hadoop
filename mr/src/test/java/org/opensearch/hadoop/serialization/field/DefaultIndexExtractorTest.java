@@ -31,7 +31,7 @@ import org.opensearch.hadoop.rest.Resource;
 import org.opensearch.hadoop.serialization.MapFieldExtractor;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.ObjectUtils;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;

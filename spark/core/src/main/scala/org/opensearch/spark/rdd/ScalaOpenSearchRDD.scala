@@ -37,7 +37,7 @@ private[spark] class ScalaOpenSearchRDD[T](
   extends AbstractOpenSearchRDD[(String, T)](sc, params) {
 
   override def compute(split: Partition, context: TaskContext): ScalaOpenSearchRDDIterator[T] = {
-    new ScalaOpenSearchRDDIterator(context, split.asInstanceOf[EsPartition].esPartition)
+    new ScalaOpenSearchRDDIterator(context, split.asInstanceOf[OpenSearchPartition].opensearchPartition)
   }
 }
 

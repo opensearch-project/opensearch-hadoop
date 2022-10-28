@@ -45,7 +45,7 @@ import org.opensearch.hadoop.hive.HiveType;
 import org.opensearch.hadoop.hive.HiveValueWriter;
 import org.opensearch.hadoop.serialization.builder.ContentBuilder;
 import org.opensearch.hadoop.util.FastByteArrayOutputStream;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

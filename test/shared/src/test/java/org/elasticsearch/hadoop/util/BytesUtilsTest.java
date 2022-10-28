@@ -20,7 +20,9 @@ package org.elasticsearch.hadoop.util;
 
 import org.junit.Test;
 import org.opensearch.hadoop.util.BytesArray;
+import org.opensearch.hadoop.util.BytesUtils;
 import org.opensearch.hadoop.util.IOUtils;
+import org.opensearch.hadoop.util.TestUtils;
 
 import static org.junit.Assert.*;
 

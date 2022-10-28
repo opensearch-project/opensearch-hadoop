@@ -24,13 +24,13 @@ import java.util.Collection;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.QueryTestParams;
-import org.elasticsearch.hadoop.OpenSearchAssume;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.QueryTestParams;
+import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -41,7 +41,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.*;
 
 import static org.hamcrest.Matchers.*;
@@ -90,8 +90,8 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     @Test
     public void testTuple() throws Exception {
         String script =
-                "DEFINE EsStorage org.opensearch.pig.hadoop.EsStorage('es.query=" + query + "','es.read.metadata=" + readMetadata +"');" +
-                "A = LOAD '"+resource("json-pig-tupleartists", "data", VERSION)+"' USING EsStorage();" +
+                "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.query=" + query + "','es.read.metadata=" + readMetadata +"');" +
+                "A = LOAD '"+resource("json-pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage();" +
                 "X = LIMIT A 3;" +
                 //"DESCRIBE A;";
                 "STORE A INTO '" + tmpPig() + "/testtuple';";
@@ -108,8 +108,8 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     @Test
     public void testTupleWithSchema() throws Exception {
         String script =
-                "DEFINE EsStorage org.opensearch.pig.hadoop.EsStorage('es.query=" + query + "','es.read.metadata=" + readMetadata +"');" +
-                "A = LOAD '"+resource("json-pig-tupleartists", "data", VERSION)+"' USING EsStorage() AS (name:chararray);" +
+                "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.query=" + query + "','es.read.metadata=" + readMetadata +"');" +
+                "A = LOAD '"+resource("json-pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage() AS (name:chararray);" +
                 "B = ORDER A BY name DESC;" +
                 "X = LIMIT B 3;" +
                 "STORE B INTO '" + tmpPig() + "/testtupleschema';";
@@ -124,8 +124,8 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     @Test
     public void testFieldAlias() throws Exception {
         String script =
-                       "DEFINE EsStorage org.opensearch.pig.hadoop.EsStorage('es.query="+ query + "','es.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD '"+resource("json-pig-fieldalias", "data", VERSION)+"' USING EsStorage();"
+                       "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.query="+ query + "','es.read.metadata=" + readMetadata +"');"
+                      + "A = LOAD '"+resource("json-pig-fieldalias", "data", VERSION)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testfieldalias';";
         pig.executeScript(script);
@@ -140,8 +140,8 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     @Test
     public void testMissingIndex() throws Exception {
         String script =
-                      "DEFINE EsStorage org.opensearch.pig.hadoop.EsStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD '"+resource("foo", "bar", VERSION)+"' USING EsStorage();"
+                      "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"');"
+                      + "A = LOAD '"+resource("foo", "bar", VERSION)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testmissingindex';";
         pig.executeScript(script);
@@ -154,8 +154,8 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     public void testParentChild() throws Exception {
         OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         String script =
-                      "DEFINE EsStorage org.opensearch.pig.hadoop.EsStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD 'json-pig-pc/child' USING EsStorage();"
+                      "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"');"
+                      + "A = LOAD 'json-pig-pc/child' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testparentchild';";
         pig.executeScript(script);

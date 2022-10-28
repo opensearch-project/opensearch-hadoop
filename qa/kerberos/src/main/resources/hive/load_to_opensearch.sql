@@ -23,11 +23,11 @@ CREATE EXTERNAL TABLE IF NOT EXISTS es_artist_data (
   picture STRING,
   ts TIMESTAMP,
   tag STRING)
-STORED BY 'org.elasticsearch.hadoop.hive.EsStorageHandler'
+STORED BY 'org.opensearch.hadoop.hive.OpenSearchStorageHandler'
 TBLPROPERTIES(
   'es.resource' = 'qa_kerberos_hive_data',
   'es.security.authentication' = 'kerberos',
-  'es.net.spnego.auth.elasticsearch.principal' = 'HTTP/build.elastic.co@BUILD.ELASTIC.CO'
+  'es.net.spnego.auth.elasticsearch.principal' = 'HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG'
 );
 
 -- Create random timestamps up front since Hive's timestamp format differs from ISO8601

@@ -34,7 +34,7 @@ public abstract class UserProvider implements SettingsAware {
         String className = settings.getSecurityUserProviderClass();
         if (className == null) {
             throw new OpenSearchHadoopIllegalArgumentException("Could not locate classname for UserProvider. One must be set with " +
-                    ConfigurationOptions.ES_SECURITY_USER_PROVIDER_CLASS);
+                    ConfigurationOptions.OPENSEARCH_SECURITY_USER_PROVIDER_CLASS);
         }
         return ObjectUtils.instantiate(className, settings);
     }

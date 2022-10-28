@@ -32,7 +32,7 @@ import org.opensearch.hadoop.hive.HiveFieldExtractor;
 import org.opensearch.hadoop.serialization.HiveTypeToJsonTest.MyHiveType;
 import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor;
 import org.opensearch.hadoop.serialization.field.FieldExtractor;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

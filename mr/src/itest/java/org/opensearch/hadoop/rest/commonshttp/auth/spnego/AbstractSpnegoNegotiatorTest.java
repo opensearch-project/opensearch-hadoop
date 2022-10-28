@@ -30,7 +30,7 @@ import org.apache.hadoop.security.SecurityUtil;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.rest.OpenSearchHadoopTransportException;
-import org.elasticsearch.hadoop.security.UgiUtil;
+import org.opensearch.hadoop.security.UgiUtil;
 import org.ietf.jgss.GSSContext;
 import org.ietf.jgss.GSSCredential;
 import org.ietf.jgss.GSSException;

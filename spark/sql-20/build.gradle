@@ -8,7 +8,7 @@ apply plugin: 'opensearch.hadoop.build.integration'
 apply plugin: 'spark.variants'
 
 sparkVariants {
-    capabilityGroup 'org.elasticsearch.spark.sql.variant'
+    capabilityGroup 'org.opensearch.spark.sql.variant'
     setDefaultVariant "spark20scala212", spark24Version, scala212Version
     addFeatureVariant "spark20scala211", spark24Version, scala211Version
     addFeatureVariant "spark20scala210", spark22Version, scala210Version
@@ -49,7 +49,7 @@ sparkVariants {
             add(variant.configuration('embedded'), project(":opensearch-hadoop-mr"))
             add(variant.configuration('embedded'), project(":opensearch-spark")) {
                 capabilities {
-                    requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
+                    requireCapability("org.opensearch.spark.variant:$variant.name:$project.version")
                 }
             }
 
@@ -120,12 +120,12 @@ sparkVariants {
 
             add(variant.configuration('additionalSources'), project(":opensearch-spark")) {
                 capabilities {
-                    requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
+                    requireCapability("org.opensearch.spark.variant:$variant.name:$project.version")
                 }
             }
             add(variant.configuration('javadocSources'), project(":opensearch-spark")) {
                 capabilities {
-                    requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
+                    requireCapability("org.opensearch.spark.variant:$variant.name:$project.version")
                 }
             }
         }

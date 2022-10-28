@@ -48,7 +48,7 @@ import org.opensearch.hadoop.util.ClusterInfo;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.FastByteArrayInputStream;
 import org.opensearch.hadoop.util.IOUtils;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.TrackingBytesArray;
 import org.junit.Assert;
 import org.junit.Before;

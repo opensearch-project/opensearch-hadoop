@@ -198,7 +198,7 @@ Additionally one can define an alias to save some chars:
 and use `$ESSTORAGE` for storage definition.
 
 ### Reading
-To read data from ES, use `EsStorage` and specify the query through the `LOAD` function:
+To read data from ES, use `OpenSearchStorage` and specify the query through the `LOAD` function:
 ```SQL
 A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage('es.query=?q=me*');
 DUMP A;
@@ -265,19 +265,19 @@ df.saveToEs("spark/people")
 
 ### Java
 
-In a Java environment, use the `org.elasticsearch.spark.rdd.java.api` package, in particular the `JavaEsSpark` class.
+In a Java environment, use the `org.elasticsearch.spark.rdd.java.api` package, in particular the `JavaOpenSearchSpark` class.
 
 ### Reading
 To read data from ES, create a dedicated `RDD` and specify the query as an argument.
 
 ```java
 import org.apache.spark.api.java.JavaSparkContext;
-import org.elasticsearch.spark.rdd.api.java.JavaEsSpark;
+import org.elasticsearch.spark.rdd.api.java.JavaOpenSearchSpark;
 
 SparkConf conf = ...
 JavaSparkContext jsc = new JavaSparkContext(conf);
 
-JavaPairRDD<String, Map<String, Object>> esRDD = JavaEsSpark.esRDD(jsc, "radio/artists");
+JavaPairRDD<String, Map<String, Object>> esRDD = JavaOpenSearchSpark.esRDD(jsc, "radio/artists");
 ```
 
 #### Spark SQL
@@ -290,9 +290,9 @@ DataFrame playlist = df.filter(df.col("category").equalTo("pikes").and(df.col("y
 
 ### Writing
 
-Use `JavaEsSpark` to index any `RDD` to Elasticsearch:
+Use `JavaOpenSearchSpark` to index any `RDD` to Elasticsearch:
 ```java
-import org.elasticsearch.spark.rdd.api.java.JavaEsSpark;
+import org.elasticsearch.spark.rdd.api.java.JavaOpenSearchSpark;
 
 SparkConf conf = ...
 JavaSparkContext jsc = new JavaSparkContext(conf);
@@ -322,7 +322,7 @@ To read data from ES, use `EsSpout`:
 import org.opensearch.storm.OpenSearchSpout;
 
 TopologyBuilder builder = new TopologyBuilder();
-builder.setSpout("es-spout", new EsSpout("storm/docs", "?q=me*"), 5);
+builder.setSpout("opensearch-spout", new OpenSearchSpout("storm/docs", "?q=me*"), 5);
 builder.setBolt("bolt", new PrinterBolt()).shuffleGrouping("es-spout");
 ```
 

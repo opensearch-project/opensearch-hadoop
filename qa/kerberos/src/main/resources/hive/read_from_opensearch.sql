@@ -7,7 +7,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS es_artist_data (
   picture STRING,
   ts TIMESTAMP,
   tag STRING)
-STORED BY 'org.elasticsearch.hadoop.hive.EsStorageHandler'
+STORED BY 'org.opensearch.hadoop.hive.OpenSearchStorageHandler'
 TBLPROPERTIES('es.resource' = 'qa_kerberos_hive_data');
 
 DROP TABLE IF EXISTS artist_data;

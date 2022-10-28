@@ -50,7 +50,7 @@ import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.serialization.bulk.BulkCommand;
 import org.opensearch.hadoop.serialization.bulk.BulkCommands;
-import org.elasticsearch.hadoop.util.*;
+import org.opensearch.hadoop.util.*;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.ClusterInfo;

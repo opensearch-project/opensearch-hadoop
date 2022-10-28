@@ -27,7 +27,7 @@ import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.ClusterInfo;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.FastByteArrayInputStream;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 import org.mockito.Mockito;
 

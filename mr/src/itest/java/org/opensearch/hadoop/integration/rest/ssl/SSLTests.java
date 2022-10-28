@@ -23,14 +23,14 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 import java.util.Properties;
 
-import org.elasticsearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.cfg.PropertiesSettings;
 import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.Request.Method;
 import org.opensearch.hadoop.rest.Response;
 import org.opensearch.hadoop.rest.SimpleRequest;
 import org.opensearch.hadoop.rest.commonshttp.CommonsHttpTransport;
-import org.elasticsearch.hadoop.rest.ssl.BasicSSLServer;
+import org.opensearch.hadoop.rest.ssl.BasicSSLServer;
 import org.opensearch.hadoop.security.KeystoreWrapper;
 import org.opensearch.hadoop.security.SecureSettings;
 import org.opensearch.hadoop.util.IOUtils;

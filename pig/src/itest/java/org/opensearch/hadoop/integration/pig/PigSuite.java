@@ -20,11 +20,11 @@ package org.opensearch.hadoop.integration.pig;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.pig.impl.io.FileLocalizer;
-import org.elasticsearch.hadoop.TestData;
-import org.elasticsearch.hadoop.fs.HdfsUtils;
-import org.elasticsearch.hadoop.fixtures.LocalEs;
-import org.elasticsearch.hadoop.Provisioner;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.TestData;
+import org.opensearch.hadoop.fs.HdfsUtils;
+import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.Provisioner;
+import org.opensearch.hadoop.util.TestUtils;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.rules.ExternalResource;

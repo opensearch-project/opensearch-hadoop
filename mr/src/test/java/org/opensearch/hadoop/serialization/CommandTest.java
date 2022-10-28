@@ -29,7 +29,7 @@ import org.opensearch.hadoop.serialization.bulk.BulkCommands;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

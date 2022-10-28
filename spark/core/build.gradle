@@ -8,7 +8,7 @@ apply plugin: 'opensearch.hadoop.build'
 apply plugin: 'spark.variants'
 
 sparkVariants {
-    capabilityGroup 'org.elasticsearch.spark.variant'
+    capabilityGroup 'org.opensearch.spark.variant'
     setCoreDefaultVariant "spark20scala212", spark24Version, scala212Version
     addCoreFeatureVariant "spark30scala213", spark30Version, scala213Version
     addCoreFeatureVariant "spark30scala212", spark30Version, scala212Version

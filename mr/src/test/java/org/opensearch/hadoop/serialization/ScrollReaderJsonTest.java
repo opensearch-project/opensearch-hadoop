@@ -30,7 +30,7 @@ import org.opensearch.hadoop.serialization.builder.JdkValueReader;
 import org.opensearch.hadoop.serialization.dto.mapping.FieldParser;
 import org.opensearch.hadoop.serialization.dto.mapping.MappingSet;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;

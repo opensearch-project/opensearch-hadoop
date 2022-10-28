@@ -64,14 +64,14 @@ configurations {
 
 dependencies {
     implementation(project(":opensearch-hadoop-mr"))
-    implementation(project(":elasticsearch-storm"))
+    implementation(project(":opensearch-storm"))
 
     implementation("org.scala-lang:scala-library:${scala212Version}")
     implementation("org.scala-lang:scala-reflect:${scala212Version}")
     implementation(project(":opensearch-spark-30")) {
         capabilities {
             // Spark 3.x on Scala 2.12
-            requireCapability("org.elasticsearch.spark.sql.variant:spark30scala212:$project.version")
+            requireCapability("org.opensearch.spark.sql.variant:spark30scala212:$project.version")
         }
     }
     
@@ -84,7 +84,7 @@ dependencies {
     implementation("org.apache.spark:spark-sql_2.12:$project.ext.spark30Version")
 
     implementation( project(path: ':opensearch-hadoop-mr', configuration: 'itestJarConfig'))
-    implementation( project(path: ':elasticsearch-storm', configuration: 'itestJarConfig'))
+    implementation( project(path: ':opensearch-storm', configuration: 'itestJarConfig'))
 
     kdcFixture project(':test:fixtures:minikdc')
 
@@ -112,18 +112,18 @@ if (disableTests) {
     integrationTest.setEnabled(false)
 } else if (!localRepo) {
     // We don't want to attempt compiling integration or test code when using a local repo because it depends on
-    // the elasticsearch jar which will not be reachable.
+    // the opensearch jar which will not be reachable.
     // Additionally, when using a local repo, the esCluster plugin is not applied, and thus, cannot be referenced in the
     // build script.
     
     // Build uber storm jar for testing Storm remotely (es-hadoop + es-storm + qa tests)
     Jar qaKerberosStormJar = project.tasks.create('kerberosStormJar', Jar)
-    qaKerberosStormJar.dependsOn(project(':elasticsearch-storm').tasks.getByName('jar'))
-    qaKerberosStormJar.dependsOn(project(':elasticsearch-storm').tasks.getByName('itestJar'))
+    qaKerberosStormJar.dependsOn(project(':opensearch-storm').tasks.getByName('jar'))
+    qaKerberosStormJar.dependsOn(project(':opensearch-storm').tasks.getByName('itestJar'))
     qaKerberosStormJar.classifier = 'storm-testing'
     
     // Add projects to the storm testing uber-jar
-    [project, project(":opensearch-hadoop-mr"), project(":elasticsearch-storm")].forEach { proj ->
+    [project, project(":opensearch-hadoop-mr"), project(":opensearch-storm")].forEach { proj ->
         qaKerberosStormJar.from(proj.sourceSets.test.output)
         qaKerberosStormJar.from(proj.sourceSets.main.output)
         qaKerberosStormJar.from(proj.sourceSets.itest.output)
@@ -136,10 +136,10 @@ if (disableTests) {
     // Kerberos configuration
     // =============================================================================
     
-    String realm = '@BUILD.ELASTIC.CO'
-    String hostPart = '/build.elastic.co'
+    String realm = '@BUILD.CI.OPENSEARCH.ORG'
+    String hostPart = '/build.ci.opensearch.org'
     
-    String esPrincipal = 'HTTP' + hostPart
+    String opensearchPrincipal = 'HTTP' + hostPart
     String clientPrincipal = 'client' + hostPart
     String namenodePrincipal = 'nn' + hostPart
     String datanodePrincipal = 'dn' + hostPart
@@ -157,9 +157,9 @@ if (disableTests) {
     Map users = ["client":"password", "gmarx":"swordfish"]
     Map<String, String> keytabUsers = [:]
     
-    keytabUsers.put(esPrincipal, esKeytabName)
+    keytabUsers.put(opensearchPrincipal, esKeytabName)
     keytabUsers.put(clientPrincipal, clientKeytabName)
-    keytabUsers.put('HTTP/hadoop.build.elastic.co', hadoopKeytabName)
+    keytabUsers.put('HTTP/hadoop.build.opensearch.org', hadoopKeytabName)
     keytabUsers.put(namenodePrincipal, hadoopKeytabName)
     keytabUsers.put(datanodePrincipal, hadoopKeytabName)
     keytabUsers.put(resourceManagerPrincipal, hadoopKeytabName)
@@ -186,7 +186,7 @@ if (disableTests) {
         keytabUsers.forEach { k, v -> kdcFixtureArgs.add("-Des.fixture.kdc.user.${k}.keytab=${v}") }
     
         // Common options
-        kdcFixtureArgs.add('org.elasticsearch.hadoop.test.fixture.minikdc.MiniKdcFixture')
+        kdcFixtureArgs.add('org.opensearch.hadoop.test.fixture.minikdc.MiniKdcFixture')
         kdcFixtureArgs.add(baseDir.toString())
     
         args kdcFixtureArgs.toArray()
@@ -311,9 +311,9 @@ if (disableTests) {
                 f.addSetting("hadoop.proxyuser.hive.hosts", "*")
                 f.addSetting("hadoop.proxyuser.hive.groups", "*")
 
-                // Add ES Security settings here because without them Spark will not obtain tokens
+                // Add OpenSearch Security settings here because without them Spark will not obtain tokens
                 f.addSetting('es.security.authentication', 'kerberos')
-                f.addSetting('es.net.spnego.auth.elasticsearch.principal', "${esPrincipal}${realm}")
+                f.addSetting('opensearch.net.spnego.auth.opensearch.principal', "${opensearchPrincipal}${realm}")
             }
             // SSL Server Config
             s.settingsFile('ssl-server.xml') { SettingsContainer.FileSettings f ->
@@ -325,12 +325,12 @@ if (disableTests) {
             // HDFS Site Config
             s.settingsFile('hdfs-site.xml') { SettingsContainer.FileSettings f ->
                 f.addSetting("dfs.http.policy", "HTTPS_ONLY")
-                f.addSetting("dfs.web.authentication.kerberos.principal", "HTTP/hadoop.build.elastic.co$realm")
+                f.addSetting("dfs.web.authentication.kerberos.principal", "HTTP/hadoop.build.opensearch.org$realm")
                 f.addSetting("dfs.web.authentication.kerberos.keytab", "$hadoopKeytab")
                 f.addSetting("dfs.block.access.token.enable", "true")
                 f.addSetting("dfs.namenode.kerberos.principal", "$namenodePrincipal$realm")
                 f.addSetting("dfs.namenode.keytab.file", "$hadoopKeytab")
-                f.addSetting("dfs.namenode.kerberos.internal.spnego.principal", "HTTP/hadoop.build.elastic.co")
+                f.addSetting("dfs.namenode.kerberos.internal.spnego.principal", "HTTP/hadoop.build.opensearch.org")
                 f.addSetting("dfs.datanode.data.dir.perm", "700")
                 f.addSetting("dfs.datanode.kerberos.principal", "$datanodePrincipal$realm")
                 f.addSetting("dfs.datanode.keytab.file", "$hadoopKeytab")
@@ -405,7 +405,7 @@ if (disableTests) {
         runOn(config.service('hadoop').role('namenode').instance(0))
         dependsOn(jar)
         jobJar = jar.archivePath
-        jobClass = 'org.elasticsearch.hadoop.qa.kerberos.dfs.SecureFsShell'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.dfs.SecureFsShell'
         systemProperties([
                 "test.krb5.principal": namenodePrincipal,
                 "test.krb5.keytab": hadoopKeytab.toString(),
@@ -419,7 +419,7 @@ if (disableTests) {
         runOn(config.service('hadoop').role('namenode').instance(0))
         dependsOn(jar, createTmp)
         jobJar = jar.archivePath
-        jobClass = 'org.elasticsearch.hadoop.qa.kerberos.dfs.SecureFsShell'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.dfs.SecureFsShell'
         systemProperties([
                 "test.krb5.principal": namenodePrincipal,
                 "test.krb5.keytab": hadoopKeytab.toString(),
@@ -437,7 +437,7 @@ if (disableTests) {
         executedOn = config.service('hadoop').role('namenode').instance(0)
         dependsOn(jar)
         jobJar = jar.archivePath
-        jobClass = 'org.elasticsearch.hadoop.qa.kerberos.dfs.SecureFsShell'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.dfs.SecureFsShell'
         systemProperties([
                 "test.krb5.principal": clientPrincipal,
                 "test.krb5.keytab": clientKeytab.toString(),
@@ -452,7 +452,7 @@ if (disableTests) {
         clusterConfiguration = config
         dependsOn(createDataDir, jar)
         jobJar = jar.archivePath
-        jobClass = 'org.elasticsearch.hadoop.qa.kerberos.dfs.SecureFsShell'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.dfs.SecureFsShell'
         systemProperties([
                 "test.krb5.principal": clientPrincipal,
                 "test.krb5.keytab": clientKeytab.toString(),
@@ -472,12 +472,12 @@ if (disableTests) {
         dependsOn(copyData, setupUsers)
         jobJar = jar.archivePath
         libJars(mrJar.archivePath, kerberosItestJar.archivePath)
-        jobClass = 'org.elasticsearch.hadoop.qa.kerberos.mr.LoadToES'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.LoadToES'
         jobSettings([
                 'es.resource': 'qa_kerberos_mr_data',
                 'opensearch.nodes': opensearchAddress,
                 'es.security.authentication': 'kerberos',
-                'es.net.spnego.auth.elasticsearch.principal': "${esPrincipal}${realm}",
+                'opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'load.field.names': 'number,name,url,picture,@timestamp,tag',
                 'mapreduce.map.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",
                 'mapreduce.reduce.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",
@@ -499,12 +499,12 @@ if (disableTests) {
         dependsOn(mrLoadData)
         jobJar = jar.archivePath
         libJars(mrJar.archivePath, kerberosItestJar.archivePath)
-        jobClass = 'org.elasticsearch.hadoop.qa.kerberos.mr.ReadFromES'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.ReadFromES'
         jobSettings([
                 'es.resource': 'qa_kerberos_mr_data',
                 'es.nodes': opensearchAddress,
                 'es.security.authentication': 'kerberos',
-                'es.net.spnego.auth.elasticsearch.principal': "${esPrincipal}${realm}",
+                'opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'mapreduce.map.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",
                 'mapreduce.reduce.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",
                 'yarn.app.mapreduce.am.command-opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}"
@@ -532,12 +532,12 @@ if (disableTests) {
     //    keytab = clientKeytab.toString()
         jobJar = jar.archivePath
         libJars(sparkJar.archivePath, kerberosItestJar.archivePath)
-        jobClass = 'org.elasticsearch.hadoop.qa.kerberos.spark.LoadToES'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.spark.LoadToES'
         jobSettings([
                 'spark.es.resource': 'qa_kerberos_spark_data',
                 'spark.opensearch.nodes': opensearchAddress,
                 'spark.es.security.authentication': 'kerberos',
-                'spark.es.net.spnego.auth.elasticsearch.principal': "${esPrincipal}${realm}",
+                'spark.opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'spark.load.field.names': 'number,name,url,picture,@timestamp,tag',
                 'spark.yarn.am.memory': "200m",
                 'spark.driver.memory': "600m",
@@ -564,12 +564,12 @@ if (disableTests) {
     //    keytab = clientKeytab.toString()
         jobJar = jar.archivePath
         libJars(sparkJar.archivePath, kerberosItestJar.archivePath)
-        jobClass = 'org.elasticsearch.hadoop.qa.kerberos.spark.ReadFromES'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.spark.ReadFromES'
         jobSettings([
                 'spark.es.resource': 'qa_kerberos_spark_data',
                 'spark.opensearch.nodes': opensearchAddress,
                 'spark.es.security.authentication': 'kerberos',
-                'spark.es.net.spnego.auth.elasticsearch.principal': "${esPrincipal}${realm}",
+                'spark.opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'spark.yarn.am.memory': "200m",
                 'spark.driver.memory': "600m",
                 'spark.yarn.am.extraJavaOptions': "-Djava.security.krb5.conf=${krb5Conf.toString()}",
@@ -696,7 +696,7 @@ if (disableTests) {
             clusterConfiguration = config
             dependsOn(integrationReadTask, createOutputDataDir)
             jobJar = jar.archivePath
-            jobClass = 'org.elasticsearch.hadoop.qa.kerberos.dfs.SecureFsShell'
+            jobClass = 'org.opensearch.hadoop.qa.kerberos.dfs.SecureFsShell'
             systemProperties([
                     "test.krb5.principal": clientPrincipal,
                     "test.krb5.keytab": clientKeytab.toString(),

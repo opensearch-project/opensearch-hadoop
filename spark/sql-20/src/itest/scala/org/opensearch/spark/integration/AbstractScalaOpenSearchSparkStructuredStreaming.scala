@@ -34,17 +34,12 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.streaming.OutputMode
 import org.apache.spark.sql.types.Decimal
-import org.elasticsearch.hadoop.OpenSearchAssume
-import org.elasticsearch.hadoop.TestData
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES
-import org.elasticsearch.hadoop.rest.RestUtils
-import org.elasticsearch.hadoop.util.TestSettings
-import org.elasticsearch.hadoop.util.TestUtils
-import org.elasticsearch.hadoop.util.TestUtils.resource
-import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
+import org.opensearch.hadoop.util.TestUtils.resource
+import org.opensearch.hadoop.util.TestUtils.docEndpoint
 import org.opensearch.spark.sql.streaming.SparkSqlStreamingConfigs
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.is
@@ -56,10 +51,11 @@ import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
+import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException, TestData}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
-import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
 import org.opensearch.spark.integration.SparkUtils
 import org.opensearch.spark.sql.streaming.StreamingQueryTestHarness
 
@@ -193,7 +189,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
 
   @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def test1FailOnIncorrectSaveCall(): Unit = {
-    import org.elasticsearch.spark.sql._
+    import org.opensearch.spark.sql._
     val target = wrapIndex(resource("failed-on-save-call", "data", version))
     val test = new StreamingQueryTestHarness[Record](spark)
 

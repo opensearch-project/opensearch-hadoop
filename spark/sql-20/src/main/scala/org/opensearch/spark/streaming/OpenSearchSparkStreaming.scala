@@ -24,7 +24,7 @@ import java.util.UUID
 import org.apache.spark.streaming.dstream.DStream
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
-import org.elasticsearch.spark.rdd.EsSpark
+import org.opensearch.spark.rdd.OpenSearchSpark
 
 import scala.collection.Map
 
@@ -68,6 +68,6 @@ object OpenSearchSparkStreaming {
     // Set the transport pooling key and delegate to the standard EsSpark save.
     // IMPORTANT: Do not inline this into the lambda expression below
     val config = collection.mutable.Map(cfg.toSeq: _*) += (INTERNAL_TRANSPORT_POOLING_KEY -> UUID.randomUUID().toString)
-    ds.foreachRDD(rdd => EsSpark.doSaveToEs(rdd, config, hasMeta))
+    ds.foreachRDD(rdd => OpenSearchSpark.doSaveToEs(rdd, config, hasMeta))
   }
 }

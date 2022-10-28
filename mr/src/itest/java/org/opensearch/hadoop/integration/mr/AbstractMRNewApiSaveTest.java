@@ -34,21 +34,21 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.OutputFormat;
 import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.Stream;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.Stream;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.OpenSearchAssume;
+import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.mr.EsOutputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.mr.MultiOutputFormat;
-import org.elasticsearch.hadoop.mr.PrintStreamOutputFormat;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.ClusterInfo;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.TestSettings;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestUtils;
 import org.opensearch.hadoop.util.WritableUtils;
 import org.junit.FixMethodOrder;
 import org.junit.Test;
@@ -57,7 +57,7 @@ import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.assertFalse;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)

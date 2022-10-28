@@ -25,16 +25,12 @@ import org.apache.spark.streaming.dstream.DStream
 import org.apache.spark.streaming.scheduler._
 import org.apache.spark.streaming.{Seconds, StreamingContext, StreamingContextState}
 import org.apache.spark.{SparkConf, SparkContext, SparkException}
-import org.elasticsearch.hadoop.OpenSearchAssume
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
-import org.elasticsearch.hadoop.rest.RestUtils
-import org.elasticsearch.hadoop.util.TestUtils
-import org.elasticsearch.hadoop.util.TestUtils.resource
-import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
-import org.elasticsearch.hadoop.util.TestSettings
+import org.opensearch.hadoop.util.TestUtils.resource
+import org.opensearch.hadoop.util.TestUtils.docEndpoint
 import org.elasticsearch.spark.rdd.EsSpark
 import org.elasticsearch.spark.rdd.Metadata._
-import org.elasticsearch.spark.serialization.{ReflectionUtils}
+import org.elasticsearch.spark.serialization.ReflectionUtils
 import org.elasticsearch.spark.streaming._
 import org.hamcrest.Matchers._
 import org.junit.Assert._
@@ -42,9 +38,10 @@ import org.junit._
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.{MethodSorters, Parameterized}
-import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
+import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
-import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
+import org.opensearch.hadoop.rest.RestUtils
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
 import org.opensearch.spark.integration.SparkUtils
 import org.opensearch.spark.serialization.{Bean, Garbage, ModuleCaseClass, Trip}
 

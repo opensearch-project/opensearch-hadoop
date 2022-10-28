@@ -21,7 +21,7 @@ package org.opensearch.hadoop.serialization;
 import java.io.InputStream;
 
 import org.opensearch.hadoop.serialization.builder.JdkValueReader;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;

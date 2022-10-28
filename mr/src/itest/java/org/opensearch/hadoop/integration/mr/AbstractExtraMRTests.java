@@ -38,18 +38,18 @@ import org.apache.hadoop.mapred.OutputCollector;
 import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapred.lib.IdentityMapper;
 import org.apache.hadoop.mapred.lib.IdentityReducer;
-import org.elasticsearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.integration.mr.AbstractMROldApiSaveTest.SplittableTextInputFormat;
 import org.opensearch.hadoop.mr.EsInputFormat;
 import org.opensearch.hadoop.mr.EsOutputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
-import org.elasticsearch.hadoop.mr.PrintStreamOutputFormat;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestSettings;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestUtils;
 import org.opensearch.hadoop.util.WritableUtils;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -59,8 +59,8 @@ import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import static org.elasticsearch.hadoop.util.TestUtils.docEndpoint;
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.docEndpoint;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(Parameterized.class)

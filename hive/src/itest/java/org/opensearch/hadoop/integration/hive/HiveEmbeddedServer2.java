@@ -51,12 +51,12 @@ import org.apache.hive.service.cli.OperationHandle;
 import org.apache.hive.service.cli.RowSet;
 import org.apache.hive.service.cli.SessionHandle;
 import org.apache.hive.service.server.HiveServer2;
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.fs.NTFSLocalFileSystem;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.fs.NTFSLocalFileSystem;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.ReflectionUtils;
 import org.opensearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestUtils;
 
 import static org.junit.Assert.fail;
 

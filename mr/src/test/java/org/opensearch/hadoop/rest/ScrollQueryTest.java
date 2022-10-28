@@ -24,7 +24,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.opensearch.hadoop.rest.stats.Stats;
-import org.elasticsearch.hadoop.serialization.JsonUtils;
+import org.opensearch.hadoop.serialization.JsonUtils;
 import org.opensearch.hadoop.serialization.ScrollReader;
 import org.opensearch.hadoop.util.BytesArray;
 import org.junit.Assert;

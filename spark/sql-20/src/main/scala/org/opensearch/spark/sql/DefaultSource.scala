@@ -61,8 +61,8 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_WRITE_OPERATION
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
-import org.elasticsearch.spark.cfg.SparkSettingsManager
-import org.elasticsearch.spark.serialization.ScalaValueWriter
+import org.opensearch.spark.cfg.SparkSettingsManager
+import org.opensearch.spark.serialization.ScalaValueWriter
 import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
 import org.opensearch.hadoop.cfg.{ConfigurationOptions, InternalConfigurationOptions, Settings}
 import org.opensearch.hadoop.mr.security.HadoopUserProvider

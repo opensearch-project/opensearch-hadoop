@@ -7,7 +7,7 @@ apply plugin: 'opensearch.hadoop.build.root'
 defaultTasks 'build'
 
 allprojects {
-    group = "org.elasticsearch"
+    group = "org.opensearch"
     tasks.withType(AbstractCopyTask) {
       duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }

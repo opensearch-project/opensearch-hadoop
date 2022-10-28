@@ -19,7 +19,7 @@
 
 package org.opensearch.spark.integration;
 
-import org.elasticsearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalEs;
 import org.junit.ClassRule;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;

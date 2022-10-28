@@ -49,12 +49,9 @@ import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.storage.StorageLevel.DISK_ONLY
 import org.apache.spark.storage.StorageLevel.DISK_ONLY_2
-import org.elasticsearch.hadoop.OpenSearchAssume
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
-import org.elasticsearch.hadoop.util.TestSettings
-import org.elasticsearch.hadoop.util.TestUtils
-import org.elasticsearch.hadoop.util.TestUtils.resource
-import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
+import org.opensearch.hadoop.util.TestUtils.resource
+import org.opensearch.hadoop.util.TestUtils.docEndpoint
 import org.opensearch.spark.cfg.SparkSettingsManager
 import org.opensearch.spark.sparkRDDFunctions
 import org.opensearch.spark.sparkStringJsonRDDFunctions
@@ -88,15 +85,13 @@ import org.apache.spark.rdd.RDD
 
 import javax.xml.bind.DatatypeConverter
 import org.apache.spark.sql.SparkSession
-import org.elasticsearch.hadoop.TestData
-import org.elasticsearch.hadoop.rest.RestUtils
-import org.elasticsearch.hadoop.serialization.JsonUtils
 import org.junit.Assert._
 import org.junit.ClassRule
-import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
+import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException, TestData}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
-import org.opensearch.hadoop.rest.OpenSearchHadoopParsingException
-import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
+import org.opensearch.hadoop.rest.{OpenSearchHadoopParsingException, RestUtils}
+import org.opensearch.hadoop.serialization.JsonUtils
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
 import org.opensearch.spark.integration.SparkUtils
 import org.opensearch.spark.sql.SchemaUtilsTestable
 

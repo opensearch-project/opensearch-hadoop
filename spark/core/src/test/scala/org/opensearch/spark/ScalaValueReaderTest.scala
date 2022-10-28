@@ -18,8 +18,8 @@
  */
 package org.opensearch.spark
 
-import org.elasticsearch.hadoop.serialization.BaseValueReaderTest
 import org.junit.Assert._
+import org.opensearch.hadoop.serialization.BaseValueReaderTest
 import org.opensearch.spark.serialization.ScalaValueReader
 
 class ScalaValueReaderTest extends BaseValueReaderTest {

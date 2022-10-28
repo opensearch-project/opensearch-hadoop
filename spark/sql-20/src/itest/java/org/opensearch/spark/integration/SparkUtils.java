@@ -20,7 +20,7 @@ package org.opensearch.spark.integration;
 
 import com.esotericsoftware.kryo.Kryo;
 import org.apache.spark.SparkConf;
-import org.elasticsearch.hadoop.Provisioner;
+import org.opensearch.hadoop.Provisioner;
 import org.opensearch.hadoop.util.ReflectionUtils;
 
 import java.lang.reflect.Constructor;

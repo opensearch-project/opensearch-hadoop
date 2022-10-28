@@ -19,13 +19,12 @@
 
 package org.opensearch.spark
 
-import org.elasticsearch.hadoop.serialization.builder.AbstractExtendedBooleanValueReaderTest
-import org.elasticsearch.hadoop.serialization.builder.AbstractExtendedBooleanValueReaderTest.ExpectedOutcome
+import org.opensearch.hadoop.serialization.builder.AbstractExtendedBooleanValueReaderTest.ExpectedOutcome
 import org.opensearch.spark.serialization.ScalaValueReader
 import org.hamcrest.BaseMatcher
 import org.hamcrest.Description
 import org.hamcrest.Matcher
-import org.opensearch.hadoop.serialization.builder.ValueReader
+import org.opensearch.hadoop.serialization.builder.{AbstractExtendedBooleanValueReaderTest, ValueReader}
 
 class ScalaExtendedBooleanValueReaderTest(jsonString: String, expected: ExpectedOutcome) extends AbstractExtendedBooleanValueReaderTest(jsonString, expected) {
 

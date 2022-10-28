@@ -70,7 +70,7 @@ public class AbstractKerberosClientTest {
             Subject.doAs(loginCtx.getSubject(), new PrivilegedExceptionAction<Void>() {
                 @Override
                 public Void run() throws Exception {
-                    SpnegoNegotiator negotiator = new SpnegoNegotiator("client", "HTTP/build.elastic.co");
+                    SpnegoNegotiator negotiator = new SpnegoNegotiator("client", "HTTP/build.ci.opensearch.org");
                     assertNotNull(negotiator.send());
                     return null;
                 }
@@ -83,7 +83,7 @@ public class AbstractKerberosClientTest {
     @Test
     public void testSpnegoAuthToES() throws Exception {
         RestUtils.postData("_security/role_mapping/kerberos_client_mapping",
-                "{\"roles\":[\"superuser\"],\"enabled\":true,\"rules\":{\"field\":{\"username\":\"client@BUILD.ELASTIC.CO\"}}}".getBytes());
+                "{\"roles\":[\"superuser\"],\"enabled\":true,\"rules\":{\"field\":{\"username\":\"client@BUILD.CI.OPENSEARCH.ORG\"}}}".getBytes());
 
         LoginContext loginCtx = LoginUtil.login("client", "password");
         try {
@@ -97,8 +97,8 @@ public class AbstractKerberosClientTest {
                     testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
 
                     // Set kerberos settings
-                    testSettings.setProperty(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");
-                    testSettings.setProperty(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL, "HTTP/build.elastic.co@BUILD.ELASTIC.CO");
+                    testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
+                    testSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
 
                     RestClient restClient = new RestClient(testSettings);
                     List<NodeInfo> httpDataNodes = restClient.getHttpDataNodes();
@@ -135,8 +135,8 @@ public class AbstractKerberosClientTest {
                     testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
 
                     // Set kerberos settings
-                    testSettings.setProperty(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");
-                    testSettings.setProperty(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL, "HTTP/build.elastic.co@BUILD.ELASTIC.CO");
+                    testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
+                    testSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
 
                     RestClient restClient = new RestClient(testSettings);
                     List<NodeInfo> httpDataNodes = restClient.getHttpDataNodes();
@@ -154,7 +154,7 @@ public class AbstractKerberosClientTest {
     @Test
     public void testMutualSpnegoAuthToES() throws Exception {
         RestUtils.postData("_security/role_mapping/kerberos_client_mapping",
-                "{\"roles\":[\"superuser\"],\"enabled\":true,\"rules\":{\"field\":{\"username\":\"client@BUILD.ELASTIC.CO\"}}}".getBytes());
+                "{\"roles\":[\"superuser\"],\"enabled\":true,\"rules\":{\"field\":{\"username\":\"client@BUILD.CI.OPENSEARCH.ORG\"}}}".getBytes());
 
         LoginContext loginCtx = LoginUtil.login("client", "password");
         try {
@@ -168,9 +168,9 @@ public class AbstractKerberosClientTest {
                     testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
 
                     // Set kerberos settings
-                    testSettings.setProperty(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");
-                    testSettings.setProperty(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL, "HTTP/build.elastic.co@BUILD.ELASTIC.CO");
-                    testSettings.setProperty(ConfigurationOptions.ES_NET_SPNEGO_AUTH_MUTUAL, "true");
+                    testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
+                    testSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
+                    testSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_MUTUAL, "true");
 
                     RestClient restClient = new RestClient(testSettings);
                     List<NodeInfo> httpDataNodes = restClient.getHttpDataNodes();
@@ -253,7 +253,7 @@ public class AbstractKerberosClientTest {
             public Void run() throws Exception {
                 UserGroupInformation currentUser = UserGroupInformation.getCurrentUser();
                 assertEquals("client", currentUser.getUserName());
-                assertEquals("hive/build.elastic.co@BUILD.ELASTIC.CO", currentUser.getRealUser().getUserName());
+                assertEquals("hive/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG", currentUser.getRealUser().getUserName());
                 assertFalse(currentUser.hasKerberosCredentials());
                 assertEquals(UserGroupInformation.AuthenticationMethod.PROXY, currentUser.getAuthenticationMethod());
                 assertEquals(UserGroupInformation.AuthenticationMethod.KERBEROS, currentUser.getRealAuthenticationMethod());
@@ -263,8 +263,8 @@ public class AbstractKerberosClientTest {
                 testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
 
                 InitializationUtils.setUserProviderIfNotSet(testSettings, HadoopUserProvider.class, new NoOpLog());
-                testSettings.setProperty(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");
-                testSettings.setProperty(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL, "HTTP/build.elastic.co@BUILD.ELASTIC.CO");
+                testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
+                testSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
 
                 UserProvider userProvider = UserProvider.create(testSettings);
                 assertTrue(userProvider.isEsKerberosEnabled());
@@ -340,8 +340,8 @@ public class AbstractKerberosClientTest {
                     innerTestSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_USER);
                     innerTestSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
 
-                    innerTestSettings.setProperty(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL, "HTTP/build.elastic.co@BUILD.ELASTIC.CO");
-                    innerTestSettings.setProperty(ConfigurationOptions.ES_NET_SPNEGO_AUTH_MUTUAL, "true");
+                    innerTestSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
+                    innerTestSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_MUTUAL, "true");
 
                     // Rest Client should use token auth
                     RestClient tokenClient = new RestClient(innerTestSettings);
@@ -366,7 +366,7 @@ public class AbstractKerberosClientTest {
 
         // Setup role mapping
         RestUtils.postData("_security/role_mapping/kerberos_client_mapping",
-                "{\"roles\":[\"superuser\"],\"enabled\":true,\"rules\":{\"field\":{\"username\":\"client@BUILD.ELASTIC.CO\"}}}".getBytes());
+                "{\"roles\":[\"superuser\"],\"enabled\":true,\"rules\":{\"field\":{\"username\":\"client@BUILD.CI.OPENSEARCH.ORG\"}}}".getBytes());
 
         // Configure client settings
         InitializationUtils.setUserProviderIfNotSet(testSettings, JdkUserProvider.class, LOG);
@@ -374,8 +374,8 @@ public class AbstractKerberosClientTest {
         testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_USER);
         testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
         // Add Kerberos auth settings
-        testSettings.setProperty(ConfigurationOptions.ES_SECURITY_AUTHENTICATION, "kerberos");
-        testSettings.setProperty(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL, "HTTP/build.elastic.co@BUILD.ELASTIC.CO");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
 
         // Login and perform test
         LoginContext loginCtx = LoginUtil.login("client", "password");
@@ -393,8 +393,8 @@ public class AbstractKerberosClientTest {
                     UserProvider.create(testSettings).getUser().addEsToken(token);
 
                     // Remove kerberos information
-                    testSettings.asProperties().remove(ConfigurationOptions.ES_SECURITY_AUTHENTICATION);
-                    testSettings.asProperties().remove(ConfigurationOptions.ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL);
+                    testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION);
+                    testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL);
 
                     // Use token to contact ES
                     restClient = new RestClient(testSettings);

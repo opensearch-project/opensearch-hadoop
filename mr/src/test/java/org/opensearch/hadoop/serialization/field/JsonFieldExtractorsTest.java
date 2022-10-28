@@ -23,7 +23,7 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Test;
 
 import static org.hamcrest.Matchers.equalTo;

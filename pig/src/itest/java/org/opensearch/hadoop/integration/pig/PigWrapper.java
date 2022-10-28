@@ -28,8 +28,8 @@ import org.apache.pig.PigServer;
 import org.apache.pig.backend.executionengine.ExecException;
 import org.apache.pig.backend.executionengine.ExecJob;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.QueryTestParams;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.util.StringUtils;
 import org.junit.rules.LazyTempFolder;
 

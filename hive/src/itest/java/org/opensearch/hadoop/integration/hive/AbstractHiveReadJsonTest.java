@@ -19,13 +19,13 @@
 
 package org.opensearch.hadoop.integration.hive;
 
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.QueryTestParams;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.OpenSearchAssume;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.OpenSearchAssume;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
@@ -41,7 +41,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 

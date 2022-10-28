@@ -21,7 +21,7 @@ package org.opensearch.spark.integration;
 import java.lang.reflect.Constructor;
 
 import org.apache.spark.SparkConf;
-import org.elasticsearch.hadoop.Provisioner;
+import org.opensearch.hadoop.Provisioner;
 import org.opensearch.hadoop.util.ReflectionUtils;
 
 import com.esotericsoftware.kryo.Kryo;

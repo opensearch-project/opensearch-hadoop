@@ -42,17 +42,17 @@ private[spark] abstract class AbstractOpenSearchRDD[T: ClassTag](
 
   override def getPartitions: Array[Partition] = {
     esPartitions.asScala.zipWithIndex.map { case(esPartition, idx) =>
-      new EsPartition(id, idx, esPartition)
+      new OpenSearchPartition(id, idx, esPartition)
     }.toArray
   }
 
   override def getPreferredLocations(split: Partition): Seq[String] = {
-    val esSplit = split.asInstanceOf[EsPartition]
-    esSplit.esPartition.getHostNames
+    val esSplit = split.asInstanceOf[OpenSearchPartition]
+    esSplit.opensearchPartition.getHostNames
   }
 
   override def checkpoint(): Unit = {
-    // Do nothing. Elasticsearch RDD should not be checkpointed.
+    // Do nothing. OpenSearch RDD should not be checkpointed.
   }
 
   def esCount(): Long = {
@@ -76,10 +76,10 @@ private[spark] abstract class AbstractOpenSearchRDD[T: ClassTag](
   }
 }
 
-private[spark] class EsPartition(rddId: Int, idx: Int, val esPartition: PartitionDefinition)
+private[spark] class OpenSearchPartition(rddId: Int, idx: Int, val opensearchPartition: PartitionDefinition)
   extends Partition {
 
-  override def hashCode(): Int = 41 * (41 * (41 + rddId) + idx) + esPartition.hashCode()
+  override def hashCode(): Int = 41 * (41 * (41 + rddId) + idx) + opensearchPartition.hashCode()
 
   override val index: Int = idx
 }

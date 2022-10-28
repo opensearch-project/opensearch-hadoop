@@ -28,11 +28,11 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.elasticsearch.hadoop.OpenSearchAssume;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.OpenSearchAssume;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestSettings;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestUtils;
 import org.opensearch.spark.rdd.Metadata;
 import org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark;
 import org.junit.AfterClass;
@@ -44,8 +44,8 @@ import org.junit.runners.MethodSorters;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableMap;
 
-import static org.elasticsearch.hadoop.util.TestUtils.docEndpoint;
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.docEndpoint;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.*;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;

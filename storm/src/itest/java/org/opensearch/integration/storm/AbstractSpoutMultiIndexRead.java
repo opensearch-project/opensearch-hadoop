@@ -21,7 +21,7 @@ package org.opensearch.integration.storm;
 import java.util.Map;
 
 import org.apache.storm.topology.TopologyBuilder;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.unit.TimeValue;
 import org.opensearch.storm.OpenSearchSpout;
 import org.junit.Before;
@@ -62,8 +62,8 @@ public class AbstractSpoutMultiIndexRead extends AbstractStormSpoutTests {
 
         String target = "_all/foo";
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("es-spout", new TestSpout(new OpenSearchSpout(target)));
-        builder.setBolt("test-bolt", new CapturingBolt()).shuffleGrouping("es-spout");
+        builder.setSpout("opensearch-spout", new TestSpout(new OpenSearchSpout(target)));
+        builder.setBolt("test-bolt", new CapturingBolt()).shuffleGrouping("opensearch-spout");
 
         MultiIndexSpoutStormSuite.run(index + "multi", builder.createTopology(), COMPONENT_HAS_COMPLETED);
 

@@ -19,7 +19,6 @@
 
 package org.opensearch.hadoop.serialization.builder;
 
-import org.elasticsearch.hadoop.serialization.builder.AbstractExtendedBooleanValueReaderTest;
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;

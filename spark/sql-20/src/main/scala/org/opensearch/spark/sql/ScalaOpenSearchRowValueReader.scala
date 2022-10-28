@@ -21,7 +21,7 @@ package org.opensearch.spark.sql
 import java.sql.Timestamp
 import scala.collection.mutable.LinkedHashMap
 import scala.collection.mutable.Map
-import org.elasticsearch.spark.serialization.ScalaValueReader
+import org.opensearch.spark.serialization.ScalaValueReader
 import org.apache.commons.logging.LogFactory
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.serialization.{FieldType, Parser}

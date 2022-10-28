@@ -222,7 +222,7 @@ class AntFixture extends AntTask implements Fixture {
         throw toThrow
     }
 
-    /** Adds a task to kill an elasticsearch node with the given pidfile */
+    /** Adds a task to kill an opensearch node with the given pidfile */
     private TaskProvider<AntFixtureStop> createStopTask() {
         final AntFixture fixture = this
         TaskProvider<AntFixtureStop> stop = project.tasks.register("${name}#stop", AntFixtureStop)

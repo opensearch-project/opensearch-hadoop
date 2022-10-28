@@ -45,8 +45,6 @@ import org.apache.spark.sql.types.DecimalType
 import org.apache.spark.sql.types.TimestampType
 import org.apache.spark.storage.StorageLevel._
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
-import org.elasticsearch.hadoop.util.TestSettings
-import org.elasticsearch.hadoop.util.TestUtils
 import org.opensearch.spark._
 import org.opensearch.spark.cfg._
 import org.opensearch.spark.sql._
@@ -69,13 +67,11 @@ import com.esotericsoftware.kryo.io.{Output => KryoOutput}
 import org.apache.spark.rdd.RDD
 
 import javax.xml.bind.DatatypeConverter
-import org.elasticsearch.hadoop.OpenSearchAssume
 import org.apache.spark.sql.types.DoubleType
-import org.elasticsearch.hadoop.TestData
-import org.elasticsearch.hadoop.rest.RestUtils
 import org.junit.ClassRule
-import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
-import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
+import org.opensearch.hadoop.rest.RestUtils
+import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException, TestData}
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
 import org.opensearch.spark.integration.SparkUtils
 import org.opensearch.spark.sql.{OpenSearchSparkSQL, SchemaUtilsTestable}
 import org.opensearch.spark.sql.api.java.JavaOpenSearchSparkSQL

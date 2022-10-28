@@ -30,7 +30,7 @@ import org.opensearch.hadoop.serialization.handler.write.SerializationErrorHandl
 import org.opensearch.hadoop.serialization.handler.write.SerializationFailure;
 import org.opensearch.hadoop.serialization.handler.write.impl.SerializationHandlerLoader;
 import org.opensearch.hadoop.util.BytesRef;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Assert;
 import org.junit.Test;
 import org.mockito.Mockito;

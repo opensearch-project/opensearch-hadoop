@@ -18,9 +18,9 @@
  */
 package org.opensearch.hadoop.integration.mr;
 
-import org.elasticsearch.hadoop.TestData;
-import org.elasticsearch.hadoop.fs.HdfsUtils;
-import org.elasticsearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.TestData;
+import org.opensearch.hadoop.fs.HdfsUtils;
+import org.opensearch.hadoop.fixtures.LocalEs;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.rules.ExternalResource;

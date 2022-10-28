@@ -23,13 +23,13 @@ import com.google.common.collect.Lists;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.QueryTestParams;
-import org.elasticsearch.hadoop.OpenSearchAssume;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.QueryTestParams;
+import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestUtils;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -44,7 +44,7 @@ import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.List;
 
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.stringContainsInOrder;
 import static org.junit.Assert.assertThat;
@@ -94,13 +94,13 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         RestUtils.refresh("json-pig*");
 
         this.scriptHead =
-                "DEFINE EsStorage org.opensearch.pig.hadoop.EsStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"','es.output.json=true');";
+                "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"','es.output.json=true');";
     }
 
     @Test
     public void testTuple() throws Exception {
         String script = scriptHead +
-                "A = LOAD '"+resource("json-pig-tupleartists", "data", testVersion)+"' USING EsStorage();" +
+                "A = LOAD '"+resource("json-pig-tupleartists", "data", testVersion)+"' USING OpenSearchStorage();" +
                 "X = LIMIT A 3;" +
                 //"DESCRIBE A;";
                 "STORE A INTO '" + tmpPig() + "/testtuple';";
@@ -157,7 +157,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     @Test
     public void testTupleWithSchema() throws Exception {
         String script = scriptHead +
-                "A = LOAD '"+resource("json-pig-tupleartists", "data", testVersion)+"' USING EsStorage() AS (name:chararray);" +
+                "A = LOAD '"+resource("json-pig-tupleartists", "data", testVersion)+"' USING OpenSearchStorage() AS (name:chararray);" +
                 "B = ORDER A BY name DESC;" +
                 "X = LIMIT B 3;" +
                 "STORE B INTO '" + tmpPig() + "/testtupleschema';";
@@ -214,7 +214,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     @Test
     public void testFieldAlias() throws Exception {
         String script = scriptHead
-                      + "A = LOAD '"+resource("json-pig-fieldalias", "data", testVersion)+"' USING EsStorage();"
+                      + "A = LOAD '"+resource("json-pig-fieldalias", "data", testVersion)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testfieldalias';";
         pig.executeScript(script);
@@ -270,7 +270,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     @Test
     public void testMissingIndex() throws Exception {
         String script = scriptHead
-                      + "A = LOAD '"+resource("foo", "bar", testVersion)+"' USING EsStorage();"
+                      + "A = LOAD '"+resource("foo", "bar", testVersion)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testmissingindex';";
         pig.executeScript(script);
@@ -283,7 +283,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     public void testParentChild() throws Exception {
         OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         String script = scriptHead
-                      + "A = LOAD 'json-pig-pc/child' USING EsStorage();"
+                      + "A = LOAD 'json-pig-pc/child' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testparentchild';";
         pig.executeScript(script);

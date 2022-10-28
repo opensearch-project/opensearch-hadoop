@@ -25,7 +25,7 @@ import org.apache.hadoop.fs.FileStatus;
 import org.apache.hadoop.fs.FileSystem;
 import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.fs.PathFilter;
-import org.elasticsearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.util.IOUtils;
 import org.opensearch.hadoop.util.StringUtils;
 import org.junit.AfterClass;

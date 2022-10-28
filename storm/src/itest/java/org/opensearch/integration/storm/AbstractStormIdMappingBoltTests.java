@@ -26,7 +26,7 @@ import org.apache.storm.shade.com.google.common.collect.ImmutableList;
 import org.apache.storm.topology.TopologyBuilder;
 import org.apache.storm.tuple.Fields;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.unit.TimeValue;
 import org.opensearch.storm.OpenSearchBolt;
 import org.junit.Test;

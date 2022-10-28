@@ -19,6 +19,4 @@
 
 package org.opensearch.hadoop.serialization;
 
-import org.elasticsearch.hadoop.serialization.BaseValueReaderTest;
-
 public class JdkValueReaderTest extends BaseValueReaderTest {}

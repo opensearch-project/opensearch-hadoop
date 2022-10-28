@@ -24,7 +24,7 @@ import org.apache.hadoop.security.SecurityUtil;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
-import org.elasticsearch.hadoop.security.UgiUtil;
+import org.opensearch.hadoop.security.UgiUtil;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethodBase;
@@ -35,7 +35,7 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthSchem
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthState;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpClientParams;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpParams;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.After;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -153,13 +153,13 @@ public class AbstractSpnegoAuthSchemeTest {
                 AuthChallengeProcessor authChallengeProcessor = new AuthChallengeProcessor(params);
 
                 Map<String, String> dnsMappings = new HashMap<String, String>();
-                dnsMappings.put("es.build.elastic.co", "127.0.0.1");
+                dnsMappings.put("opensearch.build.ci.opensearch.org", "127.0.0.1");
 
                 TestMethod method = new TestMethod();
                 method.setHeaders(new Header[]{new Header("WWW-Authenticate", "Negotiate")});
-                method.setURI(new org.opensearch.hadoop.thirdparty.apache.commons.httpclient.URI("http", null, "es.build.elastic.co", 9200));
+                method.setURI(new org.opensearch.hadoop.thirdparty.apache.commons.httpclient.URI("http", null, "opensearch.build.ci.opensearch.org", 9200));
 
-                Credentials credentials = new SpnegoCredentials(HadoopUserProvider.create(new TestSettings()), "HTTP/_HOST@BUILD.ELASTIC.CO");
+                Credentials credentials = new SpnegoCredentials(HadoopUserProvider.create(new TestSettings()), "HTTP/_HOST@BUILD.CI.OPENSEARCH.ORG");
 
                 // Parse Challenge
                 Map challenges = AuthChallengeParser.parseChallenges(method.getResponseHeaders("WWW-Authenticate"));
@@ -222,7 +222,7 @@ public class AbstractSpnegoAuthSchemeTest {
                 AuthChallengeProcessor authChallengeProcessor = new AuthChallengeProcessor(params);
 
                 Map<String, String> dnsMappings = new HashMap<String, String>();
-                dnsMappings.put("es.build.elastic.co", "127.0.0.1");
+                dnsMappings.put("opensearch.build.ci.opensearch.org", "127.0.0.1");
 
                 TestMethod method = new TestMethod();
                 method.setHeaders(new Header[]{new Header("WWW-Authenticate", "Negotiate")});

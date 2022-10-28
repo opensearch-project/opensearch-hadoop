@@ -9,11 +9,11 @@ apply plugin: 'groovy'
 
 String minimumGradleVersion = file('src/main/resources/minimumGradleVersion').text.trim()
 if (GradleVersion.current() < GradleVersion.version(minimumGradleVersion)) {
-    throw new GradleException("Gradle ${minimumGradleVersion}+ is required to build es-hadoop")
+    throw new GradleException("Gradle ${minimumGradleVersion}+ is required to build opensearch-hadoop")
 }
 
 if (JavaVersion.current() < JavaVersion.VERSION_11) {
-    throw new GradleException('At least Java 11 is required to use elasticsearch gradle tools')
+    throw new GradleException('At least Java 11 is required to use opensearch gradle tools')
 }
 
 /*

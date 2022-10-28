@@ -29,8 +29,6 @@ import java.{util => ju}
 import org.apache.spark.SparkConf
 import org.apache.spark.SparkContext
 import org.apache.spark.SparkException
-import org.elasticsearch.hadoop.OpenSearchAssume
-import org.elasticsearch.hadoop.TestData
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INPUT_JSON
@@ -40,12 +38,9 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_JOIN
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_READ_METADATA
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE
-import org.elasticsearch.hadoop.util.TestUtils.resource
-import org.elasticsearch.hadoop.util.TestUtils.docEndpoint
-import org.elasticsearch.hadoop.rest.RestUtils
-import org.elasticsearch.hadoop.rest.RestUtils.ExtendedRestClient
-import org.elasticsearch.hadoop.util.TestSettings
-import org.elasticsearch.hadoop.util.TestUtils
+import org.opensearch.hadoop.util.TestUtils.resource
+import org.opensearch.hadoop.util.TestUtils.docEndpoint
+import org.opensearch.hadoop.rest.RestUtils.ExtendedRestClient
 import org.opensearch.spark.rdd.EsSpark
 import org.opensearch.spark.rdd.Metadata.ID
 import org.opensearch.spark.rdd.Metadata.TTL
@@ -76,10 +71,11 @@ import org.junit.runners.Parameterized.Parameters
 
 import org.opensearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import org.opensearch.spark.rdd.JDKCollectionConvertersCompat.Converters._
-import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException
+import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, TestData}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
-import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils}
+import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
 import org.opensearch.spark.serialization.Bean
 
 object AbstractScalaEsScalaSpark {

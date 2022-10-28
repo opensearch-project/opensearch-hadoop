@@ -24,11 +24,11 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.OpenSearchAssume;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.OpenSearchAssume;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.FixMethodOrder;
@@ -37,7 +37,7 @@ import org.junit.runners.MethodSorters;
 
 import static org.opensearch.hadoop.integration.hive.HiveSuite.isLocal;
 import static org.opensearch.hadoop.integration.hive.HiveSuite.server;
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class AbstractHiveSaveJsonTest {

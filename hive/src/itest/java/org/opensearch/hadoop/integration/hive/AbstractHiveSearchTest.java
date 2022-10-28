@@ -26,13 +26,13 @@ import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
-import org.elasticsearch.hadoop.HdpBootstrap;
-import org.elasticsearch.hadoop.QueryTestParams;
+import org.opensearch.hadoop.HdpBootstrap;
+import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.elasticsearch.hadoop.OpenSearchAssume;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.OpenSearchAssume;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestUtils;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Assume;
@@ -45,7 +45,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.*;
 
 import static org.opensearch.hadoop.integration.hive.HiveSuite.*;

@@ -40,11 +40,11 @@ import org.apache.spark.sql.SQLContext;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
-import org.elasticsearch.hadoop.TestData;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.TestData;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
-import org.elasticsearch.hadoop.util.TestSettings;
-import org.elasticsearch.hadoop.util.TestUtils;
+import org.opensearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestUtils;
 import org.opensearch.spark.sql.api.java.JavaOpenSearchSparkSQL;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -55,8 +55,8 @@ import org.junit.runners.MethodSorters;
 
 import com.google.common.collect.ImmutableMap;
 
-import static org.elasticsearch.hadoop.util.TestUtils.docEndpoint;
-import static org.elasticsearch.hadoop.util.TestUtils.resource;
+import static org.opensearch.hadoop.util.TestUtils.docEndpoint;
+import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.*;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;

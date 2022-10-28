@@ -109,7 +109,7 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
 
         if (!AuthenticationMethod.KERBEROS.equals(topologyAndClusterSettings.getSecurityAuthenticationMethod())) {
             throw new OpenSearchHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not enable ES Kerberos [" +
-                    ConfigurationOptions.ES_SECURITY_AUTHENTICATION + "]. Bailing out...");
+                    ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION + "]. Bailing out...");
         }
 
         String userPrincipal = topologyAndClusterSettings.getProperty(USER_PRINCIPAL);

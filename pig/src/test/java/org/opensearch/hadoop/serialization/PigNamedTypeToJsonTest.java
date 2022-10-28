@@ -34,7 +34,7 @@ import org.opensearch.hadoop.pig.PigTuple;
 import org.opensearch.hadoop.pig.PigValueWriter;
 import org.opensearch.hadoop.serialization.builder.ContentBuilder;
 import org.opensearch.hadoop.util.FastByteArrayOutputStream;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;

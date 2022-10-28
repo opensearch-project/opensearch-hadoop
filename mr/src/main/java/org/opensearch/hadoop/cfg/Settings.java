@@ -508,11 +508,11 @@ public abstract class Settings {
     }
 
     public String getNetworkSpnegoAuthElasticsearchPrincipal() {
-        return getProperty(ES_NET_SPNEGO_AUTH_ELASTICSEARCH_PRINCIPAL);
+        return getProperty(OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL);
     }
 
     public boolean getNetworkSpnegoAuthMutual() {
-        return Booleans.parseBoolean(getProperty(ES_NET_SPNEGO_AUTH_MUTUAL, ES_NET_SPNEGO_AUTH_MUTUAL_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NET_SPNEGO_AUTH_MUTUAL, OPENSEARCH_NET_SPNEGO_AUTH_MUTUAL_DEFAULT));
     }
 
     public String getNetworkProxyHttpHost() {
@@ -684,14 +684,14 @@ public abstract class Settings {
 
     public AuthenticationMethod getSecurityAuthenticationMethod() {
         AuthenticationMethod authMode = null;
-        String authSetting = getProperty(ConfigurationOptions.ES_SECURITY_AUTHENTICATION);
+        String authSetting = getProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION);
         // Check for a valid auth setting
         if (authSetting != null) {
             authMode = AuthenticationMethod.get(authSetting);
             if (authMode == null) {
                 // Property was set but was invalid auth mode value
                 throw new OpenSearchHadoopIllegalArgumentException("Could not determine auth mode. Property [" +
-                        ConfigurationOptions.ES_SECURITY_AUTHENTICATION + "] was set to unknown mode [" + authSetting + "]. " +
+                        ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION + "] was set to unknown mode [" + authSetting + "]. " +
                         "Use a valid auth mode from the following: " + AuthenticationMethod.getAvailableMethods());
             }
         }
@@ -705,7 +705,7 @@ public abstract class Settings {
     }
 
     public String getSecurityUserProviderClass() {
-        return getProperty(ConfigurationOptions.ES_SECURITY_USER_PROVIDER_CLASS);
+        return getProperty(ConfigurationOptions.OPENSEARCH_SECURITY_USER_PROVIDER_CLASS);
     }
 
     public abstract InputStream loadResource(String location);

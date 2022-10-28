@@ -8,7 +8,7 @@ apply plugin: 'opensearch.hadoop.build'
 apply plugin: 'spark.variants'
 
 sparkVariants {
-    capabilityGroup 'org.elasticsearch.spark.sql.variant'
+    capabilityGroup 'org.opensearch.spark.sql.variant'
     setDefaultVariant "spark13scala211", spark13Version, scala211Version
     addFeatureVariant "spark13scala210", spark13Version, scala210Version
 
@@ -53,7 +53,7 @@ sparkVariants {
             add(variant.configuration('embedded'), project(":opensearch-hadoop-mr"))
             add(variant.configuration('embedded'), project(":opensearch-spark")) {
                 capabilities {
-                    requireCapability("org.elasticsearch.spark.variant:$variant.name:$project.version")
+                    requireCapability("org.opensearch.spark.variant:$variant.name:$project.version")
                 }
             }
 
@@ -190,7 +190,7 @@ sparkVariants {
             dependsOn(project.configurations.getByName(variant.configuration('embedded')))
             // TODO: Is there a way to do this lazily? This looks like it resolves the configuration.
             from(project.configurations.getByName(variant.configuration('embedded')).collect { it.isDirectory() ? it : zipTree(it)}) {
-                include "org/elasticsearch/**"
+                include "org/opensearch/**"
                 include "opensearch-hadoop-build.properties"
                 include "META-INF/services/*"
             }

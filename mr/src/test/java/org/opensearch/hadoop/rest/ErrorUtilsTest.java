@@ -18,7 +18,6 @@
  */
 package org.opensearch.hadoop.rest;
 
-import org.elasticsearch.hadoop.rest.ErrorUtils;
 import org.opensearch.hadoop.util.BytesArray;
 import org.junit.Test;
 

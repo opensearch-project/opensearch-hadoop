@@ -31,7 +31,7 @@ import org.apache.hadoop.security.SecurityUtil;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
-import org.elasticsearch.hadoop.rest.RestUtils;
+import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.NetworkClient;
@@ -47,7 +47,7 @@ import org.opensearch.hadoop.security.UserProvider;
 import org.opensearch.hadoop.serialization.dto.NodeInfo;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.ObjectUtils;
-import org.elasticsearch.hadoop.util.TestSettings;
+import org.opensearch.hadoop.util.TestSettings;
 import org.junit.Assume;
 import org.junit.Test;
 

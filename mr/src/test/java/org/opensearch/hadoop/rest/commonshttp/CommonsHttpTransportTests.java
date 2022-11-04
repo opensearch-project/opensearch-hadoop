@@ -30,7 +30,7 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.SimpleRequest;
-import org.elasticsearch.hadoop.rest.commonshttp.DelegatedProtocol;
+import org.opensearch.hadoop.rest.commonshttp.DelegatedProtocol;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeoutException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.Protocol;

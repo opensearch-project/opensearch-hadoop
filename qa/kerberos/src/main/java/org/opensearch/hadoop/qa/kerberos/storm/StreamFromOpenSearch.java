@@ -54,8 +54,8 @@ public class StreamFromOpenSearch {
 
     public static void submitJob(String principal, String keytab, String esNodes) throws Exception {
         TopologyBuilder builder = new TopologyBuilder();
-        builder.setSpout("ES", new OpenSearchSpout("storm-test"));
-        builder.setBolt("Output", new CapturingBolt()).shuffleGrouping("ES");
+        builder.setSpout("OpenSearch", new OpenSearchSpout("storm-test"));
+        builder.setBolt("Output", new CapturingBolt()).shuffleGrouping("OpenSearch");
 
         // Nimbus needs to be started with the cred renewer and credentials plugins set in its config file
 

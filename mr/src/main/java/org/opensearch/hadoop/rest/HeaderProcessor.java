@@ -51,7 +51,7 @@ public final class HeaderProcessor {
          * Content-Type HTTP Header should not be set by user as all requests made to Elasticsearch are done
          * in JSON format, or the _bulk api compliant line delimited JSON.
          */
-        CONTENT_TYPE("Content-Type", "application/json", "ES-Hadoop communicates in JSON format only"),
+        CONTENT_TYPE("Content-Type", "application/json", "OpenSearch-Hadoop communicates in JSON format only"),
         /*
          * Elasticsearch also supports line-delimited JSON for '_bulk' operations which isn't
          * official and has a few variations:
@@ -67,7 +67,7 @@ public final class HeaderProcessor {
          * Accept HTTP Header should not be set by user as all responses from Elasticsearch are expected to be
          * in JSON format.
          */
-        ACCEPT("Accept", "application/json", "ES-Hadoop communicates in JSON format only");
+        ACCEPT("Accept", "application/json", "OpenSearch-Hadoop communicates in JSON format only");
 
         private static final Map<String, ReservedHeaders> NAME_MAP = new HashMap<String, ReservedHeaders>();
         static {

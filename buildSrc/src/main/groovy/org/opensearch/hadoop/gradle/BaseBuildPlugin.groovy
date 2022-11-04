@@ -70,7 +70,7 @@ class BaseBuildPlugin implements Plugin<Project> {
             JavaHome esHadoopRuntimeJava = BuildParams.javaVersions.find { it.version == 8 }
             if (esHadoopRuntimeJava == null) {
                 throw new GradleException(
-                        '$JAVA8_HOME must be set to build ES-Hadoop. ' +
+                        '$JAVA8_HOME must be set to build OpenSearch-Hadoop. ' +
                                 "Note that if the variable was just set you might have to run `./gradlew --stop` for " +
                                 "it to be picked up. See https://github.com/elastic/elasticsearch/issues/31399 details."
                 )

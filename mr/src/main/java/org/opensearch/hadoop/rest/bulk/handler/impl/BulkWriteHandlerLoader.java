@@ -61,7 +61,7 @@ public class BulkWriteHandlerLoader extends AbstractHandlerLoader<IBulkWriteErro
             case LOG:
                 genericHandler = DropAndLog.create(new BulkLogRenderer());
                 break;
-            case ES:
+            case OPENSEARCH:
                 genericHandler = ElasticsearchHandler.create(getSettings(), new BulkErrorEventConverter());
                 break;
             default:

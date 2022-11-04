@@ -93,11 +93,11 @@ public class Keytool {
     private static final String TBLFRMT = "%-15s%-19s%n";
 
     private static void printUsage(Prompt prompt) {
-        prompt.println("A tool for managing settings stored in an ES-Hadoop keystore");
+        prompt.println("A tool for managing settings stored in an OpenSearch-Hadoop keystore");
         prompt.println();
         prompt.println("Commands");
         prompt.println("--------");
-        prompt.println(Command.CREATE.getText() + " - Creates a new elasticsearch keystore");
+        prompt.println(Command.CREATE.getText() + " - Creates a new opensearch keystore");
         prompt.println(Command.LIST.getText() + " - List entries in the keystore");
         prompt.println(Command.ADD.getText() + " - Add a setting to the keystore");
         prompt.println(Command.REMOVE.getText() + " - Remove a setting from the keystore");
@@ -180,7 +180,7 @@ public class Keytool {
             switch (command) {
                 case CREATE:
                     if (ksExists()) {
-                        boolean proceed = promptYesNo("An es-hadoop keystore already exists. Overwrite? [y/N]");
+                        boolean proceed = promptYesNo("An opensearch-hadoop keystore already exists. Overwrite? [y/N]");
                         if (proceed == false) {
                             prompt.println("Exiting without creating keystore");
                             return 0;
@@ -192,7 +192,7 @@ public class Keytool {
                     return 0;
                 case LIST:
                     if (!ksExists()) {
-                        prompt.printf("ERROR: ES-Hadoop keystore not found. Use '%s' command to create one.%n", Command.CREATE.getText());
+                        prompt.printf("ERROR: OpenSearch-Hadoop keystore not found. Use '%s' command to create one.%n", Command.CREATE.getText());
                         return 5;
                     }
                     inputStream = openRead();
@@ -203,7 +203,7 @@ public class Keytool {
                     return 0;
                 case ADD:
                     if (!ksExists()) {
-                        prompt.printf("ERROR: ES-Hadoop keystore not found. Use '%s' command to create one.%n", Command.CREATE.getText());
+                        prompt.printf("ERROR: OpenSearch-Hadoop keystore not found. Use '%s' command to create one.%n", Command.CREATE.getText());
                         return 5;
                     }
                     inputStream = openRead();
@@ -228,7 +228,7 @@ public class Keytool {
                     return 0;
                 case REMOVE:
                     if (!ksExists()) {
-                        prompt.printf("ERROR: ES-Hadoop keystore not found. Use '%s' command to create one.%n", Command.CREATE.getText());
+                        prompt.printf("ERROR: OpenSearch-Hadoop keystore not found. Use '%s' command to create one.%n", Command.CREATE.getText());
                         return 5;
                     }
                     inputStream = openRead();

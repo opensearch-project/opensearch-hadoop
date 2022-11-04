@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.gradle.fixture.hadoop
 
-import org.elasticsearch.gradle.Version
+import org.opensearch.gradle.Version
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.InstanceConfiguration
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.ServiceConfiguration
 

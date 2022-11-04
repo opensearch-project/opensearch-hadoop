@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.gradle.buildtools;
 
-import org.elasticsearch.gradle.FileSystemOperationsAware;
+import org.opensearch.gradle.FileSystemOperationsAware;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
 import org.gradle.api.Task;

@@ -18,7 +18,7 @@
  */
 package org.opensearch.hadoop.gradle.buildtools.info;
 
-import org.elasticsearch.gradle.OS;
+import org.opensearch.gradle.OS;
 import org.opensearch.hadoop.gradle.buildtools.Util;
 import org.gradle.api.GradleException;
 import org.gradle.api.JavaVersion;

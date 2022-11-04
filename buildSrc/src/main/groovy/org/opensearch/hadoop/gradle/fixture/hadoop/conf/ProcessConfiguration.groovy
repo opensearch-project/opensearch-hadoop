@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.gradle.fixture.hadoop.conf
 
-import org.elasticsearch.gradle.testclusters.ElasticsearchCluster
+import org.opensearch.gradle.testclusters.OpenSearchCluster
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -50,7 +50,7 @@ abstract class ProcessConfiguration {
     private String javaHome = null
     private String jvmArgs = ''
     private boolean debug = false
-    private ElasticsearchCluster elasticsearchCluster = null
+    private OpenSearchCluster opensearchCluster = null
 
     void addSystemProperty(String key, String value) {
         systemProperties.put(key, value)
@@ -198,17 +198,17 @@ abstract class ProcessConfiguration {
         return debug
     }
 
-    void useElasticsearchCluster(ElasticsearchCluster elasticsearchCluster) {
-        this.elasticsearchCluster = elasticsearchCluster
+    void useOpenSearchCluster(OpenSearchCluster opensearchCluster) {
+        this.opensearchCluster = opensearchCluster
     }
 
-    ElasticsearchCluster getElasticsearchCluster() {
-        if (this.elasticsearchCluster != null) {
-            return this.elasticsearchCluster
+    OpenSearchCluster getOpenSearchCluster() {
+        if (this.opensearchCluster != null) {
+            return this.opensearchCluster
         } else {
             ProcessConfiguration parent = parent()
             if (parent != null) {
-                return parent.getElasticsearchCluster()
+                return parent.getOpenSearchCluster()
             } else {
                 return null
             }

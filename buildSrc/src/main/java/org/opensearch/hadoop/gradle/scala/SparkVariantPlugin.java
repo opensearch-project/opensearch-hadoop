@@ -272,7 +272,7 @@ public class SparkVariantPlugin implements Plugin<Project> {
                 if (SCALA_LIBRARY.equals(details.getId().getName())) {
                     details.allVariants(variantMetadata -> {
                         variantMetadata.withCapabilities(capabilityMetadata -> {
-                            capabilityMetadata.addCapability("org.elasticsearch.gradle", SCALA_LIBRARY, details.getId().getVersion());
+                            capabilityMetadata.addCapability("org.opensearch.gradle", SCALA_LIBRARY, details.getId().getVersion());
                         });
                     });
                 }

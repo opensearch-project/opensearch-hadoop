@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.gradle.buildtools;
 
-import org.elasticsearch.gradle.util.GradleUtils;
+import org.opensearch.gradle.util.GradleUtils;
 import org.opensearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;

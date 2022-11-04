@@ -20,8 +20,8 @@
 package org.opensearch.hadoop.gradle.fixture.hadoop
 
 import org.apache.tools.ant.DefaultLogger
-import org.elasticsearch.gradle.Version
-import org.elasticsearch.gradle.testclusters.DefaultTestClustersTask
+import org.opensearch.gradle.Version
+import org.opensearch.gradle.testclusters.DefaultTestClustersTask
 import org.opensearch.hadoop.gradle.buildtools.Fixture
 import org.opensearch.hadoop.gradle.buildtools.LoggedExec
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.HadoopClusterConfiguration
@@ -327,8 +327,8 @@ class HadoopClusterFormationTasks {
         // Add all node level configs to node Configuration
         return project.tasks.create(name: name, type: DefaultTestClustersTask, dependsOn: setup) {
             group = 'hadoopFixture'
-            if (node.elasticsearchCluster != null) {
-                useCluster(node.elasticsearchCluster)
+            if (node.opensearchCluster != null) {
+                useCluster(node.opensearchCluster)
             }
             doFirst {
                 // Write each config file needed

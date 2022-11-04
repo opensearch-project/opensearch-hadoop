@@ -60,7 +60,7 @@ repositories {
         // For some reason the root dirs all point to the buildSrc folder. The local Repo will be one above that.
         flatDir { dirs new File(project.rootDir, "../localRepo") }
     } else {
-        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+        maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" }
     }
 }
 
@@ -69,13 +69,13 @@ dependencies {
     compileOnly localGroovy()
 
     // Required for dependency licenses task
-    implementation 'org.apache.rat:apache-rat:0.11'
+    implementation 'org.apache.rat:apache-rat:0.13'
     implementation 'commons-codec:commons-codec:1.12'
 
     if (localRepo) {
         implementation name: "build-tools-${buildToolsVersion}"
     } else {
-        implementation group: 'org.elasticsearch.gradle', name: 'build-tools', version: buildToolsVersion
+        implementation group: 'org.opensearch.gradle', name: 'build-tools', version: buildToolsVersion
     }
 }
 

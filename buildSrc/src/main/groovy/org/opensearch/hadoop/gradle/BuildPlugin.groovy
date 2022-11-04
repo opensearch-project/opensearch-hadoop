@@ -22,7 +22,7 @@ package org.opensearch.hadoop.gradle
 import org.opensearch.hadoop.gradle.buildtools.DependenciesInfoPlugin
 import org.opensearch.hadoop.gradle.buildtools.DependencyLicensesTask
 import org.opensearch.hadoop.gradle.buildtools.LicenseHeadersTask
-import org.elasticsearch.gradle.testclusters.StandaloneRestIntegTestTask
+import org.opensearch.gradle.testclusters.StandaloneRestIntegTestTask
 import org.opensearch.hadoop.gradle.buildtools.UpdateShasTask
 import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
 import org.opensearch.hadoop.gradle.scala.SparkVariantPlugin

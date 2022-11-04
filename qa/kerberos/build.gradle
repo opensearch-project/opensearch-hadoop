@@ -18,7 +18,7 @@
  */
 
 import org.opensearch.hadoop.gradle.buildtools.AntFixture
-import org.elasticsearch.gradle.testclusters.DefaultTestClustersTask
+import org.opensearch.gradle.testclusters.DefaultTestClustersTask
 import org.opensearch.hadoop.gradle.fixture.hadoop.HadoopFixturePlugin
 import org.opensearch.hadoop.gradle.fixture.hadoop.ServiceDescriptor
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.HadoopClusterConfiguration
@@ -292,7 +292,7 @@ if (disableTests) {
     HadoopClusterConfiguration config = project.hadoop.cluster("hadoopFixture") { HadoopClusterConfiguration config ->
         // Hadoop cluster depends on KDC Fixture being up and running
         config.addDependency(kdcFixture)
-        config.useElasticsearchCluster(testClusters.integTest)
+        config.useOpenSearchCluster(testClusters.integTest)
 
         config.service('hadoop') { ServiceConfiguration s ->
             s.addSystemProperty("java.security.krb5.conf", krb5Conf.toString())

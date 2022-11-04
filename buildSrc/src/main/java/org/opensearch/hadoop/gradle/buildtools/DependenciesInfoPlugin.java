@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.gradle.buildtools;
 
-import org.elasticsearch.gradle.dependencies.CompileOnlyResolvePlugin;
+import org.opensearch.gradle.dependencies.CompileOnlyResolvePlugin;
 import org.gradle.api.Plugin;
 import org.gradle.api.Project;
 import org.gradle.api.plugins.JavaPlugin;

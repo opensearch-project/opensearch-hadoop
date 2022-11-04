@@ -28,7 +28,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ AbstractScalaOpenSearchSpark.class })
+@Suite.SuiteClasses({ AbstractScalaOpenSearchScalaSpark.class })
 public class SparkScalaSuite {
 
     static {

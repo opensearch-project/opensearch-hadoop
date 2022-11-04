@@ -49,7 +49,7 @@ public abstract class Version {
         try {
             res = Version.class.getClassLoader().getResources(target);
         } catch (IOException ex) {
-            LogFactory.getLog(Version.class).warn("Cannot detect ES-Hadoop jar; it typically indicates a deployment issue...");
+            LogFactory.getLog(Version.class).warn("Cannot detect OpenSearch-Hadoop jar; it typically indicates a deployment issue...");
         }
 
         if (res != null) {
@@ -85,7 +85,7 @@ public abstract class Version {
             // counting unique jar instances.
             int foundJars = 0;
             if (normalized.size() > 1) {
-                StringBuilder sb = new StringBuilder("Multiple ES-Hadoop versions detected in the classpath; please use only one\n");
+                StringBuilder sb = new StringBuilder("Multiple OpenSearch-Hadoop versions detected in the classpath; please use only one\n");
                 for (List<URL> pathURLs : normalized.values()) {
                     String path = pathURLs.get(0).toString();
                     if (path.contains("jar:")) {

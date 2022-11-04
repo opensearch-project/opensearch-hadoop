@@ -115,7 +115,7 @@ public class KeytoolTest {
         assertHelpMessage(console.getOutput());
     }
 
-    private static final String HELP = "A tool for managing settings stored in an ES-Hadoop keystore\n" +
+    private static final String HELP = "A tool for managing settings stored in an OpenSearch-Hadoop keystore\n" +
             "\n" +
             "Commands\n" +
             "--------\n" +

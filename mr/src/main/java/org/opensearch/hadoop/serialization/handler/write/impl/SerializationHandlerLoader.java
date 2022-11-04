@@ -58,7 +58,7 @@ public class SerializationHandlerLoader extends AbstractHandlerLoader<ISerializa
             case LOG:
                 genericHandler = DropAndLog.create(new SerializationLogRenderer());
                 break;
-            case ES:
+            case OPENSEARCH:
                 genericHandler = ElasticsearchHandler.create(getSettings(), new SerializationEventConverter());
                 break;
             default:

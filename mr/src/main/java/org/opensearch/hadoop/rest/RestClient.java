@@ -785,12 +785,12 @@ public class RestClient implements Closeable, StatsAware {
                 boolean verifyServer = (major.on(V_7_X) && major.parseMinorVersion(versionNumber) >= 14) || major.onOrAfter(V_8_X);
                 if (validElasticsearchHeader == false) {
                     if (verifyServer) {
-                        throw new OpenSearchHadoopTransportException("Connected, but could not verify server is Elasticsearch. Response missing [" +
-                                ELASTIC_PRODUCT_HEADER + "] header. Please check that you are connecting to an Elasticsearch instance, and " +
+                        throw new OpenSearchHadoopTransportException("Connected, but could not verify server is OpenSearch. Response missing [" +
+                                ELASTIC_PRODUCT_HEADER + "] header. Please check that you are connecting to an OpenSearch instance, and " +
                                 "that any networking filters are preserving that header.");
                     } else {
-                        LOG.warn("Could not verify server is Elasticsearch! ES-Hadoop will require server validation when connecting to an " +
-                                "Elasticsearch cluster if that Elasticsearch cluster is v7.14 and up.");
+                        LOG.warn("Could not verify server is OpenSearch! OpenSearch-Hadoop will require server validation when connecting to an " +
+                                "OpenSearch cluster if that OpenSearch cluster is v7.14 and up.");
                     }
                 }
             }

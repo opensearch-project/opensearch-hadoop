@@ -332,8 +332,8 @@ public abstract class InitializationUtils {
                         mainInfo.getMajorVersion()));
             }
         } catch (OpenSearchHadoopException ex) {
-            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
-                    + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
+                    + "typically this happens if the network/OpenSearch cluster is not accessible or when targeting "
                     + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
         } finally {
             bootstrap.close();
@@ -392,7 +392,7 @@ public abstract class InitializationUtils {
         try {
             ClusterInfo mainInfo = bootstrap.mainInfo();
             if (log.isDebugEnabled()) {
-                log.debug(String.format("Discovered Elasticsearch cluster [%s/%s], version [%s]",
+                log.debug(String.format("Discovered OpenSearch cluster [%s/%s], version [%s]",
                         mainInfo.getClusterName().getName(),
                         mainInfo.getClusterName().getUUID(),
                         mainInfo.getMajorVersion()));
@@ -400,8 +400,8 @@ public abstract class InitializationUtils {
             settings.setInternalClusterInfo(mainInfo);
             return mainInfo;
         } catch (OpenSearchHadoopException ex) {
-            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
-                    + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
+            throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
+                    + "typically this happens if the network/OpenSearch cluster is not accessible or when targeting "
                     + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
         } finally {
             bootstrap.close();

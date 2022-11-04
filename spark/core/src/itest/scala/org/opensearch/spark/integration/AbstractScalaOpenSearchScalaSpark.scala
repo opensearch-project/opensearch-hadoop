@@ -41,7 +41,7 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE
 import org.opensearch.hadoop.util.TestUtils.resource
 import org.opensearch.hadoop.util.TestUtils.docEndpoint
 import org.opensearch.hadoop.rest.RestUtils.ExtendedRestClient
-import org.opensearch.spark.rdd.EsSpark
+import org.opensearch.spark.rdd.OpenSearchSpark
 import org.opensearch.spark.rdd.Metadata.ID
 import org.opensearch.spark.rdd.Metadata.TTL
 import org.opensearch.spark.rdd.Metadata.VERSION
@@ -125,9 +125,9 @@ class Garbage(i: Int) {
 }
 
 @RunWith(classOf[Parameterized])
-class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extends Serializable {
+class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean) extends Serializable {
 
-  val sc = AbstractScalaEsScalaSpark.sc
+  val sc = AbstractScalaOpenSearchScalaSpark.sc
   val cfg = Map(ES_READ_METADATA -> readMetadata.toString())
   val version: OpenSearchMajorVersion = TestUtils.getOpenSearchClusterInfo.getMajorVersion
   val keyword: String = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "keyword" else "string"
@@ -142,7 +142,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
   
   @Test
   def testBasicRead() {
-    val input = AbstractScalaEsScalaSpark.testData.sampleArtistsDatUri()
+    val input = AbstractScalaOpenSearchScalaSpark.testData.sampleArtistsDatUri()
     val data = readAsRDD(input).cache()
 
     assertTrue(data.count > 300)
@@ -188,7 +188,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
   def testEsRDDWriteCaseClass() {
     val javaBean = new Bean("bar", 1, true)
     val caseClass1 = Trip("OTP", "SFO")
-    val caseClass2 = AbstractScalaEsScalaSpark.ModuleCaseClass(1, "OTP", "MUC")
+    val caseClass2 = AbstractScalaOpenSearchScalaSpark.ModuleCaseClass(1, "OTP", "MUC")
 
     val vals = ReflectionUtils.caseClassValues(caseClass2)
 
@@ -198,7 +198,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     sc.makeRDD(Seq(javaBean, caseClass2)).saveToEs(target, Map("es.mapping.id"->"id"))
 
     assertTrue(RestUtils.exists(target))
-    assertEquals(3, EsSpark.esRDD(sc, target).count())
+    assertEquals(3, OpenSearchSpark.esRDD(sc, target).count())
     assertThat(RestUtils.get(target + "/_search?"), containsString(""))
   }
 
@@ -212,7 +212,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
     sc.makeRDD(Seq(doc1, doc2)).saveToEs(target, Map(ES_MAPPING_ID -> "number"))
 
-    assertEquals(2, EsSpark.esRDD(sc, target).count())
+    assertEquals(2, OpenSearchSpark.esRDD(sc, target).count())
     assertTrue(RestUtils.exists(docPath + "/1"))
     assertTrue(RestUtils.exists(docPath + "/2"))
 
@@ -229,7 +229,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
     val pairRDD = sc.makeRDD(Seq((3, doc1), (4, doc2))).saveToEsWithMeta(target, cfg)
 
-    assertEquals(2, EsSpark.esRDD(sc, target).count())
+    assertEquals(2, OpenSearchSpark.esRDD(sc, target).count())
     assertTrue(RestUtils.exists(docPath + "/3"))
     assertTrue(RestUtils.exists(docPath + "/4"))
 
@@ -655,7 +655,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     RestUtils.postData(docPath, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
     RestUtils.refresh(wrapIndex("spark-test-scala-basic-read"))
 
-    val esData = EsSpark.esRDD(sc, target, cfg)
+    val esData = OpenSearchSpark.esRDD(sc, target, cfg)
     val messages = esData.filter(doc => doc._2.find(_.toString.contains("message")).nonEmpty)
 
     assertTrue(messages.count() == 2)
@@ -695,8 +695,8 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     RestUtils.refresh(index)
 
     val queryTarget = resource("*-scala-basic-query-read", typename, version)
-    val esData = EsSpark.esRDD(sc, queryTarget, "?q=message:Hello World", cfg)
-    val newData = EsSpark.esRDD(sc, collection.mutable.Map(cfg.toSeq: _*) += (
+    val esData = OpenSearchSpark.esRDD(sc, queryTarget, "?q=message:Hello World", cfg)
+    val newData = OpenSearchSpark.esRDD(sc, collection.mutable.Map(cfg.toSeq: _*) += (
       ES_RESOURCE -> queryTarget,
       ES_INPUT_JSON -> "true",
       ES_QUERY -> "?q=message:Hello World"))
@@ -722,7 +722,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     RestUtils.postData(docPath, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
     RestUtils.refresh(wrapIndex("spark-test-scala-basic-json-read"))
 
-    val esData = EsSpark.esJsonRDD(sc, target, cfg)
+    val esData = OpenSearchSpark.esJsonRDD(sc, target, cfg)
     val messages = esData.filter(doc => doc._2.contains("message"))
 
     assertTrue(messages.count() == 2)
@@ -744,7 +744,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
     val testCfg = cfg + (ConfigurationOptions.ES_READ_SOURCE_FILTER -> "message_date")
 
-    val esData = EsSpark.esRDD(sc, target, testCfg)
+    val esData = OpenSearchSpark.esRDD(sc, target, testCfg)
     val messages = esData.filter(doc => doc._2.contains("message_date"))
 
     assertTrue(messages.count() == 2)
@@ -779,7 +779,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     RestUtils.postData("_aliases", aliases.getBytes())
     RestUtils.refresh(alias)
 
-    val aliasRDD = EsSpark.esJsonRDD(sc, aliasTarget, cfg)
+    val aliasRDD = OpenSearchSpark.esJsonRDD(sc, aliasTarget, cfg)
     assertEquals(2, aliasRDD.count())
   }
 
@@ -796,7 +796,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
     sc.makeRDD(data).saveToEs(target)
 
-    assertEquals(3, EsSpark.esRDD(sc, target, cfg).count())
+    assertEquals(3, OpenSearchSpark.esRDD(sc, target, cfg).count())
   }
 
   @Test
@@ -830,9 +830,9 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
         |}""".stripMargin
     RestUtils.put("_template/" + wrapIndex("test_template"), template.getBytes)
 
-    val rdd = readAsRDD(AbstractScalaEsScalaSpark.testData.sampleArtistsJsonUri())
-    EsSpark.saveJsonToEs(rdd, target)
-    val esRDD = EsSpark.esRDD(sc, target, cfg)
+    val rdd = readAsRDD(AbstractScalaOpenSearchScalaSpark.testData.sampleArtistsJsonUri())
+    OpenSearchSpark.saveJsonToEs(rdd, target)
+    val esRDD = OpenSearchSpark.esRDD(sc, target, cfg)
     println(esRDD.count)
     println(RestUtils.getMappings(index).getResolvedView)
 
@@ -843,7 +843,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
 
 
   @Test
-  def testEsSparkVsScCount() {
+  def testOpenSearchSparkVsScCount() {
     val index = wrapIndex("spark-test-check-counting")
     val typename = "data"
     val target = resource(index, typename, version)
@@ -854,7 +854,7 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     val qjson =
       """{"query":{"range":{"colint":{"from":null,"to":"9","include_lower":true,"include_upper":true}}}}"""
 
-    val esRDD = EsSpark.esRDD(sc, target, qjson)
+    val esRDD = OpenSearchSpark.esRDD(sc, target, qjson)
     val scRDD = sc.esRDD(target, qjson)
     assertEquals(esRDD.collect().size, scRDD.collect().size)
   }
@@ -863,9 +863,9 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
   @Test
   def testaaaaaMultiIndexNonExisting() {
 
-    val multipleMissingIndicesWithSetting = EsSpark.esJsonRDD(sc, "bumpA,Stump", Map(ES_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
+    val multipleMissingIndicesWithSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump", Map(ES_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
     assertEquals(0, multipleMissingIndicesWithSetting.count)
-    val multipleMissingIndicesWithoutSetting = EsSpark.esJsonRDD(sc, "bumpA,Stump")
+    val multipleMissingIndicesWithoutSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump")
     try {
       val count = multipleMissingIndicesWithoutSetting.count
       fail("Should have thrown an exception instead of returning " + count)
@@ -892,9 +892,9 @@ class AbstractScalaEsScalaSpark(prefix: String, readMetadata: jl.Boolean) extend
     RestUtils.postData(docPath2, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
     RestUtils.refresh(index2)
 
-    val mixedWithSetting = EsSpark.esJsonRDD(sc, "bumpA,Stump," + index1 + "," + index2, Map(ES_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
+    val mixedWithSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump," + index1 + "," + index2, Map(ES_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
     assertEquals(4, mixedWithSetting.count)
-    val mixedWithoutSetting = EsSpark.esJsonRDD(sc, "bumpA,Stump," + index1)
+    val mixedWithoutSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump," + index1)
     try {
       val count = mixedWithoutSetting.count
       fail("Should have thrown an exception instead of returning " + count)

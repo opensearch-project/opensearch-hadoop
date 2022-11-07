@@ -63,7 +63,7 @@ class OpenSearchFixturePlugin implements Plugin<Project> {
         def clustersContainer = project.extensions.getByName(TestClustersPlugin.EXTENSION_NAME) as NamedDomainObjectContainer<OpenSearchCluster>
         def integTestCluster = clustersContainer.create("integTest") { OpenSearchCluster cluster ->
             cluster.version = version
-            cluster.testDistribution = TestDistribution.DEFAULT
+            cluster.testDistribution = TestDistribution.INTEG_TEST
         }
 
         integrationTests.all { StandaloneRestIntegTestTask integrationTest ->

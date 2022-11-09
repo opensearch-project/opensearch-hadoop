@@ -19,9 +19,9 @@
 
 package org.opensearch.hadoop.gradle
 
-import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
-import org.opensearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin
-import org.opensearch.hadoop.gradle.buildtools.info.JavaHome
+import org.opensearch.gradle.info.BuildParams
+import org.opensearch.gradle.info.GlobalBuildInfoPlugin
+import org.opensearch.gradle.info.JavaHome
 import org.opensearch.hadoop.gradle.util.Resources
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion

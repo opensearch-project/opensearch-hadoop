@@ -17,7 +17,7 @@
  * under the License.
  */
 
-import org.opensearch.hadoop.gradle.buildtools.AntFixture
+import org.opensearch.gradle.test.AntFixture
 import org.opensearch.gradle.testclusters.DefaultTestClustersTask
 import org.opensearch.hadoop.gradle.fixture.hadoop.HadoopFixturePlugin
 import org.opensearch.hadoop.gradle.fixture.hadoop.ServiceDescriptor

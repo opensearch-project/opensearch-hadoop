@@ -22,8 +22,8 @@ package org.opensearch.hadoop.gradle.fixture.hadoop
 import org.apache.tools.ant.DefaultLogger
 import org.opensearch.gradle.Version
 import org.opensearch.gradle.testclusters.DefaultTestClustersTask
-import org.opensearch.hadoop.gradle.buildtools.Fixture
-import org.opensearch.hadoop.gradle.buildtools.LoggedExec
+import org.opensearch.gradle.test.Fixture
+import org.opensearch.gradle.LoggedExec
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.HadoopClusterConfiguration
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.InstanceConfiguration
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.RoleConfiguration

@@ -19,12 +19,12 @@
 
 package org.opensearch.hadoop.gradle
 
-import org.opensearch.hadoop.gradle.buildtools.DependenciesInfoPlugin
-import org.opensearch.hadoop.gradle.buildtools.DependencyLicensesTask
-import org.opensearch.hadoop.gradle.buildtools.LicenseHeadersTask
+import org.opensearch.gradle.DependenciesInfoPlugin
+import org.opensearch.gradle.info.BuildParams
+import org.opensearch.gradle.precommit.DependencyLicensesTask
+import org.opensearch.gradle.precommit.LicenseHeadersTask
+import org.opensearch.gradle.precommit.UpdateShasTask
 import org.opensearch.gradle.testclusters.StandaloneRestIntegTestTask
-import org.opensearch.hadoop.gradle.buildtools.UpdateShasTask
-import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
 import org.opensearch.hadoop.gradle.scala.SparkVariantPlugin
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -382,9 +382,9 @@ class BuildPlugin implements Plugin<Project>  {
             manifest.attributes["Created-By"] = "${System.getProperty("java.version")} (${System.getProperty("java.specification.vendor")})"
             manifest.attributes['Implementation-Title'] = project.name
             manifest.attributes['Implementation-Version'] = project.version
-            manifest.attributes['Implementation-URL'] = "https://github.com/elastic/opensearch-hadoop"
-            manifest.attributes['Implementation-Vendor'] = "Elastic"
-            manifest.attributes['Implementation-Vendor-Id'] = "org.elasticsearch.hadoop"
+            manifest.attributes['Implementation-URL'] = "https://github.com/opensearch-project/opensearch-hadoop"
+            manifest.attributes['Implementation-Vendor'] = "OpenSearch"
+            manifest.attributes['Implementation-Vendor-Id'] = "org.opensearch.hadoop"
             manifest.attributes['Repository-Revision'] = BuildParams.gitRevision
             String build = System.env['ESHDP.BUILD']
             if (build != null) {

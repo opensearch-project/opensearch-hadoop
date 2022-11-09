@@ -24,7 +24,7 @@ import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
 import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;
 import org.opensearch.hadoop.handler.impl.DropAndLog;
-import org.opensearch.hadoop.handler.impl.elasticsearch.ElasticsearchHandler;
+import org.opensearch.hadoop.handler.impl.opensearch.ElasticsearchHandler;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.opensearch.hadoop.rest.bulk.handler.DelayableErrorCollector;
 import org.opensearch.hadoop.rest.bulk.handler.IBulkWriteErrorHandler;

@@ -21,7 +21,7 @@ package org.opensearch.hadoop.rest.bulk.handler.impl;
 
 import java.io.IOException;
 
-import org.opensearch.hadoop.handler.impl.elasticsearch.BaseEventConverter;
+import org.opensearch.hadoop.handler.impl.opensearch.BaseEventConverter;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.opensearch.hadoop.util.IOUtils;
 

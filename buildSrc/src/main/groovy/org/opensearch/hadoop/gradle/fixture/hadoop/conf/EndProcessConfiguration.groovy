@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.gradle.fixture.hadoop.conf
 
-import org.elasticsearch.gradle.testclusters.ElasticsearchCluster
+import org.opensearch.gradle.testclusters.OpenSearchCluster
 import org.gradle.api.Project
 
 /**
@@ -87,7 +87,7 @@ class EndProcessConfiguration extends ProcessConfiguration {
     }
 
     @Override
-    ElasticsearchCluster getElasticsearchCluster() {
+    OpenSearchCluster getOpenSearchCluster() {
         return null
     }
 }

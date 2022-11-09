@@ -39,14 +39,14 @@ subprojects {
                 // For some reason the root dirs all point to the buildSrc folder. The local Repo will be one above that.
                 flatDir { dirs new File(project.rootProject.rootDir, "localRepo") }
             } else {
-                maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+                maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" }
             }
         }
         dependencies {
             if (localRepo) {
                 classpath name: "build-tools-${version}"
             } else {
-                classpath group: 'org.elasticsearch.gradle', name: 'build-tools', version: project.ext.buildToolsVersion
+                classpath group: 'org.opensearch.gradle', name: 'build-tools', version: project.ext.buildToolsVersion
             }
         }
     }

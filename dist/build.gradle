@@ -1,6 +1,6 @@
-import org.opensearch.hadoop.gradle.buildtools.ConcatFilesTask
-import org.opensearch.hadoop.gradle.buildtools.DependenciesInfoTask
-import org.opensearch.hadoop.gradle.buildtools.DependencyLicensesTask
+import org.opensearch.gradle.ConcatFilesTask
+import org.opensearch.gradle.DependenciesInfoTask
+import org.opensearch.gradle.precommit.DependencyLicensesTask
 import org.opensearch.hadoop.gradle.BuildPlugin
 
 apply plugin: 'opensearch.hadoop.build'

@@ -19,7 +19,7 @@
 
 package org.opensearch.hadoop.gradle.fixture.hadoop.tasks
 
-import org.elasticsearch.gradle.testclusters.DefaultTestClustersTask
+import org.opensearch.gradle.testclusters.DefaultTestClustersTask
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.HadoopClusterConfiguration
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.InstanceConfiguration
 import org.gradle.api.tasks.Input

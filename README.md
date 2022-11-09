@@ -46,7 +46,7 @@ Grab the latest nightly build from the [repository](http://oss.sonatype.org/cont
 <repositories>
   <repository>
     <id>sonatype-oss</id>
-    <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    <url>http://aws.oss.sonatype.org/content/repositories/snapshots</url>
     <snapshots><enabled>true</enabled></snapshots>
   </repository>
 </repositories>

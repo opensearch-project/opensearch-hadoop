@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.opensearch.hadoop.handler.impl.elasticsearch;
+package org.opensearch.hadoop.handler.impl.opensearch;
 
 import java.io.IOException;
 

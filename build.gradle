@@ -1,4 +1,4 @@
-import org.opensearch.hadoop.gradle.buildtools.ConcatFilesTask
+import org.opensearch.gradle.ConcatFilesTask
 
 description = 'OpenSearch for Apache Hadoop'
 

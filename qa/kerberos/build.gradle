@@ -17,8 +17,8 @@
  * under the License.
  */
 
-import org.opensearch.hadoop.gradle.buildtools.AntFixture
-import org.elasticsearch.gradle.testclusters.DefaultTestClustersTask
+import org.opensearch.gradle.test.AntFixture
+import org.opensearch.gradle.testclusters.DefaultTestClustersTask
 import org.opensearch.hadoop.gradle.fixture.hadoop.HadoopFixturePlugin
 import org.opensearch.hadoop.gradle.fixture.hadoop.ServiceDescriptor
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.HadoopClusterConfiguration
@@ -149,7 +149,7 @@ if (disableTests) {
     String mapredPrincipal = 'mapred' + hostPart
     String hivePrincipalName = 'hive' + hostPart
     
-    String esKeytabName = 'es.keytab'
+    String opensearchKeytabName = 'opensearch.keytab'
     String clientKeytabName = 'client.keytab'
     String hadoopKeytabName = 'hadoop.keytab'
     String hiveKeytabName = 'hive.keytab'
@@ -157,7 +157,7 @@ if (disableTests) {
     Map users = ["client":"password", "gmarx":"swordfish"]
     Map<String, String> keytabUsers = [:]
     
-    keytabUsers.put(opensearchPrincipal, esKeytabName)
+    keytabUsers.put(opensearchPrincipal, opensearchKeytabName)
     keytabUsers.put(clientPrincipal, clientKeytabName)
     keytabUsers.put('HTTP/hadoop.build.opensearch.org', hadoopKeytabName)
     keytabUsers.put(namenodePrincipal, hadoopKeytabName)
@@ -195,16 +195,16 @@ if (disableTests) {
     // KDC Fixture artifacts
     java.nio.file.Path fixtureDir = project.buildDir.toPath().resolve("fixtures").resolve("kdcFixture")
     java.nio.file.Path krb5Conf = fixtureDir.resolve("krb5.conf")
-    java.nio.file.Path esKeytab = fixtureDir.resolve(esKeytabName)
+    java.nio.file.Path opensearchKeytab = fixtureDir.resolve(opensearchKeytabName)
     java.nio.file.Path clientKeytab = fixtureDir.resolve(clientKeytabName)
     java.nio.file.Path hadoopKeytab = fixtureDir.resolve(hadoopKeytabName)
     java.nio.file.Path hiveKeytab = fixtureDir.resolve(hiveKeytabName)
     
     // =============================================================================
-    // Elasticsearch cluster configuration
+    // OpenSearch cluster configuration
     // =============================================================================
     
-    // Configure ES with Kerberos Auth
+    // Configure OpenSearch with Kerberos Auth
     testClusters.integTest {
         // This may be needed if we ever run against java 9:
         // --add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED
@@ -217,26 +217,8 @@ if (disableTests) {
         // hostname when starting the cluster but do not know the exact address that is first in the http
         // ports file
         setting 'http.host', '127.0.0.1'
-        setting 'xpack.license.self_generated.type', 'trial'
-        setting 'xpack.ml.enabled', 'false'
-        // Enable Security
-        setting 'xpack.security.enabled', 'true'
-        setting 'xpack.security.audit.enabled', 'true'
-        // Configure File Realm
-        setting 'xpack.security.authc.realms.file.myfile.order', '0'
-        // Configure Native Realm
-        setting 'xpack.security.authc.realms.native.mynative.order', '1'
-        // Configure Kerberos Realm
-        setting 'xpack.security.authc.realms.kerberos.krb5.order', '2'
-        setting 'xpack.security.authc.realms.kerberos.krb5.keytab.path', 'es.keytab'
-        setting 'xpack.security.authc.realms.kerberos.krb5.krb.debug', 'true'
-        setting 'xpack.security.authc.realms.kerberos.krb5.remove_realm_name', 'false'
-        // Configure API Key Realm
-        setting 'xpack.security.authc.api_key.enabled', 'true'
 
-        user username: 'test_admin', password: 'x-pack-test-password', role: 'superuser'
-
-        extraConfigFile('es.keytab', esKeytab.toFile())
+        extraConfigFile('opensearch.keytab', opensearchKeytab.toFile())
     }
     def opensearchAddress = "${-> testClusters.integTest.getAllHttpSocketURI().get(0)}"
 
@@ -292,7 +274,7 @@ if (disableTests) {
     HadoopClusterConfiguration config = project.hadoop.cluster("hadoopFixture") { HadoopClusterConfiguration config ->
         // Hadoop cluster depends on KDC Fixture being up and running
         config.addDependency(kdcFixture)
-        config.useElasticsearchCluster(testClusters.integTest)
+        config.useOpenSearchCluster(testClusters.integTest)
 
         config.service('hadoop') { ServiceConfiguration s ->
             s.addSystemProperty("java.security.krb5.conf", krb5Conf.toString())

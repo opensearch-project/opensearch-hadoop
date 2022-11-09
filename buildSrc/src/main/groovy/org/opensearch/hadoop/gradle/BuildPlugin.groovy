@@ -755,7 +755,7 @@ class BuildPlugin implements Plugin<Project>  {
 
     /**
      * Create a task specifically for integration tests, add the integration test code to the testing uber-jar,
-     * and configure a local Elasticsearch node for use as a test fixture.
+     * and configure a local OpenSearch node for use as a test fixture.
      * @param project to be configured
      */
     private static void configureIntegrationTestTask(Project project) {

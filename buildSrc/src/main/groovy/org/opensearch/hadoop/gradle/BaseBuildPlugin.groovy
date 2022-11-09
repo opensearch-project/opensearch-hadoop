@@ -166,13 +166,13 @@ class BaseBuildPlugin implements Plugin<Project> {
         project.repositories.maven { url "https://clojars.org/repo" }
         project.repositories.maven { url 'https://repo.spring.io/plugins-release-local' }
 
-        // For Elasticsearch snapshots.
-        project.repositories.maven { url "https://snapshots.elastic.co/maven/" } // default
-        project.repositories.maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // oss-only
+        // For OpenSearch snapshots.
+        project.repositories.maven { url "https://artifacts.opensearch.org/snapshots/" } // default
+        project.repositories.maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" } // oss-only
 
-        // Elastic artifacts
-        project.repositories.maven { url "https://artifacts.elastic.co/maven/" } // default
-        project.repositories.maven { url "https://oss.sonatype.org/content/groups/public/" } // oss-only
+        // OpenSearch artifacts
+//        project.repositories.maven { url "https://artifacts.opensearch.org/snapshots/" } // default
+//        project.repositories.maven { url "https://aws.oss.sonatype.org/content/groups/public/" } // oss-only
 
         // Add Ivy repos in order to pull Elasticsearch distributions that have bundled JDKs
         for (String repo : ['snapshots', 'artifacts']) {

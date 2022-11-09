@@ -25,7 +25,7 @@ import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
 import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;
 import org.opensearch.hadoop.handler.impl.DropAndLog;
-import org.opensearch.hadoop.handler.impl.elasticsearch.ElasticsearchHandler;
+import org.opensearch.hadoop.handler.impl.opensearch.ElasticsearchHandler;
 import org.opensearch.hadoop.serialization.handler.read.DeserializationFailure;
 import org.opensearch.hadoop.serialization.handler.read.IDeserializationErrorHandler;
 

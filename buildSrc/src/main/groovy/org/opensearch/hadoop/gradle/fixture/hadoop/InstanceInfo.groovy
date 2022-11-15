@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -20,7 +30,7 @@
 package org.opensearch.hadoop.gradle.fixture.hadoop
 
 import org.apache.tools.ant.taskdefs.condition.Os
-import org.elasticsearch.gradle.testclusters.ElasticsearchCluster
+import org.opensearch.gradle.testclusters.OpenSearchCluster
 import org.opensearch.hadoop.gradle.util.WaitForURL
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.InstanceConfiguration
 import org.gradle.api.GradleException
@@ -110,8 +120,8 @@ class InstanceInfo {
     /** buffer for ant output when starting this node */
     ByteArrayOutputStream buffer = new ByteArrayOutputStream()
 
-    /** Elasticsearch cluster dependency for tasks **/
-    ElasticsearchCluster elasticsearchCluster
+    /** OpenSearch cluster dependency for tasks **/
+    OpenSearchCluster opensearchCluster
 
     /**
      * A closure to call before the cluster is considered ready. The closure is passed the node info,
@@ -211,7 +221,7 @@ class InstanceInfo {
             args.add('"') // end the entire command, quoted
         }
 
-        this.elasticsearchCluster = config.getElasticsearchCluster()
+        this.opensearchCluster = config.getOpenSearchCluster()
     }
 
     Path binPath() {

@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -24,6 +34,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UncheckedIOException;
 
+import org.opensearch.gradle.info.GlobalBuildInfoPlugin;
+
 public class Resources {
 
     /**
@@ -34,7 +46,7 @@ public class Resources {
      */
     public static String getResourceContents(String resourcePath) {
         try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(Resources.class.getResourceAsStream(resourcePath))
+                new InputStreamReader(GlobalBuildInfoPlugin.class.getResourceAsStream(resourcePath))
         )) {
             StringBuilder b = new StringBuilder();
             for (String line = reader.readLine(); line != null; line = reader.readLine()) {

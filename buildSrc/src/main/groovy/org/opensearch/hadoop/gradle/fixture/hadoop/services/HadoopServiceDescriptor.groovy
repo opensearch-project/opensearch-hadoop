@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -20,7 +30,7 @@
 package org.opensearch.hadoop.gradle.fixture.hadoop.services
 
 import org.apache.tools.ant.taskdefs.condition.Os
-import org.elasticsearch.gradle.Version
+import org.opensearch.gradle.Version
 import org.opensearch.hadoop.gradle.fixture.hadoop.ConfigFormats
 import org.opensearch.hadoop.gradle.fixture.hadoop.RoleDescriptor
 import org.opensearch.hadoop.gradle.fixture.hadoop.ServiceDescriptor

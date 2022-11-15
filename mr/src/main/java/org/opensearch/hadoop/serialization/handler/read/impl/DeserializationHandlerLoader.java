@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -25,7 +35,7 @@ import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
 import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;
 import org.opensearch.hadoop.handler.impl.DropAndLog;
-import org.opensearch.hadoop.handler.impl.elasticsearch.ElasticsearchHandler;
+import org.opensearch.hadoop.handler.impl.opensearch.ElasticsearchHandler;
 import org.opensearch.hadoop.serialization.handler.read.DeserializationFailure;
 import org.opensearch.hadoop.serialization.handler.read.IDeserializationErrorHandler;
 
@@ -58,7 +68,7 @@ public class DeserializationHandlerLoader extends AbstractHandlerLoader<IDeseria
             case LOG:
                 genericHandler = DropAndLog.create(new DeserializationLogRenderer());
                 break;
-            case ES:
+            case OPENSEARCH:
                 genericHandler = ElasticsearchHandler.create(getSettings(), new DeserializationEventConverter());
                 break;
             default:

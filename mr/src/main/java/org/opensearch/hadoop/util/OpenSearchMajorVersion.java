@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -70,6 +80,7 @@ public class OpenSearchMajorVersion implements Serializable {
         return version.major >= major;
     }
 
+    /** TODO !!!! CORRECT VERSIONING FOR OPENSEARCH COMPATIBILITY !!!! **/
     public static OpenSearchMajorVersion parse(String version) {
         if (version.startsWith("0.")) {
             return new OpenSearchMajorVersion((byte) 0, version);
@@ -92,8 +103,8 @@ public class OpenSearchMajorVersion implements Serializable {
         if (version.startsWith("8.")) {
             return new OpenSearchMajorVersion((byte) 8, version);
         }
-        throw new OpenSearchHadoopIllegalArgumentException("Unsupported/Unknown Elasticsearch version [" + version + "]." +
-                "Highest supported version is [" + LATEST.version + "]. You may need to upgrade ES-Hadoop.");
+        throw new OpenSearchHadoopIllegalArgumentException("Unsupported/Unknown OpenSearch version [" + version + "]." +
+                "Highest supported version is [" + LATEST.version + "]. You may need to upgrade OpenSearch-Hadoop.");
     }
 
     public int parseMinorVersion(String versionString) {

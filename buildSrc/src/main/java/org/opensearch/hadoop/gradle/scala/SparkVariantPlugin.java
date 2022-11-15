@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -272,7 +282,7 @@ public class SparkVariantPlugin implements Plugin<Project> {
                 if (SCALA_LIBRARY.equals(details.getId().getName())) {
                     details.allVariants(variantMetadata -> {
                         variantMetadata.withCapabilities(capabilityMetadata -> {
-                            capabilityMetadata.addCapability("org.elasticsearch.gradle", SCALA_LIBRARY, details.getId().getVersion());
+                            capabilityMetadata.addCapability("org.opensearch.gradle", SCALA_LIBRARY, details.getId().getVersion());
                         });
                     });
                 }

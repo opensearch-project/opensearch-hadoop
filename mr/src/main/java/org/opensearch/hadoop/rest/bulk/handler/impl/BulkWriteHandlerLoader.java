@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -24,7 +34,7 @@ import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
 import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;
 import org.opensearch.hadoop.handler.impl.DropAndLog;
-import org.opensearch.hadoop.handler.impl.elasticsearch.ElasticsearchHandler;
+import org.opensearch.hadoop.handler.impl.opensearch.ElasticsearchHandler;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.opensearch.hadoop.rest.bulk.handler.DelayableErrorCollector;
 import org.opensearch.hadoop.rest.bulk.handler.IBulkWriteErrorHandler;
@@ -61,7 +71,7 @@ public class BulkWriteHandlerLoader extends AbstractHandlerLoader<IBulkWriteErro
             case LOG:
                 genericHandler = DropAndLog.create(new BulkLogRenderer());
                 break;
-            case ES:
+            case OPENSEARCH:
                 genericHandler = ElasticsearchHandler.create(getSettings(), new BulkErrorEventConverter());
                 break;
             default:

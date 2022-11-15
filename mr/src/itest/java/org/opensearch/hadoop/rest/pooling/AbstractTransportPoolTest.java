@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -21,7 +31,6 @@ package org.opensearch.hadoop.rest.pooling;
 
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Transport;
-import org.elasticsearch.hadoop.rest.pooling.TransportPool;
 import org.opensearch.hadoop.security.SecureSettings;
 import org.opensearch.hadoop.util.SettingsUtils;
 import org.opensearch.hadoop.util.TestSettings;

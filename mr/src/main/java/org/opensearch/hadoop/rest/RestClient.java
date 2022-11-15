@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -785,12 +795,12 @@ public class RestClient implements Closeable, StatsAware {
                 boolean verifyServer = (major.on(V_7_X) && major.parseMinorVersion(versionNumber) >= 14) || major.onOrAfter(V_8_X);
                 if (validElasticsearchHeader == false) {
                     if (verifyServer) {
-                        throw new OpenSearchHadoopTransportException("Connected, but could not verify server is Elasticsearch. Response missing [" +
-                                ELASTIC_PRODUCT_HEADER + "] header. Please check that you are connecting to an Elasticsearch instance, and " +
+                        throw new OpenSearchHadoopTransportException("Connected, but could not verify server is OpenSearch. Response missing [" +
+                                ELASTIC_PRODUCT_HEADER + "] header. Please check that you are connecting to an OpenSearch instance, and " +
                                 "that any networking filters are preserving that header.");
                     } else {
-                        LOG.warn("Could not verify server is Elasticsearch! ES-Hadoop will require server validation when connecting to an " +
-                                "Elasticsearch cluster if that Elasticsearch cluster is v7.14 and up.");
+                        LOG.warn("Could not verify server is OpenSearch! OpenSearch-Hadoop will require server validation when connecting to an " +
+                                "OpenSearch cluster if that OpenSearch cluster is v7.14 and up.");
                     }
                 }
             }

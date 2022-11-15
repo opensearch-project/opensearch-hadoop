@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -17,7 +27,7 @@
  * under the License.
  */
 
-package org.opensearch.hadoop.handler.impl.elasticsearch;
+package org.opensearch.hadoop.handler.impl.opensearch;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -142,13 +152,13 @@ public class ElasticsearchHandler<I extends Exceptional, O, C extends ErrorColle
         this.clientSettings = handlerSettings.getSettingsView(CONF_CLIENT_CONF);
 
         // Ensure we have a write resource to use
-        Assert.hasText(clientSettings.getResourceWrite(), "Could not locate write resource for ES error handler.");
+        Assert.hasText(clientSettings.getResourceWrite(), "Could not locate write resource for OpenSearch error handler.");
 
         if (inheritRoot) {
-            LOG.info("Elasticsearch Error Handler inheriting root configuration");
+            LOG.info("OpenSearch Error Handler inheriting root configuration");
             this.clientSettings = new CompositeSettings(Arrays.asList(clientSettings, rootSettings.excludeFilter("es.internal")));
         } else {
-            LOG.info("Elasticsearch Error Handler proceeding without inheriting root configuration options as configured");
+            LOG.info("OpenSearch Error Handler proceeding without inheriting root configuration options as configured");
         }
 
         // Ensure no pattern in Index format, and extract the index to send errors to
@@ -229,7 +239,7 @@ public class ElasticsearchHandler<I extends Exceptional, O, C extends ErrorColle
                 result = generateResult(returnError, errorReason, collector);
             }
         } catch (Exception e) {
-            LOG.error("Could not send error handling data to ES", e);
+            LOG.error("Could not send error handling data to OpenSearch", e);
             result = generateResult(returnError, errorReason, collector);
         }
         return result;

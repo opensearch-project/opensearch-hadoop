@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -32,7 +42,7 @@ import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.opensearch.hadoop.mr.EsInputFormat;
-import org.opensearch.hadoop.mr.EsMapReduceUtil;
+import org.opensearch.hadoop.mr.OpenSearchMapReduceUtil;
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
 public class ReadFromES extends Configured implements Tool {
@@ -54,7 +64,7 @@ public class ReadFromES extends Configured implements Tool {
         //
         // job.setJarByClass(getClass());
 
-        EsMapReduceUtil.initCredentials(job);
+        OpenSearchMapReduceUtil.initCredentials(job);
 
         job.getConfiguration().set("es.output.json", "true");
 

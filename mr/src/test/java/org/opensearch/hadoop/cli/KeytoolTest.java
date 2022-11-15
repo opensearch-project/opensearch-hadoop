@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -115,7 +125,7 @@ public class KeytoolTest {
         assertHelpMessage(console.getOutput());
     }
 
-    private static final String HELP = "A tool for managing settings stored in an ES-Hadoop keystore\n" +
+    private static final String HELP = "A tool for managing settings stored in an OpenSearch-Hadoop keystore\n" +
             "\n" +
             "Commands\n" +
             "--------\n" +

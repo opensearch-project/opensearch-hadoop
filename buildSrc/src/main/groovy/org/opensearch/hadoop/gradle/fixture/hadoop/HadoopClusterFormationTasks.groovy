@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -20,10 +30,10 @@
 package org.opensearch.hadoop.gradle.fixture.hadoop
 
 import org.apache.tools.ant.DefaultLogger
-import org.elasticsearch.gradle.Version
-import org.elasticsearch.gradle.testclusters.DefaultTestClustersTask
-import org.opensearch.hadoop.gradle.buildtools.Fixture
-import org.opensearch.hadoop.gradle.buildtools.LoggedExec
+import org.opensearch.gradle.Version
+import org.opensearch.gradle.testclusters.DefaultTestClustersTask
+import org.opensearch.gradle.test.Fixture
+import org.opensearch.gradle.LoggedExec
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.HadoopClusterConfiguration
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.InstanceConfiguration
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.RoleConfiguration
@@ -327,8 +337,8 @@ class HadoopClusterFormationTasks {
         // Add all node level configs to node Configuration
         return project.tasks.create(name: name, type: DefaultTestClustersTask, dependsOn: setup) {
             group = 'hadoopFixture'
-            if (node.elasticsearchCluster != null) {
-                useCluster(node.elasticsearchCluster)
+            if (node.opensearchCluster != null) {
+                useCluster(node.opensearchCluster)
             }
             doFirst {
                 // Write each config file needed

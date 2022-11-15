@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -19,9 +29,9 @@
 
 package org.opensearch.hadoop.gradle
 
-import org.opensearch.hadoop.gradle.buildtools.info.BuildParams
-import org.opensearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin
-import org.opensearch.hadoop.gradle.buildtools.info.JavaHome
+import org.opensearch.gradle.info.BuildParams
+import org.opensearch.gradle.info.GlobalBuildInfoPlugin
+import org.opensearch.gradle.info.JavaHome
 import org.opensearch.hadoop.gradle.util.Resources
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
@@ -70,7 +80,7 @@ class BaseBuildPlugin implements Plugin<Project> {
             JavaHome esHadoopRuntimeJava = BuildParams.javaVersions.find { it.version == 8 }
             if (esHadoopRuntimeJava == null) {
                 throw new GradleException(
-                        '$JAVA8_HOME must be set to build ES-Hadoop. ' +
+                        '$JAVA8_HOME must be set to build OpenSearch-Hadoop. ' +
                                 "Note that if the variable was just set you might have to run `./gradlew --stop` for " +
                                 "it to be picked up. See https://github.com/elastic/elasticsearch/issues/31399 details."
                 )
@@ -166,13 +176,13 @@ class BaseBuildPlugin implements Plugin<Project> {
         project.repositories.maven { url "https://clojars.org/repo" }
         project.repositories.maven { url 'https://repo.spring.io/plugins-release-local' }
 
-        // For Elasticsearch snapshots.
-        project.repositories.maven { url "https://snapshots.elastic.co/maven/" } // default
-        project.repositories.maven { url "https://oss.sonatype.org/content/repositories/snapshots" } // oss-only
+        // For OpenSearch snapshots.
+        project.repositories.maven { url "https://artifacts.opensearch.org/snapshots/" } // default
+        project.repositories.maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" } // oss-only
 
-        // Elastic artifacts
-        project.repositories.maven { url "https://artifacts.elastic.co/maven/" } // default
-        project.repositories.maven { url "https://oss.sonatype.org/content/groups/public/" } // oss-only
+        // OpenSearch artifacts
+//        project.repositories.maven { url "https://artifacts.opensearch.org/snapshots/" } // default
+//        project.repositories.maven { url "https://aws.oss.sonatype.org/content/groups/public/" } // oss-only
 
         // Add Ivy repos in order to pull Elasticsearch distributions that have bundled JDKs
         for (String repo : ['snapshots', 'artifacts']) {

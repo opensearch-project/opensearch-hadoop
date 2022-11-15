@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -17,7 +27,7 @@
  * under the License.
  */
 
-package org.opensearch.hadoop.handler.impl.elasticsearch;
+package org.opensearch.hadoop.handler.impl.opensearch;
 
 import java.io.IOException;
 import java.util.Calendar;

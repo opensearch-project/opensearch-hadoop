@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -178,7 +188,7 @@ public abstract class LicenseHeadersTask extends DefaultTask {
             matchers.add(subStringMatcher(category, family, additional.getValue()));
         }
 
-        reportConfiguration.setHeaderMatcher(new HeaderMatcherMultiplexer(matchers.toArray(IHeaderMatcher[]::new)));
+        reportConfiguration.setHeaderMatcher(new HeaderMatcherMultiplexer(matchers));
         reportConfiguration.setApprovedLicenseNames(approvedLicenses.stream().map(license -> {
             SimpleLicenseFamily simpleLicenseFamily = new SimpleLicenseFamily();
             simpleLicenseFamily.setFamilyName(license);

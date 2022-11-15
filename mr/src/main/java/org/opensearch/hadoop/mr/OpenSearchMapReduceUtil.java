@@ -1,4 +1,14 @@
 /*
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The OpenSearch Contributors require contributions made to
+ * this file be licensed under the Apache-2.0 license or a
+ *
+ * Modifications Copyright OpenSearch Contributors. See
+ * GitHub history for details.
+ */
+ 
+/*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
  * this work for additional information regarding copyright
@@ -38,21 +48,21 @@ import org.opensearch.hadoop.security.UserProvider;
 import org.opensearch.hadoop.util.ClusterInfo;
 
 /**
- * Utility functions for setting up Map Reduce Jobs to read and write from Elasticsearch.
+ * Utility functions for setting up Map Reduce Jobs to read and write from OpenSearch.
  *
- * @see EsInputFormat For reading from Elasticsearch
- * @see EsOutputFormat For writing to Elasticsearch
+ * @see EsInputFormat For reading from OpenSearch
+ * @see EsOutputFormat For writing to OpenSearch
  */
-public final class EsMapReduceUtil {
+public final class OpenSearchMapReduceUtil {
 
-    private static final Log LOG = LogFactory.getLog(EsMapReduceUtil.class);
+    private static final Log LOG = LogFactory.getLog(OpenSearchMapReduceUtil.class);
 
-    private EsMapReduceUtil() { /* No instances */ }
+    private OpenSearchMapReduceUtil() { /* No instances */ }
 
     /**
      * Given the settings contained within a job object, retrieve an authentication token from either the currently logged in
-     * user or from the Elasticsearch cluster and add it to the job's credential set.
-     * @param job for collecting the settings to connect to Elasticsearch, as well as for storing the authentication token
+     * user or from the OpenSearch cluster and add it to the job's credential set.
+     * @param job for collecting the settings to connect to OpenSearch, as well as for storing the authentication token
      */
     public static void initCredentials(Job job) {
         Configuration configuration = job.getConfiguration();
@@ -72,7 +82,7 @@ public final class EsMapReduceUtil {
                 // Add the token to the job
                 TokenUtil.addTokenForJob(bootstrap, clusterInfo.getClusterName(), user, job);
             } catch (OpenSearchHadoopException ex) {
-                throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
+                throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
                         + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
                         + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {
@@ -107,7 +117,7 @@ public final class EsMapReduceUtil {
                 // Add the token to the job
                 TokenUtil.addTokenForJobConf(bootstrap, clusterInfo.getClusterName(), user, jobConf);
             } catch (OpenSearchHadoopException ex) {
-                throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect ES version - "
+                throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
                         + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
                         + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {

@@ -42,7 +42,6 @@ import org.junit.runners.MethodSorters;
 
 import java.sql.SQLException;
 
-import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_5_X;
 import static org.opensearch.hadoop.util.TestUtils.docEndpoint;
 import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.assertFalse;
@@ -135,9 +134,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testBasicSaveMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-artists").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]")
-                        : is("*/*=[id=LONG, links=[picture=STRING, url=STRING], name=STRING]"));
+                is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]"));
     }
 
     @Test
@@ -192,9 +189,7 @@ public class AbstractHiveSaveTest {
     public void testCompoundSaveMapping() throws Exception {
         assertThat(
                 RestUtils.getMappings("hive-compound").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[mapids=LONG, rdata=[1=TEXT, 10=TEXT, 11=TEXT, 12=TEXT, 13=TEXT, 2=TEXT, 3=TEXT, 4=TEXT, 5=TEXT, 6=TEXT, 7=TEXT, 8=TEXT, 9=TEXT], rid=LONG]")
-                        : is("*/*=[mapids=LONG, rdata=[1=STRING, 10=STRING, 11=STRING, 12=STRING, 13=STRING, 2=STRING, 3=STRING, 4=STRING, 5=STRING, 6=STRING, 7=STRING, 8=STRING, 9=STRING], rid=LONG]"));
+                is("*/*=[mapids=LONG, rdata=[1=TEXT, 10=TEXT, 11=TEXT, 12=TEXT, 13=TEXT, 2=TEXT, 3=TEXT, 4=TEXT, 5=TEXT, 6=TEXT, 7=TEXT, 8=TEXT, 9=TEXT], rid=LONG]"));
     }
 
 
@@ -231,9 +226,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testTimestampSaveMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-artiststimestamp").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[dte=DATE, links=[picture=TEXT, url=TEXT], name=TEXT]")
-                        : is("*/*=[dte=DATE, links=[picture=STRING, url=STRING], name=STRING]"));
+                is("*/*=[dte=DATE, links=[picture=TEXT, url=TEXT], name=TEXT]"));
     }
 
     @Test
@@ -265,9 +258,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testFieldAliasMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-aliassave").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[@timestamp=DATE, links=[picture=TEXT, url_123=TEXT], name=TEXT]")
-                        : is("*/*=[@timestamp=DATE, links=[picture=STRING, url_123=STRING], name=STRING]"));
+                is("*/*=[@timestamp=DATE, links=[picture=TEXT, url_123=TEXT], name=TEXT]"));
     }
 
     @Test
@@ -306,9 +297,7 @@ public class AbstractHiveSaveTest {
     @Ignore
     public void testDateSaveMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-datesave").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, date=LONG, name=TEXT, links=[url=TEXT, picture=TEXT]]")
-                        : is("*/*=[id=LONG, date=LONG, name=STRING, links=[url=STRING, picture=STRING]]"));
+                is("*/*=[id=LONG, date=LONG, name=TEXT, links=[url=TEXT, picture=TEXT]]"));
     }
 
     @Test
@@ -339,9 +328,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testCharMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-charsave").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                    ? is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]")
-                    : is("*/*=[id=LONG, links=[picture=STRING, url=STRING], name=STRING]"));
+                is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]"));
     }
 
     @Test
@@ -374,9 +361,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testExternalSerDeMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-externalserde").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[data=TEXT]")
-                        : is("*/*=[data=STRING]"));
+                is("*/*=[data=TEXT]"));
     }
 
     @Test
@@ -407,9 +392,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testVarcharSaveMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-varcharsave").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]")
-                        : is("*/*=[id=LONG, links=[picture=STRING, url=STRING], name=STRING]"));
+                is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]"));
     }
 
     @Test
@@ -448,9 +431,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testCreateMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-createsave").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]")
-                        : is("*/*=[id=LONG, links=[picture=STRING, url=STRING], name=STRING]"));
+                is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]"));
     }
 
     @Test(expected = SQLException.class)
@@ -522,9 +503,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testUpdateWithIdMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-updatesave").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]")
-                        : is("*/*=[id=LONG, links=[picture=STRING, url=STRING], name=STRING]"));
+                is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]"));
     }
 
     @Test(expected = SQLException.class)
@@ -561,49 +540,6 @@ public class AbstractHiveSaveTest {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        RestUtils.createMultiTypeIndex("hive-pc");
-        RestUtils.putMapping("hive-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
-
-        String localTable = createTable("childsource");
-        String load = loadData("childsource");
-
-        // create external table
-        String ddl =
-                "CREATE EXTERNAL TABLE child ("
-                        + "id       BIGINT, "
-                        + "name     STRING, "
-                        + "links    STRUCT<url:STRING, picture:STRING>) "
-                        + tableProps("hive-pc/child",
-                                "'" + ConfigurationOptions.ES_MAPPING_PARENT + "'='id'",
-                                "'" + ConfigurationOptions.ES_INDEX_AUTO_CREATE + "'='false'");
-
-        String selectTest = "SELECT s.id, struct(s.url, s.picture) FROM childsource s";
-
-        // transfer data
-        String insert =
-                "INSERT OVERWRITE TABLE child "
-                        + "SELECT s.id, s.name, named_struct('url', s.url, 'picture', s.picture) FROM childsource s";
-
-        System.out.println(ddl);
-        System.out.println(server.execute(ddl));
-        System.out.println(server.execute(localTable));
-        System.out.println(server.execute(load));
-        System.out.println(server.execute(selectTest));
-        System.out.println(server.execute(insert));
-    }
-
-    @Test
-    public void testParentChildMapping() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        assertThat(RestUtils.getMapping("hive-pc", "child").toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("hive-pc/child=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]")
-                        : is("hive-pc/child=[id=LONG, links=[picture=STRING, url=STRING], name=STRING]"));
-    }
-
-    @Test
     public void testIndexPattern() throws Exception {
         // load the raw data as a native, managed table
         // and then insert its content into the external one
@@ -637,9 +573,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testIndexPatternMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-pattern-12").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]")
-                        : is("*/*=[id=LONG, links=[picture=STRING, url=STRING], name=STRING]"));
+                is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT]"));
     }
 
     @Test
@@ -677,9 +611,7 @@ public class AbstractHiveSaveTest {
     @Test
     public void testIndexPatternFormatMapping() throws Exception {
         assertThat(RestUtils.getMappings("hive-pattern-format-2012-10-06").getResolvedView().toString(),
-                targetVersion.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT, ts=DATE]")
-                        : is("*/*=[id=LONG, links=[picture=STRING, url=STRING], name=STRING, ts=DATE]"));
+                is("*/*=[id=LONG, links=[picture=TEXT, url=TEXT], name=TEXT, ts=DATE]"));
     }
 
     @Test

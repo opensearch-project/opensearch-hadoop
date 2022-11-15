@@ -141,7 +141,7 @@ public class AbstractHadoopBasicSparkTest implements Serializable {
         RestUtils.refresh("spark-test*");
 
         JobConf hdpConf = HdpBootstrap.hadoopConfig();
-        hdpConf.set(ConfigurationOptions.ES_RESOURCE, target);
+        hdpConf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, target);
 
 
         //JavaPairRDD data = sc.newAPIHadoopRDD(hdpConf, EsInputFormat.class, NullWritable.class, MapWritable.class);

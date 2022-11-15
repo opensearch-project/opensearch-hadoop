@@ -46,44 +46,42 @@ public class OpenSearchMajorVersionTest {
     private static final List<String> TEST_VERSIONS;
     static {
         List<String> versions = new ArrayList<>();
-        versions.add("0.1.0");
-        versions.add("0.1.1");
         versions.add("1.0.0-alpha1");
         versions.add("1.0.0-beta2");
         versions.add("1.0.0-rc3");
         versions.add("1.0.0");
         versions.add("1.1.0");
         versions.add("1.1.1");
+        versions.add("1.2.0");
+        versions.add("1.2.1");
+        versions.add("1.2.2");
+        versions.add("1.2.3");
+        versions.add("1.2.4");
+        versions.add("1.2.5");
+        versions.add("1.3.0");
+        versions.add("1.3.1");
+        versions.add("1.3.2");
+        versions.add("1.3.3");
+        versions.add("1.3.4");
+        versions.add("1.3.5");
+        versions.add("1.3.6");
+        versions.add("1.3.7");
         versions.add("2.0.0-alpha1");
         versions.add("2.0.0-beta2");
         versions.add("2.0.0-rc3");
         versions.add("2.0.0");
         versions.add("2.1.0");
         versions.add("2.1.1");
-        versions.add("5.0.0-alpha1");
-        versions.add("5.0.0-beta2");
-        versions.add("5.0.0-rc3");
-        versions.add("5.0.0");
-        versions.add("5.1.0");
-        versions.add("5.1.1");
-        versions.add("6.0.0-alpha1");
-        versions.add("6.0.0-beta2");
-        versions.add("6.0.0-rc3");
-        versions.add("6.0.0");
-        versions.add("6.1.0");
-        versions.add("6.1.1");
-        versions.add("7.0.0-alpha1");
-        versions.add("7.0.0-beta2");
-        versions.add("7.0.0-rc3");
-        versions.add("7.0.0");
-        versions.add("7.1.0");
-        versions.add("7.1.1");
-        versions.add("8.0.0-alpha1");
-        versions.add("8.0.0-beta2");
-        versions.add("8.0.0-rc3");
-        versions.add("8.0.0");
-        versions.add("8.1.0");
-        versions.add("8.1.1");
+        versions.add("2.2.0");
+        versions.add("2.2.1");
+        versions.add("2.2.2");
+        versions.add("2.3.0");
+        versions.add("2.3.1");
+        versions.add("2.4.0");
+        versions.add("3.0.0-alpha1");
+        versions.add("3.0.0-beta2");
+        versions.add("3.0.0-rc3");
+        versions.add("3.0.0");
         TEST_VERSIONS = Collections.unmodifiableList(versions);
     }
 
@@ -121,24 +119,24 @@ public class OpenSearchMajorVersionTest {
             assertThat(minorVersion, greaterThanOrEqualTo(0));
         }
         try {
-            OpenSearchMajorVersion.V_7_X.parseMinorVersion("6.0.0");
+            OpenSearchMajorVersion.V_3_X.parseMinorVersion("6.0.0");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Invalid version string for major version; Received [6.0.0] for major version [7.x]",
+            assertEquals("Invalid version string for major version; Received [6.0.0] for major version [3.x]",
                     e.getMessage());
         }
         try {
-            OpenSearchMajorVersion.V_7_X.parseMinorVersion("7.");
+            OpenSearchMajorVersion.V_3_X.parseMinorVersion("3.");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Could not parse Elasticsearch minor version [7.]. Invalid version format.",
+            assertEquals("Could not parse OpenSearch minor version [3.]. Invalid version format.",
                     e.getMessage());
         }
         try {
-            OpenSearchMajorVersion.V_7_X.parseMinorVersion("7.4-abcd.4");
+            OpenSearchMajorVersion.V_3_X.parseMinorVersion("3.4-abcd.4");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Could not parse Elasticsearch minor version [7.4-abcd.4]. Non-numeric minor version [4-abcd].",
+            assertEquals("Could not parse OpenSearch minor version [3.4-abcd.4]. Non-numeric minor version [4-abcd].",
                     e.getMessage());
         }
     }

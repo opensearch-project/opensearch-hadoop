@@ -224,7 +224,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
   val sc = AbstractScalaEsScalaSparkSQL.sc
   val sqc = AbstractScalaEsScalaSparkSQL.sqc
-  val cfg = Map(ES_QUERY -> query,
+  val cfg = Map(OPENSEARCH_QUERY -> query,
                 ES_READ_METADATA -> readMetadata.toString(),
                 "es.internal.spark.sql.pushdown" -> pushDown.toString(),
                 "es.internal.spark.sql.pushdown.strict" -> strictPushDown.toString(),
@@ -348,7 +348,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     RestUtils.postData(docPath, jsonDoc.getBytes(StringUtils.UTF_8))
     RestUtils.refresh(index)
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "bar.bar.bar", "es.resource" -> target)
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "bar.bar.bar", "opensearch.resource" -> target)
     val cfgSettings = new SparkSettingsManager().load(sc.getConf).copy().merge(newCfg.asJava)
     val schema = SchemaUtilsTestable.discoverMapping(cfgSettings)
     val mapping = SchemaUtilsTestable.rowInfo(cfgSettings)

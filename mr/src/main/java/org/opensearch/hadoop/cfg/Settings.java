@@ -91,7 +91,7 @@ public abstract class Settings {
     public ClusterInfo getClusterInfoOrThrow() {
         ClusterInfo clusterInfo = getClusterInfoOrNull();
         if (clusterInfo == null) {
-            throw new IllegalArgumentException("Elasticsearch cluster name:[ " + InternalConfigurationOptions.INTERNAL_ES_CLUSTER_NAME +
+            throw new IllegalArgumentException("Elasticsearch cluster name:[ " + InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_NAME +
                     "] not present in configuration");
         }
         return clusterInfo;
@@ -102,11 +102,11 @@ public abstract class Settings {
      * @return the {@link ClusterInfo} extracted from the properties or null if not present
      */
     public ClusterInfo getClusterInfoOrNull() {
-        String clusterName = getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_NAME);
+        String clusterName = getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_NAME);
         if (clusterName == null) {
             return null;
         }
-        String clusterUUID = getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_UUID);
+        String clusterUUID = getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_UUID);
         OpenSearchMajorVersion version = getInternalVersionOrThrow();
         return new ClusterInfo(new ClusterName(clusterName, clusterUUID), version);
     }
@@ -121,11 +121,11 @@ public abstract class Settings {
      */
     @Deprecated
     public ClusterInfo getClusterInfoOrUnnamedLatest() {
-        String clusterName = getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_NAME);
+        String clusterName = getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_NAME);
         if (clusterName == null) {
             return ClusterInfo.unnamedLatest();
         }
-        String clusterUUID = getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_UUID);
+        String clusterUUID = getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_UUID);
         OpenSearchMajorVersion version = getInternalVersionOrLatest();
         return new ClusterInfo(new ClusterName(clusterName, clusterUUID), version);
     }
@@ -135,7 +135,7 @@ public abstract class Settings {
     }
 
     public int getPort() {
-        return Integer.valueOf(getProperty(ES_PORT, ES_PORT_DEFAULT));
+        return Integer.valueOf(getProperty(OPENSEARCH_PORT, OPENSEARCH_PORT_DEFAULT));
     }
 
     public boolean getNodesDiscovery() {
@@ -161,7 +161,7 @@ public abstract class Settings {
     }
 
     public boolean getNodesClientOnly() {
-        return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_CLIENT_ONLY, ES_NODES_CLIENT_ONLY_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_CLIENT_ONLY, OPENSEARCH_NODES_CLIENT_ONLY_DEFAULT));
     }
 
     public boolean getNodesWANOnly() {
@@ -181,11 +181,11 @@ public abstract class Settings {
     }
 
     public int getBatchSizeInEntries() {
-        return Integer.valueOf(getProperty(ES_BATCH_SIZE_ENTRIES, ES_BATCH_SIZE_ENTRIES_DEFAULT));
+        return Integer.valueOf(getProperty(OPENSEARCH_BATCH_SIZE_ENTRIES, OPENSEARCH_BATCH_SIZE_ENTRIES_DEFAULT));
     }
 
     public int getBatchWriteRetryCount() {
-        return Integer.parseInt(getProperty(ES_BATCH_WRITE_RETRY_COUNT, ES_BATCH_WRITE_RETRY_COUNT_DEFAULT));
+        return Integer.parseInt(getProperty(OPENSEARCH_BATCH_WRITE_RETRY_COUNT, OPENSEARCH_BATCH_WRITE_RETRY_COUNT_DEFAULT));
     }
 
     public int getBatchWriteRetryLimit() {
@@ -201,11 +201,11 @@ public abstract class Settings {
     }
 
     public boolean getBatchRefreshAfterWrite() {
-        return Booleans.parseBoolean(getProperty(ES_BATCH_WRITE_REFRESH, ES_BATCH_WRITE_REFRESH_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_BATCH_WRITE_REFRESH, OPENSEARCH_BATCH_WRITE_REFRESH_DEFAULT));
     }
 
     public boolean getBatchFlushManual() {
-        return Booleans.parseBoolean(getProperty(ES_BATCH_FLUSH_MANUAL, ES_BATCH_FLUSH_MANUAL_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_BATCH_FLUSH_MANUAL, OPENSEARCH_BATCH_FLUSH_MANUAL_DEFAULT));
     }
 
     public long getScrollKeepAlive() {
@@ -221,11 +221,11 @@ public abstract class Settings {
     }
 
     public String getScrollFields() {
-        return getProperty(INTERNAL_ES_TARGET_FIELDS);
+        return getProperty(INTERNAL_OPENSEARCH_TARGET_FIELDS);
     }
 
     public boolean getExcludeSource() {
-        return Booleans.parseBoolean(getProperty(INTERNAL_ES_EXCLUDE_SOURCE, INTERNAL_ES_EXCLUDE_SOURCE_DEFAULT));
+        return Booleans.parseBoolean(getProperty(INTERNAL_OPENSEARCH_EXCLUDE_SOURCE, INTERNAL_OPENSEARCH_EXCLUDE_SOURCE_DEFAULT));
     }
 
     public String getSerializerValueWriterClassName() {
@@ -258,7 +258,7 @@ public abstract class Settings {
     }
 
     public boolean getOutputAsJson() {
-        return Booleans.parseBoolean(getProperty(ES_OUTPUT_JSON, ES_OUTPUT_JSON_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_OUTPUT_JSON, ES_OUTPUT_JSON_DEFAULT));
     }
 
     public String getOperation() {
@@ -596,9 +596,9 @@ public abstract class Settings {
     }
 
     public Settings setInternalClusterInfo(ClusterInfo clusterInfo) {
-        setProperty(INTERNAL_ES_CLUSTER_NAME, clusterInfo.getClusterName().getName());
+        setProperty(INTERNAL_OPENSEARCH_CLUSTER_NAME, clusterInfo.getClusterName().getName());
         if (clusterInfo.getClusterName().getUUID() != null) {
-            setProperty(INTERNAL_ES_CLUSTER_UUID, clusterInfo.getClusterName().getUUID());
+            setProperty(INTERNAL_OPENSEARCH_CLUSTER_UUID, clusterInfo.getClusterName().getUUID());
         }
         setProperty(INTERNAL_OPENSEARCH_VERSION, clusterInfo.getMajorVersion().toString());
         return this;
@@ -624,22 +624,22 @@ public abstract class Settings {
     }
 
     public Settings setPort(int port) {
-        setProperty(ES_PORT, "" + port);
+        setProperty(OPENSEARCH_PORT, "" + port);
         return this;
     }
 
     public Settings setResourceRead(String index) {
-        setProperty(ES_RESOURCE_READ, index);
+        setProperty(OPENSEARCH_RESOURCE_READ, index);
         return this;
     }
 
     public Settings setResourceWrite(String index) {
-        setProperty(ES_RESOURCE_WRITE, index);
+        setProperty(OPENSEARCH_RESOURCE_WRITE, index);
         return this;
     }
 
     public Settings setQuery(String query) {
-        setProperty(ES_QUERY, StringUtils.hasText(query) ? query : "");
+        setProperty(OPENSEARCH_QUERY, StringUtils.hasText(query) ? query : "");
         return this;
     }
 
@@ -649,19 +649,19 @@ public abstract class Settings {
     }
 
     protected String getResource() {
-        return getProperty(ES_RESOURCE);
+        return getProperty(OPENSEARCH_RESOURCE);
     }
 
     public String getResourceRead() {
-        return getProperty(ES_RESOURCE_READ, getResource());
+        return getProperty(OPENSEARCH_RESOURCE_READ, getResource());
     }
 
     public String getResourceWrite() {
-        return getProperty(ES_RESOURCE_WRITE, getResource());
+        return getProperty(OPENSEARCH_RESOURCE_WRITE, getResource());
     }
 
     public String getQuery() {
-        return getProperty(ES_QUERY);
+        return getProperty(OPENSEARCH_QUERY);
     }
 
     public Integer getMaxDocsPerPartition() {

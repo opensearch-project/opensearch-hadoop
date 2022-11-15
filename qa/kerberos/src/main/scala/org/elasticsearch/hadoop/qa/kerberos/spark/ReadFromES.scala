@@ -41,7 +41,7 @@ class ReadFromES(args: Array[String]) {
   val spark: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
 
   def run(): Unit = {
-    val resource = sparkConf.get("spark.es.resource")
+    val resource = sparkConf.get("spark.opensearch.resource")
 
     // Expected directory names in :qa:kerberos:build.gradle readJobs
     val rddOutputDir = s"${args(0)}RDD"

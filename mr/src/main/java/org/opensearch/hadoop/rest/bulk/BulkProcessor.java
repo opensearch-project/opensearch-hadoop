@@ -126,7 +126,7 @@ public class BulkProcessor implements Closeable, StatsAware {
         this.documentBulkErrorHandlers.addAll(handlerLoader.loadHandlers());
 
         // Error Extractor
-        this.errorExtractor = new ErrorExtractor(settings.getInternalVersionOrThrow());
+        this.errorExtractor = new ErrorExtractor();
 
     }
 

@@ -25,7 +25,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS es_artist_data (
   tag STRING)
 STORED BY 'org.opensearch.hadoop.hive.OpenSearchStorageHandler'
 TBLPROPERTIES(
-  'es.resource' = 'qa_kerberos_hive_data',
+  'opensearch.resource' = 'qa_kerberos_hive_data',
   'es.security.authentication' = 'kerberos',
   'es.net.spnego.auth.elasticsearch.principal' = 'HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG'
 );

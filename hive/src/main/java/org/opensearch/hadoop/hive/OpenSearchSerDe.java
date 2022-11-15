@@ -60,16 +60,15 @@ import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.serialization.bulk.BulkCommand;
 import org.opensearch.hadoop.serialization.bulk.BulkCommands;
-import org.opensearch.hadoop.util.*;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.ClusterInfo;
 import org.opensearch.hadoop.util.FieldAlias;
 import org.opensearch.hadoop.util.StringUtils;
 
-public class EsSerDe extends AbstractSerDe {
+public class OpenSearchSerDe extends AbstractSerDe {
 
-    private static Log log = LogFactory.getLog(EsSerDe.class);
+    private static Log log = LogFactory.getLog(OpenSearchSerDe.class);
 
     private Configuration cfg;
     private Settings settings;
@@ -140,7 +139,7 @@ public class EsSerDe extends AbstractSerDe {
     }
 
     private Writable wrapJsonData(Writable blob) {
-        Assert.isTrue(blob instanceof Text, "Property `es.output.json` is enabled, but returned data was not of type Text...");
+        Assert.isTrue(blob instanceof Text, "Property `opensearch.output.json` is enabled, but returned data was not of type Text...");
 
         switch (structTypeInfo.getCategory()) {
             case STRUCT:

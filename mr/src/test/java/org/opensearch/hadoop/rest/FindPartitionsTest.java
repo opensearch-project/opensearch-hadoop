@@ -47,7 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE_READ;
 import static org.opensearch.hadoop.rest.query.MatchAllQueryBuilder.MATCH_ALL;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -83,7 +83,7 @@ public class FindPartitionsTest {
         Settings settings = new PropertiesSettings();
         settings.setMaxDocsPerPartition(10000);
         settings.setInternalVersion(OpenSearchMajorVersion.LATEST);
-        settings.setProperty(ES_RESOURCE_READ, "_all");
+        settings.setProperty(OPENSEARCH_RESOURCE_READ, "_all");
         Assert.assertEquals(RestService.findShardPartitions(settings, null,
                 Collections.<String, NodeInfo>emptyMap(), Collections.<List<Map<String,Object>>>emptyList(), LOGGER).size(), 0);
         assertEquals(RestService.findSlicePartitions(null, settings, null,
@@ -109,7 +109,7 @@ public class FindPartitionsTest {
         RestClient client = Mockito.mock(RestClient.class);
         Settings settings = new PropertiesSettings();
         settings.setInternalVersion(OpenSearchMajorVersion.LATEST);
-        settings.setProperty(ES_RESOURCE_READ, "index1,index2,index3");
+        settings.setProperty(OPENSEARCH_RESOURCE_READ, "index1,index2,index3");
         for (int i = 0; i < 15; i++) {
             Mockito.when(client.count("index1", "type1", Integer.toString(i), MATCH_ALL)).thenReturn(1000L);
             Mockito.when(client.countIndexShard("index1", Integer.toString(i), MATCH_ALL)).thenReturn(1000L);

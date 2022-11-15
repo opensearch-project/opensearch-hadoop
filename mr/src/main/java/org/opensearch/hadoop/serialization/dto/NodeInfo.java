@@ -55,23 +55,10 @@ public class NodeInfo implements Serializable {
         this.name = (String) map.get("name");
         this.host = (String) map.get("host");
         this.ip = (String) map.get("ip");
-        if (version.before(OpenSearchMajorVersion.V_5_X)) {
-            Map<String, Object> attributes = (Map<String, Object>) map.get("attributes");
-            if (attributes == null) {
-                this.isClient = false;
-                this.isData = true;
-            } else {
-                String data = (String) attributes.get("data");
-                this.isClient = data == null ? true : !Boolean.parseBoolean(data);
-                this.isData = data == null ? true : Boolean.parseBoolean(data);
-            }
-            this.isIngest = false;
-        } else {
-            List<String> roles = (List<String>) map.get("roles");
-            this.isData = roles.stream().anyMatch(role -> role.contains("data"));
-            this.isClient = !this.isData;
-            this.isIngest = roles.contains("ingest");
-        }
+        List<String> roles = (List<String>) map.get("roles");
+        this.isData = roles.stream().anyMatch(role -> role.contains("data"));
+        this.isClient = !this.isData;
+        this.isIngest = roles.contains("ingest");
         Map<String, Object> httpMap = (Map<String, Object>) map.get("http");
         if (httpMap != null) {
             String addr = (String) httpMap.get("publish_address");

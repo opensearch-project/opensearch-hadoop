@@ -33,7 +33,7 @@ import java.util.Properties;
 
 import org.opensearch.hadoop.cfg.PropertiesSettings;
 
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE;
 
 /**
  * Tweaked settings for testing.
@@ -70,10 +70,10 @@ public class TestSettings extends PropertiesSettings {
     }
 
     {
-        // pick up dedicated ES port if present
-        String embeddedEsLocalPort = System.getProperty(TestUtils.OPENSEARCH_LOCAL_PORT);
+        // pick up dedicated OpenSearch port if present
+        String embeddedOpenSearchLocalPort = System.getProperty(TestUtils.OPENSEARCH_LOCAL_PORT);
         if (StringUtils.hasText(System.getProperty(TestUtils.OPENSEARCH_LOCAL_PORT))) {
-            TESTING_PROPS.put("es.port", embeddedEsLocalPort);
+            TESTING_PROPS.put("opensearch.port", embeddedOpenSearchLocalPort);
         }
     }
 
@@ -84,7 +84,7 @@ public class TestSettings extends PropertiesSettings {
 
     public TestSettings(String uri) {
         this();
-        setProperty(ES_RESOURCE, uri);
+        setProperty(OPENSEARCH_RESOURCE, uri);
     }
 
     public Properties getProperties() {

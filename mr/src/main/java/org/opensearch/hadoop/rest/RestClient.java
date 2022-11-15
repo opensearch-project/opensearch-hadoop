@@ -83,18 +83,20 @@ import static org.opensearch.hadoop.rest.Request.Method.GET;
 import static org.opensearch.hadoop.rest.Request.Method.HEAD;
 import static org.opensearch.hadoop.rest.Request.Method.POST;
 import static org.opensearch.hadoop.rest.Request.Method.PUT;
-import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_6_X;
-import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_7_X;
-import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_8_X;
+import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_2_X;
 
 public class RestClient implements Closeable, StatsAware {
 
     private static final Log LOG = LogFactory.getLog(RestClient.class);
 
+    // @todo open source my ass! remove this proprietary Elastic BS!!!
+    @Deprecated
     static final String ELASTIC_PRODUCT_HEADER = "X-elastic-product";
     static final String ELASTIC_PRODUCT_HEADER_VALUE = "Elasticsearch";
+    @Deprecated
     static final String ELASTICSEARCH_BUILD_FLAVOR = "default";
-    static final String ELASTICSEARCH_TAGLINE = "You Know, for Search";
+    @Deprecated
+    static final String ELASTICSEARCH_TAGLINE = "The OpenSearch Project: https://opensearch.org/";
 
     private NetworkClient network;
     private final ObjectMapper mapper;
@@ -136,9 +138,9 @@ public class RestClient implements Closeable, StatsAware {
         }
 
         this.retryPolicy = ObjectUtils.instantiate(retryPolicyName, settings);
-        // Assume that the elasticsearch major version is the latest if the version is not already present in the settings
+        // Assume that the opensearch major version is the latest if the version is not already present in the settings
         this.clusterInfo = settings.getClusterInfoOrUnnamedLatest();
-        this.errorExtractor = new ErrorExtractor(clusterInfo.getMajorVersion());
+        this.errorExtractor = new ErrorExtractor();
     }
 
     public List<NodeInfo> getHttpNodes(boolean clientNodeOnly) {
@@ -373,10 +375,6 @@ public class RestClient implements Closeable, StatsAware {
         sb.setLength(sb.length() - 1);
         sb.append("\n]}");
 
-        if (clusterInfo.getMajorVersion().on(OpenSearchMajorVersion.V_1_X)) {
-            sb.append("}");
-        }
-
         sb.append("}}");
 
         String endpoint = resource.index();
@@ -481,9 +479,6 @@ public class RestClient implements Closeable, StatsAware {
                 if (response.isClientError()) {
                     msg = msg + "\n" + request.body();
                 }
-                else {
-                    msg = errorExtractor.prettify(msg, request.body());
-                }
             } catch (Exception ex) {
                 // can't parse message, move on
             }
@@ -541,12 +536,7 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public boolean typeExists(String index, String type) {
-        String indexType;
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            indexType = index + "/_mapping/" + type;
-        } else {
-            indexType = index + "/" + type;
-        }
+        String indexType = index + "/_mapping/" + type;
         return exists(indexType);
     }
 
@@ -596,35 +586,7 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public long count(String index, String type, String shardId, QueryBuilder query) {
-        return clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X) ?
-                countInES5X(index, type, shardId, query) : countBeforeES5X(index + "/" + type, shardId, query);
-    }
-
-    private long countBeforeES5X(String indexAndType, String shardId, QueryBuilder query) {
-        StringBuilder uri = new StringBuilder(indexAndType);
-        uri.append("/_count");
-        if (StringUtils.hasLength(shardId)) {
-            uri.append("?preference=_shards:");
-            uri.append(shardId);
-        }
-        Response response = execute(GET, uri.toString(), searchRequest(query));
-        Number count = (Number) parseContent(response.body(), "count");
-        return (count != null ? count.longValue() : -1);
-    }
-
-    @SuppressWarnings("unchecked")
-    private long countInES5X(String index, String type, String shardId, QueryBuilder query) {
-        StringBuilder uri;
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X)) {
-            uri = new StringBuilder(index); // Only use index for counting in 7.X and up.
-        } else {
-            // Sanity check. Removal of types has left a lot of previously populated fields as null
-            if (type == null) {
-                uri = new StringBuilder(index);
-            } else {
-                uri = new StringBuilder(index + "/" + type);
-            }
-        }
+        StringBuilder uri = new StringBuilder(index); // Only use index for counting in 7.X and up.
         uri.append("/_search?size=0");
         // Option added in the 6.x line. This must be set to true or else in 7.X and 6/7 mixed clusters
         // will return lower bounded count values instead of an accurate count.
@@ -765,7 +727,7 @@ public class RestClient implements Closeable, StatsAware {
         Response response = execute(GET, "", true);
         Map<String, Object> result = parseContent(response.body(), null);
         if (result == null) {
-            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve elasticsearch main cluster info.");
+            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve opensearch main cluster info.");
         }
         String clusterName = result.get("cluster_name").toString();
         String clusterUUID = (String)result.get("cluster_uuid");
@@ -776,32 +738,20 @@ public class RestClient implements Closeable, StatsAware {
         }
         String versionNumber = versionBody.get("number");
         OpenSearchMajorVersion major = OpenSearchMajorVersion.parse(versionNumber);
-        if (major.before(OpenSearchMajorVersion.V_6_X)) {
+        if (false && major.before(OpenSearchMajorVersion.V_6_X)) {
+            // todo remove this in versioning update
             throw new OpenSearchHadoopIllegalStateException("Invalid major version [" + major + "]. " +
                     "Version is lower than minimum required version [" + OpenSearchMajorVersion.V_6_X + "].");
-        } else if (major.onOrAfter(V_6_X)) {
+        } else if (major.onOrAfter(V_2_X)) {
             String tagline = result.get("tagline").toString();
             if (ELASTICSEARCH_TAGLINE.equals(tagline) == false) {
-                LOG.warn("Could not verify server is Elasticsearch! Invalid main action response body format [tag].");
+                LOG.warn("Could not verify server is OpenSearch! Invalid main action response body format [tag].");
             }
-            if (major.onOrAfter(V_7_X)) {
+            if (false && major.onOrAfter(V_2_X)) {
+                // todo remove this in versioning update
                 String buildFlavor = versionBody.get("build_flavor");
                 if (ELASTICSEARCH_BUILD_FLAVOR.equals(buildFlavor) == false) {
                     LOG.warn("Could not verify server is Elasticsearch! Invalid main action response body format [build_flavor].");
-                }
-
-                List<String> productHeader = response.getHeaders(ELASTIC_PRODUCT_HEADER);
-                boolean validElasticsearchHeader = productHeader != null && productHeader.size() == 1 && productHeader.get(0).equals(ELASTIC_PRODUCT_HEADER_VALUE);
-                boolean verifyServer = (major.on(V_7_X) && major.parseMinorVersion(versionNumber) >= 14) || major.onOrAfter(V_8_X);
-                if (validElasticsearchHeader == false) {
-                    if (verifyServer) {
-                        throw new OpenSearchHadoopTransportException("Connected, but could not verify server is OpenSearch. Response missing [" +
-                                ELASTIC_PRODUCT_HEADER + "] header. Please check that you are connecting to an OpenSearch instance, and " +
-                                "that any networking filters are preserving that header.");
-                    } else {
-                        LOG.warn("Could not verify server is OpenSearch! OpenSearch-Hadoop will require server validation when connecting to an " +
-                                "OpenSearch cluster if that OpenSearch cluster is v7.14 and up.");
-                    }
                 }
             }
         }

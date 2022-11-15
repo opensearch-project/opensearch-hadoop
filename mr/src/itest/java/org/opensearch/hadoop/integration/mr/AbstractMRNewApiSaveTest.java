@@ -150,7 +150,7 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testBasicMultiSave() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-multi-save", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-multi-save", "data", clusterInfo.getMajorVersion()));
 
         MultiOutputFormat.addOutputFormat(conf, EsOutputFormat.class);
         MultiOutputFormat.addOutputFormat(conf, PrintStreamOutputFormat.class);
@@ -167,7 +167,7 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testBasicSave() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-save", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-save", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
     }
@@ -175,7 +175,7 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testSaveWithId() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-savewithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-savewithid", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
 
         runJob(conf);
@@ -186,7 +186,7 @@ public class AbstractMRNewApiSaveTest {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "create");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
     }
@@ -196,35 +196,16 @@ public class AbstractMRNewApiSaveTest {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "create");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
 
         assertFalse("job should have failed", runJob(conf));
-    }
-
-    @Test
-    public void testSaveWithIngest() throws Exception {
-        OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
-
-        Configuration conf = createConf();
-
-        RestUtils.ExtendedRestClient client = new RestUtils.ExtendedRestClient();
-        String prefix = "mrnewapi";
-        String pipeline = "{\"description\":\"Test Pipeline\",\"processors\":[{\"set\":{\"field\":\"pipeTEST\",\"value\":true,\"override\":true}}]}";
-        client.put("/_ingest/pipeline/" + prefix + "-pipeline", StringUtils.toUTF(pipeline));
-        client.close();
-
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-ingested", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INGEST_PIPELINE, "mrnewapi-pipeline");
-        conf.set(ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY, "true");
-
-        runJob(conf);
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testUpdateWithoutId() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-update", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-update", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
     }
@@ -234,7 +215,7 @@ public class AbstractMRNewApiSaveTest {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-update", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-update", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
     }
@@ -244,7 +225,7 @@ public class AbstractMRNewApiSaveTest {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-updatewoupsert", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-updatewoupsert", "data", clusterInfo.getMajorVersion()));
 
         assertFalse("job should have failed", runJob(conf));
     }
@@ -253,20 +234,15 @@ public class AbstractMRNewApiSaveTest {
     public void testUpdateOnlyScript() throws Exception {
         Configuration conf = createConf();
         // use an existing id to allow the update to succeed
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
 
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
         conf.set(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = 3");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
-        } else {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = 3");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        }
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = 3");
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -274,20 +250,15 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testUpdateOnlyParamScript() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
 
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; String anothercounter = params.param2");
-        } else {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        }
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; String anothercounter = params.param2");
 
         runJob(conf);
     }
@@ -295,20 +266,15 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testUpdateOnlyParamJsonScript() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
 
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
-        } else {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        }
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -316,7 +282,7 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testUpsertScript() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-upsert-script", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-upsert-script", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
@@ -328,19 +294,14 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testUpsertParamScript() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-upsert-script-param", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-upsert-script-param", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = Integer.parseInt(params.param2)");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
-        } else {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter += param1; anothercounter += param2");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        }
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = Integer.parseInt(params.param2)");
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -348,19 +309,14 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testUpsertParamJsonScript() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-upsert-script-param", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-upsert-script-param", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
         conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
-        } else {
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter += param1; anothercounter += param2");
-            conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        }
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
+        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -368,31 +324,8 @@ public class AbstractMRNewApiSaveTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testIndexAutoCreateDisabled() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-non-existing", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-non-existing", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
-
-        runJob(conf);
-    }
-
-    @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-
-        // in ES 2.x, the parent/child relationship needs to be created fresh
-        // hence why we reindex everything again
-
-        RestUtils.createMultiTypeIndex(indexPrefix + "mrnewapi-pc");
-        RestUtils.putMapping(indexPrefix + "mrnewapi-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
-        RestUtils.putMapping(indexPrefix + "mrnewapi-pc", "parent", StringUtils.toUTF("{\"parent\":{}}"));
-
-        Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, "mrnewapi-pc/parent");
-        runJob(conf);
-
-        conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, "mrnewapi-pc/child");
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
-        conf.set(ConfigurationOptions.ES_MAPPING_PARENT, "number");
 
         runJob(conf);
     }
@@ -400,7 +333,7 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testIndexPattern() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-pattern-{tag}", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-pattern-{tag}", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
 
         runJob(conf);
@@ -409,7 +342,7 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testIndexPatternWithFormatting() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mrnewapi-pattern-format-{@timestamp|YYYY-MM-dd}", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-pattern-format-{@timestamp|YYYY-MM-dd}", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
 
         runJob(conf);
@@ -420,9 +353,9 @@ public class AbstractMRNewApiSaveTest {
     }
 
     private boolean runJob(Configuration conf) throws Exception {
-        String string = conf.get(ConfigurationOptions.ES_RESOURCE);
+        String string = conf.get(ConfigurationOptions.OPENSEARCH_RESOURCE);
         string = indexPrefix + (string.startsWith("/") ? string.substring(1) : string);
-        conf.set(ConfigurationOptions.ES_RESOURCE, string);
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, string);
         return new Job(conf).waitForCompletion(true);
     }
 }

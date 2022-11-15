@@ -350,8 +350,8 @@ public abstract class InitializationUtils {
         }
 
         // Check if the info is set in the settings and validate that it is correct
-        String clusterName = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_NAME);
-        String clusterUUID = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_UUID);
+        String clusterName = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_NAME);
+        String clusterUUID = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_UUID);
         String version = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION);
         if (StringUtils.hasText(clusterName) && StringUtils.hasText(version)) { // UUID is optional for now
             if (mainInfo.getClusterName().getName().equals(clusterName) == false) {
@@ -378,18 +378,18 @@ public abstract class InitializationUtils {
     }
 
     /**
-     * Retrieves the Elasticsearch cluster name and version from the settings, or, if they should be missing,
+     * Retrieves the OpenSearch cluster name and version from the settings, or, if they should be missing,
      * creates a bootstrap client and obtains their values.
      */
     public static ClusterInfo discoverClusterInfo(Settings settings, Log log) {
         ClusterName remoteClusterName = null;
         OpenSearchMajorVersion remoteVersion = null;
-        String clusterName = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_NAME);
-        String clusterUUID = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_CLUSTER_UUID);
+        String clusterName = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_NAME);
+        String clusterUUID = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_UUID);
         String version = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION);
         if (StringUtils.hasText(clusterName) && StringUtils.hasText(version)) { // UUID is optional for now
             if (log.isDebugEnabled()) {
-                log.debug(String.format("Elasticsearch cluster [NAME:%s][UUID:%s][VERSION:%s] already present in configuration; skipping discovery",
+                log.debug(String.format("OpenSearch cluster [NAME:%s][UUID:%s][VERSION:%s] already present in configuration; skipping discovery",
                         clusterName, clusterUUID, version));
             }
             remoteClusterName = new ClusterName(clusterName, clusterUUID);
@@ -398,7 +398,7 @@ public abstract class InitializationUtils {
         }
 
         RestClient bootstrap = new RestClient(settings);
-        // first get ES main action info
+        // first get OpenSearch main action info
         try {
             ClusterInfo mainInfo = bootstrap.mainInfo();
             if (log.isDebugEnabled()) {

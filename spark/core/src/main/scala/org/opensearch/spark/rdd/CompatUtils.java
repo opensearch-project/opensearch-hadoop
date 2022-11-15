@@ -86,16 +86,16 @@ abstract class CompatUtils {
                 if (throwOnIncompatible) {
                     throw new OpenSearchHadoopIllegalStateException(errorMessage);
                 } else {
-                    LogFactory.getLog("org.elasticsearch.spark.rdd.EsSpark").warn(errorMessage);
+                    LogFactory.getLog("org.opensearch.spark.rdd.OpenSearchSpark").warn(errorMessage);
                 }
             }
         } catch (OpenSearchHadoopIllegalStateException noClass) {
             // In the event that someone is using the core jar without sql support, (like in our tests) this will be logged instead.
-            String errorMessage = "Elasticsearch Spark SQL support could not be verified.";
+            String errorMessage = "OpenSearch Spark SQL support could not be verified.";
             if (throwOnIncompatible) {
                 throw new OpenSearchHadoopIllegalStateException(errorMessage, noClass);
             } else {
-                LogFactory.getLog("org.elasticsearch.spark.rdd.EsSpark").info(errorMessage + " Continuing with core support.");
+                LogFactory.getLog("org.opensearch.spark.rdd.OpenSearchSpark").info(errorMessage + " Continuing with core support.");
             }
         }
     }

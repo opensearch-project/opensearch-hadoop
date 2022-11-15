@@ -8,7 +8,7 @@ CREATE EXTERNAL TABLE IF NOT EXISTS es_artist_data (
   ts TIMESTAMP,
   tag STRING)
 STORED BY 'org.opensearch.hadoop.hive.OpenSearchStorageHandler'
-TBLPROPERTIES('es.resource' = 'qa_kerberos_hive_data');
+TBLPROPERTIES('opensearch.resource' = 'qa_kerberos_hive_data');
 
 DROP TABLE IF EXISTS artist_data;
 

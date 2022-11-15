@@ -29,25 +29,26 @@
 package org.opensearch.hadoop.cfg;
 
 /**
- * Property names for internal framework use. They will show up inside the Hadoop configuration or Cascading properties (which act as a distributing support) but not in the API.
+ * Property names for internal framework use. They will show up inside the Hadoop
+ * configuration or Cascading properties (which act as a distributing support) but not in the API.
  */
 public interface InternalConfigurationOptions extends ConfigurationOptions {
 
-    String INTERNAL_ES_TARGET_FIELDS = "es.internal.mr.target.fields";
+    String INTERNAL_OPENSEARCH_TARGET_FIELDS = "opensearch.internal.mr.target.fields";
     // discovered node
-    String INTERNAL_ES_DISCOVERED_NODES = "es.internal.discovered.nodes";
+    String INTERNAL_OPENSEARCH_DISCOVERED_NODES = "opensearch.internal.discovered.nodes";
     // pinned node
-    String INTERNAL_ES_PINNED_NODE = "es.internal.pinned.node";
+    String INTERNAL_OPENSEARCH_PINNED_NODE = "opensearch.internal.pinned.node";
 
-    String INTERNAL_ES_QUERY_FILTERS = "es.internal.query.filters";
+    String INTERNAL_OPENSEARCH_QUERY_FILTERS = "opensearch.internal.query.filters";
 
     String INTERNAL_OPENSEARCH_VERSION = "opensearch.internal.opensearch.version";
-    String INTERNAL_ES_CLUSTER_NAME = "es.internal.es.cluster.name";
-    String INTERNAL_ES_CLUSTER_UUID = "es.internal.es.cluster.uuid";
+    String INTERNAL_OPENSEARCH_CLUSTER_NAME = "opensearch.internal.opensearch.cluster.name";
+    String INTERNAL_OPENSEARCH_CLUSTER_UUID = "opensearch.internal.opensearch.cluster.uuid";
     // used for isolating connection pools of multiple spark streaming jobs in the same app.
-    String INTERNAL_TRANSPORT_POOLING_KEY = "es.internal.transport.pooling.key";
+    String INTERNAL_TRANSPORT_POOLING_KEY = "opensearch.internal.transport.pooling.key";
 
     // don't fetch _source field during scroll queries
-    String INTERNAL_ES_EXCLUDE_SOURCE = "es.internal.exclude.source";
-    String INTERNAL_ES_EXCLUDE_SOURCE_DEFAULT = "false";
+    String INTERNAL_OPENSEARCH_EXCLUDE_SOURCE = "opensearch.internal.exclude.source";
+    String INTERNAL_OPENSEARCH_EXCLUDE_SOURCE_DEFAULT = "false";
 }

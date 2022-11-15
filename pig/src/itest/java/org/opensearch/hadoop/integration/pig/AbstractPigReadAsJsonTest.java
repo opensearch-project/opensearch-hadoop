@@ -104,7 +104,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         RestUtils.refresh("json-pig*");
 
         this.scriptHead =
-                "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"','es.output.json=true');";
+                "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"','opensearch.output.json=true');";
     }
 
     @Test
@@ -128,7 +128,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc1.add("\"_type\":\""+metaType+"\"");
             }
             doc1.add("\"_id\":\"");
@@ -140,7 +140,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc2.add("\"_type\":\""+metaType+"\"");
             }
             doc2.add("\"_id\":\"");
@@ -152,7 +152,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc3.add("\"_type\":\""+metaType+"\"");
             }
             doc3.add("\"_id\":\"");
@@ -185,7 +185,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc1.add("\"_type\":\""+metaType+"\"");
             }
             doc1.add("\"_id\":\"");
@@ -197,7 +197,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc2.add("\"_type\":\""+metaType+"\"");
             }
             doc2.add("\"_id\":\"");
@@ -209,7 +209,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc3.add("\"_type\":\""+metaType+"\"");
             }
             doc3.add("\"_id\":\"");
@@ -241,7 +241,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc1.add("\"_type\":\""+metaType+"\"");
             }
             doc1.add("\"_id\":\"");
@@ -253,7 +253,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc2.add("\"_type\":\""+metaType+"\"");
             }
             doc2.add("\"_id\":\"");
@@ -265,7 +265,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         );
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_8_X)) {
+            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
                 doc3.add("\"_type\":\""+metaType+"\"");
             }
             doc3.add("\"_id\":\"");

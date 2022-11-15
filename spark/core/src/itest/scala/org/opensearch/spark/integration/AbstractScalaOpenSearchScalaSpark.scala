@@ -45,9 +45,9 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INPUT_JSON
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_JOIN
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_QUERY
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_READ_METADATA
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE
 import org.opensearch.hadoop.util.TestUtils.resource
 import org.opensearch.hadoop.util.TestUtils.docEndpoint
 import org.opensearch.hadoop.rest.RestUtils.ExtendedRestClient
@@ -88,7 +88,7 @@ import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationExceptio
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
 import org.opensearch.spark.serialization.Bean
 
-object AbstractScalaEsScalaSpark {
+object AbstractScalaOpenSearchScalaSpark {
   @transient val conf = new SparkConf()
               .setAppName("estest")
               .set("spark.io.compression.codec", "lz4")
@@ -571,7 +571,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
       "ctx._source.counter += 1"
     }
 
-    if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
+    if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
       RestUtils.put(s"_scripts/$scriptName", s"""{"script":{"lang":"$lang", "source": "$script"}}""".getBytes(StringUtils.UTF_8))
     } else if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
       RestUtils.put(s"_scripts/$scriptName", s"""{"script":{"lang":"$lang", "code": "$script"}}""".getBytes(StringUtils.UTF_8))
@@ -707,9 +707,9 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val queryTarget = resource("*-scala-basic-query-read", typename, version)
     val esData = OpenSearchSpark.esRDD(sc, queryTarget, "?q=message:Hello World", cfg)
     val newData = OpenSearchSpark.esRDD(sc, collection.mutable.Map(cfg.toSeq: _*) += (
-      ES_RESOURCE -> queryTarget,
+      OPENSEARCH_RESOURCE -> queryTarget,
       ES_INPUT_JSON -> "true",
-      ES_QUERY -> "?q=message:Hello World"))
+      OPENSEARCH_QUERY -> "?q=message:Hello World"))
 
     // on each run, 2 docs are added
     assertTrue(esData.count() % 2 == 0)
@@ -816,7 +816,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val target = resource(index, typename, version)
 
     val indexPattern = "spark-template-*"
-    val patternMatchField = if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
+    val patternMatchField = if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
       s""""index_patterns":["$indexPattern"],"""
     } else {
       s""""template": "$indexPattern","""

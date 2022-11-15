@@ -97,15 +97,15 @@ public abstract class SettingsUtils {
     }
 
     public static void pinNode(Settings settings, String address) {
-        settings.setProperty(InternalConfigurationOptions.INTERNAL_ES_PINNED_NODE, address);
+        settings.setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_PINNED_NODE, address);
     }
 
     public static boolean hasPinnedNode(Settings settings) {
-        return StringUtils.hasText(settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_PINNED_NODE));
+        return StringUtils.hasText(settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_PINNED_NODE));
     }
 
     public static String getPinnedNode(Settings settings) {
-        String node = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_PINNED_NODE);
+        String node = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_PINNED_NODE);
         Assert.hasText(node, "Task has not been pinned to a node...");
         return node;
     }
@@ -144,7 +144,7 @@ public abstract class SettingsUtils {
     }
 
     public static void setDiscoveredNodes(Settings settings, Collection<String> nodes) {
-        settings.setProperty(InternalConfigurationOptions.INTERNAL_ES_DISCOVERED_NODES, StringUtils.concatenate(nodes));
+        settings.setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_DISCOVERED_NODES, StringUtils.concatenate(nodes));
     }
 
     public static List<String> declaredNodes(Settings settings) {
@@ -153,7 +153,7 @@ public abstract class SettingsUtils {
 
     public static List<String> discoveredOrDeclaredNodes(Settings settings) {
         // returned the discovered nodes or, if not defined, the set nodes
-        String discoveredNodes = settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_DISCOVERED_NODES);
+        String discoveredNodes = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_DISCOVERED_NODES);
         return (StringUtils.hasText(discoveredNodes) ? StringUtils.tokenize(discoveredNodes) : declaredNodes(settings));
     }
 
@@ -180,17 +180,17 @@ public abstract class SettingsUtils {
 
     public static void setFilters(Settings settings, String... filters) {
         // clear any filters inside the settings
-        settings.setProperty(InternalConfigurationOptions.INTERNAL_ES_QUERY_FILTERS, "");
+        settings.setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_QUERY_FILTERS, "");
 
         if (ObjectUtils.isEmpty(filters)) {
             return;
         }
 
-        settings.setProperty(InternalConfigurationOptions.INTERNAL_ES_QUERY_FILTERS, IOUtils.serializeToBase64(filters));
+        settings.setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_QUERY_FILTERS, IOUtils.serializeToBase64(filters));
     }
 
     public static String[] getFilters(Settings settings) {
-        return IOUtils.deserializeFromBase64(settings.getProperty(InternalConfigurationOptions.INTERNAL_ES_QUERY_FILTERS));
+        return IOUtils.deserializeFromBase64(settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_QUERY_FILTERS));
     }
 
     public static String determineSourceFields(Settings settings) {
@@ -216,16 +216,6 @@ public abstract class SettingsUtils {
         }
 
         return sourceFields;
-    }
-
-    /**
-     * Whether the settings indicate a ES 5.0.x (which introduces breaking changes) or otherwise.
-     * @deprecated Prefer to use {@link Settings#getClusterInfoOrThrow()} to check version is on or after 5.X
-     */
-    @Deprecated
-    public static boolean isEs50(Settings settings) {
-        OpenSearchMajorVersion version = settings.getInternalVersionOrLatest();
-        return version.onOrAfter(OpenSearchMajorVersion.V_5_X);
     }
 
     public static List<NumberedInclude> getFieldArrayFilterInclude(Settings settings) {

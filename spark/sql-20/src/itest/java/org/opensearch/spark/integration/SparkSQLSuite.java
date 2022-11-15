@@ -28,7 +28,7 @@
  */
 package org.opensearch.spark.integration;
 
-import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalOpenSearch;
 import org.junit.ClassRule;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
@@ -39,6 +39,6 @@ import org.junit.runners.Suite;
 public class SparkSQLSuite {
 
     @ClassRule
-    public static ExternalResource resource = new LocalEs();
+    public static ExternalResource resource = new LocalOpenSearch();
 
 }

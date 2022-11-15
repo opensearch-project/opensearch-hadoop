@@ -38,7 +38,7 @@ import org.apache.hadoop.filecache.DistributedCache;
 import org.apache.hadoop.fs.Path;
 import org.opensearch.hadoop.fs.HdfsUtils;
 import org.opensearch.hadoop.HdpBootstrap;
-import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalOpenSearch;
 import org.opensearch.hadoop.Provisioner;
 import org.opensearch.hadoop.util.StringUtils;
 import org.junit.BeforeClass;
@@ -119,7 +119,7 @@ public class HiveSuite {
     };
 
     @ClassRule
-    public static ExternalResource resource = new ChainedExternalResource(new LocalEs(), hive);
+    public static ExternalResource resource = new ChainedExternalResource(new LocalOpenSearch(), hive);
 
     @SuppressWarnings("deprecation")
     @BeforeClass
@@ -148,9 +148,9 @@ public class HiveSuite {
 
 
     public static String tableProps(String resource, String query, String... params) {
-        StringBuilder sb = new StringBuilder("STORED BY 'org.opensearch.hive.hadoop.OpenSearchStorageHandler' ");
+        StringBuilder sb = new StringBuilder("STORED BY 'org.opensearch.hadoop.hive.OpenSearchStorageHandler' ");
 
-        sb.append("TBLPROPERTIES('es.resource'='" + resource + "'");
+        sb.append("TBLPROPERTIES('opensearch.resource'='" + resource + "'");
 
         if (StringUtils.hasText(query)) {
             sb.append(",'es.query'='" + query + "'");
@@ -168,8 +168,8 @@ public class HiveSuite {
             if (StringUtils.hasText(host)) {
                 sb.append(",'es.host'='" + host + "'");
             }
-            String port = hadoopConfig.get("es.port");
-            sb.append(",'es.port'='" + port + "'");
+            String port = hadoopConfig.get("opensearch.port");
+            sb.append(",'opensearch.port'='" + port + "'");
         }
 
         sb.append(")");

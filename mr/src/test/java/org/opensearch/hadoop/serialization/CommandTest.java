@@ -69,7 +69,7 @@ public class CommandTest {
     public static Collection<Object[]> data() {
 
         // make sure all versions are tested. Throw if a new one is seen:
-        if (OpenSearchMajorVersion.LATEST != OpenSearchMajorVersion.V_8_X) {
+        if (OpenSearchMajorVersion.LATEST != OpenSearchMajorVersion.V_3_X) {
             throw new IllegalStateException("CommandTest needs new version updates.");
         }
 
@@ -86,7 +86,7 @@ public class CommandTest {
                 OpenSearchMajorVersion.V_5_X,
                 OpenSearchMajorVersion.V_6_X,
                 OpenSearchMajorVersion.V_7_X,
-                OpenSearchMajorVersion.V_8_X};
+                OpenSearchMajorVersion.V_3_X};
 
         for (OpenSearchMajorVersion version : versions) {
             for (boolean asJson : asJsons) {
@@ -279,7 +279,7 @@ public class CommandTest {
         assumeFalse(isDeleteOP() && jsonInput);
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         Settings settings = settings();
-        if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
             settings.setResourceWrite("{n}");
         } else {
             settings.setResourceWrite("foo/{n}");
@@ -287,7 +287,7 @@ public class CommandTest {
 
         create(settings).write(data).copyTo(ba);
         String header;
-        if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
             header = "{\"_index\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
         } else {
             header = "{\"_index\":\"foo\",\"_type\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
@@ -302,44 +302,7 @@ public class CommandTest {
         Settings set = settings();
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "");
         create(set).write(data).copyTo(ba);
-    }
-
-    @Test
-    public void testUpdateOnlyInlineScript1X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = 3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-
-        create(set).write(data).copyTo(ba);
-        String result =
-                "{\"" + operation + "\":{\"_id\":2,\"_retry_on_conflict\":3}}\n" +
-                        "{\"lang\":\"groovy\",\"script\":\"counter = 3\"}\n";
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpdateOnlyInlineScript5X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
-        assumeTrue(version.before(OpenSearchMajorVersion.V_6_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = 3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-
-        create(set).write(data).copyTo(ba);
-        String result =
-                "{\"" + operation + "\":{\"_id\":2,\"_retry_on_conflict\":3}}\n" +
-                        "{\"script\":{\"inline\":\"counter = 3\",\"lang\":\"groovy\"}}\n";
-        assertEquals(result, ba.toString());
-    }
+    }}
 
     @Test
     public void testUpdateOnlyInlineScript6X() throws Exception {
@@ -378,43 +341,6 @@ public class CommandTest {
     }
 
     @Test
-    public void testUpdateOnlyFileScript1X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_FILE, "set_count");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-
-        create(set).write(data).copyTo(ba);
-        String result =
-                "{\"" + operation + "\":{\"_id\":2,\"_retry_on_conflict\":3}}\n" +
-                        "{\"lang\":\"groovy\",\"script_file\":\"set_count\"}\n";
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpdateOnlyFileScript5X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_FILE, "set_count");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-
-        create(set).write(data).copyTo(ba);
-        String result =
-                "{\"" + operation + "\":{\"_id\":2,\"_retry_on_conflict\":3}}\n" +
-                        "{\"script\":{\"file\":\"set_count\",\"lang\":\"groovy\"}}\n";
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
     public void testUpdateOnlyFileScript7X() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
         assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
@@ -429,46 +355,6 @@ public class CommandTest {
         String result =
                 "{\"" + operation + "\":{\"_id\":2,\"retry_on_conflict\":3}}\n" +
                         "{\"script\":{\"file\":\"set_count\",\"lang\":\"groovy\"}}\n";
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpdateOnlyParamInlineScript1X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"" + operation + "\":{\"_id\":1}}\n" +
-                        "{\"params\":{\"param1\":1,\"param2\":1},\"lang\":\"groovy\",\"script\":\"counter = param1; anothercounter = param2\"}\n";
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpdateOnlyParamInlineScript5X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
-        assumeTrue(version.before(OpenSearchMajorVersion.V_6_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"" + operation + "\":{\"_id\":1}}\n" +
-                        "{\"script\":{\"inline\":\"counter = param1; anothercounter = param2\",\"lang\":\"groovy\",\"params\":{\"param1\":1,\"param2\":1}}}\n";
-
         assertEquals(result, ba.toString());
     }
 
@@ -670,7 +556,7 @@ public class CommandTest {
         InitializationUtils.setUserProviderIfNotSet(set, HadoopUserProvider.class, null);
 
         set.setProperty(ConfigurationOptions.ES_WRITE_OPERATION, operation);
-        if (version.onOrAfter(OpenSearchMajorVersion.V_8_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
             set.setResourceWrite("foo");
         } else {
             set.setResourceWrite("foo/bar");

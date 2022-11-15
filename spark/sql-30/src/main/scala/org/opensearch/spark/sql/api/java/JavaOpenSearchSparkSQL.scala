@@ -35,23 +35,23 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.Dataset
 import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.SparkSession
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_QUERY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE_READ
 import org.opensearch.spark.sql.OpenSearchSparkSQL
 
 object JavaOpenSearchSparkSQL {
 
   // specify the return types to make sure the bytecode is generated properly (w/o any scala.collections in it)
   def esDF(sc: SQLContext): DataFrame = OpenSearchSparkSQL.esDF(sc, SMap.empty[String, String])
-  def esDF(sc: SQLContext, resource: String): DataFrame = OpenSearchSparkSQL.esDF(sc, Map(ES_RESOURCE_READ -> resource))
-  def esDF(sc: SQLContext, resource: String, query: String): DataFrame = OpenSearchSparkSQL.esDF(sc, Map(ES_RESOURCE_READ -> resource, ES_QUERY -> query))
+  def esDF(sc: SQLContext, resource: String): DataFrame = OpenSearchSparkSQL.esDF(sc, Map(OPENSEARCH_RESOURCE_READ -> resource))
+  def esDF(sc: SQLContext, resource: String, query: String): DataFrame = OpenSearchSparkSQL.esDF(sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
   def esDF(sc: SQLContext, cfg: JMap[String, String]): DataFrame = OpenSearchSparkSQL.esDF(sc, cfg.asScala)
   def esDF(sc: SQLContext, resource: String, cfg: JMap[String, String]): DataFrame = OpenSearchSparkSQL.esDF(sc, resource, cfg.asScala)
   def esDF(sc: SQLContext, resource: String, query: String, cfg: JMap[String, String]): DataFrame = OpenSearchSparkSQL.esDF(sc, resource, query, cfg.asScala)
 
   def esDF(ss: SparkSession): DataFrame = OpenSearchSparkSQL.esDF(ss, SMap.empty[String, String])
-  def esDF(ss: SparkSession, resource: String): DataFrame = OpenSearchSparkSQL.esDF(ss, Map(ES_RESOURCE_READ -> resource))
-  def esDF(ss: SparkSession, resource: String, query: String): DataFrame = OpenSearchSparkSQL.esDF(ss, Map(ES_RESOURCE_READ -> resource, ES_QUERY -> query))
+  def esDF(ss: SparkSession, resource: String): DataFrame = OpenSearchSparkSQL.esDF(ss, Map(OPENSEARCH_RESOURCE_READ -> resource))
+  def esDF(ss: SparkSession, resource: String, query: String): DataFrame = OpenSearchSparkSQL.esDF(ss, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
   def esDF(ss: SparkSession, cfg: JMap[String, String]): DataFrame = OpenSearchSparkSQL.esDF(ss, cfg.asScala)
   def esDF(ss: SparkSession, resource: String, cfg: JMap[String, String]): DataFrame = OpenSearchSparkSQL.esDF(ss, resource, cfg.asScala)
   def esDF(ss: SparkSession, resource: String, query: String, cfg: JMap[String, String]): DataFrame = OpenSearchSparkSQL.esDF(ss, resource, query, cfg.asScala)

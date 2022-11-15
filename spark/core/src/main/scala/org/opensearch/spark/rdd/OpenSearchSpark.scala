@@ -34,10 +34,10 @@ import org.apache.commons.logging.LogFactory
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
 import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INPUT_JSON
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_OUTPUT_JSON
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_WRITE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_OUTPUT_JSON
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_QUERY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE_READ
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE_WRITE
 import org.opensearch.spark.cfg.SparkSettingsManager
 import org.opensearch.hadoop.cfg.PropertiesSettings
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
@@ -55,51 +55,51 @@ object OpenSearchSpark {
   def esRDD(sc: SparkContext, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
     new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, cfg)
   def esRDD(sc: SparkContext, resource: String): RDD[(String, Map[String, AnyRef])] =
-    new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, Map(ES_RESOURCE_READ -> resource))
+    new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, Map(OPENSEARCH_RESOURCE_READ -> resource))
   def esRDD(sc: SparkContext, resource: String, query: String): RDD[(String, Map[String, AnyRef])] =
-    new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, Map(ES_RESOURCE_READ -> resource, ES_QUERY -> query))
+    new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
   def esRDD(sc: SparkContext, resource: String, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
-    new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_READ -> resource))
+    new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource))
   def esRDD(sc: SparkContext, resource: String, query: String, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
-    new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_READ -> resource, ES_QUERY -> query))
+    new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
 
 
   // load data as JSON
-  def esJsonRDD(sc: SparkContext): RDD[(String, String)] = new ScalaOpenSearchRDD[String](sc, Map(ES_OUTPUT_JSON -> true.toString))
+  def esJsonRDD(sc: SparkContext): RDD[(String, String)] = new ScalaOpenSearchRDD[String](sc, Map(OPENSEARCH_OUTPUT_JSON -> true.toString))
   def esJsonRDD(sc: SparkContext, cfg: Map[String, String]): RDD[(String, String)] =
-    new ScalaOpenSearchRDD[String](sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_OUTPUT_JSON -> true.toString))
+    new ScalaOpenSearchRDD[String](sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_OUTPUT_JSON -> true.toString))
   def esJsonRDD(sc: SparkContext, resource: String): RDD[(String, String)] =
-    new ScalaOpenSearchRDD[String](sc, Map(ES_RESOURCE_READ -> resource, ES_OUTPUT_JSON -> true.toString))
+    new ScalaOpenSearchRDD[String](sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_OUTPUT_JSON -> true.toString))
   def esJsonRDD(sc: SparkContext, resource: String, query: String): RDD[(String, String)] =
-    new ScalaOpenSearchRDD[String](sc, Map(ES_RESOURCE_READ -> resource, ES_QUERY -> query, ES_OUTPUT_JSON -> true.toString))
+    new ScalaOpenSearchRDD[String](sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query, OPENSEARCH_OUTPUT_JSON -> true.toString))
   def esJsonRDD(sc: SparkContext, resource: String, cfg: Map[String, String]): RDD[(String, String)] =
-    new ScalaOpenSearchRDD[String](sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_READ -> resource, ES_OUTPUT_JSON -> true.toString))
+    new ScalaOpenSearchRDD[String](sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_OUTPUT_JSON -> true.toString))
   def esJsonRDD(sc: SparkContext, resource: String, query: String, cfg: Map[String, String]): RDD[(String, String)] =
-    new ScalaOpenSearchRDD[String](sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_READ -> resource, ES_QUERY -> query, ES_OUTPUT_JSON -> true.toString))
+    new ScalaOpenSearchRDD[String](sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query, OPENSEARCH_OUTPUT_JSON -> true.toString))
 
 
   //
   // Save methods
   //
-  def saveToEs(rdd: RDD[_], resource: String): Unit = { saveToEs(rdd, Map(ES_RESOURCE_WRITE -> resource)) }
+  def saveToEs(rdd: RDD[_], resource: String): Unit = { saveToEs(rdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource)) }
   def saveToEs(rdd: RDD[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(rdd, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_WRITE -> resource))
+    saveToEs(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToEs(rdd: RDD[_], cfg: Map[String, String]): Unit =  {
     doSaveToEs(rdd, cfg, false)
   }
 
   // Save with metadata
-  def saveToEsWithMeta[K,V](rdd: RDD[(K,V)], resource: String): Unit = { saveToEsWithMeta(rdd, Map(ES_RESOURCE_WRITE -> resource)) }
+  def saveToEsWithMeta[K,V](rdd: RDD[(K,V)], resource: String): Unit = { saveToEsWithMeta(rdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource)) }
   def saveToEsWithMeta[K,V](rdd: RDD[(K,V)], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEsWithMeta(rdd, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_WRITE -> resource))
+    saveToEsWithMeta(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToEsWithMeta[K,V](rdd: RDD[(K,V)], cfg: Map[String, String]): Unit = {
     doSaveToEs(rdd, cfg, true)
   }
 
   private[spark] def doSaveToEs(rdd: RDD[_], cfg: Map[String, String], hasMeta: Boolean): Unit = {
-    CompatUtils.warnSchemaRDD(rdd, LogFactory.getLog("org.elasticsearch.spark.rdd.EsSpark"))
+    CompatUtils.warnSchemaRDD(rdd, LogFactory.getLog("org.opensearch.spark.rdd.OpenSearchSpark"))
 
     if (rdd == null || rdd.partitions.length == 0) {
       return

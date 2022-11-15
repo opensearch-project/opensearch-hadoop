@@ -93,7 +93,7 @@ public class AbstractRestQueryTest {
     @Test
     public void testQueryBuilder() throws Exception {
         Settings sets = settings.copy();
-        sets.setProperty(ConfigurationOptions.ES_QUERY, "?q=me*");
+        sets.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "?q=me*");
         sets.setInternalVersion(version);
         Resource read = new Resource(settings, true);
         SearchRequestBuilder qb =

@@ -36,7 +36,7 @@ import org.apache.storm.Config;
 import org.apache.storm.ILocalCluster;
 import org.apache.storm.LocalCluster;
 import org.apache.storm.generated.StormTopology;
-import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalOpenSearch;
 import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.unit.TimeValue;
 import org.junit.ClassRule;
@@ -59,7 +59,7 @@ public abstract class AbstractStormSuite {
     //public static final Counter DONE = new Counter(2);
 
     @ClassRule
-    public static ExternalResource resource = new LocalEs() {
+    public static ExternalResource resource = new LocalOpenSearch() {
 
         @Override
         protected void after() {

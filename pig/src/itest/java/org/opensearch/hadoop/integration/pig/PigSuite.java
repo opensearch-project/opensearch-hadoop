@@ -32,7 +32,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.pig.impl.io.FileLocalizer;
 import org.opensearch.hadoop.TestData;
 import org.opensearch.hadoop.fs.HdfsUtils;
-import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalOpenSearch;
 import org.opensearch.hadoop.Provisioner;
 import org.opensearch.hadoop.util.TestUtils;
 import org.junit.BeforeClass;
@@ -55,7 +55,7 @@ public class PigSuite {
     }
 
     @ClassRule
-    public static ExternalResource resource = new LocalEs();
+    public static ExternalResource resource = new LocalOpenSearch();
 
     @ClassRule
     public static LazyTempFolder tempFolder = new LazyTempFolder();

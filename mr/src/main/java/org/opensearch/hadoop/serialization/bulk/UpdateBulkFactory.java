@@ -122,9 +122,7 @@ class UpdateBulkFactory extends AbstractBulkFactory {
 
         Object paramExtractor = getMetadataExtractorOrFallback(MetadataExtractor.Metadata.PARAMS, getParamExtractor());
 
-        if (opensearchMajorVersion.on(OpenSearchMajorVersion.V_1_X)) {
-            writeLegacyFormatting(list, paramExtractor);
-        } else if (opensearchMajorVersion.on(OpenSearchMajorVersion.V_2_X)) {
+        if (opensearchMajorVersion.on(OpenSearchMajorVersion.V_2_X)) {
             writeStrictFormatting(list, paramExtractor, SCRIPT_2X);
         } else {
             writeStrictFormatting(list, paramExtractor, SCRIPT_5X);

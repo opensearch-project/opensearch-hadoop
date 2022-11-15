@@ -141,14 +141,14 @@ public class AbstractExtraMRTests {
     @Test
     public void testSaveDocWithEscapedChars() throws Exception {
         JobConf conf = new JobConf(config);
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mroldapi-gibberish", "data", targetVersion));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-gibberish", "data", targetVersion));
         runJob(conf);
     }
 
     @Test
     public void testSaveDocWithEscapedCharsAndMapping() throws Exception {
         JobConf conf = new JobConf(config);
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("mroldapi-gibberish-with-mapping", "data", targetVersion));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-gibberish-with-mapping", "data", targetVersion));
         conf.set(ConfigurationOptions.ES_MAPPING_ID, "@id");
         runJob(conf);
     }
@@ -157,7 +157,7 @@ public class AbstractExtraMRTests {
     public void testXLoadDoc() throws Exception {
         JobConf conf = createReadJobConf();
 
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mroldapi-gibberish", "data", targetVersion));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mroldapi-gibberish", "data", targetVersion));
         JobClient.runJob(conf);
     }
 
@@ -165,7 +165,7 @@ public class AbstractExtraMRTests {
     public void testXLoadDocWithMapping() throws Exception {
         JobConf conf = createReadJobConf();
 
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mroldapi-gibberish-with-mapping", "data", targetVersion));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mroldapi-gibberish-with-mapping", "data", targetVersion));
         JobClient.runJob(conf);
     }
 
@@ -193,14 +193,14 @@ public class AbstractExtraMRTests {
 
         // run MR job
         JobConf conf = createReadJobConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "alias", "type", targetVersion));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "alias", "type", targetVersion));
         JobClient.runJob(conf);
     }
 
     private void runJob(JobConf conf) throws Exception {
-        String string = conf.get(ConfigurationOptions.ES_RESOURCE);
+        String string = conf.get(ConfigurationOptions.OPENSEARCH_RESOURCE);
         string = indexPrefix + (string.startsWith("/") ? string.substring(1) : string);
-        conf.set(ConfigurationOptions.ES_RESOURCE, string);
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, string);
         JobClient.runJob(conf);
     }
 
@@ -218,7 +218,7 @@ public class AbstractExtraMRTests {
 
         conf.set(ConfigurationOptions.ES_READ_METADATA, String.valueOf(random.nextBoolean()));
         conf.set(ConfigurationOptions.ES_READ_METADATA_VERSION, String.valueOf(true));
-        conf.set(ConfigurationOptions.ES_OUTPUT_JSON, "true");
+        conf.set(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "true");
 
         FileInputFormat.setInputPaths(conf, new Path(MRSuite.testData.gibberishDat(conf)));
         return conf;

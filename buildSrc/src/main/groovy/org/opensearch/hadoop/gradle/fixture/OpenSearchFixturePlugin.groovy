@@ -57,7 +57,7 @@ class OpenSearchFixturePlugin implements Plugin<Project> {
         def version = project.hasProperty("opensearch.version") ? project.getProperty("opensearch.version") : project.opensearchVersion
 
         // Optionally allow user to disable the fixture
-        def useFixture = Boolean.parseBoolean(project.findProperty("tests.fixture.es.enable") ?: "true")
+        def useFixture = Boolean.parseBoolean(project.findProperty("tests.fixture.opensearch.enable") ?: "true")
 
         def integrationTestTasks = project.tasks.withType(StandaloneRestIntegTestTask)
         if (useFixture) {
@@ -86,34 +86,15 @@ class OpenSearchFixturePlugin implements Plugin<Project> {
         def majorVersion = version.tokenize(".").get(0).toInteger()
 
         // Version specific configurations
-        if (majorVersion <= 2) {
-            integTestCluster.setting("transport.type","local")
-            integTestCluster.setting("http.type","netty3")
-            integTestCluster.setting("script.inline", "true")
-            integTestCluster.setting("script.indexed", "true")
-        } else if (majorVersion == 5) {
-            integTestCluster.setting("transport.type","netty4")
-            integTestCluster.setting("http.type","netty4")
-            integTestCluster.setting("script.inline", "true")
-            integTestCluster.setting("node.ingest", "true")
-            integTestCluster.setting("script.max_compilations_rate", null)
-        } else if (majorVersion == 6) {
+        if (majorVersion == 1) {
             integTestCluster.setting("node.ingest", "true")
             integTestCluster.setting("http.host", "localhost")
-            integTestCluster.systemProperty('es.http.cname_in_publish_address', 'true')
-        } else if (majorVersion == 7) {
-            integTestCluster.setting("node.ingest", "true")
-            integTestCluster.setting("http.host", "localhost")
-            integTestCluster.systemProperty('es.http.cname_in_publish_address', 'true')
-        } else if (majorVersion >= 8) {
+            integTestCluster.systemProperty('opensearch.http.cname_in_publish_address', 'true')
+        } else if (majorVersion >= 2) {
             integTestCluster.setting("node.roles", "[\"master\", \"data\", \"ingest\"]")
             integTestCluster.setting("http.host", "localhost")
             // TODO: Remove this when this is the default in 7
-            integTestCluster.systemProperty('es.http.cname_in_publish_address', 'true')
-            // Minimal Security
-            integTestCluster.setting('xpack.security.enabled', 'true')
-            integTestCluster.keystore('bootstrap.password', 'password')
-            integTestCluster.user(username: 'elastic-admin', password: 'elastic-password', role: 'superuser')
+            integTestCluster.systemProperty('opensearch.http.cname_in_publish_address', 'true')
         }
 
         // Also write a script to a file for use in tests

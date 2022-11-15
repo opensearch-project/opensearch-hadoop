@@ -28,7 +28,7 @@
  */
 package org.opensearch.hadoop.integration.rest;
 
-import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalOpenSearch;
 import org.junit.ClassRule;
 import org.junit.Ignore;
 import org.junit.rules.ExternalResource;
@@ -41,5 +41,5 @@ import org.junit.runners.Suite;
 public class RestSuite {
 
     @ClassRule
-    public static ExternalResource resource = new LocalEs();
+    public static ExternalResource resource = new LocalOpenSearch();
 }

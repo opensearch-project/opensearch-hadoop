@@ -41,52 +41,52 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Pig](#ap
   - [License](#license)
 
 ## Requirements
-OpenSearch (__1.x__ or higher (2.x _highly_ recommended)) cluster accessible through [REST][]. That's it!
+OpenSearch (__3.x__ or higher) cluster accessible through [REST][]. That's it!
 Significant effort has been invested to create a small, dependency-free, self-contained jar that can be downloaded and put to use without any dependencies. Simply make it available to your job classpath and you're set.
 
 ## Usage
 
 ### Configuration Properties
 
-All configuration properties start with `os` prefix. Note that the `os.internal` namespace is reserved for the library internal use and should _not_ be used by the user at any point.
+All configuration properties start with `opensearch` prefix. Note that the `opensearch.internal` namespace is reserved for the library internal use and should _not_ be used by the user at any point.
 The properties are read mainly from the Hadoop configuration but the user can specify (some of) them directly depending on the library used.
 
 ### Required
 ```
-os.resource=<OS resource location, relative to the host/port specified above>
+opensearch.resource=<ES resource location, relative to the host/port specified above>
 ```
 ### Essential
 ```
-os.query=<uri or query dsl query>              # defaults to {"query":{"match_all":{}}}
+opensearch.query=<uri or query dsl query>      # defaults to {"query":{"match_all":{}}}
 opensearch.nodes=<OpenSearch host address>     # defaults to localhost
-os.port=<OS REST port>                         # defaults to 9200
+opensearch.port=<OPENSEARCH REST port>         # defaults to 9200
 ```
 
 ## [Map/Reduce][]
 
-For basic, low-level or performance-sensitive environments, OpenSearch-Hadoop provides dedicated `InputFormat` and `OutputFormat` that read and write data to OpenSearch. To use them, add the `os-hadoop` jar to your job classpath
+For basic, low-level or performance-sensitive environments, OpenSearch-Hadoop provides dedicated `InputFormat` and `OutputFormat` that read and write data to OpenSearch. To use them, add the `opensearch-hadoop` jar to your job classpath
 (either by bundling the library along - it's ~300kB and there are no-dependencies), using the [DistributedCache][] or by provisioning the cluster manually.
 
-Note that os-hadoop supports both the so-called 'old' and the 'new' API through its `OsInputFormat` and `OsOutputFormat` classes.
+Note that os-hadoop supports both the so-called 'old' and the 'new' API through its `OpenSearchInputFormat` and `OpenSearchOutputFormat` classes.
 
 ### 'Old' (`org.apache.hadoop.mapred`) API
 
 ### Reading
-To read data from Os, configure the `OsInputFormat` on your job configuration along with the relevant [properties](#configuration-properties):
+To read data from Os, configure the `OpenSearchInputFormat` on your job configuration along with the relevant [properties](#configuration-properties):
 ```java
 JobConf conf = new JobConf();
-conf.setInputFormat(OsInputFormat.class);
-conf.set("os.resource", "radio/artists");
-conf.set("os.query", "?q=me*");             // replace this with the relevant query
+conf.setInputFormat(OpenSearchInputFormat.class);
+conf.set("opensearch.resource", "radio/artists");
+conf.set("opensearch.query", "?q=me*");             // replace this with the relevant query
 ...
 JobClient.runJob(conf);
 ```
 ### Writing
-Same configuration template can be used for writing but using `OsOuputFormat`:
+Same configuration template can be used for writing but using `OpenSearchOuputFormat`:
 ```java
 JobConf conf = new JobConf();
-conf.setOutputFormat(OsOutputFormat.class);
-conf.set("es.resource", "radio/artists"); // index or indices used for storing data
+conf.setOutputFormat(OpenSearchOutputFormat.class);
+conf.set("opensearch.resource", "radio/artists"); // index or indices used for storing data
 ...
 JobClient.runJob(conf);
 ```
@@ -95,7 +95,7 @@ JobClient.runJob(conf);
 ### Reading
 ```java
 Configuration conf = new Configuration();
-conf.set("es.resource", "radio/artists");
+conf.set("opensearch.resource", "radio/artists");
 conf.set("es.query", "?q=me*");             // replace this with the relevant query
 Job job = new Job(conf)
 job.setInputFormatClass(EsInputFormat.class);
@@ -105,7 +105,7 @@ job.waitForCompletion(true);
 ### Writing
 ```java
 Configuration conf = new Configuration();
-conf.set("es.resource", "radio/artists"); // index or indices used for storing data
+conf.set("opensearch.resource", "radio/artists"); // index or indices used for storing data
 Job job = new Job(conf)
 job.setOutputFormatClass(EsOutputFormat.class);
 ...
@@ -127,7 +127,7 @@ CREATE EXTERNAL TABLE artists (
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
 STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler'
-TBLPROPERTIES('es.resource' = 'radio/artists', 'es.query' = '?q=me*');
+TBLPROPERTIES('opensearch.resource' = 'radio/artists', 'es.query' = '?q=me*');
 ```
 The fields defined in the table are mapped to the JSON when communicating with Elasticsearch. Notice the use of `TBLPROPERTIES` to define the location, that is the query used for reading from this table.
 
@@ -137,14 +137,14 @@ SELECT * FROM artists;
 ```
 
 ### Writing
-To write data, a similar definition is used but with a different `es.resource`:
+To write data, a similar definition is used but with a different `opensearch.resource`:
 ```SQL
 CREATE EXTERNAL TABLE artists (
     id      BIGINT,
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
 STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler'
-TBLPROPERTIES('es.resource' = 'radio/artists');
+TBLPROPERTIES('opensearch.resource' = 'radio/artists');
 ```
 
 Any data passed to the table is then passed down to Elasticsearch; for example considering a table `s`, mapped to a TSV/CSV file, one can index it to Elasticsearch like this:

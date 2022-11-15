@@ -302,7 +302,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
     public void prepareToRead(RecordReader reader, PigSplit split) throws IOException {
         this.reader = reader;
         aliasesTupleNames = StringUtils.tokenize(getUDFProperties().getProperty(
-                InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS));
+                InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS));
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -370,7 +370,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
     @Override
     public RequiredFieldResponse pushProjection(RequiredFieldList requiredFieldList) throws FrontendException {
         String fields = PigUtils.asProjection(requiredFieldList, properties);
-        getUDFProperties().setProperty(InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS, fields);
+        getUDFProperties().setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS, fields);
         if (log.isTraceEnabled()) {
             log.trace(String.format("Given push projection; saving field projection [%s]", fields));
         }
@@ -424,13 +424,13 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
     }
 
     private void extractProjection(Configuration cfg) throws IOException {
-        String fields = getUDFProperties().getProperty(InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS);
+        String fields = getUDFProperties().getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS);
         if (fields != null) {
             if (log.isDebugEnabled()) {
                 log.debug(String.format("Found field project [%s] in UDF properties", fields));
             }
 
-            cfg.set(InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS, fields);
+            cfg.set(InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS, fields);
             return;
         }
 

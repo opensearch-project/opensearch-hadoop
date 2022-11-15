@@ -54,7 +54,7 @@ public class ErrorExtractorTest {
 				.put("caused_by", nestedCause)
 				.build();
 		
-		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_5_X);
+		final ErrorExtractor extractor = new ErrorExtractor();
 		
 		final OpenSearchHadoopException ex = extractor.extractErrorWithCause(cause);
 		checkException(ex, cause);
@@ -76,7 +76,7 @@ public class ErrorExtractorTest {
 				.put("error", cause)
 				.build();
 		
-		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_5_X);
+		final ErrorExtractor extractor = new ErrorExtractor();
 		
 		final OpenSearchHadoopException ex = extractor.extractError(error);
 		checkException(ex, cause);
@@ -93,25 +93,10 @@ public class ErrorExtractorTest {
 				.put("error", cause)
 				.build();
 		
-		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_2_X);
+		final ErrorExtractor extractor = new ErrorExtractor();
 		
 		final OpenSearchHadoopException ex = extractor.extractError(error);
 		checkException(ex, cause);
-		
-	}
-	@Test
-	public void extractErrorV1() {
-		final Map<String, Object> error = ImmutableMap.<String, Object>builder()
-				.put("error", "UnKnown Issue")
-				.build();
-		
-		final ErrorExtractor extractor = new ErrorExtractor(OpenSearchMajorVersion.V_1_X);
-		
-		final OpenSearchHadoopException ex = extractor.extractError(error);
-		
-		assertNotNull(ex);
-		assertTrue(OpenSearchHadoopRemoteException.class.isAssignableFrom(ex.getClass()));
-		assertEquals(error.get("error"), ex.getMessage());
 		
 	}
 	

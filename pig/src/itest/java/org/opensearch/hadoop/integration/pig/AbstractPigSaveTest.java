@@ -49,7 +49,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
-import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_5_X;
 import static org.opensearch.hadoop.util.TestUtils.docEndpoint;
 import static org.opensearch.hadoop.util.TestUtils.resource;
 import static org.junit.Assert.*;
@@ -101,9 +100,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     @Test
     public void testTupleMapping() throws Exception {
         assertThat(RestUtils.getMappings("pig-tupleartists").getResolvedView().toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("*/*=[links=TEXT, name=TEXT]")
-                        : is("*/*=[links=STRING, name=STRING]"));
+                is("*/*=[links=TEXT, name=TEXT]"));
     }
 
     @Test
@@ -119,9 +116,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     @Test
     public void testBagMapping() throws Exception {
         assertThat(RestUtils.getMappings("pig-bagartists").getResolvedView().toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("*/*=[links=TEXT, name=TEXT]")
-                        : is("*/*=[links=STRING, name=STRING]"));
+                is("*/*=[links=TEXT, name=TEXT]"));
     }
 
     @Test
@@ -157,9 +152,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     @Test
     public void testFieldAliasMapping() throws Exception {
         assertThat(RestUtils.getMappings("pig-fieldalias").getResolvedView().toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("*/*=[@timestamp=DATE, name=TEXT, picture=TEXT, url=TEXT]")
-                        : is("*/*=[@timestamp=DATE, name=STRING, picture=STRING, url=STRING]"));
+                is("*/*=[@timestamp=DATE, name=TEXT, picture=TEXT, url=TEXT]"));
     }
 
     @Test
@@ -176,9 +169,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     @Test
     public void testCaseSensitivityMapping() throws Exception {
         assertThat(RestUtils.getMappings("pig-casesensitivity").getResolvedView().toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("*/*=[Name=TEXT, pIctUre=TEXT, uRL=TEXT]")
-                        : is("*/*=[Name=STRING, pIctUre=STRING, uRL=STRING]"));
+                is("*/*=[Name=TEXT, pIctUre=TEXT, uRL=TEXT]"));
     }
 
     @Test
@@ -211,9 +202,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     @Test
     public void testCreateWithIdMapping() throws Exception {
         assertThat(RestUtils.getMappings("pig-createwithid").getResolvedView().toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, links=TEXT, name=TEXT]")
-                        : is("*/*=[id=LONG, links=STRING, name=STRING]"));
+                is("*/*=[id=LONG, links=TEXT, name=TEXT]"));
     }
 
     @Test(expected = OpenSearchHadoopIllegalStateException.class)
@@ -245,9 +234,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     @Test
     public void testUpdateWithIdMapping() throws Exception {
         assertThat(RestUtils.getMappings("pig-update").getResolvedView().toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, links=TEXT, name=TEXT]")
-                        : is("*/*=[id=LONG, links=STRING, name=STRING]"));
+                is("*/*=[id=LONG, links=TEXT, name=TEXT]"));
     }
 
     @Test(expected = OpenSearchHadoopIllegalStateException.class)
@@ -280,9 +267,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     public void testParentChildMapping() throws Exception {
         OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
         assertThat(RestUtils.getMapping("pig-pc", "child").toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("pig-pc/child=[id=LONG, links=TEXT, name=TEXT]")
-                        : is("pig-pc/child=[id=LONG, links=STRING, name=STRING]"));
+                is("pig-pc/child=[id=LONG, links=TEXT, name=TEXT]"));
     }
 
     @Test
@@ -327,9 +312,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     @Test
     public void testIndexPatternMapping() throws Exception {
         assertThat(RestUtils.getMappings("pig-pattern-9").getResolvedView().toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, name=TEXT, picture=TEXT, tag=LONG, timestamp=DATE, url=TEXT]")
-                        : is("*/*=[id=LONG, name=STRING, picture=STRING, tag=LONG, timestamp=DATE, url=STRING]"));
+                is("*/*=[id=LONG, name=TEXT, picture=TEXT, tag=LONG, timestamp=DATE, url=TEXT]"));
     }
 
     @Test
@@ -344,9 +327,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     @Test
     public void testIndexPatternFormatMapping() throws Exception {
         assertThat(RestUtils.getMappings("pig-pattern-format-2001-10-06").getResolvedView().toString(),
-                VERSION.onOrAfter(V_5_X)
-                        ? is("*/*=[id=LONG, name=TEXT, picture=TEXT, tag=LONG, timestamp=DATE, url=TEXT]")
-                        : is("*/*=[id=LONG, name=STRING, picture=STRING, tag=LONG, timestamp=DATE, url=STRING]"));
+                is("*/*=[id=LONG, name=TEXT, picture=TEXT, tag=LONG, timestamp=DATE, url=TEXT]"));
     }
 
     private String loadArtistSource() throws IOException {

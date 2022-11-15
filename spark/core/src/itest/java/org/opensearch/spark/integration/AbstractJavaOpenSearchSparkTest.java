@@ -100,7 +100,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         JavaRDD<Map<String, ?>> javaRDD = sc.parallelize(ImmutableList.of(doc1, doc2));
         // eliminate with static import
         JavaOpenSearchSpark.saveToEs(javaRDD, target);
-        JavaOpenSearchSpark.saveToEs(javaRDD, ImmutableMap.of(ES_RESOURCE, target + "1"));
+        JavaOpenSearchSpark.saveToEs(javaRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, target + "1"));
 
         assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
         assertTrue(RestUtils.exists(target));
@@ -206,7 +206,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
       JavaRDD<String> stringRDD = sc.parallelize(ImmutableList.of(json1, json2));
       JavaOpenSearchSpark.saveJsonToEs(stringRDD, "spark-test-json-{airport}/data");
       JavaOpenSearchSpark.saveJsonToEs(stringRDD, "spark-test-json1-{airport}/data", Collections.<String, String> emptyMap());
-      JavaOpenSearchSpark.saveJsonToEs(stringRDD, ImmutableMap.of(ES_RESOURCE, "spark-test-json2-{airport}/data"));
+      JavaOpenSearchSpark.saveJsonToEs(stringRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark-test-json2-{airport}/data"));
 
       byte[] json1BA = json1.getBytes();
       byte[] json2BA = json2.getBytes();
@@ -214,7 +214,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
       JavaRDD<byte[]> byteRDD = sc.parallelize(ImmutableList.of(json1BA, json2BA));
       JavaOpenSearchSpark.saveJsonByteArrayToEs(byteRDD, "spark-test-json-ba-{airport}/data");
       JavaOpenSearchSpark.saveJsonByteArrayToEs(byteRDD, "spark-test-json-ba1-{airport}/data", Collections.<String, String> emptyMap());
-      JavaOpenSearchSpark.saveJsonByteArrayToEs(byteRDD, ImmutableMap.of(ES_RESOURCE, "spark-test-json-ba2-{airport}/data"));
+      JavaOpenSearchSpark.saveJsonByteArrayToEs(byteRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark-test-json-ba2-{airport}/data"));
 
       assertTrue(RestUtils.exists("spark-test-json-SFO/data"));
       assertTrue(RestUtils.exists("spark-test-json-OTP/data"));
@@ -319,8 +319,8 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
 
         RestUtils.refresh(index+"*");
 
-        //JavaRDD<Map<String, Object>> wildRDD = JavaOpenSearchSpark.esRDD(sc, ImmutableMap.of(ES_RESOURCE, "spark*/foo")).values();
-        JavaRDD<Map<String, Object>> typeRDD = JavaOpenSearchSpark.esRDD(sc, ImmutableMap.of(ES_RESOURCE, "spark*")).values();
+        //JavaRDD<Map<String, Object>> wildRDD = JavaOpenSearchSpark.esRDD(sc, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark*/foo")).values();
+        JavaRDD<Map<String, Object>> typeRDD = JavaOpenSearchSpark.esRDD(sc, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark*")).values();
 
         JavaRDD<Map<String, Object>> allRDD = JavaOpenSearchSpark.esRDD(sc, "_all/foo", "").values();
         // assertEquals(wildRDD.count(), allRDD.count());

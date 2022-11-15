@@ -37,14 +37,11 @@ import org.opensearch.hadoop.util.ByteSequence;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 
 /**
- * Encapsulates logic for parsing and understanding error messages from Elasticsearch.
+ * Encapsulates logic for parsing and understanding error messages from OpenSearch.
  */
 public class ErrorExtractor {
 
-    private final OpenSearchMajorVersion internalVersion;
-
-    public ErrorExtractor(OpenSearchMajorVersion internalVersion) {
-        this.internalVersion = internalVersion;
+    public ErrorExtractor() {
     }
     
     @SuppressWarnings("rawtypes")
@@ -114,23 +111,5 @@ public class ErrorExtractor {
             }
         }
         return error;
-    }
-
-    public String prettify(String error) {
-        if (internalVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-            return error;
-        }
-
-        String invalidFragment = ErrorUtils.extractInvalidXContent(error);
-        String header = (invalidFragment != null ? "Invalid JSON fragment received[" + invalidFragment + "]" : "");
-        return header + "[" + error + "]";
-    }
-
-    public String prettify(String error, ByteSequence body) {
-        if (internalVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-            return error;
-        }
-        String message = ErrorUtils.extractJsonParse(error, body);
-        return (message != null ? error + "; fragment[" + message + "]" : error);
     }
 }

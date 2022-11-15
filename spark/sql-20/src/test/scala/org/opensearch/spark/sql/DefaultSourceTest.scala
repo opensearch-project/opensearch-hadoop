@@ -41,11 +41,11 @@ class DefaultSourceTest {
     val settings = new mutable.LinkedHashMap[String, String]()
     settings.put("path", "wrong")
     settings.put("resource", "wrong")
-    settings.put("es_resource", "preferred")
+    settings.put("opensearch_resource", "preferred")
     settings.put("unrelated", "unrelated")
 
     val relation = new DefaultSource().params(settings.toMap)
 
-    assertEquals(Map("es.resource" -> "preferred", "es.unrelated" -> "unrelated"), relation)
+    assertEquals(Map("opensearch.resource" -> "preferred", "opensearch.unrelated" -> "unrelated"), relation)
   }
 }

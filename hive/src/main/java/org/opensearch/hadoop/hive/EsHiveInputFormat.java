@@ -116,7 +116,7 @@ public class EsHiveInputFormat extends EsInputFormat<Text, Writable> {
         InitializationUtils.setUserProviderIfNotSet(settings, HadoopUserProvider.class, log);
         if (settings.getOutputAsJson() == false) {
             // Only set the fields if we aren't asking for raw JSON
-            settings.setProperty(InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS, StringUtils.concatenate(HiveUtils.columnToAlias(settings), ","));
+            settings.setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS, StringUtils.concatenate(HiveUtils.columnToAlias(settings), ","));
         }
 
         HiveUtils.init(settings, log);

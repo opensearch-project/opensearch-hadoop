@@ -94,7 +94,7 @@ public class AbstractMRNewApiSearchTest {
     @Test
     public void testBasicSearch() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mrnewapi-save", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mrnewapi-save", "data", clusterInfo.getMajorVersion()));
 
         new Job(conf).waitForCompletion(true);
     }
@@ -102,7 +102,7 @@ public class AbstractMRNewApiSearchTest {
     @Test
     public void testBasicWildSearch() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mrnew*-save", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mrnew*-save", "data", clusterInfo.getMajorVersion()));
 
         new Job(conf).waitForCompletion(true);
     }
@@ -110,7 +110,7 @@ public class AbstractMRNewApiSearchTest {
     @Test
     public void testSearchWithId() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mrnewapi-savewithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mrnewapi-savewithid", "data", clusterInfo.getMajorVersion()));
 
         new Job(conf).waitForCompletion(true);
     }
@@ -119,7 +119,7 @@ public class AbstractMRNewApiSearchTest {
     public void testSearchNonExistingIndex() throws Exception {
         Configuration conf = createConf();
         conf.setBoolean(ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY, true);
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "foobar", "save", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "foobar", "save", clusterInfo.getMajorVersion()));
 
         new Job(conf).waitForCompletion(true);
     }
@@ -127,7 +127,7 @@ public class AbstractMRNewApiSearchTest {
     @Test
     public void testSearchCreated() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
 
         new Job(conf).waitForCompletion(true);
     }
@@ -135,21 +135,8 @@ public class AbstractMRNewApiSearchTest {
     @Test
     public void testSearchUpdated() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mrnewapi-update", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mrnewapi-update", "data", clusterInfo.getMajorVersion()));
 
-        new Job(conf).waitForCompletion(true);
-    }
-
-    @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-
-        Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, indexPrefix + "mrnewapi-pc/child");
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
-        conf.set(ConfigurationOptions.ES_MAPPING_PARENT, "number");
-
-        //conf.set(Stream.class.getName(), "OUT");
         new Job(conf).waitForCompletion(true);
     }
 
@@ -179,10 +166,10 @@ public class AbstractMRNewApiSearchTest {
         Class<?> mapType = (type ? MapWritable.class : LinkedMapWritable.class);
 
         job.setOutputValueClass(mapType);
-        conf.set(ConfigurationOptions.ES_QUERY, query);
+        conf.set(ConfigurationOptions.OPENSEARCH_QUERY, query);
 
         conf.set(ConfigurationOptions.ES_READ_METADATA, String.valueOf(readMetadata));
-        conf.set(ConfigurationOptions.ES_OUTPUT_JSON, String.valueOf(readAsJson));
+        conf.set(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, String.valueOf(readAsJson));
 
         new QueryTestParams(tempFolder).provisionQueries(conf);
         job.setNumReduceTasks(0);

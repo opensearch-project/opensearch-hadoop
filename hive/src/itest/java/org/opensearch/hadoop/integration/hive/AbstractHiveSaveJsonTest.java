@@ -270,38 +270,6 @@ public class AbstractHiveSaveJsonTest {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        RestUtils.createMultiTypeIndex("json-hive-pc");
-        RestUtils.putMapping("json-hive-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
-
-        String localTable = createTable("jsonchildsource");
-        String load = loadData("jsonchildsource");
-
-        // create external table
-        String ddl =
-                "CREATE EXTERNAL TABLE jsonchild ("
-                        + "json     STRING) "
-                        + tableProps("json-hive-pc/child",
-                                "'" + ConfigurationOptions.ES_MAPPING_PARENT + "'='number'",
-                                "'" + ConfigurationOptions.ES_INDEX_AUTO_CREATE + "'='false'");
-
-        String selectTest = "SELECT s.json FROM jsonchildsource s";
-
-        // transfer data
-        String insert =
-                "INSERT OVERWRITE TABLE jsonchild "
-                        + "SELECT s.json FROM jsonchildsource s";
-
-        System.out.println(ddl);
-        System.out.println(server.execute(ddl));
-        System.out.println(server.execute(localTable));
-        System.out.println(server.execute(load));
-        System.out.println(server.execute(selectTest));
-        System.out.println(server.execute(insert));
-    }
-
-    @Test
     public void testIndexPattern() throws Exception {
         // load the raw data as a native, managed table
         // and then insert its content into the external one

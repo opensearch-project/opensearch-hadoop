@@ -1,120 +1,91 @@
-# Elasticsearch Hadoop [![Build Status](https://travis-ci.org/elastic/elasticsearch-hadoop.svg?branch=master)](https://travis-ci.org/elastic/elasticsearch-hadoop)
-Elasticsearch real-time search and analytics natively integrated with Hadoop.
+![OpenSearch logo](OpenSearch.svg)
+
+# OpenSearch Hadoop
+OpenSearch real-time search and analytics natively integrated with Hadoop.
 Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Pig](#apache-pig), [Apache Spark](#apache-spark) and [Apache Storm](#apache-storm).
 
-See  [project page](http://www.elastic.co/products/hadoop/) and [documentation](http://www.elastic.co/guide/en/elasticsearch/hadoop/current/index.html) for detailed information.
+- [OpenSearch Hadoop](#opensearch-hadoop)
+  - [Requirements](#requirements)
+  - [Usage](#usage)
+    - [Configuration Properties](#configuration-properties)
+    - [Required](#required)
+    - [Essential](#essential)
+  - [Map/Reduce](#mapreduce)
+    - ['Old' (`org.apache.hadoop.mapred`) API](#old-orgapachehadoopmapred-api)
+    - [Reading](#reading)
+    - [Writing](#writing)
+    - ['New' (`org.apache.hadoop.mapreduce`) API](#new-orgapachehadoopmapreduce-api)
+    - [Reading](#reading-1)
+    - [Writing](#writing-1)
+  - [Apache Hive](#apache-hive)
+    - [Reading](#reading-2)
+    - [Writing](#writing-2)
+  - [Apache Pig](#apache-pig)
+    - [Reading](#reading-3)
+    - [Writing](#writing-3)
+  - [Apache Spark](#apache-spark)
+    - [Scala](#scala)
+    - [Reading](#reading-4)
+      - [Spark SQL](#spark-sql)
+    - [Writing](#writing-4)
+      - [Spark SQL](#spark-sql-1)
+    - [Java](#java)
+    - [Reading](#reading-5)
+      - [Spark SQL](#spark-sql-2)
+    - [Writing](#writing-5)
+      - [Spark SQL](#spark-sql-3)
+  - [Apache Storm](#apache-storm)
+    - [Reading](#reading-6)
+    - [Writing](#writing-6)
+  - [Building the source](#building-the-source)
+  - [License](#license)
 
 ## Requirements
-Elasticsearch (__1.x__ or higher (2.x _highly_ recommended)) cluster accessible through [REST][]. That's it!
+OpenSearch (__1.x__ or higher (2.x _highly_ recommended)) cluster accessible through [REST][]. That's it!
 Significant effort has been invested to create a small, dependency-free, self-contained jar that can be downloaded and put to use without any dependencies. Simply make it available to your job classpath and you're set.
-For a certain library, see the dedicated [chapter](http://www.elastic.co/guide/en/elasticsearch/hadoop/current/requirements.html).
-
-ES-Hadoop 6.x and higher are compatible with Elasticsearch __1.X__, __2.X__, __5.X__, and __6.X__
-
-ES-Hadoop 5.x and higher are compatible with Elasticsearch __1.X__, __2.X__ and __5.X__
-
-ES-Hadoop 2.2.x and higher are compatible with Elasticsearch __1.X__ and __2.X__
-
-ES-Hadoop 2.0.x and 2.1.x are compatible with Elasticsearch __1.X__ *only*
-
-## Installation
-
-### Stable Release (currently `8.4.0`)
-Available through any Maven-compatible tool:
-
-```xml
-<dependency>
-  <groupId>org.elasticsearch</groupId>
-  <artifactId>opensearch-hadoop</artifactId>
-  <version>8.4.0</version>
-</dependency>
-```
-or as a stand-alone [ZIP](http://www.elastic.co/downloads/hadoop).
-
-### Development Snapshot
-Grab the latest nightly build from the [repository](http://oss.sonatype.org/content/repositories/snapshots/org/elasticsearch/elasticsearch-hadoop/) again through Maven:
-
-```xml
-<dependency>
-  <groupId>org.elasticsearch</groupId>
-  <artifactId>opensearch-hadoop</artifactId>
-  <version>8.6.0-SNAPSHOT</version>
-</dependency>
-```
-
-```xml
-<repositories>
-  <repository>
-    <id>sonatype-oss</id>
-    <url>http://aws.oss.sonatype.org/content/repositories/snapshots</url>
-    <snapshots><enabled>true</enabled></snapshots>
-  </repository>
-</repositories>
-```
-
-or [build](#building-the-source) the project yourself.
-
-We do build and test the code on _each_ commit.
-
-### Supported Hadoop Versions
-
-Running against Hadoop 1.x is deprecated in 5.5 and will no longer be tested against in 6.0.
-ES-Hadoop is developed for and tested against Hadoop 2.x and YARN.
-More information in this [section](http://www.elastic.co/guide/en/elasticsearch/hadoop/current/install.html).
-
-## Feedback / Q&A
-We're interested in your feedback! You can find us on the User [mailing list](https://groups.google.com/forum/?fromgroups#!forum/elasticsearch) - please append `[Hadoop]` to the post subject to filter it out. For more details, see the [community](http://www.elastic.co/community) page.
-
-
-## Online Documentation
-
-The latest reference documentation is available online on the project [home page](http://www.elastic.co/guide/en/elasticsearch/hadoop/index.html). Below the README contains _basic_ usage instructions at a glance.
 
 ## Usage
 
 ### Configuration Properties
 
-All configuration properties start with `es` prefix. Note that the `es.internal` namespace is reserved for the library internal use and should _not_ be used by the user at any point.
+All configuration properties start with `os` prefix. Note that the `os.internal` namespace is reserved for the library internal use and should _not_ be used by the user at any point.
 The properties are read mainly from the Hadoop configuration but the user can specify (some of) them directly depending on the library used.
 
 ### Required
 ```
-es.resource=<ES resource location, relative to the host/port specified above>
+os.resource=<OS resource location, relative to the host/port specified above>
 ```
 ### Essential
 ```
-es.query=<uri or query dsl query>              # defaults to {"query":{"match_all":{}}}
+os.query=<uri or query dsl query>              # defaults to {"query":{"match_all":{}}}
 opensearch.nodes=<OpenSearch host address>     # defaults to localhost
-es.port=<ES REST port>                         # defaults to 9200
+os.port=<OS REST port>                         # defaults to 9200
 ```
-
-The full list is available [here](http://www.elastic.co/guide/en/elasticsearch/hadoop/current/configuration.html)
 
 ## [Map/Reduce][]
 
-For basic, low-level or performance-sensitive environments, ES-Hadoop provides dedicated `InputFormat` and `OutputFormat` that read and write data to Elasticsearch. To use them, add the `es-hadoop` jar to your job classpath
+For basic, low-level or performance-sensitive environments, OpenSearch-Hadoop provides dedicated `InputFormat` and `OutputFormat` that read and write data to OpenSearch. To use them, add the `os-hadoop` jar to your job classpath
 (either by bundling the library along - it's ~300kB and there are no-dependencies), using the [DistributedCache][] or by provisioning the cluster manually.
-See the [documentation](http://www.elastic.co/guide/en/elasticsearch/hadoop/current/index.html) for more information.
 
-Note that es-hadoop supports both the so-called 'old' and the 'new' API through its `EsInputFormat` and `EsOutputFormat` classes.
+Note that os-hadoop supports both the so-called 'old' and the 'new' API through its `OsInputFormat` and `OsOutputFormat` classes.
 
 ### 'Old' (`org.apache.hadoop.mapred`) API
 
 ### Reading
-To read data from ES, configure the `EsInputFormat` on your job configuration along with the relevant [properties](#configuration-properties):
+To read data from Os, configure the `OsInputFormat` on your job configuration along with the relevant [properties](#configuration-properties):
 ```java
 JobConf conf = new JobConf();
-conf.setInputFormat(EsInputFormat.class);
-conf.set("es.resource", "radio/artists");
-conf.set("es.query", "?q=me*");             // replace this with the relevant query
+conf.setInputFormat(OsInputFormat.class);
+conf.set("os.resource", "radio/artists");
+conf.set("os.query", "?q=me*");             // replace this with the relevant query
 ...
 JobClient.runJob(conf);
 ```
 ### Writing
-Same configuration template can be used for writing but using `EsOuputFormat`:
+Same configuration template can be used for writing but using `OsOuputFormat`:
 ```java
 JobConf conf = new JobConf();
-conf.setOutputFormat(EsOutputFormat.class);
+conf.setOutputFormat(OsOutputFormat.class);
 conf.set("es.resource", "radio/artists"); // index or indices used for storing data
 ...
 JobClient.runJob(conf);

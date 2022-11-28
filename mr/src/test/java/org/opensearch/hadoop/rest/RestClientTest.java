@@ -59,7 +59,7 @@ public class RestClientTest {
     public void testPostDocumentSuccess() throws Exception {
         String index = "index/type";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -95,7 +95,7 @@ public class RestClientTest {
     public void testPostTypelessDocumentSuccess() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -128,10 +128,10 @@ public class RestClientTest {
     }
 
     @Test(expected = OpenSearchHadoopInvalidRequest.class)
-    public void testPostDocumentFailure() throws Exception {
+    public void testPostDocumentWithTypeFailure() throws Exception {
         String index = "index/type";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(OpenSearchMajorVersion.V_6_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_3_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -170,7 +170,7 @@ public class RestClientTest {
     public void testPostTypelessDocumentFailure() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -206,46 +206,10 @@ public class RestClientTest {
     }
 
     @Test(expected = OpenSearchHadoopInvalidRequest.class)
-    public void testPostDocumentWeirdness() throws Exception {
-        String index = "index/type";
-        Settings settings = new TestSettings();
-        settings.setInternalVersion(OpenSearchMajorVersion.V_6_X);
-        settings.setResourceWrite(index);
-        Resource writeResource = new Resource(settings, false);
-        BytesArray document = new BytesArray("{\"field\":\"value\"}");
-        SimpleRequest request = new SimpleRequest(Request.Method.POST, null, index, null, document);
-        String response =
-                "{\n" +
-                "  \"_index\": \"index\",\n" +
-                "  \"_type\": \"type\",\n" +
-                "  \"definitely_not_an_id\": \"AbcDefGhiJklMnoPqrS_\",\n" + // Make the ID go away
-                "  \"_version\": 1,\n" +
-                "  \"result\": \"created\",\n" +
-                "  \"_shards\": {\n" +
-                "    \"total\": 2,\n" +
-                "    \"successful\": 1,\n" +
-                "    \"failed\": 0\n" +
-                "  },\n" +
-                "  \"_seq_no\": 0,\n" +
-                "  \"_primary_term\": 1\n" +
-                "}";
-
-        NetworkClient mock = Mockito.mock(NetworkClient.class);
-        Mockito.when(mock.execute(Mockito.eq(request), Mockito.eq(true)))
-                .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
-
-        RestClient client = new RestClient(new TestSettings(), mock);
-
-        String id = client.postDocument(writeResource, document);
-
-        assertEquals("AbcDefGhiJklMnoPqrS_", id);
-    }
-
-    @Test(expected = OpenSearchHadoopInvalidRequest.class)
     public void testPostTypelessDocumentWeirdness() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
-        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
         settings.setResourceWrite(index);
         Resource writeResource = new Resource(settings, false);
         BytesArray document = new BytesArray("{\"field\":\"value\"}");
@@ -278,88 +242,12 @@ public class RestClientTest {
     }
 
     @Test
-    public void testCount5x() throws Exception {
-        String indexAndType = "index/type";
+    public void testCount() throws Exception {
         String index = "index";
         String type = "type";
 
         BytesArray query = new BytesArray("{\"query\":{\"match_all\":{}}}");
-        SimpleRequest request = new SimpleRequest(Request.Method.GET, null, indexAndType + "/_search?size=0", null, query);
-        String response =
-                "{\n" +
-                "    \"took\": 6,\n" +
-                "    \"timed_out\": false,\n" +
-                "    \"_shards\": {\n" +
-                "        \"total\": 1,\n" +
-                "        \"successful\": 1,\n" +
-                "        \"skipped\": 0,\n" +
-                "        \"failed\": 0\n" +
-                "    },\n" +
-                "    \"hits\": {\n" +
-                "        \"total\": 5,\n" +
-                "        \"max_score\": null,\n" +
-                "        \"hits\": []\n" +
-                "    }\n" +
-                "}";
-
-        NetworkClient mock = Mockito.mock(NetworkClient.class);
-        Mockito.when(mock.execute(Mockito.eq(request), Mockito.eq(true)))
-                .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
-
-        Settings testSettings = new TestSettings();
-        testSettings.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_5_X));
-        RestClient client = new RestClient(testSettings, mock);
-
-        long count = client.count(index, type, MatchAllQueryBuilder.MATCH_ALL);
-
-        assertEquals(5L, count);
-    }
-
-    @Test
-    public void testCount6x() throws Exception {
-        String indexAndType = "index/type";
-        String index = "index";
-        String type = "type";
-
-        BytesArray query = new BytesArray("{\"query\":{\"match_all\":{}}}");
-        SimpleRequest request = new SimpleRequest(Request.Method.GET, null, indexAndType + "/_search?size=0&track_total_hits=true", null, query);
-        String response =
-                "{\n" +
-                        "    \"took\": 6,\n" +
-                        "    \"timed_out\": false,\n" +
-                        "    \"_shards\": {\n" +
-                        "        \"total\": 1,\n" +
-                        "        \"successful\": 1,\n" +
-                        "        \"skipped\": 0,\n" +
-                        "        \"failed\": 0\n" +
-                        "    },\n" +
-                        "    \"hits\": {\n" +
-                        "        \"total\": 5,\n" +
-                        "        \"max_score\": null,\n" +
-                        "        \"hits\": []\n" +
-                        "    }\n" +
-                        "}";
-
-        NetworkClient mock = Mockito.mock(NetworkClient.class);
-        Mockito.when(mock.execute(Mockito.eq(request), Mockito.eq(true)))
-                .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
-
-        Settings testSettings = new TestSettings();
-        testSettings.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_6_X));
-        RestClient client = new RestClient(testSettings, mock);
-
-        long count = client.count(index, type, MatchAllQueryBuilder.MATCH_ALL);
-
-        assertEquals(5L, count);
-    }
-
-    @Test
-    public void testCount7x() throws Exception {
-        String index = "index";
-        String type = "type";
-
-        BytesArray query = new BytesArray("{\"query\":{\"match_all\":{}}}");
-        // When running under 7.x, the count API should always be typeless.
+        // the count API should always be typeless.
         SimpleRequest request = new SimpleRequest(Request.Method.GET, null, index + "/_search?size=0&track_total_hits=true", null, query);
         String response =
                 "{\n" +
@@ -388,7 +276,7 @@ public class RestClientTest {
                 .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
+        testSettings.setInternalVersion(OpenSearchMajorVersion.V_3_X);
         RestClient client = new RestClient(testSettings, mock);
 
         // Make sure that it works
@@ -401,7 +289,7 @@ public class RestClientTest {
     }
 
     @Test(expected = OpenSearchHadoopParsingException.class)
-    public void testCount7xBadRelation() throws Exception {
+    public void testCountBadRelation() throws Exception {
         String index = "index";
 
         BytesArray query = new BytesArray("{\"query\":{\"match_all\":{}}}");

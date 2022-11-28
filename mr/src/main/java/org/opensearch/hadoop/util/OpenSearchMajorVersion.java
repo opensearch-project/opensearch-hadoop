@@ -39,12 +39,7 @@ public class OpenSearchMajorVersion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final OpenSearchMajorVersion V_0_X = new OpenSearchMajorVersion((byte) 0, "0.x");
-    public static final OpenSearchMajorVersion V_1_X = new OpenSearchMajorVersion((byte) 1, "1.x");
     public static final OpenSearchMajorVersion V_2_X = new OpenSearchMajorVersion((byte) 2, "2.x");
-    public static final OpenSearchMajorVersion V_5_X = new OpenSearchMajorVersion((byte) 5, "5.x");
-    public static final OpenSearchMajorVersion V_6_X = new OpenSearchMajorVersion((byte) 6, "6.x");
-    public static final OpenSearchMajorVersion V_7_X = new OpenSearchMajorVersion((byte) 7, "7.x");
     public static final OpenSearchMajorVersion V_3_X = new OpenSearchMajorVersion((byte) 3, "3.x");
     public static final OpenSearchMajorVersion LATEST = V_3_X;
 
@@ -80,29 +75,12 @@ public class OpenSearchMajorVersion implements Serializable {
         return version.major >= major;
     }
 
-    /** TODO !!!! CORRECT VERSIONING FOR OPENSEARCH COMPATIBILITY !!!! **/
     public static OpenSearchMajorVersion parse(String version) {
-        if (version.startsWith("0.")) {
-            return new OpenSearchMajorVersion((byte) 0, version);
-        }
-        if (version.startsWith("1.")) {
-            return new OpenSearchMajorVersion((byte) 1, version);
-        }
         if (version.startsWith("2.")) {
             return new OpenSearchMajorVersion((byte) 2, version);
         }
         if (version.startsWith("3.")) {
             return new OpenSearchMajorVersion((byte) 3, version);
-        }
-        // todo remove this in versioning update
-        if (version.startsWith("5.")) {
-            return new OpenSearchMajorVersion((byte) 5, version);
-        }
-        if (version.startsWith("6.")) {
-            return new OpenSearchMajorVersion((byte) 6, version);
-        }
-        if (version.startsWith("7.")) {
-            return new OpenSearchMajorVersion((byte) 7, version);
         }
         throw new OpenSearchHadoopIllegalArgumentException("Unsupported/Unknown OpenSearch version [" + version + "]." +
                 "Highest supported version is [" + LATEST.version + "]. You may need to upgrade OpenSearch-Hadoop.");

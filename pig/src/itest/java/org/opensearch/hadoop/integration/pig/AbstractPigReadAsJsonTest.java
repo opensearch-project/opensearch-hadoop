@@ -290,55 +290,6 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        String script = scriptHead
-                      + "A = LOAD 'json-pig-pc/child' USING OpenSearchStorage();"
-                      + "X = LIMIT A 3;"
-                      + "STORE A INTO '" + tmpPig() + "/testparentchild';";
-        pig.executeScript(script);
-
-        String results = getResults("" + tmpPig() + "/testparentchild");
-
-        List<String> doc1 = Lists.newArrayList(
-                "{\"number\":\"12\",\"name\":\"Behemoth\",\"url\":\"http://www.last.fm/music/Behemoth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/54196161.jpg\",\"@timestamp\":\"2001-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
-        if (readMetadata) {
-            doc1.add(",\"_metadata\":{\"_index\":\"json-pig-pc\",\"_type\":\"child\",\"_id\":\"");
-            doc1.add("\",\"_score\":");
-            if (testVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-                doc1.add("\"_routing\":\"12\",\"_parent\":\"12\"");
-            }
-        }
-
-        List<String> doc2 = Lists.newArrayList(
-                "{\"number\":\"918\",\"name\":\"Megadeth\",\"url\":\"http://www.last.fm/music/Megadeth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/8129787.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
-        if (readMetadata) {
-            doc2.add(",\"_metadata\":{\"_index\":\"json-pig-pc\",\"_type\":\"child\",\"_id\":\"");
-            doc2.add("\",\"_score\":");
-            if (testVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-                doc2.add("\"_routing\":\"918\",\"_parent\":\"918\"");
-            }
-        }
-
-        List<String> doc3 = Lists.newArrayList(
-                "{\"number\":\"982\",\"name\":\"Foo Fighters\",\"url\":\"http://www.last.fm/music/Foo+Fighters\",\"picture\":\"http://userserve-ak.last.fm/serve/252/59495563.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
-        if (readMetadata) {
-            doc3.add(",\"_metadata\":{\"_index\":\"json-pig-pc\",\"_type\":\"child\",\"_id\":\"");
-            doc3.add("\",\"_score\":");
-            if (testVersion.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-                doc3.add("\"_routing\":\"982\",\"_parent\":\"982\"");
-            }
-        }
-
-        assertThat(results, stringContainsInOrder(doc1));
-        assertThat(results, stringContainsInOrder(doc2));
-        assertThat(results, stringContainsInOrder(doc3));
-    }
-
-    @Test
     public void testDynamicPattern() throws Exception {
         Assert.assertTrue(RestUtils.exists(resource("json-pig-pattern-1", "data", testVersion)));
         Assert.assertTrue(RestUtils.exists(resource("json-pig-pattern-5", "data", testVersion)));

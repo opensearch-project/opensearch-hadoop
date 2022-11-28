@@ -135,21 +135,6 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        RestUtils.createMultiTypeIndex("json-pig-pc");
-        RestUtils.putMapping("json-pig-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
-
-        String script =
-                loadSource() +
-                "STORE A INTO 'json-pig-pc/child' USING org.opensearch.pig.hadoop.OpenSearchStorage('"
-                                + ConfigurationOptions.ES_MAPPING_PARENT + "=number','"
-                                + ConfigurationOptions.ES_INDEX_AUTO_CREATE + "=no',"
-                                + "'es.input.json=true');";
-        pig.executeScript(script);
-    }
-
-    @Test
     public void testIndexPattern() throws Exception {
         String script =
                 loadSource() +

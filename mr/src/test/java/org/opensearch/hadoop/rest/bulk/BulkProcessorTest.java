@@ -43,9 +43,7 @@ import org.opensearch.hadoop.handler.OpenSearchHadoopAbortHandlerException;
 import org.opensearch.hadoop.handler.HandlerResult;
 import org.opensearch.hadoop.rest.Resource;
 import org.opensearch.hadoop.rest.RestClient;
-import org.opensearch.hadoop.rest.bulk.bwc.BulkOutputGeneratorV1;
-import org.opensearch.hadoop.rest.bulk.bwc.BulkOutputGeneratorV2;
-import org.opensearch.hadoop.rest.bulk.bwc.BulkOutputGeneratorV5;
+import org.opensearch.hadoop.rest.bulk.bwc.BulkOutputGeneratorV3;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteErrorHandler;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.opensearch.hadoop.rest.bulk.handler.DelayableErrorCollector;
@@ -77,7 +75,7 @@ import static org.junit.Assert.fail;
 @RunWith(Parameterized.class)
 public class BulkProcessorTest {
 
-    private BulkOutputGenerator generator;
+    private org.opensearch.hadoop.rest.bulk.BulkOutputGenerator generator;
     private ClusterInfo esClusterInfo;
 
     private Settings testSettings;
@@ -88,16 +86,12 @@ public class BulkProcessorTest {
     public static Collection<Object[]> data() {
         List<Object[]> params = new ArrayList<Object[]>();
 
-        params.add(new Object[]{OpenSearchMajorVersion.V_7_X, new BulkOutputGeneratorV5()});
-        params.add(new Object[]{OpenSearchMajorVersion.V_6_X, new BulkOutputGeneratorV5()});
-        params.add(new Object[]{OpenSearchMajorVersion.V_5_X, new BulkOutputGeneratorV5()});
-        params.add(new Object[]{OpenSearchMajorVersion.V_2_X, new BulkOutputGeneratorV2()});
-        params.add(new Object[]{OpenSearchMajorVersion.V_1_X, new BulkOutputGeneratorV1()});
+        params.add(new Object[]{OpenSearchMajorVersion.V_3_X, new BulkOutputGeneratorV3()});
 
         return params;
     }
 
-    public BulkProcessorTest(OpenSearchMajorVersion version, BulkOutputGenerator generator) {
+    public BulkProcessorTest(OpenSearchMajorVersion version, org.opensearch.hadoop.rest.bulk.BulkOutputGenerator generator) {
         this.esClusterInfo = ClusterInfo.unnamedClusterWithVersion(version);
         this.generator = generator;
     }

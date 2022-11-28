@@ -42,13 +42,8 @@ class UpdateBulkFactory extends AbstractBulkFactory {
     private final int RETRY_ON_FAILURE;
     private final String RETRY_HEADER;
 
-    private final String SCRIPT_2X;
-
-    private final String SCRIPT_5X;
-    private final String SCRIPT_LANG_5X;
-
-    private final String SCRIPT_1X;
-    private final String SCRIPT_LANG_1X;
+    private final String SCRIPT;
+    private final String SCRIPT_LANG;
 
     private final boolean HAS_SCRIPT, HAS_LANG, HAS_SCRIPT_UPSERT;
     private final boolean UPSERT;
@@ -68,36 +63,24 @@ class UpdateBulkFactory extends AbstractBulkFactory {
         HAS_SCRIPT_UPSERT = settings.hasScriptUpsert();
         HAS_LANG = StringUtils.hasText(settings.getUpdateScriptLang());
 
-        SCRIPT_LANG_5X = ",\"lang\":\"" + settings.getUpdateScriptLang() + "\"";
-        SCRIPT_LANG_1X = "\"lang\":\"" + settings.getUpdateScriptLang() + "\",";
+        SCRIPT_LANG = ",\"lang\":\"" + settings.getUpdateScriptLang() + "\"";
 
         if (HAS_SCRIPT) {
             if (StringUtils.hasText(settings.getUpdateScriptInline())) {
                 // INLINE
-                String source = "inline";
-                if (opensearchMajorVersion.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
-                    source = "source";
-                }
-                SCRIPT_5X = "{\"script\":{\"" + source + "\":\"" + settings.getUpdateScriptInline() + "\"";
-                SCRIPT_2X = SCRIPT_5X;
-                SCRIPT_1X = "\"script\":\"" + settings.getUpdateScriptInline() + "\"";
+                String source = "source";
+                SCRIPT = "{\"script\":{\"" + source + "\":\"" + settings.getUpdateScriptInline() + "\"";
             } else if (StringUtils.hasText(settings.getUpdateScriptFile())) {
                 // FILE
-                SCRIPT_5X = "{\"script\":{\"file\":\"" + settings.getUpdateScriptFile() + "\"";
-                SCRIPT_2X = SCRIPT_5X;
-                SCRIPT_1X = "\"script_file\":\"" + settings.getUpdateScriptFile() + "\"";
+                SCRIPT = "{\"script\":{\"file\":\"" + settings.getUpdateScriptFile() + "\"";
             } else if (StringUtils.hasText(settings.getUpdateScriptStored())) {
                 // STORED
-                SCRIPT_5X = "{\"script\":{\"stored\":\"" + settings.getUpdateScriptStored() + "\"";
-                SCRIPT_2X = "{\"script\":{\"id\":\"" + settings.getUpdateScriptStored() + "\"";
-                SCRIPT_1X = "\"script_id\":\"" + settings.getUpdateScriptStored() + "\"";
+                SCRIPT = "{\"script\":{\"stored\":\"" + settings.getUpdateScriptStored() + "\"";
             } else {
                 throw new OpenSearchHadoopIllegalStateException("No update script found...");
             }
         } else {
-            SCRIPT_5X = null;
-            SCRIPT_2X = null;
-            SCRIPT_1X = null;
+            SCRIPT = null;
         }
     }
 
@@ -121,62 +104,7 @@ class UpdateBulkFactory extends AbstractBulkFactory {
         super.writeObjectHeader(list);
 
         Object paramExtractor = getMetadataExtractorOrFallback(MetadataExtractor.Metadata.PARAMS, getParamExtractor());
-
-        if (opensearchMajorVersion.on(OpenSearchMajorVersion.V_2_X)) {
-            writeStrictFormatting(list, paramExtractor, SCRIPT_2X);
-        } else {
-            writeStrictFormatting(list, paramExtractor, SCRIPT_5X);
-        }
-    }
-
-    /**
-     * Script format meant for versions 1.x to 2.x. Required format for 1.x and below.
-     * @param list Consumer of snippets
-     * @param paramExtractor Extracts parameters from documents or constants
-     */
-    private void writeLegacyFormatting(List<Object> list, Object paramExtractor) {
-        if (paramExtractor != null) {
-            list.add("{\"params\":");
-            list.add(paramExtractor);
-            list.add(",");
-        }
-        else {
-            list.add("{");
-        }
-
-        if (HAS_SCRIPT) {
-            /*
-             * {
-             *   "params": ...,
-             *   "lang": "...",
-             *   "script": "...",
-             *   "scripted_upsert":true,
-             *   "upsert": {...}
-             * }
-             */
-            if (HAS_LANG) {
-                list.add(SCRIPT_LANG_1X);
-            }
-            list.add(SCRIPT_1X);
-            if (HAS_SCRIPT_UPSERT) {
-                list.add(",\"scripted_upsert\": true");
-            }
-            if (UPSERT) {
-                list.add(",\"upsert\":");
-            }
-        }
-        else {
-            /*
-             * {
-             *   "doc_as_upsert": true,
-             *   "doc": {...}
-             * }
-             */
-            if (UPSERT) {
-                list.add("\"doc_as_upsert\":true,");
-            }
-            list.add("\"doc\":");
-        }
+        writeStrictFormatting(list, paramExtractor, SCRIPT);
     }
 
     /**
@@ -199,7 +127,7 @@ class UpdateBulkFactory extends AbstractBulkFactory {
              */
             list.add(scriptToUse);
             if (HAS_LANG) {
-                list.add(SCRIPT_LANG_5X);
+                list.add(SCRIPT_LANG);
             }
             if (paramExtractor != null) {
                 list.add(",\"params\":");

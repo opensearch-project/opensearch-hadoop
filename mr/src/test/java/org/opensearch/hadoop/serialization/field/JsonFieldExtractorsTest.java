@@ -46,7 +46,7 @@ public class JsonFieldExtractorsTest {
     public void indexAndType() {
         Settings settings = new TestSettings();
         // Types will not be supported in 8.x
-        settings.setInternalVersion(OpenSearchMajorVersion.V_7_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
         settings.setResourceWrite("test/{field}");
         JsonFieldExtractors jsonFieldExtractors = new JsonFieldExtractors(settings);
 

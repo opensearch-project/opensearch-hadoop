@@ -29,7 +29,6 @@
 package org.opensearch.hadoop.rest;
 
 import org.opensearch.hadoop.rest.query.BoolQueryBuilder;
-import org.opensearch.hadoop.rest.query.ConstantScoreQueryBuilder;
 import org.opensearch.hadoop.rest.query.QueryBuilder;
 import org.opensearch.hadoop.rest.query.TermQueryBuilder;
 import org.opensearch.hadoop.rest.request.GetAliasesRequestBuilder;
@@ -55,7 +54,6 @@ public class ApplyAliasMetaDataTest {
 
     private static final OpenSearchMajorVersion[] OPENSEARCH_VERSIONS =
             new OpenSearchMajorVersion[]{
-                    OpenSearchMajorVersion.V_2_X,
                     OpenSearchMajorVersion.V_3_X
             };
 
@@ -65,7 +63,7 @@ public class ApplyAliasMetaDataTest {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-empty-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
-            SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+            SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
             RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1");
             assertNull(searchRequest.query());
             assertNull(searchRequest.routing());
@@ -80,49 +78,49 @@ public class ApplyAliasMetaDataTest {
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "index1");
                 assertNull(searchRequest.query());
                 assertNull(searchRequest.routing());
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "_all");
                 assertNull(searchRequest.query());
                 assertNull(searchRequest.routing());
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "*");
                 assertNull(searchRequest.query());
                 assertNull(searchRequest.routing());
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "a*1", "index*");
                 assertNull(searchRequest.query());
                 assertNull(searchRequest.routing());
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1", "+index1");
                 assertNull(searchRequest.query());
                 assertNull(searchRequest.routing());
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1", "alias2", "*");
                 assertNull(searchRequest.query());
                 assertNull(searchRequest.routing());
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1", "alias2", "_all");
                 assertNull(searchRequest.query());
                 assertNull(searchRequest.routing());
@@ -139,7 +137,7 @@ public class ApplyAliasMetaDataTest {
             QueryBuilder expected = new TermQueryBuilder().field("system").term("hadoop");
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1");
                 Assert.assertEquals(QueryBuilderTestUtils.printQueryBuilder(expected, false),
                         QueryBuilderTestUtils.printQueryBuilder(searchRequest.query(), false));
@@ -147,7 +145,7 @@ public class ApplyAliasMetaDataTest {
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "a*1");
                 Assert.assertEquals(QueryBuilderTestUtils.printQueryBuilder(expected, false),
                         QueryBuilderTestUtils.printQueryBuilder(searchRequest.query(), false));
@@ -155,7 +153,7 @@ public class ApplyAliasMetaDataTest {
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias*", "-alias2");
                 Assert.assertEquals(QueryBuilderTestUtils.printQueryBuilder(expected, false),
                         QueryBuilderTestUtils.printQueryBuilder(searchRequest.query(), false));
@@ -163,7 +161,7 @@ public class ApplyAliasMetaDataTest {
             }
 
             {
-                SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+                SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
                 RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "+alias1", "+alias2", "-alias2");
                 Assert.assertEquals(QueryBuilderTestUtils.printQueryBuilder(expected, false),
                         QueryBuilderTestUtils.printQueryBuilder(searchRequest.query(), false));
@@ -178,7 +176,7 @@ public class ApplyAliasMetaDataTest {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
-            SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+            SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
             QueryBuilder query = new TermQueryBuilder().field("user").term("costin");
             searchRequest.query(query);
             RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1");
@@ -203,7 +201,7 @@ public class ApplyAliasMetaDataTest {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
-            SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+            SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
             RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1", "alias2");
             QueryBuilder expected = new BoolQueryBuilder()
                     .should(
@@ -228,7 +226,7 @@ public class ApplyAliasMetaDataTest {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
-            SearchRequestBuilder searchRequest = new SearchRequestBuilder(version, false);
+            SearchRequestBuilder searchRequest = new SearchRequestBuilder(false);
             QueryBuilder query = new TermQueryBuilder().field("user").term("costin");
             searchRequest.query(query);
             RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1", "alias2");

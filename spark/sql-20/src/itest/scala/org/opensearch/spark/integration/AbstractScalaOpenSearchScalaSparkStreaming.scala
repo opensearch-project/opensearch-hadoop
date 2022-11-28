@@ -99,7 +99,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
   val sc = AbstractScalaOpenSearchScalaSparkStreaming.sc
   val cfg = Map(ConfigurationOptions.ES_READ_METADATA -> readMetadata.toString)
   val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
-  val keyword = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "keyword" else "string"
+  val keyword = "keyword"
 
   var ssc: StreamingContext = _
 
@@ -256,8 +256,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
   }
 
   @Test
-  def testEsRDDIngest(): Unit = {
-    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only")
+  def testOpenSearchRDDIngest(): Unit = {
 
     val client: RestUtils.ExtendedRestClient = new RestUtils.ExtendedRestClient
     val pipelineName: String = prefix + "-pipeline"
@@ -321,7 +320,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
   }
 
   @Test
-  def testEsRDDWriteWithUpsertScriptUsingBothObjectAndRegularString(): Unit = {
+  def testOpenSearchRDDWriteWithUpsertScriptUsingBothObjectAndRegularString(): Unit = {
     val mapping = wrapMapping("data", s"""{
                     |    "properties": {
                     |      "id": {
@@ -350,7 +349,7 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
     RestUtils.postData(s"$docPath/1", """{ "id" : "1", "note": "First", "address": [] }""".getBytes(StringUtils.UTF_8))
     RestUtils.postData(s"$docPath/2", """{ "id" : "2", "note": "First", "address": [] }""".getBytes(StringUtils.UTF_8))
 
-    val lang = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) "painless" else "groovy"
+    val lang = "painless"
     val props = Map("es.write.operation" -> "upsert",
       "es.input.json" -> "true",
       "es.mapping.id" -> "id",
@@ -360,21 +359,15 @@ class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Bo
     // Upsert a value that should only modify the first document. Modification will add an address entry.
     val lines = sc.makeRDD(List("""{"id":"1","address":{"zipcode":"12345","id":"1"}}"""))
     val up_params = "new_address:address"
-    val up_script = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-      "ctx._source.address.add(params.new_address)"
-    } else {
-      "ctx._source.address+=new_address"
-    }
+    val up_script = "ctx._source.address.add(params.new_address)"
+
     runStreamRecoverably(lines)(_.saveToEs(target, props + ("es.update.script.params" -> up_params) + ("es.update.script" -> up_script)))
 
     // Upsert a value that should only modify the second document. Modification will update the "note" field.
     val notes = sc.makeRDD(List("""{"id":"2","note":"Second"}"""))
     val note_up_params = "new_note:note"
-    val note_up_script = if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-      "ctx._source.note = params.new_note"
-    } else {
-      "ctx._source.note=new_note"
-    }
+    val note_up_script = "ctx._source.note = params.new_note"
+
     runStream(notes)(_.saveToEs(target, props + ("es.update.script.params" -> note_up_params) + ("es.update.script" -> note_up_script)))
 
     assertTrue(RestUtils.exists(s"$docPath/1"))

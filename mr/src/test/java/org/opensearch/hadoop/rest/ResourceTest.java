@@ -56,15 +56,9 @@ public class ResourceTest {
         parameters.add(new Object[]{OpenSearchMajorVersion.LATEST, false});
 
         parameters.add(new Object[]{OpenSearchMajorVersion.V_3_X, true});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_7_X, true});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_6_X, true});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_5_X, true});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, true});
 
         parameters.add(new Object[]{OpenSearchMajorVersion.V_3_X, false});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_7_X, false});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_6_X, false});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_5_X, false});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, false});
         return parameters;
     }
@@ -294,12 +288,12 @@ public class ResourceTest {
 
     private void assumeTyped() {
         Assume.assumeTrue("Typed api only accepted 7.X and before. Running [" + testVersion + ", " + readResource + "]",
-                (testVersion.onOrBefore(OpenSearchMajorVersion.V_7_X)));
+                false);
     }
 
     private void assumeTypeless() {
         Assume.assumeTrue("Typeless api only accepted 7.X and up for writes. Running [" + testVersion + ", " + readResource + "]",
-                (testVersion.onOrAfter(OpenSearchMajorVersion.V_7_X) || readResource));
+                readResource);
     }
 
     @Test

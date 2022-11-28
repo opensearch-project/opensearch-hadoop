@@ -327,10 +327,6 @@ public class RestRepository implements Closeable, StatsAware {
             Scroll scrollResult = reader.read(scroll);
             if (scrollResult == null) {
                 log.info(String.format("No scroll for query [%s/%s], likely because the index is frozen", query, body));
-            } else if (settings.getInternalVersionOrThrow().onOrBefore(OpenSearchMajorVersion.V_2_X)) {
-                // On ES 2.X and before, a scroll response does not contain any hits to start with.
-                // Another request will be needed.
-                scrollResult = new Scroll(scrollResult.getScrollId(), scrollResult.getTotalHits(), false);
             }
             return scrollResult;
         } finally {
@@ -428,11 +424,7 @@ public class RestRepository implements Closeable, StatsAware {
             // delete each retrieved batch, keep routing in mind:
             String baseFormat = "{\"delete\":{\"_id\":\"%s\"}}\n";
             String routedFormat;
-            if (client.clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X)) {
-                routedFormat = "{\"delete\":{\"_id\":\"%s\", \"routing\":\"%s\"}}\n";
-            } else {
-                routedFormat = "{\"delete\":{\"_id\":\"%s\", \"_routing\":\"%s\"}}\n";
-            }
+            routedFormat = "{\"delete\":{\"_id\":\"%s\", \"routing\":\"%s\"}}\n";
 
             boolean hasData = false;
             while (sq.hasNext()) {

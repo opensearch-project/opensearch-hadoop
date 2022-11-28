@@ -229,14 +229,8 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ROUTING, "number");
 
         RestUtils.touch(index);
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X)) {
-            conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, index);
-            RestUtils.putMapping(index, type, StringUtils.toUTF("{\"_routing\": {\"required\":true}}"));
-        } else {
-            conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, target);
-            RestUtils.putMapping(index, type, StringUtils.toUTF("{\""+ type + "\":{\"_routing\": {\"required\":true}}}"));
-        }
-
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, index);
+        RestUtils.putMapping(index, type, StringUtils.toUTF("{\"_routing\": {\"required\":true}}"));
 
         runJob(conf);
     }
@@ -251,13 +245,8 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.ES_MAPPING_ROUTING, "<foobar/>");
 
         RestUtils.touch(index);
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X)) {
-            conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, index);
-            RestUtils.putMapping(index, type, StringUtils.toUTF("{\"_routing\": {\"required\":true}}"));
-        } else {
-            conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, target);
-            RestUtils.putMapping(index, type, StringUtils.toUTF("{\""+ type + "\":{\"_routing\": {\"required\":true}}}"));
-        }
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, index);
+        RestUtils.putMapping(index, type, StringUtils.toUTF("{\"_routing\": {\"required\":true}}"));
 
         runJob(conf);
     }

@@ -161,23 +161,6 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        String script =
-                      "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD 'json-pig-pc/child' USING OpenSearchStorage();"
-                      + "X = LIMIT A 3;"
-                      + "STORE A INTO '" + tmpPig() + "/testparentchild';";
-        pig.executeScript(script);
-
-        String results = getResults("" + tmpPig() + "/testparentchild");
-
-        assertThat(results, containsString(tabify("12", "Behemoth", "http://www.last.fm/music/Behemoth", "http://userserve-ak.last.fm/serve/252/54196161.jpg", "2001-10-06T")));
-        assertThat(results, containsString(tabify("918", "Megadeth", "http://www.last.fm/music/Megadeth","http://userserve-ak.last.fm/serve/252/8129787.jpg", "2017-10-06T")));
-        assertThat(results, containsString(tabify("982", "Foo Fighters", "http://www.last.fm/music/Foo+Fighters","http://userserve-ak.last.fm/serve/252/59495563.jpg", "2017-10-06T")));
-    }
-
-    @Test
     public void testDynamicPattern() throws Exception {
         Assert.assertTrue(RestUtils.exists(resource("json-pig-pattern-1", "data", VERSION)));
         Assert.assertTrue(RestUtils.exists(resource("json-pig-pattern-5", "data", VERSION)));

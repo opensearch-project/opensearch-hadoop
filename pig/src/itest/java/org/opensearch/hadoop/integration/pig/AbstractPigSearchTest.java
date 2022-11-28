@@ -210,22 +210,6 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        String script =
-                      "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD 'pig-pc/child' USING OpenSearchStorage();"
-                      + "X = LIMIT A 3;"
-                      + "STORE A INTO '" + tmpPig() + "/testparentchild';";
-        pig.executeScript(script);
-        String results = getResults("" + tmpPig() + "/testparentchild");
-
-        assertThat(results, containsString(tabify("181", "Paradise Lost", "((http://www.last.fm/music/Paradise+Lost),(http://userserve-ak.last.fm/serve/252/35325935.jpg))")));
-        assertThat(results, containsString(tabify("918", "Megadeth", "((http://www.last.fm/music/Megadeth),(http://userserve-ak.last.fm/serve/252/8129787.jpg))")));
-        assertThat(results, containsString(tabify("506", "Anathema", "((http://www.last.fm/music/Anathema),(http://userserve-ak.last.fm/serve/252/45858121.png))")));
-    }
-
-    @Test
     public void testNestedObject() throws Exception {
         String script =
                 "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.query=" + query + "','es.read.metadata=" + readMetadata +"');" // , 'es.mapping.names=links:links.url'

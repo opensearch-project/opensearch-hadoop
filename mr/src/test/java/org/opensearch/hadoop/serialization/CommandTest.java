@@ -81,11 +81,7 @@ public class CommandTest {
                 ConfigurationOptions.ES_OPERATION_UPSERT,
                 ConfigurationOptions.ES_OPERATION_DELETE};
         boolean[] asJsons = new boolean[]{false, true};
-        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[]{OpenSearchMajorVersion.V_1_X,
-                OpenSearchMajorVersion.V_2_X,
-                OpenSearchMajorVersion.V_5_X,
-                OpenSearchMajorVersion.V_6_X,
-                OpenSearchMajorVersion.V_7_X,
+        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[]{OpenSearchMajorVersion.V_2_X,
                 OpenSearchMajorVersion.V_3_X};
 
         for (OpenSearchMajorVersion version : versions) {
@@ -145,20 +141,7 @@ public class CommandTest {
 
     @Test
     public void testParent() throws Exception {
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeFalse(isDeleteOP() && jsonInput);
-        Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_PARENT, "<5>");
-
-        create(settings).write(data).copyTo(ba);
-        String result = prefix() + "\"_parent\":5}}" + map();
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testParent7X() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -171,20 +154,7 @@ public class CommandTest {
 
     @Test
     public void testVersion() throws Exception {
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeFalse(isDeleteOP() && jsonInput);
-        Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_VERSION, "<3>");
-
-        create(settings).write(data).copyTo(ba);
-        String result = prefix() + "\"_version\":3,\"_version_type\":\"external\"}}" + map();
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testVersion7X() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -220,20 +190,7 @@ public class CommandTest {
 
     @Test
     public void testRouting() throws Exception {
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeFalse(isDeleteOP() && jsonInput);
-        Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_ROUTING, "<4>");
-
-        create(settings).write(data).copyTo(ba);
-        String result = prefix() + "\"_routing\":4}}" + map();
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testRouting7X() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -245,23 +202,8 @@ public class CommandTest {
     }
 
     @Test
-    public void testAll() throws Exception {
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_6_X));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeFalse(isDeleteOP() && jsonInput);
-        Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_TTL, "<2>");
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_ROUTING, "s");
-
-        create(settings).write(data).copyTo(ba);
-        String result = "{\"" + operation + "\":{\"_id\":1,\"_routing\":\"v\",\"_ttl\":2}}" + map();
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testAll7X() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
+    public void testAllX() throws Exception {
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -302,30 +244,12 @@ public class CommandTest {
         Settings set = settings();
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "");
         create(set).write(data).copyTo(ba);
-    }}
-
-    @Test
-    public void testUpdateOnlyInlineScript6X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.on(OpenSearchMajorVersion.V_6_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = 3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-
-        create(set).write(data).copyTo(ba);
-        String result =
-                "{\"" + operation + "\":{\"_id\":2,\"_retry_on_conflict\":3}}\n" +
-                        "{\"script\":{\"source\":\"counter = 3\",\"lang\":\"groovy\"}}\n";
-        assertEquals(result, ba.toString());
     }
 
     @Test
-    public void testUpdateOnlyInlineScript7X() throws Exception {
+    public void testUpdateOnlyInlineScript() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -341,9 +265,9 @@ public class CommandTest {
     }
 
     @Test
-    public void testUpdateOnlyFileScript7X() throws Exception {
+    public void testUpdateOnlyFileScript() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_7_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
@@ -359,9 +283,8 @@ public class CommandTest {
     }
 
     @Test
-    public void testUpdateOnlyParamInlineScript6X() throws Exception {
+    public void testUpdateOnlyParamInlineScript() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -379,48 +302,8 @@ public class CommandTest {
     }
 
     @Test
-    public void testUpsertParamInlineScript1X() throws Exception {
+    public void testUpsertParamInlineScript() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"update\":{\"_id\":3}}\n" +
-                        "{\"params\":{\"param1\":1,\"param2\":1},\"lang\":\"groovy\",\"script\":\"counter = param1; anothercounter = param2\",\"upsert\":{\"n\":1,\"s\":\"v\"}}\n";
-
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpsertParamInlineScript5X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
-        assumeTrue(version.before(OpenSearchMajorVersion.V_6_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"update\":{\"_id\":3}}\n" +
-                        "{\"script\":{\"inline\":\"counter = param1; anothercounter = param2\",\"lang\":\"groovy\",\"params\":{\"param1\":1,\"param2\":1}},\"upsert\":{\"n\":1,\"s\":\"v\"}}\n";
-
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpsertParamInlineScript6X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
@@ -437,51 +320,8 @@ public class CommandTest {
     }
 
     @Test
-    public void testScriptedUpsertParamInlineScript1X() throws Exception {
+    public void testScriptedUpsertParamInlineScript() throws Exception {
         assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_UPSERT, "true");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"update\":{\"_id\":1}}\n" +
-                        "{\"params\":{\"param1\":1,\"param2\":1},\"lang\":\"groovy\",\"script\":\"counter = param1; anothercounter = param2\",\"scripted_upsert\": true,\"upsert\":{}}\n";
-
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testScriptedUpsertParamInlineScript5X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
-        assumeTrue(version.before(OpenSearchMajorVersion.V_6_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_UPSERT, "true");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"update\":{\"_id\":1}}\n" +
-                        "{\"script\":{\"inline\":\"counter = param1; anothercounter = param2\",\"lang\":\"groovy\",\"params\":{\"param1\":1,\"param2\":1}},\"scripted_upsert\": true,\"upsert\":{}}\n";
-
-        assertEquals(result, ba.toString());
-    }
-    @Test
-    public void testScriptedUpsertParamInlineScript6X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_6_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
@@ -495,45 +335,6 @@ public class CommandTest {
         String result =
                 "{\"update\":{\"_id\":1}}\n" +
                         "{\"script\":{\"source\":\"counter = param1; anothercounter = param2\",\"lang\":\"groovy\",\"params\":{\"param1\":1,\"param2\":1}},\"scripted_upsert\": true,\"upsert\":{}}\n";
-
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpdateOnlyParamFileScript1X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrBefore(OpenSearchMajorVersion.V_1_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_FILE, "set_counter");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"" + operation + "\":{\"_id\":1}}\n" +
-                        "{\"params\":{\"param1\":1,\"param2\":1},\"lang\":\"groovy\",\"script_file\":\"set_counter\"}\n";
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpdateOnlyParamFileScript5X() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.after(OpenSearchMajorVersion.V_1_X));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_FILE, "set_counter");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"" + operation + "\":{\"_id\":1}}\n" +
-                        "{\"script\":{\"file\":\"set_counter\",\"lang\":\"groovy\",\"params\":{\"param1\":1,\"param2\":1}}}\n";
 
         assertEquals(result, ba.toString());
     }

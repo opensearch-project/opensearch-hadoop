@@ -282,7 +282,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
         if (Utils.LOGGER.isDebugEnabled()) {
           Utils.LOGGER.debug(s"Pushing down filters ${filters.mkString("[", ",", "]")}")
         }
-        val filterString = createDSLFromFilters(filters, Utils.isPushDownStrict(cfg), isEs50(cfg))
+        val filterString = createDSLFromFilters(filters, Utils.isPushDownStrict(cfg))
 
         if (Utils.LOGGER.isTraceEnabled()) {
           Utils.LOGGER.trace(s"Transformed filters into DSL ${filterString.mkString("[", ",", "]")}")
@@ -340,12 +340,12 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
     }
   }
 
-  private def createDSLFromFilters(filters: Array[Filter], strictPushDown: Boolean, isES50: Boolean) = {
-    filters.map(filter => translateFilter(filter, strictPushDown, isES50)).filter(query => StringUtils.hasText(query))
+  private def createDSLFromFilters(filters: Array[Filter], strictPushDown: Boolean) = {
+    filters.map(filter => translateFilter(filter, strictPushDown)).filter(query => StringUtils.hasText(query))
   }
 
   // string interpolation FTW
-  private def translateFilter(filter: Filter, strictPushDown: Boolean, isES50: Boolean):String = {
+  private def translateFilter(filter: Filter, strictPushDown: Boolean):String = {
     // the pushdown can be strict - i.e. use only filters and thus match the value exactly (works with non-analyzed)
     // or non-strict meaning queries will be used instead that is the filters will be analyzed as well
     filter match {
@@ -353,22 +353,12 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       case EqualTo(attribute, value)            => {
         // if we get a null, translate it into a missing query (we're extra careful - Spark should translate the equals into isMissing anyway)
         if (value == null || value == None || value == ()) {
-          if (isES50) {
-            s"""{"bool":{"must_not":{"exists":{"field":"$attribute"}}}}"""
-          }
-          else {
-            s"""{"missing":{"field":"$attribute"}}"""  
-          }
+          s"""{"bool":{"must_not":{"exists":{"field":"$attribute"}}}}"""
         }
 
         if (strictPushDown) s"""{"term":{"$attribute":${extract(value)}}}"""
         else {
-          if (isES50) {
-            s"""{"match":{"$attribute":${extract(value)}}}"""
-          }
-          else {
-            s"""{"query":{"match":{"$attribute":${extract(value)}}}}"""
-          }
+          s"""{"match":{"$attribute":${extract(value)}}}"""
         }
       }
       case GreaterThan(attribute, value)        => s"""{"range":{"$attribute":{"gt" :${extract(value)}}}}"""
@@ -399,46 +389,21 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
 
         if (strictPushDown || isStrictType) s"""{"terms":{"$attribute":${extractAsJsonArray(filtered)}}}"""
         else {
-          if (isES50) {
-            s"""{"bool":{"should":[${extractMatchArray(attribute, filtered)}]}}"""
-          }
-          else {
-            s"""{"or":{"filters":[${extractMatchArray(attribute, filtered)}]}}"""  
-          }
+          s"""{"bool":{"should":[${extractMatchArray(attribute, filtered)}]}}"""
         }
       }
       case IsNull(attribute)                    => {
-        if (isES50) {
-          s"""{"bool":{"must_not":{"exists":{"field":"$attribute"}}}}"""
-        }
-        else {
-          s"""{"missing":{"field":"$attribute"}}"""  
-        }
+        s"""{"bool":{"must_not":{"exists":{"field":"$attribute"}}}}"""
       }
       case IsNotNull(attribute)                 => s"""{"exists":{"field":"$attribute"}}"""
       case And(left, right)                     => {
-        if (isES50) {
-          s"""{"bool":{"filter":[${translateFilter(left, strictPushDown, isES50)}, ${translateFilter(right, strictPushDown, isES50)}]}}"""
-        }
-        else {
-          s"""{"and":{"filters":[${translateFilter(left, strictPushDown, isES50)}, ${translateFilter(right, strictPushDown, isES50)}]}}"""  
-        }
+        s"""{"bool":{"filter":[${translateFilter(left, strictPushDown)}, ${translateFilter(right, strictPushDown)}]}}"""
       }
       case Or(left, right)                      => {
-        if (isES50) {
-          s"""{"bool":{"should":[{"bool":{"filter":${translateFilter(left, strictPushDown, isES50)}}}, {"bool":{"filter":${translateFilter(right, strictPushDown, isES50)}}}]}}"""
-        }
-        else {
-          s"""{"or":{"filters":[${translateFilter(left, strictPushDown, isES50)}, ${translateFilter(right, strictPushDown, isES50)}]}}"""
-        }
+        s"""{"bool":{"should":[{"bool":{"filter":${translateFilter(left, strictPushDown)}}}, {"bool":{"filter":${translateFilter(right, strictPushDown)}}}]}}"""
       }
       case Not(filterToNeg)                     => {
-        if (isES50) {
-          s"""{"bool":{"must_not":${translateFilter(filterToNeg, strictPushDown, isES50)}}}"""
-        }
-        else {        
-          s"""{"not":{"filter":${translateFilter(filterToNeg, strictPushDown, isES50)}}}"""
-        }
+        s"""{"bool":{"must_not":${translateFilter(filterToNeg, strictPushDown)}}}"""
       }
 
       // the filter below are available only from Spark 1.3.1 (not 1.3.0)
@@ -458,12 +423,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
           val x = f.productElement(1).toString()
           if (!strictPushDown) x.toLowerCase(Locale.ROOT) else x
         }
-        if (isES50) {
-          s"""{"wildcard":{"${f.productElement(0)}":"$arg*"}}"""
-        }
-        else {
-          s"""{"query":{"wildcard":{"${f.productElement(0)}":"$arg*"}}}"""  
-        }
+        s"""{"wildcard":{"${f.productElement(0)}":"$arg*"}}"""
       }
 
       case f:Product if isClass(f, "org.apache.spark.sql.sources.StringEndsWith")   => {
@@ -471,12 +431,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
           val x = f.productElement(1).toString()
           if (!strictPushDown) x.toLowerCase(Locale.ROOT) else x
         }
-        if (isES50) {
-          s"""{"wildcard":{"${f.productElement(0)}":"*$arg"}}"""
-        }
-        else {
-          s"""{"query":{"wildcard":{"${f.productElement(0)}":"*$arg"}}}"""
-        }
+        s"""{"wildcard":{"${f.productElement(0)}":"*$arg"}}"""
       }
 
       case f:Product if isClass(f, "org.apache.spark.sql.sources.StringContains")   => {
@@ -484,12 +439,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
           val x = f.productElement(1).toString()
           if (!strictPushDown) x.toLowerCase(Locale.ROOT) else x
         }
-        if (isES50) {
-          s"""{"wildcard":{"${f.productElement(0)}":"*$arg*"}}"""
-        }
-        else {
-          s"""{"query":{"wildcard":{"${f.productElement(0)}":"*$arg*"}}}"""
-        }
+        s"""{"wildcard":{"${f.productElement(0)}":"*$arg*"}}"""
       }
 
       // the filters below are available only from Spark 1.5.0
@@ -498,12 +448,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
         val arg = extract(f.productElement(1))
         if (strictPushDown) s"""{"term":{"${f.productElement(0)}":$arg}}"""
         else {
-          if (isES50) {
-            s"""{"match":{"${f.productElement(0)}":$arg}}"""
-          }
-          else {
-            s"""{"query":{"match":{"${f.productElement(0)}":$arg}}}"""
-          }
+          s"""{"match":{"${f.productElement(0)}":$arg}}"""
         }
       }
 
@@ -540,12 +485,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
      if (strings.isEmpty) {
         StringUtils.EMPTY
      } else {
-       if (isEs50(cfg)) {
-         s"""{"match":{"$attribute":${strings.mkString("\"", " ", "\"")}}}"""
-       }
-       else {
-         s"""{"query":{"match":{"$attribute":${strings.mkString("\"", " ", "\"")}}}}"""  
-       }
+       s"""{"match":{"$attribute":${strings.mkString("\"", " ", "\"")}}}"""
      }
     } else {
       // translate the numbers into a terms query
@@ -554,12 +494,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
         str
       // if needed, add the strings as a match query
       } else str + {
-        if (isEs50(cfg)) {
-          s""",{"match":{"$attribute":${strings.mkString("\"", " ", "\"")}}}"""
-        }
-        else {
-          s""",{"query":{"match":{"$attribute":${strings.mkString("\"", " ", "\"")}}}}"""
-        }
+        s""",{"match":{"$attribute":${strings.mkString("\"", " ", "\"")}}}"""
       }
     }
   }
@@ -633,15 +568,5 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       val empty = rr.isEmpty(true)
       rr.close()
       empty
-  }
-
-  private[this] def isEs50(cfg: Settings): Boolean = {
-    // TODO: Problematic. It's possible that the version is not ever discovered and set before this is needed.
-    val version = if (cfg.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION) == null) {
-      OpenSearchMajorVersion.LATEST
-    } else {
-      cfg.getInternalVersionOrThrow
-    }
-    version.onOrAfter(OpenSearchMajorVersion.V_5_X)
   }
 }

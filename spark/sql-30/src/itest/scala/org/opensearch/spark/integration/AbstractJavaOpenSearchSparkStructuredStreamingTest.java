@@ -319,8 +319,6 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
 
     @Test
     public void test2WriteToIngestPipeline() throws Exception {
-        OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
-
         String pipelineName =  prefix + "-pipeline";
         String pipeline = "{\"description\":\"Test Pipeline\",\"processors\":[{\"set\":{\"field\":\"pipeTEST\",\"value\":true,\"override\":true}}]}";
         RestUtils.put("/_ingest/pipeline/" + pipelineName, StringUtils.toUTF(pipeline));
@@ -448,10 +446,6 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
         // BWC
         String keyword = "keyword";
         String lang = "painless";
-        if (version.onOrBefore(OpenSearchMajorVersion.V_2_X)) {
-            keyword = "string";
-            lang = "groovy";
-        }
 
         // Init
         String mapping = "{\"data\":{\"properties\":{\"id\":{\"type\":\""+keyword+"\"},\"note\":{\"type\":\""+keyword+"\"},\"address\":{\"type\":\"nested\",\"properties\":{\"id\":{\"type\":\""+keyword+"\"},\"zipcode\":{\"type\":\""+keyword+"\"}}}}}}";
@@ -482,12 +476,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
             doc1.setAddress(address);
         }
 
-        String script1;
-        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            script1 = "ctx._source.address.add(params.new_address)";
-        } else {
-            script1 = "ctx._source.address+=new_address";
-        }
+        String script1 = "ctx._source.address.add(params.new_address)";
 
         JavaStreamingQueryTestHarness<ContactBean> test1 = new JavaStreamingQueryTestHarness<>(spark, Encoders.bean(ContactBean.class));
 
@@ -512,12 +501,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
             doc2.setNote("Second");
         }
 
-        String script2;
-        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            script2 = "ctx._source.note = params.new_note";
-        } else {
-            script2 = "ctx._source.note=new_note";
-        }
+        String script2 = "ctx._source.note = params.new_note";
 
         JavaStreamingQueryTestHarness<ContactBean> test2 = new JavaStreamingQueryTestHarness<>(spark, Encoders.bean(ContactBean.class));
 

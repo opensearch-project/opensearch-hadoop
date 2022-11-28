@@ -249,28 +249,6 @@ public class AbstractPigSaveTest extends AbstractPigTests {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        RestUtils.createMultiTypeIndex("pig-pc");
-        RestUtils.putMapping("pig-pc", "child", "org/elasticsearch/hadoop/integration/mr-child.json");
-
-        String script =
-                loadArtistSource() +
-                "B = FOREACH A GENERATE id, name, TOBAG(url, picture) AS links;" +
-                "STORE B INTO 'pig-pc/child' USING org.opensearch.pig.hadoop.OpenSearchStorage('"
-                                + ConfigurationOptions.ES_MAPPING_PARENT + "=id','"
-                                + ConfigurationOptions.ES_INDEX_AUTO_CREATE + "=no');";
-        pig.executeScript(script);
-    }
-
-    @Test
-    public void testParentChildMapping() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        assertThat(RestUtils.getMapping("pig-pc", "child").toString(),
-                is("pig-pc/child=[id=LONG, links=TEXT, name=TEXT]"));
-    }
-
-    @Test
     @Ignore("Pig can't really create objects for insertion, so transforming this " +
             "data field into a joiner is bunk right now. Fix this when we figure " +
             "out how to handle tuples well in Pig...")

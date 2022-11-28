@@ -97,7 +97,7 @@ public class AbstractRestQueryTest {
         sets.setInternalVersion(version);
         Resource read = new Resource(settings, true);
         SearchRequestBuilder qb =
-                new SearchRequestBuilder(version, settings.getReadMetadata() && settings.getReadMetadataVersion())
+                new SearchRequestBuilder(settings.getReadMetadata() && settings.getReadMetadataVersion())
                         .resource(read)
                         .query(QueryUtils.parseQuery(settings))
                         .scroll(settings.getScrollKeepAlive())

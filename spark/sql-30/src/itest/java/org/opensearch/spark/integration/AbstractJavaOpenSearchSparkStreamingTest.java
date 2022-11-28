@@ -396,9 +396,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDIngest() throws Exception {
-        OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only");
-
+    public void testOpenSearchRDDIngest() throws Exception {
         RestUtils.ExtendedRestClient client = new RestUtils.ExtendedRestClient();
         String pipelineName =  prefix + "-pipeline";
         String pipeline = "{\"description\":\"Test Pipeline\",\"processors\":[{\"set\":{\"field\":\"pipeTEST\",\"value\":true,\"override\":true}}]}";
@@ -521,11 +519,8 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDWriteWithUpsertScriptUsingBothObjectAndRegularString() throws Exception {
+    public void testOpenSearchRDDWriteWithUpsertScriptUsingBothObjectAndRegularString() throws Exception {
         String keyword = "keyword";
-        if (version.onOrBefore(OpenSearchMajorVersion.V_2_X)) {
-            keyword = "string";
-        }
 
         String mapping = "{\"properties\":{\"id\":{\"type\":\""+keyword+"\"},\"note\":{\"type\":\""+keyword+"\"},\"address\":{\"type\":\"nested\",\"properties\":{\"id\":{\"type\":\""+keyword+"\"},\"zipcode\":{\"type\":\""+keyword+"\"}}}}}";
         if (!TestUtils.isTypelessVersion(version)) {
@@ -542,9 +537,6 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         RestUtils.postData(docEndpoint+"/2", "{\"id\":\"2\",\"note\":\"First\",\"address\":[]}".getBytes());
 
         String lang = "painless";
-        if (version.onOrBefore(OpenSearchMajorVersion.V_2_X)) {
-            lang = "groovy";
-        }
         Map<String, String> props = new HashMap<>();
         props.put("es.write.operation", "upsert");
         props.put("es.input.json", "true");
@@ -555,12 +547,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         List<String> docs1 = new ArrayList<>();
         docs1.add(doc1);
         String upParams = "new_address:address";
-        String upScript;
-        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            upScript = "ctx._source.address.add(params.new_address)";
-        } else {
-            upScript = "ctx._source.address+=new_address";
-        }
+        String upScript = "ctx._source.address.add(params.new_address)";
 
         Map<String, String> localConf1 = new HashMap<>(props);
         localConf1.put("es.update.script.params", upParams);
@@ -580,12 +567,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         List<String> docs2 = new ArrayList<>();
         docs2.add(doc2);
         String noteUpParams = "new_note:note";
-        String noteUpScript;
-        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            noteUpScript = "ctx._source.note = params.new_note";
-        } else {
-            noteUpScript = "ctx._source.note=new_note";
-        }
+        String noteUpScript = "ctx._source.note = params.new_note";
 
         Map<String, String> localConf2 = new HashMap<>(props);
         localConf2.put("es.update.script.params", noteUpParams);

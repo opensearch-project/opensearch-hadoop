@@ -34,7 +34,6 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.FieldPresenceValidation;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.query.BoolQueryBuilder;
-import org.opensearch.hadoop.rest.query.ConstantScoreQueryBuilder;
 import org.opensearch.hadoop.rest.query.QueryBuilder;
 import org.opensearch.hadoop.rest.query.QueryUtils;
 import org.opensearch.hadoop.rest.query.RawQueryBuilder;
@@ -449,7 +448,7 @@ public abstract class RestService implements Serializable {
         boolean includeVersion = settings.getReadMetadata() && settings.getReadMetadataVersion();
         Resource read = new Resource(settings, true);
         SearchRequestBuilder requestBuilder =
-                new SearchRequestBuilder(clusterInfo.getMajorVersion(), includeVersion)
+                new SearchRequestBuilder(includeVersion)
                         .resource(read)
                         // Overwrite the index name from the resource to be that of the concrete index in the partition definition
                         .indices(partition.getIndex())

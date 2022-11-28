@@ -40,8 +40,8 @@ public class SearchRequestBuilderTest {
     @Test
     public void testVersion() {
         OpenSearchMajorVersion esVersion = OpenSearchMajorVersion.LATEST;
-        SearchRequestBuilder includeVersionBuilder = new SearchRequestBuilder(esVersion, true);
-        SearchRequestBuilder noVersionBuilder = new SearchRequestBuilder(esVersion, false);
+        SearchRequestBuilder includeVersionBuilder = new SearchRequestBuilder(true);
+        SearchRequestBuilder noVersionBuilder = new SearchRequestBuilder(false);
 
         String versionQueryParam = "version=true";
 
@@ -55,11 +55,11 @@ public class SearchRequestBuilderTest {
         String encodedPreferenceString = HttpEncodingTools.encode(preferenceString);
 
         OpenSearchMajorVersion esVersion = OpenSearchMajorVersion.LATEST;
-        SearchRequestBuilder localOnlyBuilder = new SearchRequestBuilder(esVersion, true)
+        SearchRequestBuilder localOnlyBuilder = new SearchRequestBuilder(true)
                 .local(true);
-        SearchRequestBuilder preferenceOnlyBuilder = new SearchRequestBuilder(esVersion, true)
+        SearchRequestBuilder preferenceOnlyBuilder = new SearchRequestBuilder(true)
                 .preference(preferenceString);
-        SearchRequestBuilder localWithPreferenceBuilder = new SearchRequestBuilder(esVersion, true)
+        SearchRequestBuilder localWithPreferenceBuilder = new SearchRequestBuilder(true)
                 .local(true)
                 .preference(preferenceString);
 

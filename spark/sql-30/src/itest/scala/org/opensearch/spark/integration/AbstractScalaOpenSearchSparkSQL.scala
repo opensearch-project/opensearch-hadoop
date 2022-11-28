@@ -125,12 +125,6 @@ object AbstractScalaOpenSearchScalaSparkSQL {
     conf.setAll(propertiesAsScalaMap(TestSettings.TESTING_PROPS));
     sc = new SparkContext(conf)
     sqc = SparkSession.builder().config(conf).getOrCreate().sqlContext
-
-    val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
-    if (version.before(OpenSearchMajorVersion.V_5_X)) {
-      keywordType = "string"
-      textType = "string"
-    }
   }
 
   @AfterClass
@@ -251,15 +245,6 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def testNoIndexExists() {
     val idx = sqc.read.format("org.elasticsearch.spark.sql").load("existing_index")
-    idx.printSchema()
-  }
-
-  @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
-  def testNoMappingExists() {
-    OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_6_X, "types are deprecated fully in 7.0 and will be removed in a later release")
-    val index = wrapIndex("spark-index-ex")
-    RestUtils.touch(index)
-    val idx = sqc.read.format("org.elasticsearch.spark.sql").load(s"$index/no_such_mapping")
     idx.printSchema()
   }
 
@@ -1319,9 +1304,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   }
 
   @Test
-  def testEsDataFrame52OverwriteExistingDataSourceWithJoinField() {
-    // Join added in 6.0.
-    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "Join added in 6.0.")
+  def testOpenSearchDataFrame52OverwriteExistingDataSourceWithJoinField() {
 
     // using long-form joiner values
     val schema = StructType(Seq(
@@ -1627,9 +1610,6 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
   @Test
   def testJoinField(): Unit = {
-    // Join added in 6.0.
-    // TODO: Available in 5.6, but we only track major version ids in the connector.
-    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_6_X, "Join added in 6.0.")
 
     // test mix of short-form and long-form joiner values
     val company1 = Map("id" -> "1", "company" -> "Elastic", "joiner" -> "company")
@@ -2200,51 +2180,6 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val array = obj.getSeq[Seq[Double]](1)
     assertThat(array(0)(0), is(-45.0d))
     assertThat(array(0)(1), is(45.0d))
-  }
-  
-  @Test
-  def testGeoShapeCircle() {
-    OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "circle geo shape is removed in later 6.6+ versions")
-    val mapping = wrapMapping("data", s"""{
-    |      "properties": {
-    |        "name": {
-    |          "type": "$keyword"
-    |        },
-    |        "location": {
-    |          "type": "geo_shape"
-    |        }
-    |      }
-    |  }
-    """.stripMargin)
-
-    val index = wrapIndex("sparksql-test-geoshape-circle-geoshape")
-    val typed = "data"
-    val (target, _) = makeTargets(index, typed)
-    RestUtils.touch(index)
-    RestUtils.putMapping(index, typed, mapping.getBytes(StringUtils.UTF_8))
-
-    val circle = """{"name":"circle", "location": {"type":"circle", "coordinates":[ -45.0, 45.0], "radius":"100m"} }""".stripMargin
-      
-    sc.makeRDD(Seq(circle)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
- 
-    val dataType = df.schema("location").dataType
-    assertEquals("struct", dataType.typeName)
-
-    val struct = dataType.asInstanceOf[StructType]
-    assertTrue(struct.fieldNames.contains("type"))
-    assertTrue(struct.fieldNames.contains("radius"))
-    val coords = struct("coordinates").dataType
-    assertEquals("array", coords.typeName)
-    assertEquals("double", coords.asInstanceOf[ArrayType].elementType.typeName)
-
-    val head = df.head()
-    val obj = head.getStruct(0)
-    assertThat(obj.getString(0), is("circle"))
-    val array = obj.getSeq[Double](1)
-    assertThat(array(0), is(-45.0d))
-    assertThat(array(1), is(45.0d))
-    assertThat(obj.getString(2), is("100m"))
   }
 
   @Test

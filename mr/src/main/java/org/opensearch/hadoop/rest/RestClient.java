@@ -83,7 +83,6 @@ import static org.opensearch.hadoop.rest.Request.Method.GET;
 import static org.opensearch.hadoop.rest.Request.Method.HEAD;
 import static org.opensearch.hadoop.rest.Request.Method.POST;
 import static org.opensearch.hadoop.rest.Request.Method.PUT;
-import static org.opensearch.hadoop.util.OpenSearchMajorVersion.V_2_X;
 
 public class RestClient implements Closeable, StatsAware {
 
@@ -331,16 +330,12 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public MappingSet getMappings(String query, boolean includeTypeName) {
-        // If the version is not at least 7, then the property isn't guaranteed to exist. If it is, then defer to the flag.
-        boolean requestTypeNameInResponse = clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_7_X) && includeTypeName;
-        // Response will always have the type name in it if node version is before 7, and if it is not, defer to the flag.
-        boolean typeNameInResponse = clusterInfo.getMajorVersion().before(OpenSearchMajorVersion.V_7_X) || includeTypeName;
-        if (requestTypeNameInResponse) {
+        if (includeTypeName) {
             query = query + "?include_type_name=true";
         }
         Map<String, Object> result = get(query, null);
         if (result != null && !result.isEmpty()) {
-            return FieldParser.parseMappings(result, typeNameInResponse);
+            return FieldParser.parseMappings(result, includeTypeName);
         }
         return null;
     }
@@ -360,14 +355,8 @@ public class RestClient implements Closeable, StatsAware {
         // remove trailing ,
         sb.setLength(sb.length() - 1);
         sb.append("],\n\"query\":{");
+        sb.append("\"bool\": { \"must\":[");
 
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-            sb.append("\"bool\": { \"must\":[");
-        }
-        else {
-            sb.append("\"constant_score\":{ \"filter\": { \"and\":[");
-
-        }
         for (String field: fields) {
             sb.append(String.format(Locale.ROOT, "\n{ \"exists\":{ \"field\":\"%s\"} },", field));
         }
@@ -497,12 +486,7 @@ public class RestClient implements Closeable, StatsAware {
         // NB: dynamically get the stats since the transport can change
         long start = network.transportStats().netTotalTime;
         try {
-            BytesArray body;
-            if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-                body = new BytesArray("{\"scroll_id\":\"" + scrollId + "\"}");
-            } else {
-                body = new BytesArray(scrollId);
-            }
+            BytesArray body = new BytesArray("{\"scroll_id\":\"" + scrollId + "\"}");
             // use post instead of get to avoid some weird encoding issues (caused by the long URL)
             // do not retry the request on another node, because that can lead to ES returning a error or
             // less data being returned than requested.  See: https://github.com/elastic/elasticsearch-hadoop/issues/1302
@@ -520,12 +504,7 @@ public class RestClient implements Closeable, StatsAware {
         return (res.status() == HttpStatus.OK ? true : false);
     }
     public boolean deleteScroll(String scrollId) {
-        BytesArray body;
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-            body = new BytesArray(("{\"scroll_id\":[\"" + scrollId + "\"]}").getBytes(StringUtils.UTF_8));
-        } else {
-            body = new BytesArray(scrollId.getBytes(StringUtils.UTF_8));
-        }
+        BytesArray body = new BytesArray(("{\"scroll_id\":[\"" + scrollId + "\"]}").getBytes(StringUtils.UTF_8));
         Request req = new SimpleRequest(DELETE, null, "_search/scroll", body);
         Response res = executeNotFoundAllowed(req);
         return (res.status() == HttpStatus.OK ? true : false);
@@ -588,11 +567,8 @@ public class RestClient implements Closeable, StatsAware {
     public long count(String index, String type, String shardId, QueryBuilder query) {
         StringBuilder uri = new StringBuilder(index); // Only use index for counting in 7.X and up.
         uri.append("/_search?size=0");
-        // Option added in the 6.x line. This must be set to true or else in 7.X and 6/7 mixed clusters
-        // will return lower bounded count values instead of an accurate count.
-        if (clusterInfo.getMajorVersion().onOrAfter(OpenSearchMajorVersion.V_6_X)) {
-            uri.append("&track_total_hits=true");
-        }
+        // always track total hits to get accurate count
+        uri.append("&track_total_hits=true");
         if (StringUtils.hasLength(shardId)) {
             uri.append("&preference=_shards:");
             uri.append(shardId);
@@ -647,12 +623,7 @@ public class RestClient implements Closeable, StatsAware {
     public void putMapping(String index, String type, byte[] bytes) {
         // create index first (if needed) - it might return 403/404
         touch(index);
-
-        if (clusterInfo.getMajorVersion().after(OpenSearchMajorVersion.V_6_X)) {
-            execute(PUT, index + "/_mapping", new BytesArray(bytes));
-        } else {
-            execute(PUT, index + "/_mapping/" + type, new BytesArray(bytes));
-        }
+        execute(PUT, index + "/_mapping", new BytesArray(bytes));
     }
 
     public EsToken createNewApiToken(String tokenName) {
@@ -727,34 +698,16 @@ public class RestClient implements Closeable, StatsAware {
         Response response = execute(GET, "", true);
         Map<String, Object> result = parseContent(response.body(), null);
         if (result == null) {
-            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve opensearch main cluster info.");
+            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve OpenSearch main cluster info.");
         }
         String clusterName = result.get("cluster_name").toString();
         String clusterUUID = (String)result.get("cluster_uuid");
         @SuppressWarnings("unchecked")
         Map<String, String> versionBody = (Map<String, String>) result.get("version");
         if (versionBody == null || !StringUtils.hasText(versionBody.get("number"))) {
-            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve elasticsearch version.");
+            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve OpenSearch version.");
         }
         String versionNumber = versionBody.get("number");
-        OpenSearchMajorVersion major = OpenSearchMajorVersion.parse(versionNumber);
-        if (false && major.before(OpenSearchMajorVersion.V_6_X)) {
-            // todo remove this in versioning update
-            throw new OpenSearchHadoopIllegalStateException("Invalid major version [" + major + "]. " +
-                    "Version is lower than minimum required version [" + OpenSearchMajorVersion.V_6_X + "].");
-        } else if (major.onOrAfter(V_2_X)) {
-            String tagline = result.get("tagline").toString();
-            if (ELASTICSEARCH_TAGLINE.equals(tagline) == false) {
-                LOG.warn("Could not verify server is OpenSearch! Invalid main action response body format [tag].");
-            }
-            if (false && major.onOrAfter(V_2_X)) {
-                // todo remove this in versioning update
-                String buildFlavor = versionBody.get("build_flavor");
-                if (ELASTICSEARCH_BUILD_FLAVOR.equals(buildFlavor) == false) {
-                    LOG.warn("Could not verify server is Elasticsearch! Invalid main action response body format [build_flavor].");
-                }
-            }
-        }
         return new ClusterInfo(new ClusterName(clusterName, clusterUUID), OpenSearchMajorVersion.parse(versionNumber));
     }
 
@@ -762,7 +715,7 @@ public class RestClient implements Closeable, StatsAware {
      * @deprecated use RestClient#mainInfo() instead.
      */
     @Deprecated
-    public OpenSearchMajorVersion remoteEsVersion() {
+    public OpenSearchMajorVersion remoteOpenSearchVersion() {
         return mainInfo().getMajorVersion();
     }
 

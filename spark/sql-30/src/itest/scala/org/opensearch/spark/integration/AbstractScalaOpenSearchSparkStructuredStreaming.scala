@@ -438,8 +438,6 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
 
   @Test
   def test2WriteToIngestPipeline(): Unit = {
-    OpenSearchAssume.versionOnOrAfter(OpenSearchMajorVersion.V_5_X, "Ingest Supported in 5.x and above only")
-
     val pipelineName: String = prefix + "-pipeline"
     val pipeline: String = """{"description":"Test Pipeline","processors":[{"set":{"field":"pipeTEST","value":true,"override":true}}]}"""
     RestUtils.put("/_ingest/pipeline/" + pipelineName, StringUtils.toUTF(pipeline))

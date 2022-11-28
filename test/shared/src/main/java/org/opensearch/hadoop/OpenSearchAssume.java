@@ -53,7 +53,7 @@ public class OpenSearchAssume {
 
     private static OpenSearchMajorVersion getVersion() {
         try (RestUtils.ExtendedRestClient versionTestingClient = new RestUtils.ExtendedRestClient()) {
-            return versionTestingClient.remoteEsVersion();
+            return versionTestingClient.remoteOpenSearchVersion();
         }
     }
 }

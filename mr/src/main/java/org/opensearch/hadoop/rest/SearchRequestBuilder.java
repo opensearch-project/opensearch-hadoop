@@ -29,14 +29,12 @@
 package org.opensearch.hadoop.rest;
 
 import org.opensearch.hadoop.rest.query.BoolQueryBuilder;
-import org.opensearch.hadoop.rest.query.FilteredQueryBuilder;
 import org.opensearch.hadoop.rest.query.MatchAllQueryBuilder;
 import org.opensearch.hadoop.rest.query.QueryBuilder;
 import org.opensearch.hadoop.serialization.ScrollReader;
 import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.BytesArray;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.FastByteArrayOutputStream;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.encoding.HttpEncodingTools;
@@ -64,7 +62,6 @@ public class SearchRequestBuilder {
         }
     }
 
-    private final OpenSearchMajorVersion version;
     private final boolean includeVersion;
     private TimeValue scroll = TimeValue.timeValueMinutes(10);
     private long size = 50;
@@ -82,8 +79,7 @@ public class SearchRequestBuilder {
     private boolean excludeSource = false;
     private boolean readMetadata = false;
 
-    public SearchRequestBuilder(OpenSearchMajorVersion version, boolean includeVersion) {
-        this.version = version;
+    public SearchRequestBuilder(boolean includeVersion) {
         this.includeVersion = includeVersion;
     }
 
@@ -244,11 +240,8 @@ public class SearchRequestBuilder {
             uriParams.put("routing", HttpEncodingTools.encode(routing));
         }
 
-        // Always track total hits on versions that support it. 7.0+ will return lower bounded
-        // hit counts if this is not set, and we want them to be accurate for scroll bookkeeping.
-        if (version.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
-            uriParams.put("track_total_hits", "true");
-        }
+        // Always track total hits
+        uriParams.put("track_total_hits", "true");
 
         if (readMetadata) {
             uriParams.put("track_scores", "true");
@@ -276,11 +269,7 @@ public class SearchRequestBuilder {
             root = MatchAllQueryBuilder.MATCH_ALL;
         }
         if (filters.isEmpty() == false) {
-            if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-                root = new BoolQueryBuilder().must(root).filters(filters);
-            } else {
-                root = new FilteredQueryBuilder().query(root).filters(filters);
-            }
+            root = new BoolQueryBuilder().must(root).filters(filters);
         }
         FastByteArrayOutputStream out = new FastByteArrayOutputStream(256);
         JacksonJsonGenerator generator = new JacksonJsonGenerator(out);

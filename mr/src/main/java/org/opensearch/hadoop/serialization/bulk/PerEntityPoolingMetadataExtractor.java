@@ -125,16 +125,12 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
      * If a metadata tag is unsupported for this version of Elasticsearch then a
      */
     private FieldExtractor _createExtractorFor(Metadata metadata) {
-        // Boot metadata tags that are not supported in this version of Elasticsearch
-        if (version.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
-            // 6.0 Removed support for TTL and Timestamp metadata on index and update requests.
-            switch (metadata) {
-                case TTL: // Fall through
-                case TIMESTAMP:
-                    return new UnsupportedMetadataFieldExtractor(metadata, version);
-            }
+        //TTL and Timestamp metadata on index and update requests is not supported.
+        switch (metadata) {
+            case TTL: // Fall through
+            case TIMESTAMP:
+                return new UnsupportedMetadataFieldExtractor(metadata, version);
         }
-
         return createExtractorFor(metadata);
     }
     

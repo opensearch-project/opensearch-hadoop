@@ -208,20 +208,12 @@ public abstract class AbstractBulkFactory implements BulkFactory {
         final String version;
         final String versionType;
 
-        public RequestParameterNames(OpenSearchMajorVersion majorVersion) {
-            if (majorVersion.onOrAfter(OpenSearchMajorVersion.V_7_X)) {
-                this.parent = "\"parent\":";
-                this.retryOnConflict = "\"retry_on_conflict\":";
-                this.routing = "\"routing\":";
-                this.version = "\"version\":";
-                this.versionType = "\"version_type\":";
-            } else {
-                this.parent = "\"_parent\":";
-                this.retryOnConflict = "\"_retry_on_conflict\":";
-                this.routing = "\"_routing\":";
-                this.version = "\"_version\":";
-                this.versionType = "\"_version_type\":";
-            }
+        public RequestParameterNames() {
+            this.parent = "\"parent\":";
+            this.retryOnConflict = "\"retry_on_conflict\":";
+            this.routing = "\"routing\":";
+            this.version = "\"version\":";
+            this.versionType = "\"version_type\":";
         }
     }
 
@@ -229,7 +221,7 @@ public abstract class AbstractBulkFactory implements BulkFactory {
     AbstractBulkFactory(Settings settings, MetadataExtractor metaExtractor, OpenSearchMajorVersion opensearchMajorVersion) {
         this.settings = settings;
         this.opensearchMajorVersion = opensearchMajorVersion;
-        this.requestParameterNames = new RequestParameterNames(opensearchMajorVersion);
+        this.requestParameterNames = new RequestParameterNames();
         this.valueWriter = ObjectUtils.instantiate(settings.getSerializerValueWriterClassName(), settings);
         this.metaExtractor = metaExtractor;
 

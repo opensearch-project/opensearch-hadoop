@@ -304,31 +304,6 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDZReadMultiIndex() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Multiple Types Disabled in 6.0");
-        String index = "spark-test";
-
-        RestUtils.createMultiTypeIndex(index);
-
-        int count = 10;
-
-        for (int i = 0; i < count; i++) {
-            RestUtils.postData(index + "/foo", ("{\"message\" : \"Hello World\", \"counter\":" + i +", \"message_date\" : \"2014-05-25\"}").getBytes());
-            RestUtils.postData(index + "/bar", ("{\"message\" : \"Goodbye World\", \"counter\":" + i +", \"message_date\" : \"2014-05-25\"}").getBytes());
-        }
-
-        RestUtils.refresh(index+"*");
-
-        //JavaRDD<Map<String, Object>> wildRDD = JavaOpenSearchSpark.esRDD(sc, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark*/foo")).values();
-        JavaRDD<Map<String, Object>> typeRDD = JavaOpenSearchSpark.esRDD(sc, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark*")).values();
-
-        JavaRDD<Map<String, Object>> allRDD = JavaOpenSearchSpark.esRDD(sc, "_all/foo", "").values();
-        // assertEquals(wildRDD.count(), allRDD.count());
-        // System.out.println(typeRDD.count());
-        assertEquals(count, allRDD.count());
-    }
-
-    @Test
     public void testEsRDDZReadWithGroupBy() throws Exception {
         String target = resource("spark-test-java-basic-group", "data", version);
         String docEndpoint = docEndpoint("spark-test-java-basic-group", "data", version);

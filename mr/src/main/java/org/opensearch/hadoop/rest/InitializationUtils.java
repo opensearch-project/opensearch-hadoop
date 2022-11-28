@@ -290,35 +290,20 @@ public abstract class InitializationUtils {
     }
 
     public static void validateSettingsForWriting(Settings settings) {
-        OpenSearchMajorVersion version = settings.getInternalVersionOrThrow();
+        // File Scripts
+        if (StringUtils.hasText(settings.getUpdateScriptFile())) {
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot use file scripts on ES 6.x and above. Please use " +
+                    "stored scripts with [" + ConfigurationOptions.ES_UPDATE_SCRIPT_STORED + "] instead.");
+        }
 
-        // Things that were removed in 6.x and forward
-        if (version.onOrAfter(OpenSearchMajorVersion.V_6_X)) {
-            // File Scripts
-            if (StringUtils.hasText(settings.getUpdateScriptFile())) {
-                throw new OpenSearchHadoopIllegalArgumentException("Cannot use file scripts on ES 6.x and above. Please use " +
-                        "stored scripts with [" + ConfigurationOptions.ES_UPDATE_SCRIPT_STORED + "] instead.");
-            }
-
-            // Timestamp and TTL in index/updates
-            if (StringUtils.hasText(settings.getMappingTimestamp())) {
-                throw new OpenSearchHadoopIllegalArgumentException("Cannot use timestamps on index/update requests in ES 6.x " +
-                        "and above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TIMESTAMP + "] setting.");
-            }
-            if (StringUtils.hasText(settings.getMappingTtl())) {
-                throw new OpenSearchHadoopIllegalArgumentException("Cannot use TTL on index/update requests in ES 6.x and " +
-                        "above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TTL + "] setting.");
-            }
-        } else {
-            if (StringUtils.hasText(settings.getMappingTtl())) {
-                LOG.warn("Setting [" + ConfigurationOptions.ES_MAPPING_TTL + "] is deprecated! Support for [ttl] on " +
-                        "indexing and update requests has been removed in ES 6.x and above!");
-            }
-            if (StringUtils.hasText(settings.getMappingTimestamp())) {
-                LOG.warn("Setting [" + ConfigurationOptions.ES_MAPPING_TIMESTAMP + "] is deprecated! Support for " +
-                        "[timestamp] on indexing and update requests has been removed in ES 6.x and above!");
-            }
-
+        // Timestamp and TTL in index/updates
+        if (StringUtils.hasText(settings.getMappingTimestamp())) {
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot use timestamps on index/update requests in ES 6.x " +
+                    "and above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TIMESTAMP + "] setting.");
+        }
+        if (StringUtils.hasText(settings.getMappingTtl())) {
+            throw new OpenSearchHadoopIllegalArgumentException("Cannot use TTL on index/update requests in ES 6.x and " +
+                    "above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TTL + "] setting.");
         }
     }
 

@@ -36,9 +36,9 @@ import org.apache.spark.api.java.JavaPairRDD
 import org.apache.spark.api.java.JavaPairRDD.fromRDD
 import org.apache.spark.api.java.JavaRDD
 import org.apache.spark.api.java.JavaSparkContext
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_OUTPUT_JSON
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_OUTPUT_JSON
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_QUERY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE_READ
 import org.opensearch.spark.rdd.OpenSearchSpark
 import org.opensearch.spark.rdd.JavaOpenSearchRDD
 
@@ -47,19 +47,19 @@ object JavaOpenSearchSpark {
   // specify the return types to make sure the bytecode is generated properly (w/o any scala.collections in it)
   def esRDD(jsc: JavaSparkContext): JavaPairRDD[String, JMap[String, Object]] = fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc))
   def esRDD(jsc: JavaSparkContext, resource: String): JavaPairRDD[String, JMap[String, Object]] =
-    fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc, Map(ES_RESOURCE_READ -> resource)))
+    fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc, Map(OPENSEARCH_RESOURCE_READ -> resource)))
   def esRDD(jsc: JavaSparkContext, resource: String, query: String): JavaPairRDD[String, JMap[String, Object]] =
-    fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc, Map(ES_RESOURCE_READ -> resource, ES_QUERY -> query)))
+    fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query)))
   def esRDD(jsc: JavaSparkContext, cfg: JMap[String, String]): JavaPairRDD[String, JMap[String, Object]] =
     fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc, cfg.asScala))
 
-  def esJsonRDD(jsc: JavaSparkContext): JavaPairRDD[String, String] = fromRDD(new JavaOpenSearchRDD[String](jsc.sc, Map(ES_OUTPUT_JSON -> true.toString)))
+  def esJsonRDD(jsc: JavaSparkContext): JavaPairRDD[String, String] = fromRDD(new JavaOpenSearchRDD[String](jsc.sc, Map(OPENSEARCH_OUTPUT_JSON -> true.toString)))
   def esJsonRDD(jsc: JavaSparkContext, resource: String): JavaPairRDD[String, String] =
-    fromRDD(new JavaOpenSearchRDD[String](jsc.sc, Map(ES_RESOURCE_READ -> resource, ES_OUTPUT_JSON -> true.toString)))
+    fromRDD(new JavaOpenSearchRDD[String](jsc.sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_OUTPUT_JSON -> true.toString)))
   def esJsonRDD(jsc: JavaSparkContext, resource: String, query: String): JavaPairRDD[String, String] =
-    fromRDD(new JavaOpenSearchRDD[String](jsc.sc, Map(ES_RESOURCE_READ -> resource, ES_QUERY -> query, ES_OUTPUT_JSON -> true.toString)))
+    fromRDD(new JavaOpenSearchRDD[String](jsc.sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query, OPENSEARCH_OUTPUT_JSON -> true.toString)))
   def esJsonRDD(jsc: JavaSparkContext, cfg: JMap[String, String]): JavaPairRDD[String, String] =
-    fromRDD(new JavaOpenSearchRDD[String](jsc.sc, cfg.asScala += (ES_OUTPUT_JSON -> true.toString)))
+    fromRDD(new JavaOpenSearchRDD[String](jsc.sc, cfg.asScala += (OPENSEARCH_OUTPUT_JSON -> true.toString)))
 
   def saveToEs(jrdd: JavaRDD[_], resource: String) = OpenSearchSpark.saveToEs(jrdd.rdd, resource)
   def saveToEs(jrdd: JavaRDD[_], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveToEs(jrdd.rdd, resource, cfg.asScala)

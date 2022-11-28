@@ -41,6 +41,7 @@ import static org.hamcrest.core.IsEqual.equalTo;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES;
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES_DISCOVERY;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_PORT;
 
 public class SettingsUtilsTest {
 
@@ -48,7 +49,7 @@ public class SettingsUtilsTest {
     public void testHostWithoutAPortFallingBackToDefault() throws Exception {
         Properties props = new Properties();
         props.setProperty(OPENSEARCH_NODES, "localhost");
-        props.setProperty("es.port", "9800");
+        props.setProperty("opensearch.port", "9800");
 
         PropertiesSettings settings = new PropertiesSettings(props);
         List<String> nodes = SettingsUtils.discoveredOrDeclaredNodes(settings);
@@ -60,7 +61,7 @@ public class SettingsUtilsTest {
     public void testHostWithoutAPortFallingBackToDefaultAndNoDiscovery() throws Exception {
         Properties props = new Properties();
         props.setProperty(OPENSEARCH_NODES, "localhost");
-        props.setProperty("es.port", "9800");
+        props.setProperty(OPENSEARCH_PORT, "9800");
         props.setProperty(OPENSEARCH_NODES_DISCOVERY, "false");
 
         PropertiesSettings settings = new PropertiesSettings(props);
@@ -73,7 +74,7 @@ public class SettingsUtilsTest {
     public void testHostWithAPortAndFallBack() throws Exception {
         Properties props = new Properties();
         props.setProperty(OPENSEARCH_NODES, "localhost:9800");
-        props.setProperty("es.port", "9300");
+        props.setProperty(OPENSEARCH_PORT, "9300");
         props.setProperty(OPENSEARCH_NODES_DISCOVERY, "false");
 
         PropertiesSettings settings = new PropertiesSettings(props);
@@ -86,7 +87,7 @@ public class SettingsUtilsTest {
     public void testHostWithoutAPortFallingBackToDefaultAndNoDiscoveryWithSchema() throws Exception {
         Properties props = new Properties();
         props.setProperty(OPENSEARCH_NODES, "http://localhost");
-        props.setProperty("es.port", "9800");
+        props.setProperty(OPENSEARCH_PORT, "9800");
         props.setProperty(OPENSEARCH_NODES_DISCOVERY, "false");
 
         PropertiesSettings settings = new PropertiesSettings(props);
@@ -99,7 +100,7 @@ public class SettingsUtilsTest {
     public void testHostWithAPortAndFallBackWithSchema() throws Exception {
         Properties props = new Properties();
         props.setProperty(OPENSEARCH_NODES, "http://localhost:9800");
-        props.setProperty("es.port", "9300");
+        props.setProperty(OPENSEARCH_PORT, "9300");
         props.setProperty(OPENSEARCH_NODES_DISCOVERY, "false");
 
         PropertiesSettings settings = new PropertiesSettings(props);

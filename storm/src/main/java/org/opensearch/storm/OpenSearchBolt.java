@@ -89,7 +89,7 @@ public class OpenSearchBolt implements IRichBolt {
 
     private OpenSearchBolt(String target, Boolean writeAck, Map configuration) {
         log.warn("Support for Apache Storm has been deprecated and will be removed in a future release.");
-        boltConfig.put(ES_RESOURCE_WRITE, target);
+        boltConfig.put(OPENSEARCH_RESOURCE_WRITE, target);
 
         if (writeAck != null) {
             boltConfig.put(StormConfigurationOptions.ES_STORM_BOLT_ACK, Boolean.toString(writeAck));
@@ -113,11 +113,11 @@ public class OpenSearchBolt implements IRichBolt {
 
         // trigger manual flush
         if (ackWrites) {
-            settings.setProperty(ES_BATCH_FLUSH_MANUAL, Boolean.TRUE.toString());
+            settings.setProperty(OPENSEARCH_BATCH_FLUSH_MANUAL, Boolean.TRUE.toString());
 
             // align Bolt / es-hadoop batch settings
             numberOfEntries = settings.getStormBulkSize();
-            settings.setProperty(ES_BATCH_SIZE_ENTRIES, String.valueOf(numberOfEntries));
+            settings.setProperty(OPENSEARCH_BATCH_SIZE_ENTRIES, String.valueOf(numberOfEntries));
 
             inflightTuples = new ArrayList<Tuple>(numberOfEntries + 1);
         }

@@ -31,7 +31,7 @@ package org.opensearch.spark.integration;
 import java.net.URL;
 import java.util.Enumeration;
 
-import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalOpenSearch;
 import org.junit.ClassRule;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
@@ -58,5 +58,5 @@ public class SparkScalaSuite {
     }
 
     @ClassRule
-    public static ExternalResource resource = new LocalEs();
+    public static ExternalResource resource = new LocalOpenSearch();
 }

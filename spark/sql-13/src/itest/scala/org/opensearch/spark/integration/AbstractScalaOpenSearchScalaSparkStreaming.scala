@@ -38,10 +38,10 @@ import org.apache.spark.{SparkConf, SparkContext, SparkException}
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
 import org.opensearch.hadoop.util.TestUtils.resource
 import org.opensearch.hadoop.util.TestUtils.docEndpoint
-import org.elasticsearch.spark.rdd.EsSpark
-import org.elasticsearch.spark.rdd.Metadata._
-import org.elasticsearch.spark.serialization.ReflectionUtils
-import org.elasticsearch.spark.streaming._
+import org.opensearch.spark.rdd.OpenSearchSpark
+import org.opensearch.spark.rdd.Metadata._
+import org.opensearch.spark.serialization.ReflectionUtils
+import org.opensearch.spark.streaming._
 import org.hamcrest.Matchers._
 import org.junit.Assert._
 import org.junit._
@@ -192,7 +192,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     runStream(batch2)(_.saveToEs(target, Map("es.mapping.id"->"id")))
 
     assertTrue(RestUtils.exists(target))
-    assertEquals(3, EsSpark.esRDD(sc, target).count())
+    assertEquals(3, OpenSearchSpark.esRDD(sc, target).count())
     assertThat(RestUtils.get(target + "/_search?"), containsString(""))
   }
 
@@ -207,7 +207,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val batch = sc.makeRDD(Seq(doc1, doc2))
     runStream(batch)(_.saveToEs(target, Map(ES_MAPPING_ID -> "number")))
 
-    assertEquals(2, EsSpark.esRDD(sc, target).count())
+    assertEquals(2, OpenSearchSpark.esRDD(sc, target).count())
     assertTrue(RestUtils.exists(docPath + "/1"))
     assertTrue(RestUtils.exists(docPath + "/2"))
 
@@ -227,7 +227,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
 
     println(RestUtils.get(target + "/_search?"))
 
-    assertEquals(2, EsSpark.esRDD(sc, target).count())
+    assertEquals(2, OpenSearchSpark.esRDD(sc, target).count())
     assertTrue(RestUtils.exists(docPath + "/3"))
     assertTrue(RestUtils.exists(docPath + "/4"))
 
@@ -418,7 +418,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
 
     runStream(batch)(_.saveToEs(target))
 
-    assertEquals(3, EsSpark.esRDD(sc, target, cfg).count())
+    assertEquals(3, OpenSearchSpark.esRDD(sc, target, cfg).count())
   }
 
   def wrapMapping(typeName: String, typelessMapping: String): String = {

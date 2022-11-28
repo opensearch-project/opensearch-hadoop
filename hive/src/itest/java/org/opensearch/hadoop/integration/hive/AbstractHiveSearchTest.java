@@ -325,26 +325,6 @@ public class AbstractHiveSearchTest {
         assertContains(result, "last.fm/serve/252/2181591.jpg");
     }
 
-    @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        String create = "CREATE EXTERNAL TABLE childload" + testInstance + " ("
-                + "id       BIGINT, "
-                + "name     STRING, "
-                + "links    STRUCT<url:STRING, picture:STRING>) "
-                + tableProps("hive-pc/child", "'es.index.read.missing.as.empty' = 'true'");
-
-        String select = "SELECT * FROM childload" + testInstance;
-
-        System.out.println(server.execute(create));
-        List<String> result = server.execute(select);
-        assertTrue("Hive returned null", containsNoNull(result));
-        assertTrue(result.size() > 1);
-        assertContains(result, "Marilyn");
-        assertContains(result, "last.fm/music/MALICE");
-        assertContains(result, "last.fm/serve/252/2181591.jpg");
-    }
-
 
     @Test
     public void testReadWriteSameJob() throws Exception {

@@ -204,4 +204,9 @@ public class NetworkClient implements StatsAware, Closeable {
     public String currentNode() {
         return currentNode;
     }
+
+    @Override
+    public String toString() {
+        return settings.toString();
+    }
 }

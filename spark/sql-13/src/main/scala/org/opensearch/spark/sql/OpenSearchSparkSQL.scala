@@ -36,9 +36,9 @@ import scala.collection.Map
 
 import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SQLContext
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_QUERY
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_READ
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE_WRITE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_QUERY
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE_READ
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE_WRITE
 import org.opensearch.spark.cfg.SparkSettingsManager
 import org.opensearch.hadoop.cfg.PropertiesSettings
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
@@ -53,8 +53,8 @@ object OpenSearchSparkSQL {
   @transient private[this] val LOG = LogFactory.getLog(OpenSearchSparkSQL.getClass)
 
   def esDF(sc: SQLContext): DataFrame = esDF(sc, Map.empty[String, String])
-  def esDF(sc: SQLContext, resource: String): DataFrame = esDF(sc, Map(ES_RESOURCE_READ -> resource))
-  def esDF(sc: SQLContext, resource: String, query: String): DataFrame = esDF(sc, Map(ES_RESOURCE_READ -> resource, ES_QUERY -> query))
+  def esDF(sc: SQLContext, resource: String): DataFrame = esDF(sc, Map(OPENSEARCH_RESOURCE_READ -> resource))
+  def esDF(sc: SQLContext, resource: String, query: String): DataFrame = esDF(sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
   def esDF(sc: SQLContext, cfg: Map[String, String]): DataFrame = {
     val esConf = new SparkSettingsManager().load(sc.sparkContext.getConf).copy()
     esConf.merge(cfg.asJava)
@@ -63,19 +63,19 @@ object OpenSearchSparkSQL {
   }
 
   def esDF(sc: SQLContext, resource: String, query: String, cfg: Map[String, String]): DataFrame = {
-    esDF(sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_READ -> resource, ES_QUERY -> query))
+    esDF(sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
   }
 
   def esDF(sc: SQLContext, resource: String, cfg: Map[String, String]): DataFrame = {
-    esDF(sc, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_READ -> resource))
+    esDF(sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource))
   }
 
 
   def saveToEs(srdd: DataFrame, resource: String): Unit = {
-    saveToEs(srdd, Map(ES_RESOURCE_WRITE -> resource))
+    saveToEs(srdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToEs(srdd: DataFrame, resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(srdd, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_WRITE -> resource))
+    saveToEs(srdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToEs(srdd: DataFrame, cfg: Map[String, String]): Unit = {
     if (srdd != null) {

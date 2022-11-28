@@ -109,7 +109,7 @@ public class BulkProcessorTest {
         testSettings = new TestSettings();
         testSettings.setResourceWrite("foo/bar");
         testSettings.setInternalClusterInfo(esClusterInfo);
-        testSettings.setProperty(ConfigurationOptions.ES_BATCH_SIZE_ENTRIES, "10");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_ENTRIES, "10");
         testSettings.setProperty(ConfigurationOptions.ES_BATCH_WRITE_RETRY_WAIT, "1ms");
 
         resource = new Resource(testSettings, false);

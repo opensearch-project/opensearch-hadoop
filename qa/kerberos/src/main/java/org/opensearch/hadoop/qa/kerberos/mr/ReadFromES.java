@@ -66,7 +66,7 @@ public class ReadFromES extends Configured implements Tool {
 
         OpenSearchMapReduceUtil.initCredentials(job);
 
-        job.getConfiguration().set("es.output.json", "true");
+        job.getConfiguration().set("opensearch.output.json", "true");
 
         job.setInputFormatClass(EsInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);

@@ -59,7 +59,7 @@ public class MiniKdcFixture {
     private static final String PORT_FILE_NAME = "ports";
     private static final String PID_FILE_NAME = "pid";
 
-    private static final String SYS_ES_FIXTURE_KDC = "es.fixture.kdc.";
+    private static final String SYS_ES_FIXTURE_KDC = "opensearch.fixture.kdc.";
 
     private static final String SYS_USER_CONF = "user.";
     private static final String SYS_PWD_SUFFIX = ".pwd";

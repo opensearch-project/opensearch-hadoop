@@ -55,13 +55,13 @@ public class ResourceTest {
         parameters.add(new Object[]{OpenSearchMajorVersion.LATEST, true});
         parameters.add(new Object[]{OpenSearchMajorVersion.LATEST, false});
 
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_8_X, true});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_3_X, true});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_7_X, true});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_6_X, true});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_5_X, true});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, true});
 
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_8_X, false});
+        parameters.add(new Object[]{OpenSearchMajorVersion.V_3_X, false});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_7_X, false});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_6_X, false});
         parameters.add(new Object[]{OpenSearchMajorVersion.V_5_X, false});
@@ -173,7 +173,7 @@ public class ResourceTest {
     public void testQueryUriConflict() throws Exception {
         assumeTyped();
         Settings s = new TestSettings();
-        s.setProperty(ConfigurationOptions.ES_QUERY, "{\"match_all\":{}}");
+        s.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "{\"match_all\":{}}");
         Resource res = createResource("foo/bar/_search=?somequery", s);
         assertEquals("foo/bar", res.toString());
     }
@@ -182,7 +182,7 @@ public class ResourceTest {
     public void testQueryUriConflictTypeless() throws Exception {
         assumeTypeless();
         Settings s = new TestSettings();
-        s.setProperty(ConfigurationOptions.ES_QUERY, "{\"match_all\":{}}");
+        s.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "{\"match_all\":{}}");
         Resource res = createResource("foo/_search=?somequery", s);
         assertEquals("foo", res.toString());
     }
@@ -191,7 +191,7 @@ public class ResourceTest {
     public void testQueryUriConflictWithParams() throws Exception {
         assumeTyped();
         Settings s = new TestSettings();
-        s.setProperty(ConfigurationOptions.ES_QUERY, "{\"match_all\":{}}");
+        s.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "{\"match_all\":{}}");
         Resource res = createResource("foo/bar/_search=?somequery&bla=bla", s);
         assertEquals("foo/bar", res.toString());
     }
@@ -200,7 +200,7 @@ public class ResourceTest {
     public void testQueryUriConflictWithParamsTypeless() throws Exception {
         assumeTypeless();
         Settings s = new TestSettings();
-        s.setProperty(ConfigurationOptions.ES_QUERY, "{\"match_all\":{}}");
+        s.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "{\"match_all\":{}}");
         Resource res = createResource("foo/_search=?somequery&bla=bla", s);
         assertEquals("foo", res.toString());
     }
@@ -288,7 +288,7 @@ public class ResourceTest {
 
     private Resource createResource(String target, Settings s) {
         s.setInternalVersion(testVersion);
-        s.setProperty(ConfigurationOptions.ES_RESOURCE, target);
+        s.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, target);
         return new Resource(s, true);
     }
 

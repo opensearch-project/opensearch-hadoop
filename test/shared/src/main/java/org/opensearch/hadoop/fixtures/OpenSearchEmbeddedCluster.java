@@ -54,7 +54,7 @@ public class OpenSearchEmbeddedCluster {
         try {
             String nodeAddresses = System.getProperty(TESTS_REST_CLUSTER);
             if (!StringUtils.hasText(nodeAddresses)) {
-                // No local ES stood up. Better throw...
+                // No local OpenSearch stood up. Better throw...
                 throw new IllegalStateException("Could not find list of OpenSearch nodes to execute integration " +
                         "tests against. Should you be running tests with an external cluster? Try setting [" +
                         DISABLE_LOCAL_OPENSEARCH + "].");

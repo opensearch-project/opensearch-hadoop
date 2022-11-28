@@ -113,7 +113,7 @@ private[sql] object SchemaUtils {
         if (StringUtils.hasText(cfg.getReadFieldInclude) || StringUtils.hasText(cfg.getReadFieldExclude)) {
           // NB: metadata field is synthetic so it doesn't have to be filtered
           // its presence is controlled through the dedicated config setting
-          cfg.setProperty(InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS, StringUtils.concatenate(mapping.flatten().keySet(), StringUtils.DEFAULT_DELIMITER))
+          cfg.setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS, StringUtils.concatenate(mapping.flatten().keySet(), StringUtils.DEFAULT_DELIMITER))
         }
         (mapping, geoInfo)
       }

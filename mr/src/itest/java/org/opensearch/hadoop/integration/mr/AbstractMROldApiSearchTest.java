@@ -104,7 +104,7 @@ public class AbstractMROldApiSearchTest {
 
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.ES_MAPPING_ROUTING, "<foobar/>");
-        conf.set(ConfigurationOptions.ES_RESOURCE, target);
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, target);
 
         JobClient.runJob(conf);
     }
@@ -112,7 +112,7 @@ public class AbstractMROldApiSearchTest {
     @Test
     public void testBasicSearch() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mroldapi-save", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mroldapi-save", "data", clusterInfo.getMajorVersion()));
 
         JobClient.runJob(conf);
     }
@@ -121,7 +121,7 @@ public class AbstractMROldApiSearchTest {
     @Test
     public void testBasicSearchWithWildCard() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mrold*-save", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mrold*-save", "data", clusterInfo.getMajorVersion()));
 
         JobClient.runJob(conf);
     }
@@ -129,7 +129,7 @@ public class AbstractMROldApiSearchTest {
     @Test
     public void testSearchWithId() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mroldapi-savewithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mroldapi-savewithid", "data", clusterInfo.getMajorVersion()));
 
         JobClient.runJob(conf);
     }
@@ -138,7 +138,7 @@ public class AbstractMROldApiSearchTest {
     public void testSearchNonExistingIndex() throws Exception {
         JobConf conf = createJobConf();
         conf.setBoolean(ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY, true);
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource("foobar", "save", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("foobar", "save", clusterInfo.getMajorVersion()));
 
         JobClient.runJob(conf);
     }
@@ -146,7 +146,7 @@ public class AbstractMROldApiSearchTest {
     @Test
     public void testSearchCreated() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mroldapi-createwithid", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mroldapi-createwithid", "data", clusterInfo.getMajorVersion()));
 
         JobClient.runJob(conf);
     }
@@ -154,21 +154,8 @@ public class AbstractMROldApiSearchTest {
     @Test
     public void testSearchUpdated() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mroldapi-update", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mroldapi-update", "data", clusterInfo.getMajorVersion()));
 
-        JobClient.runJob(conf);
-    }
-
-    @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-
-        JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, indexPrefix + "mroldapi-pc/child");
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
-        conf.set(ConfigurationOptions.ES_MAPPING_PARENT, "number");
-
-        //conf.set(Stream.class.getName(), "OUT");
         JobClient.runJob(conf);
     }
 
@@ -197,7 +184,7 @@ public class AbstractMROldApiSearchTest {
     //@Test
     public void testNested() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_RESOURCE, resource(indexPrefix + "mroldapi-nested", "data", clusterInfo.getMajorVersion()));
+        conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mroldapi-nested", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
 
         //conf.set(Stream.class.getName(), "OUT");
@@ -214,12 +201,12 @@ public class AbstractMROldApiSearchTest {
         Class<?> mapType = (type ? MapWritable.class : LinkedMapWritable.class);
         conf.setOutputValueClass(mapType);
         HadoopCfgUtils.setGenericOptions(conf);
-        conf.set(ConfigurationOptions.ES_QUERY, query);
+        conf.set(ConfigurationOptions.OPENSEARCH_QUERY, query);
         conf.setNumReduceTasks(0);
 
         conf.set(ConfigurationOptions.ES_READ_METADATA, String.valueOf(readMetadata));
         conf.set(ConfigurationOptions.ES_READ_METADATA_VERSION, String.valueOf(true));
-        conf.set(ConfigurationOptions.ES_OUTPUT_JSON, String.valueOf(readAsJson));
+        conf.set(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, String.valueOf(readAsJson));
 
         new QueryTestParams(tempFolder).provisionQueries(conf);
         FileInputFormat.setInputPaths(conf, new Path(MRSuite.testData.sampleArtistsDatUri()));

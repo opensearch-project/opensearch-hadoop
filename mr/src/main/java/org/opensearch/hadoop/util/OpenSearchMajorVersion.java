@@ -33,7 +33,7 @@ import java.io.Serializable;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 
 /**
- * Elasticsearch major version information, useful to check client's query compatibility with the Rest API.
+ * OpenSearch major version information, useful to check client's query compatibility with the Rest API.
  */
 public class OpenSearchMajorVersion implements Serializable {
 
@@ -45,8 +45,8 @@ public class OpenSearchMajorVersion implements Serializable {
     public static final OpenSearchMajorVersion V_5_X = new OpenSearchMajorVersion((byte) 5, "5.x");
     public static final OpenSearchMajorVersion V_6_X = new OpenSearchMajorVersion((byte) 6, "6.x");
     public static final OpenSearchMajorVersion V_7_X = new OpenSearchMajorVersion((byte) 7, "7.x");
-    public static final OpenSearchMajorVersion V_8_X = new OpenSearchMajorVersion((byte) 8, "8.x");
-    public static final OpenSearchMajorVersion LATEST = V_8_X;
+    public static final OpenSearchMajorVersion V_3_X = new OpenSearchMajorVersion((byte) 3, "3.x");
+    public static final OpenSearchMajorVersion LATEST = V_3_X;
 
     public final byte major;
     private final String version;
@@ -91,6 +91,10 @@ public class OpenSearchMajorVersion implements Serializable {
         if (version.startsWith("2.")) {
             return new OpenSearchMajorVersion((byte) 2, version);
         }
+        if (version.startsWith("3.")) {
+            return new OpenSearchMajorVersion((byte) 3, version);
+        }
+        // todo remove this in versioning update
         if (version.startsWith("5.")) {
             return new OpenSearchMajorVersion((byte) 5, version);
         }
@@ -99,9 +103,6 @@ public class OpenSearchMajorVersion implements Serializable {
         }
         if (version.startsWith("7.")) {
             return new OpenSearchMajorVersion((byte) 7, version);
-        }
-        if (version.startsWith("8.")) {
-            return new OpenSearchMajorVersion((byte) 8, version);
         }
         throw new OpenSearchHadoopIllegalArgumentException("Unsupported/Unknown OpenSearch version [" + version + "]." +
                 "Highest supported version is [" + LATEST.version + "]. You may need to upgrade OpenSearch-Hadoop.");
@@ -116,14 +117,14 @@ public class OpenSearchMajorVersion implements Serializable {
         String minorRemainder = versionString.substring(majorPrefix.length());
         int dot = minorRemainder.indexOf('.');
         if (dot < 1) {
-            throw new OpenSearchHadoopIllegalArgumentException("Could not parse Elasticsearch minor version [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Could not parse OpenSearch minor version [" +
                     versionString + "]. Invalid version format.");
         }
         String rawMinorVersion = minorRemainder.substring(0, dot);
         try {
             return Integer.parseInt(rawMinorVersion);
         } catch (NumberFormatException e) {
-            throw new OpenSearchHadoopIllegalArgumentException("Could not parse Elasticsearch minor version [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Could not parse OpenSearch minor version [" +
                     versionString + "]. Non-numeric minor version [" + rawMinorVersion + "].", e);
         }
     }

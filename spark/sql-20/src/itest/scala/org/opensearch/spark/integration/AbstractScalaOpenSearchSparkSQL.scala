@@ -221,29 +221,29 @@ object AbstractScalaOpenSearchScalaSparkSQL {
 @RunWith(classOf[Parameterized])
 class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pushDown: jl.Boolean, strictPushDown: jl.Boolean, doubleFiltering: jl.Boolean, encodeResources: jl.Boolean, query: String = "") extends Serializable {
 
-  val sc = AbstractScalaEsScalaSparkSQL.sc
-  val sqc = AbstractScalaEsScalaSparkSQL.sqc
-  val cfg = Map(ES_QUERY -> query,
+  val sc = AbstractScalaOpenSearchScalaSparkSQL.sc
+  val sqc = AbstractScalaOpenSearchScalaSparkSQL.sqc
+  val cfg = Map(OPENSEARCH_QUERY -> query,
                 ES_READ_METADATA -> readMetadata.toString(),
                 "es.internal.spark.sql.pushdown" -> pushDown.toString(),
                 "es.internal.spark.sql.pushdown.strict" -> strictPushDown.toString(),
                 "es.internal.spark.sql.pushdown.keep.handled.filters" -> doubleFiltering.toString())
 
   val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
-  val keyword = AbstractScalaEsScalaSparkSQL.keywordType
-  val text = AbstractScalaEsScalaSparkSQL.textType
+  val keyword = AbstractScalaOpenSearchScalaSparkSQL.keywordType
+  val text = AbstractScalaOpenSearchScalaSparkSQL.textType
 
   @Test
   def test1KryoScalaEsRow() {
     val kryo = SparkUtils.sparkSerializer(sc.getConf)
-    val row = new ScalaEsRow(new ArrayBuffer() ++= StringUtils.tokenize("foo,bar,tar").asScala)
+    val row = new ScalaOpenSearchRow(new ArrayBuffer() ++= StringUtils.tokenize("foo,bar,tar").asScala)
 
     val storage = Array.ofDim[Byte](512)
     val output = new KryoOutput(storage)
     val input = new KryoInput(storage)
 
     kryo.writeClassAndObject(output, row)
-    val serialized = kryo.readClassAndObject(input).asInstanceOf[ScalaEsRow]
+    val serialized = kryo.readClassAndObject(input).asInstanceOf[ScalaOpenSearchRow]
     println(serialized.rowOrder)
   }
 
@@ -347,7 +347,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     RestUtils.postData(docPath, jsonDoc.getBytes(StringUtils.UTF_8))
     RestUtils.refresh(index)
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "bar.bar.bar", "es.resource" -> target)
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "bar.bar.bar", "opensearch.resource" -> target)
     val cfgSettings = new SparkSettingsManager().load(sc.getConf).copy().merge(newCfg.asJava)
     val schema = SchemaUtilsTestable.discoverMapping(cfgSettings)
     val mapping = SchemaUtilsTestable.rowInfo(cfgSettings)
@@ -826,7 +826,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   }
 
   private def artistsAsDataFrame = {
-    val data = readAsRDD(AbstractScalaEsScalaSparkSQL.testData.sampleArtistsDatUri())
+    val data = readAsRDD(AbstractScalaOpenSearchScalaSparkSQL.testData.sampleArtistsDatUri())
 
     val schema = StructType(Seq(StructField("id", IntegerType, false),
       StructField("name", StringType, false),

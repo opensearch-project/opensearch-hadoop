@@ -33,7 +33,7 @@ import java.util.UUID
 import org.apache.spark.streaming.dstream.DStream
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
-import org.elasticsearch.spark.rdd.EsSpark
+import org.opensearch.spark.rdd.OpenSearchSpark
 
 import scala.collection.Map
 
@@ -42,10 +42,10 @@ object OpenSearchSparkStreaming {
 
   // Save methods
   def saveToEs(ds: DStream[_], resource: String): Unit = {
-    saveToEs(ds, Map(ES_RESOURCE_WRITE -> resource))
+    saveToEs(ds, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToEs(ds: DStream[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(ds, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_WRITE -> resource))
+    saveToEs(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToEs(ds: DStream[_], cfg: Map[String, String]): Unit = {
     doSaveToEs(ds, cfg, hasMeta = false)
@@ -53,10 +53,10 @@ object OpenSearchSparkStreaming {
 
   // Save with metadata
   def saveToEsWithMeta[K,V](ds: DStream[(K,V)], resource: String): Unit = {
-    saveToEsWithMeta(ds, Map(ES_RESOURCE_WRITE -> resource))
+    saveToEsWithMeta(ds, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToEsWithMeta[K,V](ds: DStream[(K,V)], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEsWithMeta(ds, collection.mutable.Map(cfg.toSeq: _*) += (ES_RESOURCE_WRITE -> resource))
+    saveToEsWithMeta(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToEsWithMeta[K,V](ds: DStream[(K,V)], cfg: Map[String, String]): Unit = {
     doSaveToEs(ds, cfg, hasMeta = true)
@@ -75,9 +75,9 @@ object OpenSearchSparkStreaming {
 
   // Implementation
   def doSaveToEs(ds: DStream[_], cfg: Map[String, String], hasMeta: Boolean): Unit = {
-    // Set the transport pooling key and delegate to the standard EsSpark save.
+    // Set the transport pooling key and delegate to the standard OpenSearchSpark save.
     // IMPORTANT: Do not inline this into the lambda expression below
     val config = collection.mutable.Map(cfg.toSeq: _*) += (INTERNAL_TRANSPORT_POOLING_KEY -> UUID.randomUUID().toString)
-    ds.foreachRDD(rdd => EsSpark.doSaveToEs(rdd, config, hasMeta))
+    ds.foreachRDD(rdd => OpenSearchSpark.doSaveToEs(rdd, config, hasMeta))
   }
 }

@@ -67,7 +67,7 @@ public class Resource {
         if (resource.contains("?") || resource.contains("&")) {
             if (StringUtils.hasText(settings.getQuery())) {
                 throw new OpenSearchHadoopIllegalArgumentException(String.format(
-                        "Cannot specify a query in the target index AND through %s", ConfigurationOptions.ES_QUERY));
+                        "Cannot specify a query in the target index AND through %s", ConfigurationOptions.OPENSEARCH_QUERY));
             }
 
             int index = resource.indexOf("?");
@@ -79,7 +79,7 @@ public class Resource {
                 index = resource.lastIndexOf("/");
                 resource = (index > 0 ? resource.substring(0, index) : resource);
 
-                settings.setProperty(ConfigurationOptions.ES_RESOURCE, resource);
+                settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, resource);
                 settings.setQuery(query);
             }
         }

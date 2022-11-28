@@ -44,7 +44,7 @@ class LoadToES(args: Array[String]) {
     if (!sparkConf.contains(LoadToES.CONF_FIELD_NAMES)) {
       throw new IllegalArgumentException(LoadToES.CONF_FIELD_NAMES + " is required")
     }
-    val resource = sparkConf.get("spark.es.resource")
+    val resource = sparkConf.get("spark.opensearch.resource")
     val fieldNames = sparkConf.get(LoadToES.CONF_FIELD_NAMES).split(",")
     val schema = StructType(fieldNames.map(StructField(_, StringType)))
 

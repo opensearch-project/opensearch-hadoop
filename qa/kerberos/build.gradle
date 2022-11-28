@@ -466,7 +466,7 @@ if (disableTests) {
         libJars(mrJar.archivePath, kerberosItestJar.archivePath)
         jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.LoadToES'
         jobSettings([
-                'es.resource': 'qa_kerberos_mr_data',
+                'opensearch.resource': 'qa_kerberos_mr_data',
                 'opensearch.nodes': opensearchAddress,
                 'es.security.authentication': 'kerberos',
                 'opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
@@ -493,7 +493,7 @@ if (disableTests) {
         libJars(mrJar.archivePath, kerberosItestJar.archivePath)
         jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.ReadFromES'
         jobSettings([
-                'es.resource': 'qa_kerberos_mr_data',
+                'opensearch.resource': 'qa_kerberos_mr_data',
                 'es.nodes': opensearchAddress,
                 'es.security.authentication': 'kerberos',
                 'opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
@@ -526,7 +526,7 @@ if (disableTests) {
         libJars(sparkJar.archivePath, kerberosItestJar.archivePath)
         jobClass = 'org.opensearch.hadoop.qa.kerberos.spark.LoadToES'
         jobSettings([
-                'spark.es.resource': 'qa_kerberos_spark_data',
+                'spark.opensearch.resource': 'qa_kerberos_spark_data',
                 'spark.opensearch.nodes': opensearchAddress,
                 'spark.es.security.authentication': 'kerberos',
                 'spark.opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
@@ -558,7 +558,7 @@ if (disableTests) {
         libJars(sparkJar.archivePath, kerberosItestJar.archivePath)
         jobClass = 'org.opensearch.hadoop.qa.kerberos.spark.ReadFromES'
         jobSettings([
-                'spark.es.resource': 'qa_kerberos_spark_data',
+                'spark.opensearch.resource': 'qa_kerberos_spark_data',
                 'spark.opensearch.nodes': opensearchAddress,
                 'spark.es.security.authentication': 'kerberos',
                 'spark.opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",

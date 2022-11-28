@@ -817,7 +817,7 @@ class BuildPlugin implements Plugin<Project>  {
 
         itestJar.configure { Jar jar ->
             integrationTest.doFirst {
-                integrationTest.systemProperty("es.hadoop.job.jar", jar.getArchiveFile().get().asFile.absolutePath)
+                integrationTest.systemProperty("opensearch.hadoop.job.jar", jar.getArchiveFile().get().asFile.absolutePath)
             }
         }
 

@@ -54,7 +54,7 @@ import org.opensearch.hadoop.rest.RestService.PartitionWriter;
 import org.opensearch.hadoop.serialization.field.MapWritableFieldExtractor;
 import org.opensearch.hadoop.util.Assert;
 
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_RESOURCE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE;
 
 /**
  * ElasticSearch {@link OutputFormat} (old and new API) for adding data to an index inside ElasticSearch.
@@ -266,7 +266,7 @@ public class EsOutputFormat extends OutputFormat implements org.apache.hadoop.ma
     // NB: all changes to the config objects are discarded before the job is submitted if _the old MR api_ is used
     private void init(Configuration cfg) throws IOException {
         Settings settings = HadoopSettingsManager.loadFrom(cfg);
-        Assert.hasText(settings.getResourceWrite(), String.format("No resource ['%s'] (index/query/location) specified", ES_RESOURCE));
+        Assert.hasText(settings.getResourceWrite(), String.format("No resource ['%s'] (index/query/location) specified", OPENSEARCH_RESOURCE));
 
         // Need to discover the ESVersion before checking if index exists.
         InitializationUtils.discoverClusterInfo(settings, log);

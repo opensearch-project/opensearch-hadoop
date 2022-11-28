@@ -96,7 +96,7 @@ public class AbstractHiveReadJsonTest {
     public void basicLoad() throws Exception {
 
         String create = "CREATE EXTERNAL TABLE jsonartistsread" + testInstance + " (data INT, garbage INT, garbage2 STRING) "
-                + tableProps(resource("json-hive-artists", "data", targetVersion), "'es.output.json' = 'true'", "'es.mapping.names'='garbage2:refuse'");
+                + tableProps(resource("json-hive-artists", "data", targetVersion), "'opensearch.output.json' = 'true'", "'es.mapping.names'='garbage2:refuse'");
 
         String select = "SELECT * FROM jsonartistsread" + testInstance;
 
@@ -112,7 +112,7 @@ public class AbstractHiveReadJsonTest {
     public void basicLoadWithNameMappings() throws Exception {
 
         String create = "CREATE EXTERNAL TABLE jsonartistsread" + testInstance + " (refuse INT, garbage INT, data STRING) "
-                + tableProps(resource("json-hive-artists", "data", targetVersion), "'es.output.json' = 'true'", "'es.mapping.names'='data:boomSomethingYouWerentExpecting'");
+                + tableProps(resource("json-hive-artists", "data", targetVersion), "'opensearch.output.json' = 'true'", "'es.mapping.names'='data:boomSomethingYouWerentExpecting'");
 
         String select = "SELECT * FROM jsonartistsread" + testInstance;
 
@@ -128,7 +128,7 @@ public class AbstractHiveReadJsonTest {
     public void basicLoadWithNoGoodCandidateField() throws Exception {
 
         String create = "CREATE EXTERNAL TABLE jsonartistsread" + testInstance + " (refuse INT, garbage INT) "
-                + tableProps(resource("json-hive-artists", "data", targetVersion), "'es.output.json' = 'true'");
+                + tableProps(resource("json-hive-artists", "data", targetVersion), "'opensearch.output.json' = 'true'");
 
         String select = "SELECT * FROM jsonartistsread" + testInstance;
 
@@ -141,7 +141,7 @@ public class AbstractHiveReadJsonTest {
     @Test
     public void testMissingIndex() throws Exception {
         String create = "CREATE EXTERNAL TABLE jsonmissingread" + testInstance + " (data STRING) "
-                + tableProps(resource("foobar", "missing", targetVersion), "'es.index.read.missing.as.empty' = 'true'", "'es.output.json' = 'true'");
+                + tableProps(resource("foobar", "missing", targetVersion), "'es.index.read.missing.as.empty' = 'true'", "'opensearch.output.json' = 'true'");
 
         String select = "SELECT * FROM jsonmissingread" + testInstance;
 
@@ -151,29 +151,12 @@ public class AbstractHiveReadJsonTest {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        String create = "CREATE EXTERNAL TABLE jsonchildread" + testInstance + " (data STRING) "
-                + tableProps("json-hive-pc/child", "'es.index.read.missing.as.empty' = 'true'", "'es.output.json' = 'true'");
-
-        String select = "SELECT * FROM jsonchildread" + testInstance;
-
-        System.out.println(HiveSuite.server.execute(create));
-        List<String> result = HiveSuite.server.execute(select);
-        assertTrue("Hive returned null", containsNoNull(result));
-        assertTrue(result.size() > 1);
-        assertContains(result, "Marilyn");
-        assertContains(result, "last.fm/music/MALICE");
-        assertContains(result, "last.fm/serve/252/2181591.jpg");
-    }
-
-    @Test
     public void testNoSourceFilterCollisions() throws Exception {
 
         String create = "CREATE EXTERNAL TABLE jsonartistscollisionread" + testInstance + " (data INT, garbage INT, garbage2 STRING) "
                 + tableProps(
                     resource("json-hive-artists", "data", targetVersion),
-                    "'es.output.json' = 'true'",
+                    "'opensearch.output.json' = 'true'",
                     "'es.read.source.filter'='name'"
                 );
 

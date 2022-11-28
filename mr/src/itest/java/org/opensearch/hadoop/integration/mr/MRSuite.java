@@ -30,7 +30,7 @@ package org.opensearch.hadoop.integration.mr;
 
 import org.opensearch.hadoop.TestData;
 import org.opensearch.hadoop.fs.HdfsUtils;
-import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalOpenSearch;
 import org.junit.BeforeClass;
 import org.junit.ClassRule;
 import org.junit.rules.ExternalResource;
@@ -43,7 +43,7 @@ import org.junit.runners.Suite;
 //@Suite.SuiteClasses({ AbstractMROldApiSaveTest.class })
 public class MRSuite {
     @ClassRule
-    public static ExternalResource resource = new LocalEs();
+    public static ExternalResource resource = new LocalOpenSearch();
 
     @ClassRule
     public static TestData testData = new TestData();

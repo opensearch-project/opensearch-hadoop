@@ -86,7 +86,7 @@ public class OpenSearchStorageHandler extends DefaultStorageHandler {
 
     @Override
     public Class<? extends AbstractSerDe> getSerDeClass() {
-        return EsSerDe.class;
+        return OpenSearchSerDe.class;
     }
 
     @Override
@@ -155,7 +155,7 @@ public class OpenSearchStorageHandler extends DefaultStorageHandler {
     @Override
     public void configureJobConf(TableDesc tableDesc, JobConf jobConf) {
         if (log.isDebugEnabled()) {
-            log.debug("Configuring job credentials for Elasticsearch");
+            log.debug("Configuring job credentials for OpenSearch");
         }
         Settings settings = new CompositeSettings(Arrays.asList(
                 HadoopSettingsManager.loadFrom(tableDesc.getProperties()),
@@ -176,14 +176,14 @@ public class OpenSearchStorageHandler extends DefaultStorageHandler {
                 TokenUtil.addTokenForJobConf(bootstrap, clusterInfo.getClusterName(), user, jobConf);
             } catch (OpenSearchHadoopException ex) {
                 throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
-                        + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
+                        + "typically this happens if the network/OpenSearch cluster is not accessible or when targeting "
                         + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {
                 bootstrap.close();
             }
         } else {
             if (log.isDebugEnabled()) {
-                log.debug("Ignoring Elasticsearch credentials since Kerberos Auth is not enabled.");
+                log.debug("Ignoring OpenSearch credentials since Kerberos Auth is not enabled.");
             }
         }
     }

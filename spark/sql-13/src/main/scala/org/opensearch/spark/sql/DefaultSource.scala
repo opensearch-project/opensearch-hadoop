@@ -109,24 +109,24 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
     // '.' seems to be problematic when specifying the options
     val dottedParams = parameters.map { case (k, v) => (k.replace('_', '.'), v)}
 
-    // You can set the resource by using the "path", "resource", or "es.resource"/"es_resource" config keys.
+    // You can set the resource by using the "path", "resource", or "opensearch.resource"/"opensearch_resource" config keys.
     // In rare circumstances (cough Hive+Spark integration cough) these settings can all be specified, and be set to different
     // values. Instead of relying on the map's entry order to set the value, we will proactively retrieve the settings
     // in the following order, falling back as needed:
     //
-    // 1. "es.resource"
+    // 1. "opensearch.resource"
     // 2. "resource"
     // 3. "path"
     //
     // See https://github.com/elastic/opensearch-hadoop/issues/1082
-    val preferredResource = dottedParams.get(ConfigurationOptions.ES_RESOURCE)
+    val preferredResource = dottedParams.get(ConfigurationOptions.OPENSEARCH_RESOURCE)
       .orElse(dottedParams.get("resource"))
       .orElse(dottedParams.get("path"))
 
     // Convert simple parameters into internal properties, and prefix other parameters
     val processedParams = dottedParams.map { case (k, v) =>
       if (k.startsWith("es.")) (k, v)
-      else if (k == "path") (ConfigurationOptions.ES_RESOURCE, v) // This may not be the final value for this setting.
+      else if (k == "path") (ConfigurationOptions.OPENSEARCH_RESOURCE, v) // This may not be the final value for this setting.
       else if (k == "pushdown") (Utils.DATA_SOURCE_PUSH_DOWN, v)
       else if (k == "strict") (Utils.DATA_SOURCE_PUSH_DOWN_STRICT, v)
       else if (k == "double.filtering") (Utils.DATA_SOURCE_KEEP_HANDLED_FILTERS, v)
@@ -135,13 +135,13 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // Set the preferred resource if it was specified originally
     val finalParams = preferredResource match {
-      case Some(resource) => processedParams + (ConfigurationOptions.ES_RESOURCE -> resource)
+      case Some(resource) => processedParams + (ConfigurationOptions.OPENSEARCH_RESOURCE -> resource)
       case None => processedParams
     }
 
     // validate path
-    finalParams.getOrElse(ConfigurationOptions.ES_RESOURCE_READ,
-      finalParams.getOrElse(ConfigurationOptions.ES_RESOURCE, throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
+    finalParams.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE_READ,
+      finalParams.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE, throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
 
     finalParams
   }
@@ -190,7 +190,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
 
     // Set fields to scroll over (_metadata is excluded, because it isn't a part of _source)
     val sourceCSV = StringUtils.concatenate(filteredColumns.asInstanceOf[Array[Object]], StringUtils.DEFAULT_DELIMITER)
-    paramWithScan += (InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS -> sourceCSV)
+    paramWithScan += (InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS -> sourceCSV)
 
     // Keep the order of fields requested by user (we don't exclude _metadata here)
     val requiredCSV = StringUtils.concatenate(requiredColumns.asInstanceOf[Array[Object]], StringUtils.DEFAULT_DELIMITER)
@@ -198,7 +198,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
 
     // If the only field requested by user is metadata, we don't want to fetch the whole document source
     if (requiredCSV == cfg.getReadMetadataField()) {
-      paramWithScan += (InternalConfigurationOptions.INTERNAL_ES_EXCLUDE_SOURCE -> "true")
+      paramWithScan += (InternalConfigurationOptions.INTERNAL_OPENSEARCH_EXCLUDE_SOURCE -> "true")
     }
     
     if (filters != null && filters.size > 0) {
@@ -211,7 +211,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
         if (Utils.LOGGER.isTraceEnabled()) {
           Utils.LOGGER.trace(s"Transformed filters into DSL ${filterString.mkString("[", ",", "]")}")
         }
-        paramWithScan += (InternalConfigurationOptions.INTERNAL_ES_QUERY_FILTERS -> IOUtils.serializeToBase64(filterString))
+        paramWithScan += (InternalConfigurationOptions.INTERNAL_OPENSEARCH_QUERY_FILTERS -> IOUtils.serializeToBase64(filterString))
       }
       else {
         if (Utils.LOGGER.isTraceEnabled()) {
@@ -540,8 +540,8 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       InitializationUtils.discoverClusterInfo(cfgCopy, Utils.LOGGER)
       InitializationUtils.setValueWriterIfNotSet(cfgCopy, classOf[JdkValueWriter], null)
       InitializationUtils.setFieldExtractorIfNotSet(cfgCopy, classOf[ConstantFieldExtractor], null) //throw away extractor
-      cfgCopy.setProperty(ConfigurationOptions.ES_BATCH_FLUSH_MANUAL, "false")
-      cfgCopy.setProperty(ConfigurationOptions.ES_BATCH_SIZE_ENTRIES, "1000")
+      cfgCopy.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_FLUSH_MANUAL, "false")
+      cfgCopy.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_ENTRIES, "1000")
       cfgCopy.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_BYTES, "1mb")
       val rr = new RestRepository(cfgCopy)
       if (rr.resourceExists(false)) {
@@ -566,6 +566,6 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
     } else {
       cfg.getInternalVersionOrThrow
     }
-    version.onOrAfter(OpenSearchMajorVersion.V_5_X)
+    true
   }
 }

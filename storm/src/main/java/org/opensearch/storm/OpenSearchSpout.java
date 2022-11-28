@@ -101,10 +101,10 @@ public class OpenSearchSpout implements IRichSpout {
             spoutConfig.putAll(configuration);
         }
         if (StringUtils.hasText(query)) {
-            spoutConfig.put(ES_QUERY, query);
+            spoutConfig.put(OPENSEARCH_QUERY, query);
         }
         if (StringUtils.hasText(target)) {
-            spoutConfig.put(ES_RESOURCE_READ, target);
+            spoutConfig.put(OPENSEARCH_RESOURCE_READ, target);
         }
 
         StormSettings stormSettings = new StormSettings(spoutConfig);

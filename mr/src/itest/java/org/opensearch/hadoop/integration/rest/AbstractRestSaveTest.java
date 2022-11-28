@@ -110,8 +110,8 @@ public class AbstractRestSaveTest {
         InitializationUtils.discoverClusterInfo(settings, LOG);
         settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
         settings.setProperty(ConfigurationOptions.ES_MAPPING_DEFAULT_EXTRACTOR_CLASS, ConstantFieldExtractor.class.getName());
-        settings.setProperty(ConfigurationOptions.ES_BATCH_FLUSH_MANUAL, "false");
-        settings.setProperty(ConfigurationOptions.ES_BATCH_SIZE_ENTRIES, "1000");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_FLUSH_MANUAL, "false");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_ENTRIES, "1000");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_BYTES, "1mb");
 
         RestRepository repository = new RestRepository(settings);
@@ -136,8 +136,8 @@ public class AbstractRestSaveTest {
         InitializationUtils.discoverClusterInfo(settings, LOG);
         settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
         settings.setProperty(ConfigurationOptions.ES_MAPPING_DEFAULT_EXTRACTOR_CLASS, ConstantFieldExtractor.class.getName());
-        settings.setProperty(ConfigurationOptions.ES_BATCH_FLUSH_MANUAL, "false");
-        settings.setProperty(ConfigurationOptions.ES_BATCH_SIZE_ENTRIES, "1000");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_FLUSH_MANUAL, "false");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_ENTRIES, "1000");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_BYTES, "1mb");
 
         RestRepository repository = new RestRepository(settings);
@@ -175,7 +175,7 @@ public class AbstractRestSaveTest {
     @Test
     public void testCreatePartitionWriterWithPatternedIndex() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_RESOURCE, "alias_index{id}/doc");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, "alias_index{id}/doc");
         InitializationUtils.setValueWriterIfNotSet(settings, WritableValueWriter.class, LOG);
         InitializationUtils.setBytesConverterIfNeeded(settings, WritableBytesConverter.class, LOG);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapWritableFieldExtractor.class, LOG);
@@ -186,7 +186,7 @@ public class AbstractRestSaveTest {
     @Test
     public void testCreatePartitionWriterWithSingleIndex() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_RESOURCE, "alias_index1/doc");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, "alias_index1/doc");
         InitializationUtils.setValueWriterIfNotSet(settings, WritableValueWriter.class, LOG);
         InitializationUtils.setBytesConverterIfNeeded(settings, WritableBytesConverter.class, LOG);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapWritableFieldExtractor.class, LOG);
@@ -197,7 +197,7 @@ public class AbstractRestSaveTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testCreatePartitionWriterWithMultipleIndices() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_RESOURCE, "alias_index1,alias_index2/doc");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, "alias_index1,alias_index2/doc");
         InitializationUtils.setValueWriterIfNotSet(settings, WritableValueWriter.class, LOG);
         InitializationUtils.setBytesConverterIfNeeded(settings, WritableBytesConverter.class, LOG);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapWritableFieldExtractor.class, LOG);
@@ -219,7 +219,7 @@ public class AbstractRestSaveTest {
                 "}").getBytes());
 
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_RESOURCE, "single_alias/doc");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, "single_alias/doc");
         InitializationUtils.setValueWriterIfNotSet(settings, WritableValueWriter.class, LOG);
         InitializationUtils.setBytesConverterIfNeeded(settings, WritableBytesConverter.class, LOG);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapWritableFieldExtractor.class, LOG);
@@ -247,7 +247,7 @@ public class AbstractRestSaveTest {
                 "}").getBytes());
 
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_RESOURCE, "multi_alias/doc");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, "multi_alias/doc");
         InitializationUtils.setValueWriterIfNotSet(settings, WritableValueWriter.class, LOG);
         InitializationUtils.setBytesConverterIfNeeded(settings, WritableBytesConverter.class, LOG);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapWritableFieldExtractor.class, LOG);
@@ -276,7 +276,7 @@ public class AbstractRestSaveTest {
                 "}").getBytes());
 
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_RESOURCE, "multi_alias_writable/doc");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, "multi_alias_writable/doc");
         InitializationUtils.setValueWriterIfNotSet(settings, WritableValueWriter.class, LOG);
         InitializationUtils.setBytesConverterIfNeeded(settings, WritableBytesConverter.class, LOG);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapWritableFieldExtractor.class, LOG);
@@ -317,7 +317,7 @@ public class AbstractRestSaveTest {
                 "}").getBytes());
 
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_RESOURCE, "more_aliases_1,more_aliases_2/doc");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, "more_aliases_1,more_aliases_2/doc");
         InitializationUtils.setValueWriterIfNotSet(settings, WritableValueWriter.class, LOG);
         InitializationUtils.setBytesConverterIfNeeded(settings, WritableBytesConverter.class, LOG);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapWritableFieldExtractor.class, LOG);
@@ -359,7 +359,7 @@ public class AbstractRestSaveTest {
                 "}").getBytes());
 
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_RESOURCE, "more_aliases_1,more_aliases_2/doc");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE, "more_aliases_1,more_aliases_2/doc");
         InitializationUtils.setValueWriterIfNotSet(settings, WritableValueWriter.class, LOG);
         InitializationUtils.setBytesConverterIfNeeded(settings, WritableBytesConverter.class, LOG);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapWritableFieldExtractor.class, LOG);

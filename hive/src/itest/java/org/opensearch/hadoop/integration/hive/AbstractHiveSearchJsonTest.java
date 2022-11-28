@@ -251,27 +251,6 @@ public class AbstractHiveSearchJsonTest {
     }
 
     @Test
-    public void testParentChild() throws Exception {
-        OpenSearchAssume.versionOnOrBefore(OpenSearchMajorVersion.V_5_X, "Parent Child Disabled in 6.0");
-        String create = "CREATE EXTERNAL TABLE jsonchildload" + testInstance + " ("
-                + "number       STRING, "
-                + "name     STRING, "
-                + "url  STRING, "
-                + "picture  STRING) "
-                + tableProps("json-hive-pc/child", "'es.index.read.missing.as.empty' = 'true'");
-
-        String select = "SELECT * FROM jsonchildload" + testInstance;
-
-        System.out.println(server.execute(create));
-        List<String> result = server.execute(select);
-        assertTrue("Hive returned null", containsNoNull(result));
-        assertTrue(result.size() > 1);
-        assertContains(result, "Marilyn");
-        assertContains(result, "last.fm/music/MALICE");
-        assertContains(result, "last.fm/serve/252/2181591.jpg");
-    }
-
-    @Test
     public void testDynamicPattern() throws Exception {
         Assert.assertTrue(RestUtils.exists(resource("json-hive-pattern-7", "data", targetVersion)));
         Assert.assertTrue(RestUtils.exists(resource("json-hive-pattern-10", "data", targetVersion)));

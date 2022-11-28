@@ -29,7 +29,8 @@
 package org.opensearch.hadoop.hive;
 
 /**
- * Holder class for various Hive configuration options. Exists mainly since the Hive classes have been refactored/renamed between releases which are not backwards compatible.
+ * Holder class for various Hive configuration options. Exists mainly since the Hive classes have been
+ * refactored/renamed between releases which are not backwards compatible.
  */
 interface HiveConstants {
 
@@ -48,8 +49,8 @@ interface HiveConstants {
     String MAPPING_NAMES = "es.mapping.names";
     String COLUMN_COMMENTS = "columns.comments";
 
-    String INPUT_TBL_PROPERTIES = "es.internal.hive.input.tbl.properties";
-    String OUTPUT_TBL_PROPERTIES = "es.internal.hive.output.tbl.properties";
+    String INPUT_TBL_PROPERTIES = "opensearch.internal.hive.input.tbl.properties";
+    String OUTPUT_TBL_PROPERTIES = "opensearch.internal.hive.output.tbl.properties";
     String[] VIRTUAL_COLUMNS = new String[] { "INPUT__FILE__NAME", "BLOCK__OFFSET__INSIDE__FILE",
             "ROW__OFFSET__INSIDE__BLOCK", "RAW__DATA__SIZE", "GROUPING__ID" };
 }

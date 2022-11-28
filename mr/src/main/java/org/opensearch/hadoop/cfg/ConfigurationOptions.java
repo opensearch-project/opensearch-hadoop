@@ -33,7 +33,7 @@ import org.opensearch.hadoop.serialization.field.DefaultIndexExtractor;
 import org.opensearch.hadoop.serialization.field.DefaultParamsExtractor;
 
 /**
- * Class providing the various Configuration parameters used by the Elasticsearch Hadoop integration.
+ * Class providing the various Configuration parameters used by the OpenSearch Hadoop integration.
  */
 public interface ConfigurationOptions {
 
@@ -44,24 +44,24 @@ public interface ConfigurationOptions {
     String OPENSEARCH_NODES_DISCOVERY = "opensearch.nodes.discovery";
     String OPENSEARCH_NODES_DISCOVERY_DEFAULT = "true";
 
-    /** Elasticsearch port **/
-    String ES_PORT = "es.port";
-    String ES_PORT_DEFAULT = "9200";
+    /** OpenSearch port **/
+    String OPENSEARCH_PORT = "opensearch.port";
+    String OPENSEARCH_PORT_DEFAULT = "9200";
 
     /** OpenSearch prefix **/
     String OPENSEARCH_NODES_PATH_PREFIX = "opensearch.nodes.path.prefix";
     String OPENSEARCH_NODES_PATH_PREFIX_DEFAULT = "";
 
-    /** Elasticsearch index */
-    String ES_RESOURCE = "es.resource";
-    String ES_RESOURCE_READ = "es.resource.read";
-    String ES_RESOURCE_WRITE = "es.resource.write";
+    /** OpenSearch index */
+    String OPENSEARCH_RESOURCE = "opensearch.resource";
+    String OPENSEARCH_RESOURCE_READ = "opensearch.resource.read";
+    String OPENSEARCH_RESOURCE_WRITE = "opensearch.resource.write";
 
-    String ES_QUERY = "es.query";
+    String OPENSEARCH_QUERY = "es.query";
 
     /** Clients only */
     String OPENSEARCH_NODES_CLIENT_ONLY = "opensearch.nodes.client.only";
-    String ES_NODES_CLIENT_ONLY_DEFAULT = "false";
+    String OPENSEARCH_NODES_CLIENT_ONLY_DEFAULT = "false";
 
     /** Data only */
     String OPENSEARCH_NODES_DATA_ONLY = "opensearch.nodes.data.only";
@@ -84,21 +84,21 @@ public interface ConfigurationOptions {
     String OPENSEARCH_BATCH_SIZE_BYTES = "opensearch.batch.size.bytes";
     String OPENSEARCH_BATCH_SIZE_BYTES_DEFAULT = "1mb";
 
-    /** Elasticsearch batch size given in entries */
-    String ES_BATCH_SIZE_ENTRIES = "es.batch.size.entries";
-    String ES_BATCH_SIZE_ENTRIES_DEFAULT = "1000";
+    /** OpenSearch batch size given in entries */
+    String OPENSEARCH_BATCH_SIZE_ENTRIES = "es.batch.size.entries";
+    String OPENSEARCH_BATCH_SIZE_ENTRIES_DEFAULT = "1000";
 
-    /** Elasticsearch disable auto-flush on batch overflow */
-    String ES_BATCH_FLUSH_MANUAL = "es.batch.flush.manual";
-    String ES_BATCH_FLUSH_MANUAL_DEFAULT = "false";
+    /** OpenSearch disable auto-flush on batch overflow */
+    String OPENSEARCH_BATCH_FLUSH_MANUAL = "es.batch.flush.manual";
+    String OPENSEARCH_BATCH_FLUSH_MANUAL_DEFAULT = "false";
 
     /** Whether to trigger an index refresh after doing batch writing */
-    String ES_BATCH_WRITE_REFRESH = "es.batch.write.refresh";
-    String ES_BATCH_WRITE_REFRESH_DEFAULT = "true";
+    String OPENSEARCH_BATCH_WRITE_REFRESH = "es.batch.write.refresh";
+    String OPENSEARCH_BATCH_WRITE_REFRESH_DEFAULT = "true";
 
     /** HTTP bulk retries **/
-    String ES_BATCH_WRITE_RETRY_COUNT = "es.batch.write.retry.count";
-    String ES_BATCH_WRITE_RETRY_COUNT_DEFAULT = "3";
+    String OPENSEARCH_BATCH_WRITE_RETRY_COUNT = "es.batch.write.retry.count";
+    String OPENSEARCH_BATCH_WRITE_RETRY_COUNT_DEFAULT = "3";
 
     String ES_BATCH_WRITE_RETRY_LIMIT = "es.batch.write.retry.limit";
     String ES_BATCH_WRITE_RETRY_LIMIT_DEFAULT = "50";
@@ -270,7 +270,7 @@ public interface ConfigurationOptions {
     String ES_UPDATE_SCRIPT_PARAMS_JSON = "es.update.script.params.json";
 
     /** Output options **/
-    String ES_OUTPUT_JSON = "es.output.json";
+    String OPENSEARCH_OUTPUT_JSON = "opensearch.output.json";
     String ES_OUTPUT_JSON_DEFAULT = "no";
 
     /** Network options */

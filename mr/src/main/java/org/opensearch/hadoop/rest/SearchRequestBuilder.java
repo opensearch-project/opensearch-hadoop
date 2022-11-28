@@ -209,15 +209,9 @@ public class SearchRequestBuilder {
         }
         sb.append("/_search?");
 
-        // override infrastructure params
-        if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-            // scan type was removed
-            // default to sorting by indexing/doc order
-            uriParams.put("sort", "_doc");
-        }
-        else {
-            uriParams.put("search_type", "scan");
-        }
+        // scan type was removed
+        // default to sorting by indexing/doc order
+        uriParams.put("sort", "_doc");
         uriParams.put("scroll", String.valueOf(scroll.toString()));
         uriParams.put("size", String.valueOf(size));
         if (includeVersion) {
@@ -232,11 +226,7 @@ public class SearchRequestBuilder {
         }
         if (local || StringUtils.hasText(preference)) {
             if (pref.length() > 0) {
-                if (version.onOrAfter(OpenSearchMajorVersion.V_5_X)) {
-                    pref.append("|");
-                } else {
-                    pref.append(";");
-                }
+                pref.append("|");
             }
             if (StringUtils.hasText(preference)) {
                 pref.append(preference);

@@ -53,17 +53,15 @@ public class ApplyAliasMetaDataTest {
             new ObjectMapper()
                     .configure(JsonParser.Feature.ALLOW_COMMENTS, true);
 
-    private static final OpenSearchMajorVersion[] ES_VERSIONS =
+    private static final OpenSearchMajorVersion[] OPENSEARCH_VERSIONS =
             new OpenSearchMajorVersion[]{
-                    OpenSearchMajorVersion.V_0_X,
-                    OpenSearchMajorVersion.V_1_X,
                     OpenSearchMajorVersion.V_2_X,
-                    OpenSearchMajorVersion.V_5_X
+                    OpenSearchMajorVersion.V_3_X
             };
 
     @Test
     public void testNoAlias() throws IOException {
-        for (OpenSearchMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : OPENSEARCH_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-empty-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -76,7 +74,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testNoExplicitAlias() throws IOException {
-        for (OpenSearchMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : OPENSEARCH_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -134,7 +132,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testOneAlias() throws IOException {
-        for (OpenSearchMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : OPENSEARCH_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -176,7 +174,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testOneAliasWithQuery() throws IOException {
-        for (OpenSearchMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : OPENSEARCH_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -185,27 +183,14 @@ public class ApplyAliasMetaDataTest {
             searchRequest.query(query);
             RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1");
             QueryBuilder expected;
-            if (version.after(OpenSearchMajorVersion.V_1_X)) {
-                expected = new BoolQueryBuilder()
-                        .must(
-                                new TermQueryBuilder().field("user").term("costin")
-                        )
-                        .filter(
-                                new TermQueryBuilder().field("system").term("hadoop")
-                        );
-            } else {
-                expected = new BoolQueryBuilder()
-                        .must(
-                                new TermQueryBuilder().field("user").term("costin")
-                        )
-                        .must(
-                                new ConstantScoreQueryBuilder()
-                                        .filter(
-                                                new TermQueryBuilder().field("system").term("hadoop")
-                                        )
-                                        .boost(0.0f)
-                        );
-            }
+            expected = new BoolQueryBuilder()
+                    .must(
+                            new TermQueryBuilder().field("user").term("costin")
+                    )
+                    .filter(
+                            new TermQueryBuilder().field("system").term("hadoop")
+                    );
+
             Assert.assertEquals(QueryBuilderTestUtils.printQueryBuilder(expected, false),
                     QueryBuilderTestUtils.printQueryBuilder(searchRequest.query(), false));
             assertEquals("1,2", searchRequest.routing());
@@ -214,7 +199,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testTwoAliases() throws IOException {
-        for (OpenSearchMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : OPENSEARCH_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -239,7 +224,7 @@ public class ApplyAliasMetaDataTest {
 
     @Test
     public void testTwoAliasesWithQuery() throws IOException {
-        for (OpenSearchMajorVersion version : ES_VERSIONS) {
+        for (OpenSearchMajorVersion version : OPENSEARCH_VERSIONS) {
             Map<String, Object> map = MAPPER.readValue(getClass().getResourceAsStream("get-aliases-response.json"), TreeMap.class);
             GetAliasesRequestBuilder.Response response = new GetAliasesRequestBuilder.Response(map);
             Map<String, IndicesAliases.Alias> aliases = response.getIndices().getAliases("index1");
@@ -247,40 +232,19 @@ public class ApplyAliasMetaDataTest {
             QueryBuilder query = new TermQueryBuilder().field("user").term("costin");
             searchRequest.query(query);
             RestService.applyAliasMetadata(version, aliases, searchRequest, "index1", "alias1", "alias2");
-            QueryBuilder expected;
-            if (version.after(OpenSearchMajorVersion.V_1_X)) {
-                expected = new BoolQueryBuilder()
-                        .must(
-                                new TermQueryBuilder().field("user").term("costin")
-                        )
-                        .filter(
-                                new BoolQueryBuilder()
-                                        .should(
-                                                new TermQueryBuilder().field("system").term("hadoop")
-                                        )
-                                        .should(
-                                                new TermQueryBuilder().field("system").term("spark")
-                                        )
-                        );
-            } else {
-                expected = new BoolQueryBuilder()
-                        .must(
-                                new TermQueryBuilder().field("user").term("costin")
-                        )
-                        .must(
-                                new ConstantScoreQueryBuilder()
-                                        .filter(
-                                                new BoolQueryBuilder()
-                                                        .should(
-                                                                new TermQueryBuilder().field("system").term("hadoop")
-                                                        )
-                                                        .should(
-                                                                new TermQueryBuilder().field("system").term("spark")
-                                                        )
-                                        )
-                                        .boost(0.0f)
-                        );
-            }
+            QueryBuilder expected = new BoolQueryBuilder()
+                    .must(
+                            new TermQueryBuilder().field("user").term("costin")
+                    )
+                    .filter(
+                            new BoolQueryBuilder()
+                                    .should(
+                                            new TermQueryBuilder().field("system").term("hadoop")
+                                    )
+                                    .should(
+                                            new TermQueryBuilder().field("system").term("spark")
+                                    )
+                    );
             Assert.assertEquals(QueryBuilderTestUtils.printQueryBuilder(expected, false),
                     QueryBuilderTestUtils.printQueryBuilder(searchRequest.query(), false));
             assertEquals("1,2", searchRequest.routing());

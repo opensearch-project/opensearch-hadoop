@@ -449,10 +449,10 @@ class BuildPlugin implements Plugin<Project>  {
         project.tasks.withType(Javadoc) { Javadoc javadoc ->
             javadoc.title = "${project.rootProject.description} ${project.version} API"
             javadoc.excludes = [
-                    "org/elasticsearch/hadoop/mr/compat/**",
-                    "org/elasticsearch/hadoop/rest/**",
-                    "org/elasticsearch/hadoop/serialization/**",
-                    "org/elasticsearch/hadoop/util/**",
+                    "org/opensearch/hadoop/mr/compat/**",
+                    "org/opensearch/hadoop/rest/**",
+                    "org/opensearch/hadoop/serialization/**",
+                    "org/opensearch/hadoop/util/**",
                     "org/apache/hadoop/hive/**"
             ]
             // Set javadoc executable to runtime Java (1.8)
@@ -467,11 +467,11 @@ class BuildPlugin implements Plugin<Project>  {
             javadocOptions.showFromProtected()
             javadocOptions.addStringOption('Xdoclint:none', '-quiet')
             javadocOptions.groups = [
-                    'Elasticsearch Map/Reduce' : ['org.elasticsearch.hadoop.mr*'],
-                    'Elasticsearch Hive' : ['org.elasticsearch.hadoop.hive*'],
-                    'Elasticsearch Pig' : ['org.elasticsearch.hadoop.pig*'],
-                    'Elasticsearch Spark' : ['org.elasticsearch.spark*'],
-                    'Elasticsearch Storm' : ['org.elasticsearch.storm*'],
+                    'OpenSearch Map/Reduce' : ['org.opensearch.hadoop.mr*'],
+                    'OpenSearch Hive' : ['org.opensearch.hadoop.hive*'],
+                    'OpenSearch Pig' : ['org.opensearch.hadoop.pig*'],
+                    'OpenSearch Spark' : ['org.opensearch.spark*'],
+                    'OpenSearch Storm' : ['org.opensearch.storm*'],
             ]
             javadocOptions.links = [ // External doc links
                     "https://docs.oracle.com/javase/8/docs/api/",

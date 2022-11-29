@@ -45,8 +45,8 @@ import org.junit.rules.LazyTempFolder;
 
 public class QueryTestParams {
 
-    private static final String QUERY_DSL = "/org/elasticsearch/hadoop/integration/query.dsl";
-    private static final String QUERY_URI = "/org/elasticsearch/hadoop/integration/query.uri";
+    private static final String QUERY_DSL = "/org/opensearch/hadoop/integration/query.dsl";
+    private static final String QUERY_URI = "/org/opensearch/hadoop/integration/query.uri";
 
     private final File stagingLocation;
     private final boolean isLocal;

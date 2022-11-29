@@ -53,7 +53,7 @@ public class PartitionDefinitionTest {
     private Mapping getTestMapping() throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonParser jsonParser = mapper.getJsonFactory()
-                .createJsonParser(getClass().getResourceAsStream("/org/elasticsearch/hadoop/serialization/dto/mapping/typeless/basic.json"));
+                .createJsonParser(getClass().getResourceAsStream("/org/opensearch/hadoop/serialization/dto/mapping/typeless/basic.json"));
         Map<String, Object> map =
                 (Map<String, Object>) mapper.readValue(jsonParser, Map.class);
         return FieldParser.parseTypelessMappings(map).getResolvedView();

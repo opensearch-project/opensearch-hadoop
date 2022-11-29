@@ -36,7 +36,7 @@ import org.opensearch.hadoop.util.StringUtils;
 
 public class ConstantFieldExtractor implements FieldExtractor, SettingsAware {
 
-    public static final String PROPERTY = "org.elasticsearch.hadoop.serialization.ConstantFieldExtractor.property";
+    public static final String PROPERTY = "org.opensearch.hadoop.serialization.ConstantFieldExtractor.property";
     private List<String> fieldNames;
     private Object value;
     private boolean autoQuote = true;

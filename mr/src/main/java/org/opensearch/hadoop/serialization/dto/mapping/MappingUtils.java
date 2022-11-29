@@ -73,7 +73,7 @@ public abstract class MappingUtils {
             return;
         }
 
-        String message = String.format("Field(s) [%s] not found in the Elasticsearch mapping specified; did you mean [%s]?",
+        String message = String.format("Field(s) [%s] not found in the OpenSearch mapping specified; did you mean [%s]?",
                 removeDoubleBrackets(results[0]), removeDoubleBrackets(results[1]));
         if (validation == FieldPresenceValidation.WARN) {
             log.warn(message);

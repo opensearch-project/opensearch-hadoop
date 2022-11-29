@@ -26,13 +26,9 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-package org.elasticsearch.hadoop.util;
+package org.opensearch.hadoop.util;
 
 import org.junit.Test;
-import org.opensearch.hadoop.util.BytesArray;
-import org.opensearch.hadoop.util.BytesUtils;
-import org.opensearch.hadoop.util.IOUtils;
-import org.opensearch.hadoop.util.TestUtils;
 
 import static org.junit.Assert.*;
 
@@ -125,7 +121,7 @@ public class BytesUtilsTest {
 
     // @Test
     public void testByteToCharFromFile() throws Exception {
-        BytesArray input = IOUtils.asBytes(getClass().getResourceAsStream("/org/elasticsearch/hadoop/serialization/scrollReaderTestData/matched-queries/scroll.json"));
+        BytesArray input = IOUtils.asBytes(getClass().getResourceAsStream("/org/opensearch/hadoop/serialization/scrollReaderTestData/matched-queries/scroll.json"));
         int[] chars = new int[] { 555, 558, 1008, 1009, 1649 };
         int[] bytePositions = BytesUtils.charToBytePosition(input, chars);
         assertEquals(570, bytePositions[0]);

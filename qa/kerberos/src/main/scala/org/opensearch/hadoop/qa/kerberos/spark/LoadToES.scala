@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -27,7 +27,7 @@
  * under the License.
  */
 
-package org.elasticsearch.hadoop.qa.kerberos.spark
+package org.opensearch.hadoop.qa.kerberos.spark
 
 import java.security.PrivilegedExceptionAction
 import org.apache.spark.SparkConf

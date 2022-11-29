@@ -36,6 +36,6 @@ public class PigJsonTest {
 
     @Test
     public void testJsonWithArray() throws Exception {
-        Map<String, Object> jsonMap = JsonUtils.mapFromJson("/org/elasticsearch/hadoop/pig/array.json");
+        Map<String, Object> jsonMap = JsonUtils.mapFromJson("/org/opensearch/hadoop/pig/array.json");
     }
 }

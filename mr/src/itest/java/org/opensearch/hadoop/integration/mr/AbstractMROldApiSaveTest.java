@@ -539,7 +539,7 @@ public class AbstractMROldApiSaveTest {
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-nested", "data", clusterInfo.getMajorVersion()));
         conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
 
-        RestUtils.putMapping(indexPrefix + "mroldapi-nested", "data", "org/elasticsearch/hadoop/integration/mr-nested.json");
+        RestUtils.putMapping(indexPrefix + "mroldapi-nested", "data", "org/opensearch/hadoop/integration/mr-nested.json");
 
         runJob(conf);
     }

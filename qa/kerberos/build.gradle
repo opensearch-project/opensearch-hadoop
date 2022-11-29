@@ -304,7 +304,7 @@ if (disableTests) {
                 f.addSetting("hadoop.proxyuser.hive.groups", "*")
 
                 // Add OpenSearch Security settings here because without them Spark will not obtain tokens
-                f.addSetting('es.security.authentication', 'kerberos')
+                f.addSetting('opensearch.security.authentication', 'kerberos')
                 f.addSetting('opensearch.net.spnego.auth.opensearch.principal', "${opensearchPrincipal}${realm}")
             }
             // SSL Server Config
@@ -468,7 +468,7 @@ if (disableTests) {
         jobSettings([
                 'opensearch.resource': 'qa_kerberos_mr_data',
                 'opensearch.nodes': opensearchAddress,
-                'es.security.authentication': 'kerberos',
+                'opensearch.security.authentication': 'kerberos',
                 'opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'load.field.names': 'number,name,url,picture,@timestamp,tag',
                 'mapreduce.map.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",
@@ -495,7 +495,7 @@ if (disableTests) {
         jobSettings([
                 'opensearch.resource': 'qa_kerberos_mr_data',
                 'es.nodes': opensearchAddress,
-                'es.security.authentication': 'kerberos',
+                'opensearch.security.authentication': 'kerberos',
                 'opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'mapreduce.map.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",
                 'mapreduce.reduce.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",
@@ -528,7 +528,7 @@ if (disableTests) {
         jobSettings([
                 'spark.opensearch.resource': 'qa_kerberos_spark_data',
                 'spark.opensearch.nodes': opensearchAddress,
-                'spark.es.security.authentication': 'kerberos',
+                'spark.opensearch.security.authentication': 'kerberos',
                 'spark.opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'spark.load.field.names': 'number,name,url,picture,@timestamp,tag',
                 'spark.yarn.am.memory': "200m",
@@ -560,7 +560,7 @@ if (disableTests) {
         jobSettings([
                 'spark.opensearch.resource': 'qa_kerberos_spark_data',
                 'spark.opensearch.nodes': opensearchAddress,
-                'spark.es.security.authentication': 'kerberos',
+                'spark.opensearch.security.authentication': 'kerberos',
                 'spark.opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'spark.yarn.am.memory': "200m",
                 'spark.driver.memory': "600m",

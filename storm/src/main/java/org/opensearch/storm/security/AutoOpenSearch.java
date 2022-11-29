@@ -118,19 +118,19 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
         final Settings topologyAndClusterSettings = new CompositeSettings(Arrays.asList(topologyConf, clusterSettings));
 
         if (!AuthenticationMethod.KERBEROS.equals(topologyAndClusterSettings.getSecurityAuthenticationMethod())) {
-            throw new OpenSearchHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not enable ES Kerberos [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Configured OpenSearch autocredential plugin but did not enable OpenSearch Kerberos [" +
                     ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION + "]. Bailing out...");
         }
 
         String userPrincipal = topologyAndClusterSettings.getProperty(USER_PRINCIPAL);
         if (userPrincipal == null) {
-            throw new OpenSearchHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not provide [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Configured OpenSearch autocredential plugin but did not provide [" +
                     USER_PRINCIPAL + "] setting. Bailing out...");
         }
 
         String userKeytab = topologyAndClusterSettings.getProperty(USER_KEYTAB);
         if (userKeytab == null) {
-            throw new OpenSearchHadoopIllegalArgumentException("Configured Elasticsearch autocredential plugin but did not provide [" +
+            throw new OpenSearchHadoopIllegalArgumentException("Configured OpenSearch autocredential plugin but did not provide [" +
                     USER_KEYTAB + "] setting. Bailing out...");
         }
 

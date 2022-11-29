@@ -83,14 +83,14 @@ public final class OpenSearchMapReduceUtil {
                 TokenUtil.addTokenForJob(bootstrap, clusterInfo.getClusterName(), user, job);
             } catch (OpenSearchHadoopException ex) {
                 throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
-                        + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
+                        + "typically this happens if the network/OpenSearch cluster is not accessible or when targeting "
                         + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {
                 bootstrap.close();
             }
         } else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Ignoring Elasticsearch credentials since Kerberos Auth is not enabled.");
+                LOG.debug("Ignoring OpenSearch credentials since Kerberos Auth is not enabled.");
             }
         }
     }
@@ -118,14 +118,14 @@ public final class OpenSearchMapReduceUtil {
                 TokenUtil.addTokenForJobConf(bootstrap, clusterInfo.getClusterName(), user, jobConf);
             } catch (OpenSearchHadoopException ex) {
                 throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
-                        + "typically this happens if the network/Elasticsearch cluster is not accessible or when targeting "
+                        + "typically this happens if the network/OpenSearch cluster is not accessible or when targeting "
                         + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
             } finally {
                 bootstrap.close();
             }
         } else {
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Ignoring Elasticsearch credentials since Kerberos Auth is not enabled.");
+                LOG.debug("Ignoring OpenSearch credentials since Kerberos Auth is not enabled.");
             }
         }
     }

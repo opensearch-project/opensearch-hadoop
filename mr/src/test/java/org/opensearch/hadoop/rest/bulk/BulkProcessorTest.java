@@ -98,7 +98,7 @@ public class BulkProcessorTest {
 
     @Before
     public void setUp() throws Exception {
-        inputEntry = IOUtils.asString(getClass().getResourceAsStream("/org/elasticsearch/hadoop/rest/bulk-retry-input-template.json"));
+        inputEntry = IOUtils.asString(getClass().getResourceAsStream("/org/opensearch/hadoop/rest/bulk-retry-input-template.json"));
 
         testSettings = new TestSettings();
         testSettings.setResourceWrite("foo/bar");

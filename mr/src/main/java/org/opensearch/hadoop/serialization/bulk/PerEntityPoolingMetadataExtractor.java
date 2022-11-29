@@ -89,7 +89,7 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
         @Override
         public Object field(Object target) {
             throw new OpenSearchHadoopUnsupportedOperationException("Unsupported metadata tag [" + unsupportedMetadata.getName()
-                    + "] for Elasticsearch version [" + version.toString() + "]. Bailing out...");
+                    + "] for OpenSearch version [" + version.toString() + "]. Bailing out...");
         }
     }
 

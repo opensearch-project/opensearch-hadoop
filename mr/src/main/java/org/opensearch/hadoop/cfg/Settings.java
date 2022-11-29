@@ -62,7 +62,7 @@ public abstract class Settings {
     public OpenSearchMajorVersion getInternalVersionOrThrow() {
         String version = getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION, null);
         if (version == null) {
-            throw new IllegalArgumentException("Elasticsearch version:[ " + InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION + "] not present in configuration");
+            throw new IllegalArgumentException("OpenSearch version:[ " + InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION + "] not present in configuration");
         }
         return OpenSearchMajorVersion.parse(version);
     }
@@ -91,7 +91,7 @@ public abstract class Settings {
     public ClusterInfo getClusterInfoOrThrow() {
         ClusterInfo clusterInfo = getClusterInfoOrNull();
         if (clusterInfo == null) {
-            throw new IllegalArgumentException("Elasticsearch cluster name:[ " + InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_NAME +
+            throw new IllegalArgumentException("OpenSearch cluster name:[ " + InternalConfigurationOptions.INTERNAL_OPENSEARCH_CLUSTER_NAME +
                     "] not present in configuration");
         }
         return clusterInfo;

@@ -54,7 +54,7 @@ import static org.junit.Assert.fail;
 public class IOUtilsTest {
     @Test
     public void openResource() throws Exception {
-        InputStream inputStream = IOUtils.open("org/elasticsearch/hadoop/util/textdata.txt");
+        InputStream inputStream = IOUtils.open("org/opensearch/hadoop/util/textdata.txt");
         assertNotNull(inputStream);
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
@@ -83,24 +83,24 @@ public class IOUtilsTest {
 
     @Test
     public void testToCanonicalFile() throws Exception {
-        String file = "file:/some/path/org/elasticsearch/hadoop/util/Version.class";
+        String file = "file:/some/path/org/opensearch/hadoop/util/Version.class";
         URL url = new URL(file);
         String canonicalFilePath = IOUtils.toCanonicalFilePath(url);
         assertEquals(file, canonicalFilePath);
 
-        url = new URL("jar:file:/some/path/opensearch-hadoop-7.17.0.jar!/org/elasticsearch/hadoop/util/Version.class");
+        url = new URL("jar:file:/some/path/opensearch-hadoop-7.17.0.jar!/org/opensearch/hadoop/util/Version.class");
         canonicalFilePath = IOUtils.toCanonicalFilePath(url);
         assertEquals("file:/some/path/opensearch-hadoop-7.17.0.jar", canonicalFilePath);
 
-        url = new URL("file:/some/path/../path/org/elasticsearch/hadoop/util/Version.class");
+        url = new URL("file:/some/path/../path/org/opensearch/hadoop/util/Version.class");
         canonicalFilePath = IOUtils.toCanonicalFilePath(url);
-        assertEquals("file:/some/path/org/elasticsearch/hadoop/util/Version.class", canonicalFilePath);
+        assertEquals("file:/some/path/org/opensearch/hadoop/util/Version.class", canonicalFilePath);
     }
 
     @Test
     public void testToCanonicalFileSpringBoot() throws Exception {
         String jarWithinJarPath = "file:/some/path/outer.jar!/BOOT-INF/lib/opensearch-hadoop-7.17.0.jar";
-        String file = jarWithinJarPath + "!/org/elasticsearch/hadoop/util/Version.class";
+        String file = jarWithinJarPath + "!/org/opensearch/hadoop/util/Version.class";
         URL url = new URL("jar", "", -1, file, new SpringBootURLStreamHandler(jarWithinJarPath) );
         String canonicalFilePath = IOUtils.toCanonicalFilePath(url);
         assertEquals("jar:" + jarWithinJarPath, canonicalFilePath);

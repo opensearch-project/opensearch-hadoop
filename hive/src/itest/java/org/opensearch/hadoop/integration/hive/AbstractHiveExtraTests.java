@@ -97,7 +97,7 @@ public class AbstractHiveExtraTests {
     public void testDate() throws Exception {
         String resource = "hive-date-as-long";
         RestUtils.touch("hive-date-as-long");
-        RestUtils.putMapping("hive-date-as-long", "data", "org/elasticsearch/hadoop/hive/hive-date-typeless-mapping.json");
+        RestUtils.putMapping("hive-date-as-long", "data", "org/opensearch/hadoop/hive/hive-date-typeless-mapping.json");
 
         String docEndpoint = docEndpoint(resource, "data", TestUtils.getOpenSearchClusterInfo().getMajorVersion());
 

@@ -42,23 +42,6 @@ import static org.junit.Assert.*;
 
 public class JsonFieldExtractorsTest {
 
-    @Test
-    public void indexAndType() {
-        Settings settings = new TestSettings();
-        // Types will not be supported in 8.x
-        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
-        settings.setResourceWrite("test/{field}");
-        JsonFieldExtractors jsonFieldExtractors = new JsonFieldExtractors(settings);
-
-        String data = "{\"field\":\"data\"}";
-        BytesArray bytes = new BytesArray(data);
-
-        jsonFieldExtractors.process(bytes);
-
-        assertThat(jsonFieldExtractors.indexAndType().hasPattern(), is(true));
-        assertThat(jsonFieldExtractors.indexAndType().field(data).toString(), equalTo("\"_index\":\"test\",\"_type\":\"data\""));
-    }
-
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void indexAndTypeNull() {
         Settings settings = new TestSettings();

@@ -1,6 +1,6 @@
 {
     "ok" : true,
-    "cluster_name" : "elasticsearch",
+    "cluster_name" : "opensearch",
     "nodes" : {
         "fiR5azTbTDiX59m78yzOTw" : {
             "name" : "Darkhawk",

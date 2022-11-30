@@ -48,13 +48,6 @@ public class QueryTest {
     }
 
     @Test
-    public void testSimpleQuery() {
-        cfg.setResourceRead("foo/bar");
-        Resource typed = new Resource(cfg, true);
-        assertTrue(builder.resource(typed).toString().contains("foo/bar"));
-    }
-
-    @Test
     public void testSimpleQueryTypeless() {
         cfg.setInternalVersion(OpenSearchMajorVersion.LATEST);
         cfg.setResourceRead("foo");

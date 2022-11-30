@@ -91,7 +91,6 @@ public class Resource {
         int slash = res.indexOf("/");
         boolean typeExists = slash >= 0;
 
-        OpenSearchMajorVersion opensearchMajorVersion = settings.getInternalVersionOrThrow();
         // Types can no longer the specified at all! Index names only!
         if (typeExists) {
             throw new OpenSearchHadoopIllegalArgumentException(String.format(

@@ -1,12 +1,12 @@
 {
     "ok" : true,
-    "cluster_name" : "elasticsearch",
+    "cluster_name" : "opensearch",
     "nodes" : {
         "fiR5azTbTDiX59m78yzOTw" : {
             "name" : "Darkhawk",
             "transport_address" : "192.168.1.50:9300",
             "host" : "cerberus",
-            "version" : "5.0.0-alpha5",
+            "version" : "3.0.0-alpha5",
             "roles" : [],
             "http" : {
                 "bound_address" : "0:0:0:0:0:0:0:0:9200",
@@ -19,7 +19,7 @@
             "name" : "Unseen",
             "transport_address" : "192.168.1.50:9301",
             "host" : "cerberus",
-            "version" : "5.0.0-alpha5",
+            "version" : "3.0.0-alpha5",
             "roles" : [
                 "master",
                 "data",

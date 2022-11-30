@@ -101,7 +101,7 @@ public class BulkProcessorTest {
         inputEntry = IOUtils.asString(getClass().getResourceAsStream("/org/opensearch/hadoop/rest/bulk-retry-input-template.json"));
 
         testSettings = new TestSettings();
-        testSettings.setResourceWrite("foo/bar");
+        testSettings.setResourceWrite("foo");
         testSettings.setInternalClusterInfo(esClusterInfo);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_ENTRIES, "10");
         testSettings.setProperty(ConfigurationOptions.ES_BATCH_WRITE_RETRY_WAIT, "1ms");

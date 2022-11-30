@@ -38,6 +38,7 @@ import java.sql.Timestamp
 import java.{util => ju}
 import java.util.concurrent.TimeUnit
 import org.opensearch.spark.rdd.JDKCollectionConvertersCompat.Converters._
+import org.opensearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 
 import scala.collection.Map
 import scala.collection.mutable.ArrayBuffer
@@ -450,7 +451,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val nullDescriptionsDf = outputDf.filter(row => row.getAs("description") == null)
     assertEquals(1, nullDescriptionsDf.count)
 
-    val reader2 = sqc.read.format("org.opensearch.spark.sql").option("es.field.read.empty.as.null", "no")
+    val reader2 = sqc.read.format("org.opensearch.spark.sql").option("opensearch.field.read.empty.as.null", "no")
     val outputDf2 = reader2.load("empty_strings_test")
     assertEquals(data.size, outputDf2.count)
     val nullDescriptionsDf2 = outputDf2.filter(row => row.getAs("description") == null)
@@ -1609,7 +1610,6 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testJoinField(): Unit = {
-
     // test mix of short-form and long-form joiner values
     val company1 = Map("id" -> "1", "company" -> "Elastic", "joiner" -> "company")
     val company2 = Map("id" -> "2", "company" -> "Fringe Cafe", "joiner" -> Map("name" -> "company"))

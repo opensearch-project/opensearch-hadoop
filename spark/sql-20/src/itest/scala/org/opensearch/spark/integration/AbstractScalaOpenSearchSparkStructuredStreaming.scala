@@ -439,7 +439,6 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
 
   @Test
   def test2WriteToIngestPipeline(): Unit = {
-
     val pipelineName: String = prefix + "-pipeline"
     val pipeline: String = """{"description":"Test Pipeline","processors":[{"set":{"field":"pipeTEST","value":true,"override":true}}]}"""
     RestUtils.put("/_ingest/pipeline/" + pipelineName, StringUtils.toUTF(pipeline))

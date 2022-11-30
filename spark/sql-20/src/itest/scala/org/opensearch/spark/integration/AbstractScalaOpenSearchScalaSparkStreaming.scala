@@ -146,14 +146,14 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     assertThat(RestUtils.get(target + "/_search?"), containsString("two"))
   }
 
-  @Test
-  def testNestedUnknownCharacter(): Unit = {
-    val expected = ExpectingToThrow(classOf[SparkException]).from(ssc)
-    val doc = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A", "B", "C"), "unknown" -> new Garbage(0))
-    val batch = sc.makeRDD(Seq(doc))
-    runStream(batch)(_.saveToEs(wrapIndex(resource("spark-streaming-test-nested-map", "data", version)), cfg))
-    expected.assertExceptionFound()
-  }
+  // @Test
+  // def testNestedUnknownCharacter(): Unit = {
+  //   val expected = ExpectingToThrow(classOf[SparkException]).from(ssc)
+  //   val doc = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A", "B", "C"), "unknown" -> new Garbage(0))
+  //   val batch = sc.makeRDD(Seq(doc))
+  //   runStream(batch)(_.saveToEs(wrapIndex(resource("spark-streaming-test-nested-map", "data", version)), cfg))
+  //   expected.assertExceptionFound()
+  // }
 
   @Test
   def testEsRDDWriteCaseClass(): Unit = {
@@ -256,7 +256,6 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
 
   @Test
   def testOpenSearchRDDIngest(): Unit = {
-
     val client: RestUtils.ExtendedRestClient = new RestUtils.ExtendedRestClient
     val pipelineName: String = prefix + "-pipeline"
     val pipeline: String = "{\"description\":\"Test Pipeline\",\"processors\":[{\"set\":{\"field\":\"pipeTEST\",\"value\":true,\"override\":true}}]}"
@@ -359,14 +358,12 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val lines = sc.makeRDD(List("""{"id":"1","address":{"zipcode":"12345","id":"1"}}"""))
     val up_params = "new_address:address"
     val up_script = "ctx._source.address.add(params.new_address)"
-
     runStreamRecoverably(lines)(_.saveToEs(target, props + ("es.update.script.params" -> up_params) + ("es.update.script" -> up_script)))
 
     // Upsert a value that should only modify the second document. Modification will update the "note" field.
     val notes = sc.makeRDD(List("""{"id":"2","note":"Second"}"""))
     val note_up_params = "new_note:note"
     val note_up_script = "ctx._source.note = params.new_note"
-
     runStream(notes)(_.saveToEs(target, props + ("es.update.script.params" -> note_up_params) + ("es.update.script" -> note_up_script)))
 
     assertTrue(RestUtils.exists(s"$docPath/1"))

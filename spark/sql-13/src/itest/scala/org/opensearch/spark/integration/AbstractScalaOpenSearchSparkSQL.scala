@@ -432,7 +432,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     assertEquals(1, nullDescriptionsDf.count)
     assertEquals(null, nullDescriptionsDf.first().getAs("description"))
 
-    val reader2 = sqc.read.format("org.opensearch.spark.sql").option("es.field.read.empty.as.null", "no")
+    val reader2 = sqc.read.format("org.opensearch.spark.sql").option("opensearch.field.read.empty.as.null", "no")
     val outputDf2 = reader2.load("empty_strings_test")
     assertEquals(data.size, outputDf2.count)
     val emptyDescriptionsDf = outputDf2.filter("language = 'Python'")
@@ -1547,7 +1547,6 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testJoinField(): Unit = {
-
     // test mix of short-form and long-form joiner values
     val company1 = Map("id" -> "1", "company" -> "Elastic", "joiner" -> "company")
     val company2 = Map("id" -> "2", "company" -> "Fringe Cafe", "joiner" -> Map("name" -> "company"))

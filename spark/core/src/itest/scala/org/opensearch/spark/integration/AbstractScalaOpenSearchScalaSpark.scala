@@ -188,11 +188,11 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     assertThat(RestUtils.get(target + "/_search?"), containsString(""))
   }
 
-  @Test(expected = classOf[SparkException])
-  def testNestedUnknownCharacter() {
-    val doc = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A", "B", "C"), "unknown" -> new Garbage(0))
-    sc.makeRDD(Seq(doc)).saveToEs(wrapIndex(resource("spark-test-nested-map", "data", version)), cfg)
-  }
+  // @Test(expected = classOf[SparkException])
+  // def testNestedUnknownCharacter() {
+  //   val doc = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A", "B", "C"), "unknown" -> new Garbage(0))
+  //   sc.makeRDD(Seq(doc)).saveToEs(wrapIndex(resource("spark-test-nested-map", "data", version)), cfg)
+  // }
 
   @Test
   def testEsRDDWriteCaseClass() {
@@ -488,14 +488,21 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
         |    }
         |}""".stripMargin)
 
-    val index = wrapIndex("spark-test-stored")
-    val typename = "data"
-    val target = resource(index, typename, version)
-    val docPath = docEndpoint(index, typename, version)
+  //   // Upsert a value that should only modify the first document. Modification will add an address entry.
+  //   val lines = sc.makeRDD(List("""{"id":"1","address":{"zipcode":"12345","id":"1"}}"""))
+  //   val up_params = "new_address:address"
+  //   val up_script = {
+  //       "ctx._source.address.add(params.new_address)"
+  //   }
+  //   lines.saveToEs(target, props + ("es.update.script.params" -> up_params) + ("es.update.script" -> up_script))
 
-    RestUtils.touch(index)
-    RestUtils.putMapping(index, typename, mapping.getBytes())
-    RestUtils.put(s"$docPath/1", """{"id":"1", "counter":5}""".getBytes(StringUtils.UTF_8))
+  //   // Upsert a value that should only modify the second document. Modification will update the "note" field.
+  //   val notes = sc.makeRDD(List("""{"id":"2","note":"Second"}"""))
+  //   val note_up_params = "new_note:note"
+  //   val note_up_script = {
+  //       "ctx._source.note = params.new_note"
+  //   }
+  //   notes.saveToEs(target, props + ("es.update.script.params" -> note_up_params) + ("es.update.script" -> note_up_script))
 
     val scriptName = "increment"
     val lang = "painless"
@@ -713,11 +720,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val target = resource(index, typename, version)
 
     val indexPattern = "spark-template-*"
-    val patternMatchField = if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
-      s""""index_patterns":["$indexPattern"],"""
-    } else {
-      s""""template": "$indexPattern","""
-    }
+    val patternMatchField = s""""index_patterns":["$indexPattern"],"""
 
     val template = s"""
         |{

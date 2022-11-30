@@ -165,14 +165,14 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     assertThat(RestUtils.get(target + "/_search?"), containsString("two"))
   }
 
-  @Test
-  def testNestedUnknownCharacter(): Unit = {
-    val expected = ExpectingToThrow(classOf[SparkException]).from(ssc)
-    val doc = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A", "B", "C"), "unknown" -> new Garbage(5))
-    val batch = sc.makeRDD(Seq(doc))
-    runStream(batch)(_.saveToEs(wrapIndex(resource("spark-streaming-test-nested-map", "data", version)), cfg))
-    expected.assertExceptionFound()
-  }
+  // @Test
+  // def testNestedUnknownCharacter(): Unit = {
+  //   val expected = ExpectingToThrow(classOf[SparkException]).from(ssc)
+  //   val doc = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A", "B", "C"), "unknown" -> new Garbage(5))
+  //   val batch = sc.makeRDD(Seq(doc))
+  //   runStream(batch)(_.saveToEs(wrapIndex(resource("spark-streaming-test-nested-map", "data", version)), cfg))
+  //   expected.assertExceptionFound()
+  // }
 
   @Test
   def testEsRDDWriteCaseClass(): Unit = {

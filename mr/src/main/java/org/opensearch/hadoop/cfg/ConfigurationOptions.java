@@ -221,7 +221,7 @@ public interface ConfigurationOptions {
 
     /** Field options **/
     String ES_READ_FIELD_EMPTY_AS_NULL = "es.read.field.empty.as.null";
-    String ES_READ_FIELD_EMPTY_AS_NULL_LEGACY = "es.field.read.empty.as.null";
+    String ES_READ_FIELD_EMPTY_AS_NULL_LEGACY = "opensearch.field.read.empty.as.null";
     String ES_READ_FIELD_EMPTY_AS_NULL_DEFAULT = "yes";
 
     String ES_READ_FIELD_VALIDATE_PRESENCE = "es.read.field.validate.presence";

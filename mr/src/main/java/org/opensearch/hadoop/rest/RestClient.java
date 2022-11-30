@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -111,7 +111,6 @@ public class RestClient implements Closeable, StatsAware {
         mapper.configure(SerializationConfig.Feature.USE_ANNOTATIONS, false);
     }
 
-
     private final Stats stats = new Stats();
 
     public enum Health {
@@ -131,13 +130,13 @@ public class RestClient implements Closeable, StatsAware {
 
         if (ConfigurationOptions.ES_BATCH_WRITE_RETRY_POLICY_SIMPLE.equals(retryPolicyName)) {
             retryPolicyName = SimpleHttpRetryPolicy.class.getName();
-        }
-        else if (ConfigurationOptions.ES_BATCH_WRITE_RETRY_POLICY_NONE.equals(retryPolicyName)) {
+        } else if (ConfigurationOptions.ES_BATCH_WRITE_RETRY_POLICY_NONE.equals(retryPolicyName)) {
             retryPolicyName = NoHttpRetryPolicy.class.getName();
         }
 
         this.retryPolicy = ObjectUtils.instantiate(retryPolicyName, settings);
-        // Assume that the opensearch major version is the latest if the version is not already present in the settings
+        // Assume that the opensearch major version is the latest if the version is not
+        // already present in the settings
         this.clusterInfo = settings.getClusterInfoOrUnnamedLatest();
         this.errorExtractor = new ErrorExtractor();
     }
@@ -233,13 +232,17 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     /**
-     * Executes a single bulk operation against the provided resource, using the passed data as the request body.
-     * This method will retry bulk requests if the entire bulk request fails, but will not retry singular
+     * Executes a single bulk operation against the provided resource, using the
+     * passed data as the request body.
+     * This method will retry bulk requests if the entire bulk request fails, but
+     * will not retry singular
      * document failures.
      *
      * @param resource target of the bulk request.
-     * @param data bulk request body. This body will be cleared of entries on any successful bulk request.
-     * @return a BulkActionResponse object that will detail if there were failing documents that should be retried.
+     * @param data     bulk request body. This body will be cleared of entries on
+     *                 any successful bulk request.
+     * @return a BulkActionResponse object that will detail if there were failing
+     *         documents that should be retried.
      */
     public BulkActionResponse bulk(Resource resource, TrackingBytesArray data) {
         // NB: dynamically get the stats since the transport can change
@@ -278,16 +281,15 @@ public class RestClient implements Closeable, StatsAware {
 
     public String postDocument(Resource resource, BytesArray document) throws IOException {
         // If untyped, the type() method returns '_doc'
-        Request request = new SimpleRequest(Method.POST, null, resource.index() + "/" + resource.type(), null, document);
+        Request request = new SimpleRequest(Method.POST, null, resource.index() + "/" + resource.type(), null,
+                document);
         Response response = execute(request, true);
         Object id = parseContent(response.body(), "_id");
         if (id == null || !StringUtils.hasText(id.toString())) {
             throw new OpenSearchHadoopInvalidRequest(
                     String.format("Could not determine successful write operation. Request[%s > %s] Response[%s]",
                             request.method(), request.path(),
-                            IOUtils.asString(response.body())
-                    )
-            );
+                            IOUtils.asString(response.body())));
         }
         return id.toString();
     }
@@ -309,12 +311,10 @@ public class RestClient implements Closeable, StatsAware {
             Response res = executeNotFoundAllowed(req);
             if (res.status() == HttpStatus.OK) {
                 shardsJson = parseContent(res.body(), "shards");
-            }
-            else {
+            } else {
                 shardsJson = Collections.emptyList();
             }
-        }
-        else {
+        } else {
             shardsJson = get(target, "shards");
         }
 
@@ -325,7 +325,9 @@ public class RestClient implements Closeable, StatsAware {
         if (indexResource.isTyped()) {
             return getMappings(indexResource.index() + "/_mapping/" + indexResource.type(), true);
         } else {
-            return getMappings(indexResource.index() + "/_mapping" + (indexReadMissingAsEmpty ? "?ignore_unavailable=true" : ""), false);
+            return getMappings(
+                    indexResource.index() + "/_mapping" + (indexReadMissingAsEmpty ? "?ignore_unavailable=true" : ""),
+                    false);
         }
     }
 
@@ -371,7 +373,8 @@ public class RestClient implements Closeable, StatsAware {
             endpoint = resource.index() + "/" + resource.type();
         }
 
-        Map<String, List<Map<String, Object>>> hits = parseContent(execute(GET, endpoint + "/_search", new BytesArray(sb.toString())).body(), "hits");
+        Map<String, List<Map<String, Object>>> hits = parseContent(
+                execute(GET, endpoint + "/_search", new BytesArray(sb.toString())).body(), "hits");
         List<Map<String, Object>> docs = hits.get("hits");
         if (docs == null || docs.isEmpty()) {
             return Collections.emptyMap();
@@ -446,12 +449,12 @@ public class RestClient implements Closeable, StatsAware {
     protected Response executeNotFoundAllowed(Request req) {
         Response res = execute(req, false);
         switch (res.status()) {
-        case HttpStatus.OK:
-            break;
-        case HttpStatus.NOT_FOUND:
-            break;
-        default:
-            checkResponse(req, res);
+            case HttpStatus.OK:
+                break;
+            case HttpStatus.NOT_FOUND:
+                break;
+            default:
+                checkResponse(req, res);
         }
 
         return res;
@@ -460,10 +463,11 @@ public class RestClient implements Closeable, StatsAware {
     private void checkResponse(Request request, Response response) {
         if (response.hasFailed()) {
             // check error first
-        	String msg = null;
+            String msg = null;
             // try to parse the answer
             try {
-            	OpenSearchHadoopException ex = errorExtractor.extractError(this.<Map> parseContent(response.body(), null));
+                OpenSearchHadoopException ex = errorExtractor
+                        .extractError(this.<Map>parseContent(response.body(), null));
                 msg = (ex != null) ? ex.toString() : null;
                 if (response.isClientError()) {
                     msg = msg + "\n" + request.body();
@@ -503,6 +507,7 @@ public class RestClient implements Closeable, StatsAware {
         Response res = executeNotFoundAllowed(req);
         return (res.status() == HttpStatus.OK ? true : false);
     }
+
     public boolean deleteScroll(String scrollId) {
         BytesArray body = new BytesArray(("{\"scroll_id\":[\"" + scrollId + "\"]}").getBytes(StringUtils.UTF_8));
         Request req = new SimpleRequest(DELETE, null, "_search/scroll", body);
@@ -565,7 +570,7 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public long count(String index, String type, String shardId, QueryBuilder query) {
-        StringBuilder uri = new StringBuilder(index); // Only use index for counting in 7.X and up.
+        StringBuilder uri = new StringBuilder(index);
         uri.append("/_search?size=0");
         // always track total hits to get accurate count
         uri.append("&track_total_hits=true");
@@ -587,7 +592,8 @@ public class RestClient implements Closeable, StatsAware {
             Number count = (Number) totalObject.get("value");
             if (count != null) {
                 if (!"eq".equals(relation)) {
-                    throw new OpenSearchHadoopParsingException("Count operation returned non-exact count of [" + relation + "][" + count + "]");
+                    throw new OpenSearchHadoopParsingException(
+                            "Count operation returned non-exact count of [" + relation + "][" + count + "]");
                 }
                 finalCount = count.longValue();
             } else {
@@ -659,8 +665,7 @@ public class RestClient implements Closeable, StatsAware {
                 content.get("api_key").toString(),
                 expirationTime,
                 remoteInfo.getClusterName().getName(),
-                remoteInfo.getMajorVersion()
-        );
+                remoteInfo.getMajorVersion());
     }
 
     public boolean cancelToken(EsToken tokenToCancel) {
@@ -670,14 +675,14 @@ public class RestClient implements Closeable, StatsAware {
         }
         String serviceForToken = tokenToCancel.getClusterName();
         if (!StringUtils.hasText(serviceForToken)) {
-            throw new OpenSearchHadoopIllegalArgumentException("Attempting to cancel access token that has no service name");
+            throw new OpenSearchHadoopIllegalArgumentException(
+                    "Attempting to cancel access token that has no service name");
         }
         if (!serviceForToken.equals(remoteInfo.getClusterName().getName())) {
             throw new OpenSearchHadoopIllegalArgumentException(String.format(
                     "Attempting to cancel access token for a cluster named [%s] through a differently named cluster [%s]",
                     serviceForToken,
-                    remoteInfo.getClusterName().getName()
-            ));
+                    remoteInfo.getClusterName().getName()));
         }
         FastByteArrayOutputStream out = new FastByteArrayOutputStream(256);
         JacksonJsonGenerator generator = new JacksonJsonGenerator(out);
@@ -701,7 +706,7 @@ public class RestClient implements Closeable, StatsAware {
             throw new OpenSearchHadoopIllegalStateException("Unable to retrieve OpenSearch main cluster info.");
         }
         String clusterName = result.get("cluster_name").toString();
-        String clusterUUID = (String)result.get("cluster_uuid");
+        String clusterUUID = (String) result.get("cluster_uuid");
         @SuppressWarnings("unchecked")
         Map<String, String> versionBody = (Map<String, String>) result.get("version");
         if (versionBody == null || !StringUtils.hasText(versionBody.get("number"))) {
@@ -729,7 +734,8 @@ public class RestClient implements Closeable, StatsAware {
         sb.append(index);
         String status = get(sb.toString(), "status");
         if (status == null) {
-            throw new OpenSearchHadoopIllegalStateException("Could not determine index health, returned status was null. Bailing out...");
+            throw new OpenSearchHadoopIllegalStateException(
+                    "Could not determine index health, returned status was null. Bailing out...");
         }
         return Health.valueOf(status.toUpperCase());
     }

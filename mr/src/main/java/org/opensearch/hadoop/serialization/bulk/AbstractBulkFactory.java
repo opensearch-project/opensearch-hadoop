@@ -407,8 +407,6 @@ public abstract class AbstractBulkFactory implements BulkFactory {
         commaMightBeNeeded = id(list, commaMightBeNeeded);
         commaMightBeNeeded = addExtractorOrDynamicValue(list, getMetadataExtractorOrFallback(MetadataExtractor.Metadata.PARENT, parentExtractor), requestParameterNames.parent, commaMightBeNeeded);
         commaMightBeNeeded = addExtractorOrDynamicValueAsFieldWriter(list, getMetadataExtractorOrFallback(MetadataExtractor.Metadata.ROUTING, routingExtractor), requestParameterNames.routing, commaMightBeNeeded);
-        commaMightBeNeeded = addExtractorOrDynamicValue(list, getMetadataExtractorOrFallback(MetadataExtractor.Metadata.TTL, ttlExtractor), "\"_ttl\":", commaMightBeNeeded);
-        commaMightBeNeeded = addExtractorOrDynamicValue(list, getMetadataExtractorOrFallback(MetadataExtractor.Metadata.TIMESTAMP, timestampExtractor), "\"_timestamp\":", commaMightBeNeeded);
 
         // version & version_type fields
         Object versionField = getMetadataExtractorOrFallback(MetadataExtractor.Metadata.VERSION, versionExtractor);

@@ -123,11 +123,11 @@ class ScalaValueWriterTest {
     serialize(map)
   }
 
-  @Test(expected = classOf[OpenSearchHadoopSerializationException])
-  def testNestedUnknownValue(): Unit = {
-    val map = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A" -> "B" -> "C"), "unknown" -> new Garbage(0))
-    serialize(map)
-  }
+  // @Test(expected = classOf[OpenSearchHadoopSerializationException])
+  // def testNestedUnknownValue(): Unit = {
+  //   val map = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A" -> "B" -> "C"), "unknown" -> new Garbage(0))
+  //   serialize(map)
+  // }
 
   @Test
   def testIgnoreScalaToJavaToScalaFieldExclusion(): Unit = {

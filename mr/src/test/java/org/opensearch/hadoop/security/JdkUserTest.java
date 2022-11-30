@@ -120,7 +120,7 @@ public class JdkUserTest {
 
         assertThat(jdkUser.getKerberosPrincipal(), is(nullValue()));
 
-        KerberosPrincipal principal = new KerberosPrincipal("username@BUILD.ELASTIC.CO");
+        KerberosPrincipal principal = new KerberosPrincipal("username@BUILD.CI.OPENSEARCH.ORG");
         subject.getPrincipals().add(principal);
 
         assertThat(jdkUser.getKerberosPrincipal(), is(equalTo(principal)));

@@ -346,6 +346,6 @@ public class AbstractSpnegoNegotiatorTest {
     }
 
     private static String withRealm(String principal) {
-        return principal + "@BUILD.ELASTIC.CO";
+        return principal + "@BUILD.CI.OPENSEARCH.ORG";
     }
 }

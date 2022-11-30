@@ -129,7 +129,7 @@ public class KeytoolTest {
             "\n" +
             "Commands\n" +
             "--------\n" +
-            "create - Creates a new elasticsearch keystore\n" +
+            "create - Creates a new opensearch keystore\n" +
             "list - List entries in the keystore\n" +
             "add - Add a setting to the keystore\n" +
             "remove - Remove a setting from the keystore\n" +
@@ -237,7 +237,7 @@ public class KeytoolTest {
         TestPrompt console = new TestPrompt();
         KeytoolHarness keytool = new KeytoolHarness(console, Keytool.Command.LIST, false, new BytesArray(128));
         assertThat(keytool.run(null, false, false), equalTo(5));
-        assertThat(console.getOutput(), equalTo("ERROR: ES-Hadoop keystore not found. Use 'create' command to create one.\n"));
+        assertThat(console.getOutput(), equalTo("ERROR: OpenSearch-Hadoop keystore not found. Use 'create' command to create one.\n"));
         assertThat(console.hasInputLeft(), is(false));
         assertThat(keytool.ksExists(), is(false));
         assertThat(keytool.fileBytes.length(), is(0));
@@ -284,7 +284,7 @@ public class KeytoolTest {
         console.addInput("blah");
         KeytoolHarness keytool = new KeytoolHarness(console, Keytool.Command.ADD, false, new BytesArray(128));
         assertThat(keytool.run("test.password.1", false, false), equalTo(5));
-        assertThat(console.getOutput(), equalTo("ERROR: ES-Hadoop keystore not found. Use 'create' command to create one.\n"));
+        assertThat(console.getOutput(), equalTo("ERROR: OpenSearch-Hadoop keystore not found. Use 'create' command to create one.\n"));
         assertThat(console.hasInputLeft(), is(true));
         assertThat(keytool.ksExists(), is(false));
         assertThat(keytool.fileBytes.length(), is(0));
@@ -381,7 +381,7 @@ public class KeytoolTest {
         TestPrompt console = new TestPrompt();
         KeytoolHarness keytool = new KeytoolHarness(console, Keytool.Command.REMOVE, false, new BytesArray(128));
         assertThat(keytool.run("test.password.1", false, false), equalTo(5));
-        assertThat(console.getOutput(), equalTo("ERROR: ES-Hadoop keystore not found. Use 'create' command to create one.\n"));
+        assertThat(console.getOutput(), equalTo("ERROR: OpenSearch-Hadoop keystore not found. Use 'create' command to create one.\n"));
         assertThat(console.hasInputLeft(), is(false));
         assertThat(keytool.ksExists(), is(false));
         assertThat(keytool.fileBytes.length(), is(0));

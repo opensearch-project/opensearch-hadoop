@@ -54,8 +54,8 @@ public class KDCFixture extends ExternalResource {
     @Override
     protected void before() throws Throwable {
         Properties conf = MiniKdc.createConf();
-        conf.setProperty(MiniKdc.ORG_NAME, "BUILD.ELASTIC");
-        conf.setProperty(MiniKdc.ORG_DOMAIN, "CO");
+        conf.setProperty(MiniKdc.ORG_NAME, "BUILD.CI.OPENSEARCH");
+        conf.setProperty(MiniKdc.ORG_DOMAIN, "ORG");
         kdc = new MiniKdc(conf, temporaryFolder.newFolder());
         kdc.start();
 

@@ -95,8 +95,8 @@ public class MiniKdcFixture {
         kdcConf.setProperty(MiniKdc.INSTANCE, "DefaultKrbServer");
         kdcConf.setProperty(MiniKdc.TRANSPORT, "TCP");
         // ES-Hadoop Project Specific Defaults
-        kdcConf.setProperty(MiniKdc.ORG_NAME, "BUILD.ELASTIC"); // used to make REALM
-        kdcConf.setProperty(MiniKdc.ORG_DOMAIN, "CO"); // used to make REALM
+        kdcConf.setProperty(MiniKdc.ORG_NAME, "BUILD.CI.OPENSEARCH"); // used to make REALM
+        kdcConf.setProperty(MiniKdc.ORG_DOMAIN, "ORG"); // used to make REALM
 
         // Parse Fixture Properties in one pass
         Enumeration<Object> sysProps = System.getProperties().keys();

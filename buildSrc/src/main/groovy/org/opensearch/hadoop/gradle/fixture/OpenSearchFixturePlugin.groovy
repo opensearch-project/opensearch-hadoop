@@ -73,7 +73,7 @@ class OpenSearchFixturePlugin implements Plugin<Project> {
         def clustersContainer = project.extensions.getByName(TestClustersPlugin.EXTENSION_NAME) as NamedDomainObjectContainer<OpenSearchCluster>
         def integTestCluster = clustersContainer.create("integTest") { OpenSearchCluster cluster ->
             cluster.version = version
-            cluster.testDistribution = TestDistribution.INTEG_TEST
+            cluster.testDistribution = TestDistribution.ARCHIVE
         }
 
         integrationTests.all { StandaloneRestIntegTestTask integrationTest ->
@@ -91,10 +91,8 @@ class OpenSearchFixturePlugin implements Plugin<Project> {
             integTestCluster.setting("http.host", "localhost")
             integTestCluster.systemProperty('opensearch.http.cname_in_publish_address', 'true')
         } else if (majorVersion >= 2) {
-            integTestCluster.setting("node.roles", "[\"master\", \"data\", \"ingest\"]")
+            integTestCluster.setting("node.roles", "[\"cluster_manager\", \"data\", \"ingest\"]")
             integTestCluster.setting("http.host", "localhost")
-            // TODO: Remove this when this is the default in 7
-            integTestCluster.systemProperty('opensearch.http.cname_in_publish_address', 'true')
         }
 
         // Also write a script to a file for use in tests

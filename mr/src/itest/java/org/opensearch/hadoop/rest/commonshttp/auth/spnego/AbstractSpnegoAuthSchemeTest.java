@@ -238,7 +238,7 @@ public class AbstractSpnegoAuthSchemeTest {
                 method.setHeaders(new Header[]{new Header("WWW-Authenticate", "Negotiate")});
                 method.setURI(new org.opensearch.hadoop.thirdparty.apache.commons.httpclient.URI("http", null, "127.0.0.1", 9200));
 
-                Credentials credentials = new SpnegoCredentials(HadoopUserProvider.create(new TestSettings()), "HTTP/_HOST@BUILD.ELASTIC.CO");
+                Credentials credentials = new SpnegoCredentials(HadoopUserProvider.create(new TestSettings()), "HTTP/_HOST@BUILD.CI.OPENSEARCH.ORG");
 
                 // Parse Challenge
                 Map challenges = AuthChallengeParser.parseChallenges(method.getResponseHeaders("WWW-Authenticate"));

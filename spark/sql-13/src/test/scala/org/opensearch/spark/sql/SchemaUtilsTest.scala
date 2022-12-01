@@ -35,7 +35,6 @@ import org.apache.spark.sql.types.DataTypes._
 import org.apache.spark.sql.types.StructType
 import org.codehaus.jackson.map.ObjectMapper
 import org.opensearch.hadoop.cfg.ConfigurationOptions._
-import org.elasticsearch.spark.sql.SchemaUtils._
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertTrue
@@ -45,6 +44,7 @@ import java.util.Collections
 import org.opensearch.hadoop.cfg.Settings
 import org.opensearch.hadoop.serialization.dto.mapping.FieldParser
 import org.opensearch.hadoop.util.TestSettings
+import org.opensearch.spark.sql.SchemaUtils._
 
 class SchemaUtilsTest {
 
@@ -109,7 +109,7 @@ class SchemaUtilsTest {
     |}
     |""".stripMargin
     
-    cfg.setProperty(ES_READ_FIELD_AS_ARRAY_INCLUDE, "name")
+    cfg.setProperty(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "name")
     
     val struct = getStruct(mapping)
     assertTrue(struct.fieldNames.contains("name"))
@@ -131,7 +131,7 @@ class SchemaUtilsTest {
     |}
     |""".stripMargin
     
-    cfg.setProperty(ES_READ_FIELD_AS_ARRAY_INCLUDE, "name:3")
+    cfg.setProperty(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "name:3")
     
     val struct = getStruct(mapping)
     assertTrue(struct.fieldNames.contains("name"))
@@ -214,7 +214,7 @@ class SchemaUtilsTest {
     | }
     }""".stripMargin
     
-    cfg.setProperty(ES_READ_FIELD_AS_ARRAY_INCLUDE, "arr")
+    cfg.setProperty(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "arr")
     
     val struct = getStruct(mapping)
     val info = detectRowInfo(cfg, struct)
@@ -237,7 +237,7 @@ class SchemaUtilsTest {
     | }
     }""".stripMargin
     
-    cfg.setProperty(ES_READ_FIELD_AS_ARRAY_INCLUDE, "arr:3")
+    cfg.setProperty(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "arr:3")
     
     val struct = getStruct(mapping)
     val info = detectRowInfo(cfg, struct)

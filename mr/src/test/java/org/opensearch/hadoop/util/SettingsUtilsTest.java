@@ -112,7 +112,7 @@ public class SettingsUtilsTest {
     @Test
     public void testGetArrayIncludes() throws Exception {
         Properties props = new Properties();
-        props.setProperty("es.read.field.as.array.include", "a:4");
+        props.setProperty("opensearch.read.field.as.array.include", "a:4");
 
         PropertiesSettings settings = new PropertiesSettings(props);
         List<FieldFilter.NumberedInclude> filters = SettingsUtils.getFieldArrayFilterInclude(settings);

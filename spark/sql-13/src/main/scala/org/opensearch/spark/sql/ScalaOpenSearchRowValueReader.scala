@@ -31,11 +31,11 @@ package org.opensearch.spark.sql
 import java.sql.Timestamp
 import scala.collection.mutable.LinkedHashMap
 import scala.collection.mutable.Map
-import org.elasticsearch.spark.serialization.ScalaValueReader
 import org.apache.commons.logging.LogFactory
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.serialization.{FieldType, Parser}
 import org.opensearch.hadoop.serialization.builder.ValueParsingCallback
+import org.opensearch.spark.serialization.ScalaValueReader
 
 class ScalaRowValueReader extends ScalaValueReader with RowValueReader with ValueParsingCallback {
 
@@ -98,7 +98,7 @@ class ScalaRowValueReader extends ScalaValueReader with RowValueReader with Valu
     else {
       LogFactory.getLog(getClass).warn(
           s"""Field '$sparkRowField' is backed by an array but the associated Spark Schema does not reflect this;
-              (use ${ConfigurationOptions.ES_READ_FIELD_AS_ARRAY_INCLUDE}/exclude) """.stripMargin)
+              (use ${ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE}/exclude) """.stripMargin)
     }
     // since the list is not used actually, return the parent field information usable for nested arrays
     previousLevel

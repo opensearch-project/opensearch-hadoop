@@ -176,12 +176,12 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // Convert simple parameters into internal properties, and prefix other parameters
     val processedParams = dottedParams.map { case (k, v) =>
-      if (k.startsWith("es.")) (k, v)
+      if (k.startsWith("opensearch.")) (k, v)
       else if (k == "path") (ConfigurationOptions.OPENSEARCH_RESOURCE, v) // This may not be the final value for this setting.
       else if (k == "pushdown") (Utils.DATA_SOURCE_PUSH_DOWN, v)
       else if (k == "strict") (Utils.DATA_SOURCE_PUSH_DOWN_STRICT, v)
       else if (k == "double.filtering") (Utils.DATA_SOURCE_KEEP_HANDLED_FILTERS, v)
-      else ("es." + k, v)
+      else ("opensearch." + k, v)
     }
 
     // Set the preferred resource if it was specified originally
@@ -200,11 +200,11 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
   private def streamParams(parameters: Map[String, String], sparkSession: SparkSession) = {
     // '.' seems to be problematic when specifying the options
     var params = parameters.map { case (k, v) => (k.replace('_', '.'), v)}. map { case (k, v) =>
-      if (k.startsWith("es.")) (k, v)
+      if (k.startsWith("opensearch.")) (k, v)
       else if (k == "path") (ConfigurationOptions.OPENSEARCH_RESOURCE, v)
       else if (k == "queryname") (SparkSqlStreamingConfigs.ES_INTERNAL_QUERY_NAME, v)
       else if (k == "checkpointlocation") (SparkSqlStreamingConfigs.ES_INTERNAL_USER_CHECKPOINT_LOCATION, v)
-      else ("es." + k, v)
+      else ("opensearch." + k, v)
     }
 
     params = params + (SparkSqlStreamingConfigs.ES_INTERNAL_APP_NAME -> sparkSession.sparkContext.appName)
@@ -296,7 +296,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       }
     }
 
-    new ScalaEsRowRDD(sqlContext.sparkContext, paramWithScan, lazySchema)
+    new ScalaOpenSearchRowRDD(sqlContext.sparkContext, paramWithScan, lazySchema)
   }
 
   // introduced in Spark 1.6

@@ -358,7 +358,7 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("nested-data"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_FIELD_AS_ARRAY_INCLUDE, "a.b.d:2,a.b.f");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "a.b.d:2,a.b.f");
         testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
         testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
@@ -391,7 +391,7 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("object-fields"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_FIELD_AS_ARRAY_INCLUDE, "a.b.d:2,a.b,a.b.f");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "a.b.d:2,a.b,a.b.f");
         testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
         testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
@@ -424,7 +424,7 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("nested-list"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_FIELD_AS_ARRAY_INCLUDE, "a:3");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "a:3");
         testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
         testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
@@ -448,7 +448,7 @@ public class ScrollReaderTest {
         MappingSet mappings = getMappingSet("empty-list");
         InputStream stream = getClass().getResourceAsStream(scrollData("empty-list"));
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_FIELD_AS_ARRAY_INCLUDE, "status_code");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "status_code");
         testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
         testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);

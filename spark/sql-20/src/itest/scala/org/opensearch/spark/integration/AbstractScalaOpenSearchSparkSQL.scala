@@ -102,13 +102,12 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.serialization.JsonUtils
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
-import org.opensearch.spark.integration.SparkUtils
 import org.opensearch.spark.sql.SchemaUtilsTestable
 
 object AbstractScalaOpenSearchScalaSparkSQL {
   @transient val conf = new SparkConf()
     .setAll(propertiesAsScalaMap(TestSettings.TESTING_PROPS))
-    .setAppName("estest")
+    .setAppName("opensearchtest")
     .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR)
   @transient var cfg: SparkConf = null
   @transient var sc: SparkContext = null
@@ -213,7 +212,7 @@ object AbstractScalaOpenSearchScalaSparkSQL {
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(classOf[Parameterized])
-class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pushDown: jl.Boolean, strictPushDown: jl.Boolean, doubleFiltering: jl.Boolean, encodeResources: jl.Boolean, query: String = "") extends Serializable {
+class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pushDown: jl.Boolean, strictPushDown: jl.Boolean, doubleFiltering: jl.Boolean, encodeResources: jl.Boolean, query: String = "") extends Serializable {
 
   val sc = AbstractScalaOpenSearchScalaSparkSQL.sc
   val sqc = AbstractScalaOpenSearchScalaSparkSQL.sqc
@@ -228,7 +227,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
   val text = AbstractScalaOpenSearchScalaSparkSQL.textType
 
   @Test
-  def test1KryoScalaEsRow() {
+  def test1KryoScalaOpenSearchRow() {
     val kryo = SparkUtils.sparkSerializer(sc.getConf)
     val row = new ScalaOpenSearchRow(new ArrayBuffer() ++= StringUtils.tokenize("foo,bar,tar").asScala)
 
@@ -243,7 +242,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
   @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def testNoIndexExists() {
-    val idx = sqc.read.format("org.elasticsearch.spark.sql").load("existing_index")
+    val idx = sqc.read.format("org.opensearch.spark.sql").load("existing_index")
     idx.printSchema()
   }
 
@@ -273,9 +272,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     RestUtils.postData(docPath, doc1.getBytes(StringUtils.UTF_8))
     RestUtils.refresh(index)
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "arr")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE -> "arr")
 
-    val df = sqc.read.options(newCfg).format("org.elasticsearch.spark.sql").load(target)
+    val df = sqc.read.options(newCfg).format("org.opensearch.spark.sql").load(target)
     df.printSchema()
     
     assertEquals("string", df.schema("top-level").dataType.typeName)
@@ -332,12 +331,12 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     RestUtils.postData(docPath, jsonDoc.getBytes(StringUtils.UTF_8))
     RestUtils.refresh(index)
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "bar.bar.bar", "opensearch.resource" -> target)
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE -> "bar.bar.bar", "opensearch.resource" -> target)
     val cfgSettings = new SparkSettingsManager().load(sc.getConf).copy().merge(newCfg.asJava)
     val schema = SchemaUtilsTestable.discoverMapping(cfgSettings)
     val mapping = SchemaUtilsTestable.rowInfo(cfgSettings)
 
-    val df = sqc.read.options(newCfg).format("org.elasticsearch.spark.sql").load(target)
+    val df = sqc.read.options(newCfg).format("org.opensearch.spark.sql").load(target)
     df.printSchema()
     df.take(1).foreach(println)
     assertEquals(1, df.count())
@@ -354,9 +353,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     sc.makeRDD(Seq(jsonDoc)).saveJsonToEs(target)
     RestUtils.refresh(index)
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "nested.bar")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE -> "nested.bar")
 
-    val df = sqc.read.options(newCfg).format("org.elasticsearch.spark.sql").load(target)
+    val df = sqc.read.options(newCfg).format("org.opensearch.spark.sql").load(target)
     df.printSchema()
     df.take(1).foreach(println)
     assertEquals(1, df.count())
@@ -373,9 +372,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     sc.makeRDD(Seq(jsonDoc)).saveJsonToEs(target)
     RestUtils.refresh(index)
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "array")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE -> "array")
 
-    val df = sqc.read.options(newCfg).format("org.elasticsearch.spark.sql").load(target)
+    val df = sqc.read.options(newCfg).format("org.opensearch.spark.sql").load(target)
     
     assertEquals("array", df.schema("array").dataType.typeName)
     assertEquals("long", df.schema("array").dataType.asInstanceOf[ArrayType].elementType.typeName)
@@ -399,9 +398,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     sc.makeRDD(Seq(jsonDoc1, jsonDoc2)).saveJsonToEs(target)
     RestUtils.refresh(index)
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_AS_ARRAY_INCLUDE -> "array")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE -> "array")
 
-    val df = sqc.read.options(newCfg).format("org.elasticsearch.spark.sql").load(target)
+    val df = sqc.read.options(newCfg).format("org.opensearch.spark.sql").load(target)
 
     assertEquals("array", df.schema("array").dataType.typeName)
     assertEquals("long", df.schema("array").dataType.asInstanceOf[ArrayType].elementType.typeName)
@@ -442,15 +441,15 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     ))
     val inputDf = sqc.createDataFrame(rdd, schema)
     inputDf.write
-      .format("org.elasticsearch.spark.sql")
+      .format("org.opensearch.spark.sql")
       .save("empty_strings_test")
-    val reader = sqc.read.format("org.elasticsearch.spark.sql")
+    val reader = sqc.read.format("org.opensearch.spark.sql")
     val outputDf = reader.load("empty_strings_test")
     assertEquals(data.size, outputDf.count)
     val nullDescriptionsDf = outputDf.filter(row => row.getAs("description") == null)
     assertEquals(1, nullDescriptionsDf.count)
 
-    val reader2 = sqc.read.format("org.elasticsearch.spark.sql").option("es.field.read.empty.as.null", "no")
+    val reader2 = sqc.read.format("org.opensearch.spark.sql").option("opensearch.field.read.empty.as.null", "no")
     val outputDf2 = reader2.load("empty_strings_test")
     assertEquals(data.size, outputDf2.count)
     val nullDescriptionsDf2 = outputDf2.filter(row => row.getAs("description") == null)
@@ -832,7 +831,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val table = wrapIndex("sqlbasicread1")
 
     val query = s"CREATE TEMPORARY TABLE ${wrapTableName(table)} "+
-      " USING org.elasticsearch.spark.sql " +
+      " USING org.opensearch.spark.sql " +
       s" OPTIONS ($options)"
 
     println(query)
@@ -924,11 +923,11 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
 
 //    sqc.sql(s"CREATE TEMPORARY TABLE $table" +
-//      " USING org.elasticsearch.spark.sql " +
+//      " USING org.opensearch.spark.sql " +
 //      s" OPTIONS ($options)")
 
     val dsCfg = collection.mutable.Map(cfg.toSeq: _*) += ("path" -> target)
-    sqc.read.format("org.elasticsearch.spark.sql").options(dsCfg.toMap).load
+    sqc.read.format("org.opensearch.spark.sql").options(dsCfg.toMap).load
   }
 
   @Test
@@ -1168,7 +1167,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     var options = s"""resource '$target' """
 
     val s = sqc.sql(s"CREATE TEMPORARY TABLE ${wrapTableName(table)}" +
-       " USING org.elasticsearch.spark.sql " +
+       " USING org.opensearch.spark.sql " +
        s" OPTIONS ($options)")
 
     val allResults = sqc.sql(s"SELECT * FROM ${wrapTableName(table)}")
@@ -1213,7 +1212,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     input.saveToEs(target, cfg)
 
     val dsCfg = collection.mutable.Map(cfg.toSeq: _*) += ("path" -> target)
-    val dfLoad = sqc.read.format("org.elasticsearch.spark.sql").options(dsCfg.toMap).load
+    val dfLoad = sqc.read.format("org.opensearch.spark.sql").options(dsCfg.toMap).load
     println("JSON schema")
     println(input.schema.treeString)
     println("Reading information from Elastic")
@@ -1236,8 +1235,8 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val index2Name = wrapIndex("sparksql-test-scala-basic-write-id-mapping")
     val (target2, _) = makeTargets(index2Name, "data")
 
-    val table1 = sqc.read.format("org.elasticsearch.spark.sql").load(target1)
-    val table2 = sqc.read.format("org.elasticsearch.spark.sql").load(target2)
+    val table1 = sqc.read.format("org.opensearch.spark.sql").load(target1)
+    val table2 = sqc.read.format("org.opensearch.spark.sql").load(target2)
 
     table1.persist(DISK_ONLY)
     table2.persist(DISK_ONLY_2)
@@ -1267,7 +1266,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     var options = s"resource '$target '"
 
     val dataFrame = sqc.sql(s"CREATE TEMPORARY TABLE ${wrapTableName(table)} " +
-      s"USING org.elasticsearch.spark.sql " +
+      s"USING org.opensearch.spark.sql " +
       s"OPTIONS ($options)");
 
     val insertRDD = sqc.sql(s"INSERT INTO TABLE ${wrapTableName(table)} SELECT 123456789, 'test-sql', 'http://test-sql.com', '', 12345")
@@ -1292,7 +1291,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     var options = s"resource '$target'"
 
     val dataFrame = sqc.sql(s"CREATE TEMPORARY TABLE ${wrapTableName(table)} " +
-      s"USING org.elasticsearch.spark.sql " +
+      s"USING org.opensearch.spark.sql " +
       s"OPTIONS ($options)");
 
     var df = sqc.table(wrapTableName(table))
@@ -1390,11 +1389,11 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     var srcOptions = s"resource '$target'"
 
     val srcFrame = sqc.sql(s"CREATE TEMPORARY TABLE ${wrapTableName(srcTable)} " +
-      s"USING org.elasticsearch.spark.sql " +
+      s"USING org.opensearch.spark.sql " +
       s"OPTIONS ($srcOptions)");
 
     val dataFrame = sqc.sql(s"CREATE TEMPORARY TABLE ${wrapTableName(dstTable)} " +
-      s"USING org.elasticsearch.spark.sql " +
+      s"USING org.opensearch.spark.sql " +
       s"OPTIONS ($dstOptions)");
 
     val insertRDD = sqc.sql(s"INSERT OVERWRITE TABLE ${wrapTableName(dstTable)} SELECT * FROM ${wrapTableName(srcTable)}")
@@ -1414,9 +1413,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val (target, _) = makeTargets(index, "data")
     val table = wrapIndex("save_mode_error")
 
-    srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.ErrorIfExists).save(target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.ErrorIfExists).save(target)
     try {
-      srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.ErrorIfExists).save(target)
+      srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.ErrorIfExists).save(target)
       fail()
     } catch {
       case _: Throwable => // swallow
@@ -1435,7 +1434,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val df = OpenSearchSparkSQL.esDF(sqc, target)
 
     assertEquals(3, df.count())
-    srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Append).save(target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Append).save(target)
     assertEquals(6, df.count())
   }
 
@@ -1450,7 +1449,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val df = OpenSearchSparkSQL.esDF(sqc, target)
 
     assertEquals(3, df.count())
-    srcFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Overwrite).save(target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).save(target)
     assertEquals(3, df.count())
   }
 
@@ -1480,7 +1479,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
     assertEquals(3, df.count())
     // should not go through
-    artistsAsDataFrame.write.format("org.elasticsearch.spark.sql").mode(SaveMode.Ignore).save(target)
+    artistsAsDataFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Ignore).save(target)
     // if it does, this will likely throw an error
     assertEquals(3, df.count())
   }
@@ -1491,7 +1490,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val index = wrapIndex("sparksql-test-array-with-nested-object")
     val (target, _) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").option(ES_READ_FIELD_AS_ARRAY_INCLUDE, "another-array").load(target)
+    val df = sqc.read.format("es").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "another-array").load(target)
 
     df.printSchema()
     assertEquals("array", df.schema("another-array").dataType.typeName)
@@ -1545,7 +1544,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val index = wrapIndex("sparksql-test-double-nested-array")
     val (target, _) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").option(ES_READ_FIELD_AS_ARRAY_INCLUDE, "nested.bar,foo,nested.bar.scores").load(target)
+    val df = sqc.read.format("es").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "nested.bar,foo,nested.bar.scores").load(target)
 
     assertEquals("array", df.schema("foo").dataType.typeName)
     val bar = df.schema("nested").dataType.asInstanceOf[StructType]("bar")
@@ -1593,7 +1592,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val index = wrapIndex("sparksql-test-geo")
     val (target, _) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").option(ES_READ_FIELD_AS_ARRAY_INCLUDE, "rect.coordinates:2").load(target)
+    val df = sqc.read.format("es").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "rect.coordinates:2").load(target)
     
     val coords = df.schema("rect").dataType.asInstanceOf[StructType]("coordinates")
     assertEquals("array", coords.dataType.typeName)
@@ -2277,7 +2276,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     val document3 = """{ "id" : 3, "status_code" : null}""".stripMargin
     sc.makeRDD(Seq(document1, document2, document3)).saveJsonToEs(target)
     RestUtils.refresh(index)
-    val df = sqc.read.format("es").option("es.read.field.as.array.include","status_code").load(index)
+    val df = sqc.read.format("es").option("opensearch.read.field.as.array.include","status_code").load(index)
       .select("id", "status_code")
     var result = df.where("id = 1").first().getList(1)
     assertEquals(123, result.get(0))
@@ -2300,9 +2299,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
 
     val inputDf = sqc.createDataFrame(rdd, schema)
     inputDf.write
-      .format("org.elasticsearch.spark.sql")
+      .format("org.opensearch.spark.sql")
       .save("read_field_include_test")
-    val reader = sqc.read.format("org.elasticsearch.spark.sql").option("es.read.field.as.array.include","features.hashtags")
+    val reader = sqc.read.format("org.opensearch.spark.sql").option("opensearch.read.field.as.array.include","features.hashtags")
 
     // No "es.read.field.include", so everything is included:
     var df = reader.load("read_field_include_test")
@@ -2372,9 +2371,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
       .add("samples", new ArrayType(new StructType()
         .add("text", StringType), true))
     var df = sqc.createDataFrame(rdd, schema)
-    df.write.format("org.elasticsearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("nested_fields_upsert_test")
+    df.write.format("org.opensearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("nested_fields_upsert_test")
 
-    val reader = sqc.read.schema(schema).format("org.elasticsearch.spark.sql").option("es.read.field.as.array.include","samples")
+    val reader = sqc.read.schema(schema).format("org.opensearch.spark.sql").option("opensearch.read.field.as.array.include","samples")
     var resultDf = reader.load("nested_fields_upsert_test")
     assertEquals(2, resultDf.count())
     var samples = resultDf.select("samples").where("id = '2'").first().getAs[IndexedSeq[Row]](0)
@@ -2386,7 +2385,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     data = Seq(Row("1", List(Row("goodbye"), Row("world"))))
     rdd = sc.parallelize(data)
     df = sqc.createDataFrame(rdd, schema)
-    df.write.format("org.elasticsearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("nested_fields_upsert_test")
+    df.write.format("org.opensearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("nested_fields_upsert_test")
 
     resultDf = reader.load("nested_fields_upsert_test")
     samples = resultDf.select("samples").where("id = '1'").first().getAs[IndexedSeq[Row]](0)
@@ -2398,7 +2397,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     data = Seq(Row("2", List(Row("goodbye"), Row("again"))))
     rdd = sc.parallelize(data)
     df = sqc.createDataFrame(rdd, schema)
-    df.write.format("org.elasticsearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("nested_fields_upsert_test")
+    df.write.format("org.opensearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("nested_fields_upsert_test")
 
     resultDf = reader.load("nested_fields_upsert_test")
     samples = resultDf.select("samples").where("id = '2'").first().getAs[IndexedSeq[Row]](0)
@@ -2424,9 +2423,9 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
       .add("id", StringType, nullable = false)
       .add("samples", new MapType(StringType, StringType, true))
     var df = sqc.createDataFrame(rdd, schema)
-    df.write.format("org.elasticsearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("map_fields_upsert_test")
+    df.write.format("org.opensearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("map_fields_upsert_test")
 
-    val reader = sqc.read.format("org.elasticsearch.spark.sql")
+    val reader = sqc.read.format("org.opensearch.spark.sql")
     var resultDf = reader.load("map_fields_upsert_test")
     assertEquals(2, resultDf.count())
     var samples = resultDf.select("samples").where("id = '2'").first()
@@ -2437,7 +2436,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     data = Seq(Row("1", Map(("goodbye", "all"))))
     rdd = sc.parallelize(data)
     df = sqc.createDataFrame(rdd, schema)
-    df.write.format("org.elasticsearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("map_fields_upsert_test")
+    df.write.format("org.opensearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("map_fields_upsert_test")
 
     resultDf = reader.load("map_fields_upsert_test")
     samples = resultDf.select("samples").where("id = '1'").first()
@@ -2448,7 +2447,7 @@ class AbstractScalaEsScalaSparkSQL(prefix: String, readMetadata: jl.Boolean, pus
     data = Seq(Row("2", Map(("goodbye", "again"))))
     rdd = sc.parallelize(data)
     df = sqc.createDataFrame(rdd, schema)
-    df.write.format("org.elasticsearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("map_fields_upsert_test")
+    df.write.format("org.opensearch.spark.sql").options(es_conf).mode(SaveMode.Append).save("map_fields_upsert_test")
 
     resultDf = reader.load("map_fields_upsert_test")
     samples = resultDf.select("samples").where("id = '2'").first()

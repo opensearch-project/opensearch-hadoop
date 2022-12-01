@@ -454,7 +454,7 @@ public abstract class Settings {
     }
 
     public String getReadFieldAsArrayInclude() {
-        return getProperty(ES_READ_FIELD_AS_ARRAY_INCLUDE, StringUtils.EMPTY);
+        return getProperty(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, StringUtils.EMPTY);
     }
 
     public String getReadFieldAsArrayExclude() {

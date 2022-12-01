@@ -65,8 +65,6 @@ import org.apache.spark.sql.sources.SchemaRelationProvider
 import org.apache.spark.sql.types.DateType
 import org.apache.spark.sql.types.StructType
 import org.apache.spark.sql.types.TimestampType
-import org.elasticsearch.spark.cfg.SparkSettingsManager
-import org.elasticsearch.spark.serialization.ScalaValueWriter
 import javax.xml.bind.DatatypeConverter
 import org.apache.commons.logging.LogFactory
 import org.opensearch.hadoop.{OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException}
@@ -77,6 +75,8 @@ import org.opensearch.hadoop.serialization.builder.JdkValueWriter
 import org.opensearch.hadoop.serialization.field.ConstantFieldExtractor
 import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator
 import org.opensearch.hadoop.util.{FastByteArrayOutputStream, IOUtils, OpenSearchMajorVersion, SettingsUtils, StringUtils, Version}
+import org.opensearch.spark.cfg.SparkSettingsManager
+import org.opensearch.spark.serialization.ScalaValueWriter
 
 private[sql] class DefaultSource extends RelationProvider with SchemaRelationProvider with CreatableRelationProvider  {
 
@@ -125,12 +125,12 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // Convert simple parameters into internal properties, and prefix other parameters
     val processedParams = dottedParams.map { case (k, v) =>
-      if (k.startsWith("es.")) (k, v)
+      if (k.startsWith("opensearch.")) (k, v)
       else if (k == "path") (ConfigurationOptions.OPENSEARCH_RESOURCE, v) // This may not be the final value for this setting.
       else if (k == "pushdown") (Utils.DATA_SOURCE_PUSH_DOWN, v)
       else if (k == "strict") (Utils.DATA_SOURCE_PUSH_DOWN_STRICT, v)
       else if (k == "double.filtering") (Utils.DATA_SOURCE_KEEP_HANDLED_FILTERS, v)
-      else ("es." + k, v)
+      else ("opensearch." + k, v)
     }
 
     // Set the preferred resource if it was specified originally
@@ -141,7 +141,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // validate path
     finalParams.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE_READ,
-      finalParams.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE, throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
+      finalParams.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE, throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for OpenSearch resources.")))
 
     finalParams
   }
@@ -220,7 +220,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       }
     }
 
-    new ScalaEsRowRDD(sqlContext.sparkContext, paramWithScan, lazySchema)
+    new ScalaOpenSearchRowRDD(sqlContext.sparkContext, paramWithScan, lazySchema)
   }
 
   // introduced in Spark 1.6

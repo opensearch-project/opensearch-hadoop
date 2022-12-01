@@ -44,13 +44,6 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.streaming.OutputMode
 import org.apache.spark.sql.types.Decimal
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES
-import org.opensearch.hadoop.util.TestUtils.resource
-import org.opensearch.hadoop.util.TestUtils.docEndpoint
-import org.opensearch.spark.sql.streaming.SparkSqlStreamingConfigs
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.is
 import org.hamcrest.Matchers.not
@@ -61,14 +54,22 @@ import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
-import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException, TestData}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
+import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES
 import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
-import org.opensearch.spark.integration.SparkUtils
+import org.opensearch.hadoop.util.TestUtils.resource
+import org.opensearch.hadoop.util.TestUtils.docEndpoint
+import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException, TestData}
+import org.opensearch.spark.integration.ScalaUtils.propertiesAsScalaMap
+import org.opensearch.spark.sql.streaming.SparkSqlStreamingConfigs
 import org.opensearch.spark.sql.streaming.StreamingQueryTestHarness
 
+import org.opensearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import scala.io.Codec
 import scala.io.Source
 
@@ -138,14 +139,14 @@ object Products extends Serializable {
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(classOf[Parameterized])
-class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean) {
+class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something: Boolean) {
 
   private val tempFolderRule = new TemporaryFolder
 
   @Rule
   def tempFolder: TemporaryFolder = tempFolderRule
 
-  val spark: SparkSession = AbstractScalaEsSparkStructuredStreaming.spark
+  val spark: SparkSession = AbstractScalaOpenSearchSparkStructuredStreaming.spark
     .getOrElse(throw new OpenSearchHadoopIllegalStateException("Spark not started..."))
   val version: OpenSearchMajorVersion = TestUtils.getOpenSearchClusterInfo.getMajorVersion
 
@@ -156,11 +157,11 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
   }
 
   def checkpoint(target: String): String = {
-    s"${AbstractScalaEsSparkStructuredStreaming.commitLogDir}/$target"
+    s"${AbstractScalaOpenSearchSparkStructuredStreaming.commitLogDir}/$target"
   }
 
   def checkpointDir(target: String): String = {
-    checkpoint(target)+"/sinks/elasticsearch"
+    checkpoint(target)+"/sinks/opensearch"
   }
 
   @Test
@@ -197,7 +198,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
 
   @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def test1FailOnIncorrectSaveCall(): Unit = {
-    import org.elasticsearch.spark.sql._
+    import org.opensearch.spark.sql._
     val target = wrapIndex(resource("failed-on-save-call", "data", version))
     val test = new StreamingQueryTestHarness[Record](spark)
 
@@ -297,7 +298,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
   @Test
   def test2BasicWriteUsingSessionCommitLog(): Unit = {
     try {
-      val check = s"${AbstractScalaEsSparkStructuredStreaming.commitLogDir}/session1"
+      val check = s"${AbstractScalaOpenSearchSparkStructuredStreaming.commitLogDir}/session1"
       spark.conf.set(SQLConf.CHECKPOINT_LOCATION.key, check)
 
       val target = wrapIndex(resource("test-basic-write", "data", version))
@@ -322,7 +323,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
 
       Source.fromFile(s"${checkpointDir(target)}/0").getLines().foreach(println)
 
-      assertThat(Files.exists(new File(s"$check/test-basic-write-session-commit/sinks/elasticsearch/0").toPath), is(true))
+      assertThat(Files.exists(new File(s"$check/test-basic-write-session-commit/sinks/opensearch/0").toPath), is(true))
     } finally {
       spark.conf.unset(SQLConf.CHECKPOINT_LOCATION.key)
     }
@@ -331,7 +332,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
   @Test
   def test2BasicWriteUsingSessionCommitLogNoQueryName(): Unit = {
     try {
-      val check = s"${AbstractScalaEsSparkStructuredStreaming.commitLogDir}/session2"
+      val check = s"${AbstractScalaOpenSearchSparkStructuredStreaming.commitLogDir}/session2"
       spark.conf.set(SQLConf.CHECKPOINT_LOCATION.key, check)
 
       val target = wrapIndex(resource("test-basic-write", "data", version))
@@ -545,7 +546,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
     val docPath = wrapIndex(docEndpoint("test-basic-write-rich-mapping-id", "data", version))
     val test = new StreamingQueryTestHarness[Text](spark)
 
-    Source.fromURI(AbstractScalaEsSparkStructuredStreaming.testData.sampleArtistsDatUri())(Codec.ISO8859).getLines().foreach(s => test.withInput(Text(s)))
+    Source.fromURI(AbstractScalaOpenSearchSparkStructuredStreaming.testData.sampleArtistsDatUri())(Codec.ISO8859).getLines().foreach(s => test.withInput(Text(s)))
 
     test
       .runTest {

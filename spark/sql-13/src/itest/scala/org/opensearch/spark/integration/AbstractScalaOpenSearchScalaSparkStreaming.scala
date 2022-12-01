@@ -52,7 +52,6 @@ import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentE
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
-import org.opensearch.spark.integration.SparkUtils
 import org.opensearch.spark.serialization.{Bean, Garbage, ModuleCaseClass, Trip}
 
 import scala.collection.JavaConversions.propertiesAsScalaMap
@@ -63,7 +62,7 @@ object AbstractScalaOpenSearchScalaSparkStreaming {
   @transient val conf = new SparkConf()
     .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
     .setMaster("local")
-    .setAppName("estest")
+    .setAppName("opensearchtest")
     .set("spark.io.compression.codec", "lz4")
     .set("spark.executor.extraJavaOptions", "-XX:MaxPermSize=256m")
     .setJars(SparkUtils.ES_SPARK_TESTING_JAR)

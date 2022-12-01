@@ -96,7 +96,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
 
     private static final transient SparkConf conf = new SparkConf()
             .setMaster("local")
-            .setAppName("estest")
+            .setAppName("opensearchtest")
             .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR);
 
     private static transient JavaSparkContext sc = null;

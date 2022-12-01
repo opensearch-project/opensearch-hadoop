@@ -35,35 +35,35 @@ import org.apache.spark.Partition
 import org.apache.spark.SparkContext
 import org.apache.spark.TaskContext
 import org.apache.spark.sql.Row
-import org.elasticsearch.spark.rdd.AbstractEsRDD
-import org.elasticsearch.spark.rdd.AbstractEsRDDIterator
-import org.elasticsearch.spark.rdd.EsPartition
+import org.opensearch.spark.rdd.AbstractOpenSearchRDD
+import org.opensearch.spark.rdd.AbstractOpenSearchRDDIterator
+import org.opensearch.spark.rdd.OpenSearchPartition
 import org.opensearch.hadoop.cfg.Settings
 import org.opensearch.hadoop.mr.security.HadoopUserProvider
 import org.opensearch.hadoop.rest.{InitializationUtils, PartitionDefinition}
 
 import scala.annotation.meta.param
 
-// while we could have just wrapped the ScalaEsRDD and unpack the top-level data into a Row the issue is the underlying Maps are StructTypes
+// while we could have just wrapped the ScalaOpenSearchRDD and unpack the top-level data into a Row the issue is the underlying Maps are StructTypes
 // and as such need to be mapped as Row resulting in either nested wrapping or using a ValueReader and which point wrapping becomes unyielding since the class signatures clash
-private[spark] class ScalaEsRowRDD(
+private[spark] class ScalaOpenSearchRowRDD(
   @(transient @param) sc: SparkContext,
   params: Map[String, String] = Map.empty,
   schema: SchemaUtils.Schema)
-  extends AbstractEsRDD[Row](sc, params) {
+  extends AbstractOpenSearchRDD[Row](sc, params) {
 
-  override def compute(split: Partition, context: TaskContext): ScalaEsRowRDDIterator = {
-    new ScalaEsRowRDDIterator(context, split.asInstanceOf[EsPartition].esPartition, schema)
+  override def compute(split: Partition, context: TaskContext): ScalaOpenSearchRowRDDIterator = {
+    new ScalaOpenSearchRowRDDIterator(context, split.asInstanceOf[OpenSearchPartition].opensearchPartition, schema)
   }
 }
 
-private[spark] class ScalaEsRowRDDIterator(
+private[spark] class ScalaOpenSearchRowRDDIterator(
   context: TaskContext,
   partition: PartitionDefinition,
   schema: SchemaUtils.Schema)
-  extends AbstractEsRDDIterator[Row](context, partition) {
+  extends AbstractOpenSearchRDDIterator[Row](context, partition) {
 
-  override def getLogger() = LogFactory.getLog(classOf[ScalaEsRowRDD])
+  override def getLogger() = LogFactory.getLog(classOf[ScalaOpenSearchRowRDD])
 
   override def initReader(settings: Settings, log: Log) = {
     InitializationUtils.setValueReaderIfNotSet(settings, classOf[ScalaRowValueReader], log)

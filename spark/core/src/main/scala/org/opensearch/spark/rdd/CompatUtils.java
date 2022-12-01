@@ -66,7 +66,7 @@ abstract class CompatUtils {
         boolean isSpark20Level = ObjectUtils.isClassPresent("org.apache.spark.sql.streaming.StreamingQuery", SparkConf.class.getClassLoader());
 
         try {
-            CompatibilityLevel compatibilityLevel = ObjectUtils.instantiate("org.elasticsearch.spark.sql.SparkSQLCompatibilityLevel", CompatUtils.class.getClassLoader());
+            CompatibilityLevel compatibilityLevel = ObjectUtils.instantiate("org.opensearch.spark.sql.SparkSQLCompatibilityLevel", CompatUtils.class.getClassLoader());
             boolean isEshForSpark20 = "20".equals(compatibilityLevel.versionId());
             String esSupportedSparkVersion = compatibilityLevel.versionDescription();
 
@@ -140,7 +140,7 @@ abstract class CompatUtils {
     static void warnSchemaRDD(Object rdd, Log log) {
         if (rdd != null && SCHEMA_RDD_LIKE_CLASS != null) {
             if (SCHEMA_RDD_LIKE_CLASS.isAssignableFrom(rdd.getClass())) {
-                log.warn("basic RDD saveToEs() called on a Spark SQL SchemaRDD; typically this is a mistake(as the SQL schema will be ignored). Use 'org.elasticsearch.spark.sql' package instead");
+                log.warn("basic RDD saveToEs() called on a Spark SQL SchemaRDD; typically this is a mistake(as the SQL schema will be ignored). Use 'org.opensearch.spark.sql' package instead");
             }
         }
     }

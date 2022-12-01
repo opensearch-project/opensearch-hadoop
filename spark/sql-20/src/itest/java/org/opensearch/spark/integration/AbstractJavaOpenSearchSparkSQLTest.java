@@ -80,7 +80,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 
 	private static final transient SparkConf conf = new SparkConf()
 			.setAll(propertiesAsScalaMap(TestSettings.TESTING_PROPS))
-			.setAppName("estest");
+			.setAppName("opensearchtest");
 	
 	private static transient JavaSparkContext sc = null;
 	private static transient SQLContext sqc = null;

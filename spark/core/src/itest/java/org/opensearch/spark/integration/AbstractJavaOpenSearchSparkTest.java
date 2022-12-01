@@ -72,7 +72,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     private static final transient SparkConf conf = new SparkConf()
                     .setAll(ScalaUtils.propertiesAsScalaMap(TestSettings.TESTING_PROPS))
                     .set("spark.io.compression.codec", "lz4")
-                    .setAppName("estest");
+                    .setAppName("opensearchtest");
     private static transient JavaSparkContext sc = null;
 
     private final OpenSearchMajorVersion version = TestUtils.getOpenSearchClusterInfo().getMajorVersion();

@@ -44,9 +44,9 @@ import org.opensearch.hadoop.rest.{InitializationUtils, PartitionDefinition}
 
 import scala.annotation.meta.param
 
-// while we could have just wrapped the ScalaEsRDD and unpack the top-level data into a Row the issue is the underlying Maps are StructTypes
+// while we could have just wrapped the ScalaOpenSearchRDD and unpack the top-level data into a Row the issue is the underlying Maps are StructTypes
 // and as such need to be mapped as Row resulting in either nested wrapping or using a ValueReader and which point wrapping becomes unyielding since the class signatures clash
-private[spark] class ScalaEsRowRDD(
+private[spark] class ScalaOpenSearchRowRDD(
   @(transient @param) sc: SparkContext,
   params: Map[String, String] = Map.empty,
   schema: SchemaUtils.Schema)
@@ -63,7 +63,7 @@ private[spark] class ScalaOpenSearchRowRDDIterator(
   schema: SchemaUtils.Schema)
   extends AbstractOpenSearchRDDIterator[Row](context, partition) {
 
-  override def getLogger() = LogFactory.getLog(classOf[ScalaEsRowRDD])
+  override def getLogger() = LogFactory.getLog(classOf[ScalaOpenSearchRowRDD])
 
   override def initReader(settings: Settings, log: Log) = {
     InitializationUtils.setValueReaderIfNotSet(settings, classOf[ScalaRowValueReader], log)

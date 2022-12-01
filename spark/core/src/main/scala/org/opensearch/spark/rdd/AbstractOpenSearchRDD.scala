@@ -46,12 +46,12 @@ private[spark] abstract class AbstractOpenSearchRDD[T: ClassTag](
   val params: scala.collection.Map[String, String] = Map.empty)
   extends RDD[T](sc, Nil) {
 
-  private val init = { ObjectUtils.loadClass("org.elasticsearch.spark.rdd.CompatUtils", classOf[ObjectUtils].getClassLoader) }
+  private val init = { ObjectUtils.loadClass("org.opensearch.spark.rdd.CompatUtils", classOf[ObjectUtils].getClassLoader) }
 
   @transient protected lazy val logger = LogFactory.getLog(this.getClass())
 
   override def getPartitions: Array[Partition] = {
-    esPartitions.asScala.zipWithIndex.map { case(esPartition, idx) =>
+    opensearchPartitions.asScala.zipWithIndex.map { case(esPartition, idx) =>
       new OpenSearchPartition(id, idx, esPartition)
     }.toArray
   }
@@ -66,7 +66,7 @@ private[spark] abstract class AbstractOpenSearchRDD[T: ClassTag](
   }
 
   def esCount(): Long = {
-    val repo = new RestRepository(esCfg)
+    val repo = new RestRepository(opensearchCfg)
     try {
       repo.count(true)
     } finally {
@@ -74,15 +74,15 @@ private[spark] abstract class AbstractOpenSearchRDD[T: ClassTag](
     }
   }
 
-  @transient private[spark] lazy val esCfg = {
+  @transient private[spark] lazy val opensearchCfg = {
     val cfg = new SparkSettingsManager().load(sc.getConf).copy();
     cfg.merge(params.asJava)
     InitializationUtils.setUserProviderIfNotSet(cfg, classOf[HadoopUserProvider], logger)
     cfg
   }
 
-  @transient private[spark] lazy val esPartitions = {
-    RestService.findPartitions(esCfg, logger)
+  @transient private[spark] lazy val opensearchPartitions = {
+    RestService.findPartitions(opensearchCfg, logger)
   }
 }
 

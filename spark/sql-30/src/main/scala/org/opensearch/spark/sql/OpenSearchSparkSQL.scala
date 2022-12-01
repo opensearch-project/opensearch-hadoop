@@ -49,7 +49,7 @@ import scala.collection.Map
 
 object OpenSearchSparkSQL {
 
-  private val init = { ObjectUtils.loadClass("org.elasticsearch.spark.rdd.CompatUtils", classOf[ObjectUtils].getClassLoader) }
+  private val init = { ObjectUtils.loadClass("org.opensearch.spark.rdd.CompatUtils", classOf[ObjectUtils].getClassLoader) }
 
   @transient private[this] val LOG = LogFactory.getLog(OpenSearchSparkSQL.getClass)
 
@@ -64,7 +64,7 @@ object OpenSearchSparkSQL {
     val esConf = new SparkSettingsManager().load(sc.sparkContext.getConf).copy()
     esConf.merge(cfg.asJava)
 
-    sc.read.format("org.elasticsearch.spark.sql").options(esConf.asProperties.asScala.toMap).load
+    sc.read.format("org.opensearch.spark.sql").options(esConf.asProperties.asScala.toMap).load
   }
 
   def esDF(sc: SQLContext, resource: String, query: String, cfg: Map[String, String]): DataFrame = {

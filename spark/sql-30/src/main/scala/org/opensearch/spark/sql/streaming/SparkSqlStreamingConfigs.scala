@@ -91,17 +91,17 @@ object SparkSqlStreamingConfigs {
       // Case 2) /{checkpointLocation}/sinks/es
       // Don't store commit files for the log in the root of the checkpoint location; There are other directories
       // inside that root like '/sources', '/metadata', '/state', '/offsets', etc.
-      // Instead, nest it under '/sinks/elasticsearch'.
-      case (None, Some(userCheckpoint), _, _) => s"$userCheckpoint/sinks/elasticsearch"
+      // Instead, nest it under '/sinks/opensearch'.
+      case (None, Some(userCheckpoint), _, _) => s"$userCheckpoint/sinks/opensearch"
       // Case 3) /{sessionCheckpointLocation}/{UUID}
       // Spark lets you define a common location to store checkpoint locations for an entire session. Checkpoint
       // locations are then keyed by their query names. In the event of no query name being present, the query manager
       // creates a random UUID to store the checkpoint in. Not great, since you can't recover easily, but we'll follow
       // suit anyway.
-      case (None, None, Some(sessionCheckpoint), None) => s"$sessionCheckpoint/${UUID.randomUUID().toString}/sinks/elasticsearch"
+      case (None, None, Some(sessionCheckpoint), None) => s"$sessionCheckpoint/${UUID.randomUUID().toString}/sinks/opensearch"
       // Case 4) /{sessionCheckpointLocation}/{queryName}
       // Same as above, but the query name is specified.
-      case (None, None, Some(sessionCheckpoint), Some(query)) => s"$sessionCheckpoint/$query/sinks/elasticsearch"
+      case (None, None, Some(sessionCheckpoint), Some(query)) => s"$sessionCheckpoint/$query/sinks/opensearch"
       // Case 5) throw because we don't know where to store things...
       case (None, None, None, _) => throw new OpenSearchHadoopIllegalArgumentException(
         "Could not determine path for the Elasticsearch commit log. Specify the commit log location by setting the " +

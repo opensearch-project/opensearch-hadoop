@@ -64,7 +64,7 @@ object OpenSearchSparkSQL {
     val esConf = new SparkSettingsManager().load(sc.sparkContext.getConf).copy()
     esConf.merge(cfg.asJava)
 
-    sc.read.format("org.elasticsearch.spark.sql").options(esConf.asProperties.asScala.toMap).load
+    sc.read.format("org.opensearch.spark.sql").options(esConf.asProperties.asScala.toMap).load
   }
 
   def esDF(sc: SQLContext, resource: String, query: String, cfg: Map[String, String]): DataFrame = {

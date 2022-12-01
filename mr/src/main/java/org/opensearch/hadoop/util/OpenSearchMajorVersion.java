@@ -76,6 +76,12 @@ public class OpenSearchMajorVersion implements Serializable {
     }
 
     public static OpenSearchMajorVersion parse(String version) {
+        if (version.startsWith("0.")) {
+            return new OpenSearchMajorVersion((byte) 0, version);
+        }
+        if (version.startsWith("1.")) {
+            return new OpenSearchMajorVersion((byte) 1, version);
+        }
         if (version.startsWith("2.")) {
             return new OpenSearchMajorVersion((byte) 2, version);
         }

@@ -708,6 +708,11 @@ public class RestClient implements Closeable, StatsAware {
             throw new OpenSearchHadoopIllegalStateException("Unable to retrieve OpenSearch version.");
         }
         String versionNumber = versionBody.get("number");
+        OpenSearchMajorVersion major = OpenSearchMajorVersion.parse(versionNumber);
+        if (major.before(OpenSearchMajorVersion.V_2_X)) {
+            throw new OpenSearchHadoopIllegalStateException("Invalid major version [" + major + "]. " +
+                    "Version is lower than minimum required version [" + OpenSearchMajorVersion.V_2_X + "].");
+        }
         return new ClusterInfo(new ClusterName(clusterName, clusterUUID), OpenSearchMajorVersion.parse(versionNumber));
     }
 

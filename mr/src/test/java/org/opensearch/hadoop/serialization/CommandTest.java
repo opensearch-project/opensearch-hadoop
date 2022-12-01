@@ -221,7 +221,7 @@ public class CommandTest {
         assumeFalse(isDeleteOP() && jsonInput);
         assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
         Settings settings = settings();
-        if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
             settings.setResourceWrite("{n}");
         } else {
             settings.setResourceWrite("foo/{n}");
@@ -229,7 +229,7 @@ public class CommandTest {
 
         create(settings).write(data).copyTo(ba);
         String header;
-        if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
+        if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
             header = "{\"_index\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
         } else {
             header = "{\"_index\":\"foo\",\"_type\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
@@ -360,7 +360,7 @@ public class CommandTest {
         if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
             set.setResourceWrite("foo");
         } else {
-            set.setResourceWrite("foo/bar");
+            set.setResourceWrite("foo");
         }
         if (isUpdateOp()) {
             set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "<2>");

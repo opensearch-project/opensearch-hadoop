@@ -56,8 +56,8 @@ public class DefaultIndexExtractorTest {
     @Test
     public void createFieldExtractor() {
         Settings settings = new TestSettings();
-        settings.setResourceWrite("test/{field}");
-        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
+        settings.setResourceWrite("{field}");
+        settings.setInternalVersion(OpenSearchMajorVersion.V_3_X);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapFieldExtractor.class, LOG);
 
         IndexExtractor iformat = ObjectUtils.instantiate(settings.getMappingIndexExtractorClassName(), settings);
@@ -69,14 +69,14 @@ public class DefaultIndexExtractorTest {
         data.put("field", "data");
 
         Object field = iformat.field(data);
-        assertThat(field.toString(), equalTo("\"_index\":\"test\",\"_type\":\"data\""));
+        assertThat(field.toString(), equalTo("\"_index\":\"data\""));
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void createFieldExtractorNull() {
         Settings settings = new TestSettings();
         settings.setResourceWrite("test/{field}");
-        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_3_X);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapFieldExtractor.class, LOG);
 
         IndexExtractor iformat = ObjectUtils.instantiate(settings.getMappingIndexExtractorClassName(), settings);

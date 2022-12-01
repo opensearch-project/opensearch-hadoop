@@ -42,12 +42,6 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class NodeInfoTest {
-    @Test
-    public void testV1() throws Exception {
-        Map<String, NodeInfo> nodeMap = testNodeInfo(getClass().getResourceAsStream("client-nodes-v1.json"));
-        assertFalse(nodeMap.get("Darkhawk").isIngest());
-        assertFalse(nodeMap.get("Unseen").isIngest());
-    }
 
     @Test
     public void testV2() throws Exception {

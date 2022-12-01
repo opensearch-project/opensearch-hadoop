@@ -56,42 +56,6 @@ import static org.junit.Assert.fail;
 public class RestClientTest {
 
     @Test
-    public void testPostDocumentSuccess() throws Exception {
-        String index = "index/type";
-        Settings settings = new TestSettings();
-        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
-        settings.setResourceWrite(index);
-        Resource writeResource = new Resource(settings, false);
-        BytesArray document = new BytesArray("{\"field\":\"value\"}");
-        SimpleRequest request = new SimpleRequest(Request.Method.POST, null, index, null, document);
-        String response =
-                "{\n" +
-                "  \"_index\": \"index\",\n" +
-                "  \"_type\": \"type\",\n" +
-                "  \"_id\": \"AbcDefGhiJklMnoPqrS_\",\n" +
-                "  \"_version\": 1,\n" +
-                "  \"result\": \"created\",\n" +
-                "  \"_shards\": {\n" +
-                "    \"total\": 2,\n" +
-                "    \"successful\": 1,\n" +
-                "    \"failed\": 0\n" +
-                "  },\n" +
-                "  \"_seq_no\": 0,\n" +
-                "  \"_primary_term\": 1\n" +
-                "}";
-
-        NetworkClient mock = Mockito.mock(NetworkClient.class);
-        Mockito.when(mock.execute(Mockito.eq(request), Mockito.eq(true)))
-                .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
-
-        RestClient client = new RestClient(new TestSettings(), mock);
-
-        String id = client.postDocument(writeResource, document);
-
-        assertEquals("AbcDefGhiJklMnoPqrS_", id);
-    }
-
-    @Test
     public void testPostTypelessDocumentSuccess() throws Exception {
         String index = "index";
         Settings settings = new TestSettings();
@@ -125,45 +89,6 @@ public class RestClientTest {
         String id = client.postDocument(writeResource, document);
 
         assertEquals("AbcDefGhiJklMnoPqrS_", id);
-    }
-
-    @Test(expected = OpenSearchHadoopInvalidRequest.class)
-    public void testPostDocumentWithTypeFailure() throws Exception {
-        String index = "index/type";
-        Settings settings = new TestSettings();
-        settings.setInternalVersion(OpenSearchMajorVersion.V_3_X);
-        settings.setResourceWrite(index);
-        Resource writeResource = new Resource(settings, false);
-        BytesArray document = new BytesArray("{\"field\":\"value\"}");
-        SimpleRequest request = new SimpleRequest(Request.Method.POST, null, index, null, document);
-        String response =
-                "{\n" +
-                "  \"error\": {\n" +
-                "    \"root_cause\": [\n" +
-                "      {\n" +
-                "        \"type\": \"io_exception\",\n" +
-                "        \"reason\": \"test failure\"\n" +
-                "      }\n" +
-                "    ],\n" +
-                "    \"type\": \"io_exception\",\n" +
-                "    \"reason\": \"test failure\",\n" +
-                "    \"caused_by\": {\n" +
-                "      \"type\": \"io_exception\",\n" +
-                "      \"reason\": \"This test needs to fail\"\n" +
-                "    }\n" +
-                "  },\n" +
-                "  \"status\": 400\n" +
-                "}";
-
-        NetworkClient mock = Mockito.mock(NetworkClient.class);
-        Mockito.when(mock.execute(Mockito.eq(request), Mockito.eq(true)))
-                .thenReturn(new SimpleResponse(400, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
-
-        RestClient client = new RestClient(new TestSettings(), mock);
-
-        client.postDocument(writeResource, document);
-
-        fail("Request should have failed");
     }
 
     @Test(expected = OpenSearchHadoopInvalidRequest.class)
@@ -332,9 +257,9 @@ public class RestClientTest {
                 "\"cluster_name\": \"cluster\",\n" +
                 "\"cluster_uuid\": \"uuid\",\n" +
                 "\"version\": {\n" +
-                "  \"number\": \"7.14.0\"\n" +
+                "  \"number\": \"2.4.0\"\n" +
                 "},\n" +
-                "\"tagline\": \"You Know, for Search\"\n" +
+                "\"tagline\": \"The OpenSearch Project: https://opensearch.org/\"\n" +
                 "}";
 
         NetworkClient mock = Mockito.mock(NetworkClient.class);
@@ -357,9 +282,9 @@ public class RestClientTest {
                 "\"name\": \"node\",\n" +
                 "\"cluster_name\": \"cluster\",\n" +
                 "\"version\": {\n" +
-                "  \"number\": \"2.0.0\"\n" +
+                "  \"number\": \"1.0.0\"\n" +
                 "},\n" +
-                "\"tagline\": \"You Know, for Search\"\n" +
+                "\"tagline\": \"The OpenSearch Project: https://opensearch.org/\"\n" +
                 "}";
 
         NetworkClient mock = Mockito.mock(NetworkClient.class);
@@ -372,35 +297,7 @@ public class RestClientTest {
             client.mainInfo();
             fail("Shouldn't operate on main version that is too old.");
         } catch (OpenSearchHadoopIllegalStateException e) {
-            assertEquals("Invalid major version [2.0.0]. Version is lower than minimum required version [6.x].", e.getMessage());
-        }
-    }
-
-    @Test
-    public void testMainInfoWithoutRequiredHeaders() {
-        String response = "{\n" +
-                "\"name\": \"node\",\n" +
-                "\"cluster_name\": \"cluster\",\n" +
-                "\"cluster_uuid\": \"uuid\",\n" +
-                "\"version\": {\n" +
-                "  \"number\": \"7.14.0\"\n" +
-                "},\n" +
-                "\"tagline\": \"You Know, for Search\"\n" +
-                "}";
-
-        NetworkClient mock = Mockito.mock(NetworkClient.class);
-        Mockito.when(mock.execute(Mockito.any(SimpleRequest.class), Mockito.eq(true)))
-                .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
-
-        RestClient client = new RestClient(new TestSettings(), mock);
-
-        try {
-            client.mainInfo();
-            fail("Shouldn't operate on request that does not contain the required headers.");
-        } catch (OpenSearchHadoopTransportException e) {
-            assertEquals("Connected, but could not verify server is Elasticsearch. Response missing [X-elastic-product] header. " +
-                    "Please check that you are connecting to an Elasticsearch instance, and that any networking filters are " +
-                    "preserving that header.", e.getMessage());
+            assertEquals("Invalid major version [1.0.0]. Version is lower than minimum required version [2.x].", e.getMessage());
         }
     }
 
@@ -410,9 +307,9 @@ public class RestClientTest {
                 "\"name\": \"node\",\n" +
                 "\"cluster_name\": \"cluster\",\n" +
                 "\"version\": {\n" +
-                "  \"number\": \"6.0.1\"\n" +
+                "  \"number\": \"2.4.0\"\n" +
                 "},\n" +
-                "\"tagline\": \"You Know, for Search\"\n" +
+                "\"tagline\": \"The OpenSearch Project: https://opensearch.org/\"\n" +
                 "}";
 
         NetworkClient mock = Mockito.mock(NetworkClient.class);
@@ -434,9 +331,9 @@ public class RestClientTest {
                 "\"cluster_name\": \"cluster\",\n" +
                 "\"cluster_uuid\": \"uuid\",\n" +
                 "\"version\": {\n" +
-                "  \"number\": \"6.7.0\"\n" +
+                "  \"number\": \"2.4.0\"\n" +
                 "},\n" +
-                "\"tagline\": \"You Know, for Search\"\n" +
+                "\"tagline\": \"The OpenSearch Project: https://opensearch.org/\"\n" +
                 "}";
 
         NetworkClient mock = Mockito.mock(NetworkClient.class);

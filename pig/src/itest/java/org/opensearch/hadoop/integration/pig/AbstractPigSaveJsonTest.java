@@ -72,8 +72,8 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
                 "SET mapred.map.tasks 2;" +
                 loadSource() +
                 //"ILLUSTRATE A;" +
-                "STORE A INTO '"+resource("json-pig-tupleartists", "data", VERSION)+"' USING org.opensearch.pig.hadoop.OpenSearchStorage('es.input.json=true');";
-        //"es_total = LOAD 'radio/artists/_count?q=me*' USING org.opensearch.pig.hadoop.OpenSearchStorage();" +
+                "STORE A INTO '"+resource("json-pig-tupleartists", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('es.input.json=true');";
+        //"es_total = LOAD 'radio/artists/_count?q=me*' USING org.opensearch.hadoop.pig.OpenSearchStorage();" +
         pig.executeScript(script);
     }
 
@@ -81,7 +81,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
     public void testFieldAlias() throws Exception {
         String script =
                 loadSource() +
-                "STORE A INTO '"+resource("json-pig-fieldalias", "data", VERSION)+"' USING org.opensearch.pig.hadoop.OpenSearchStorage('es.input.json=true','es.mapping.names=data:@json');";
+                "STORE A INTO '"+resource("json-pig-fieldalias", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('es.input.json=true','es.mapping.names=data:@json');";
 
         pig.executeScript(script);
     }
@@ -90,7 +90,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
     public void testCreateWithId() throws Exception {
         String script =
                 loadSource() +
-                "STORE A INTO '"+resource("json-pig-createwithid", "data", VERSION)+"' USING org.opensearch.pig.hadoop.OpenSearchStorage('"
+                "STORE A INTO '"+resource("json-pig-createwithid", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
                                 + ConfigurationOptions.ES_WRITE_OPERATION + "=create','"
                                 + ConfigurationOptions.ES_MAPPING_ID + "=number',"
                                 + "'es.input.json=true');";
@@ -106,7 +106,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
     public void testUpdateWithoutId() throws Exception {
         String script =
                 loadSource() +
-                "STORE A INTO '"+resource("json-pig-updatewoid", "data", VERSION)+"' USING org.opensearch.pig.hadoop.OpenSearchStorage('"
+                "STORE A INTO '"+resource("json-pig-updatewoid", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
                                 + ConfigurationOptions.ES_WRITE_OPERATION + "=update',"
                                 + "'es.input.json=true');";
         pig.executeScript(script);
@@ -116,7 +116,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
     public void testUpdateWithId() throws Exception {
         String script =
                 loadSource() +
-                "STORE A INTO '"+resource("json-pig-update", "data", VERSION)+"' USING org.opensearch.pig.hadoop.OpenSearchStorage('"
+                "STORE A INTO '"+resource("json-pig-update", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
                                 + ConfigurationOptions.ES_WRITE_OPERATION + "=upsert','"
                                 + ConfigurationOptions.ES_MAPPING_ID + "=number',"
                                 + "'es.input.json=true');";
@@ -127,7 +127,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
     public void testUpdateWithoutUpsert() throws Exception {
         String script =
                 loadSource() +
-                "STORE A INTO '"+resource("json-pig-updatewoupsert", "data", VERSION)+"' USING org.opensearch.pig.hadoop.OpenSearchStorage('"
+                "STORE A INTO '"+resource("json-pig-updatewoupsert", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
                                 + ConfigurationOptions.ES_WRITE_OPERATION + "=update','"
                                 + ConfigurationOptions.ES_MAPPING_ID + "=number',"
                                 + "'es.input.json=true');";
@@ -138,7 +138,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
     public void testIndexPattern() throws Exception {
         String script =
                 loadSource() +
-                "STORE A INTO '"+resource("json-pig-pattern-{tag}", "data", VERSION)+"' USING org.opensearch.pig.hadoop.OpenSearchStorage('es.input.json=true');";
+                "STORE A INTO '"+resource("json-pig-pattern-{tag}", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('es.input.json=true');";
 
         pig.executeScript(script);
     }
@@ -147,7 +147,7 @@ public class AbstractPigSaveJsonTest extends AbstractPigTests {
     public void testIndexPatternFormat() throws Exception {
         String script =
                 loadSource() +
-                "STORE A INTO '"+resource("json-pig-pattern-format-{@timestamp|YYYY-MM-dd}", "data", VERSION)+"' USING org.opensearch.pig.hadoop.OpenSearchStorage('es.input.json=true');";
+                "STORE A INTO '"+resource("json-pig-pattern-format-{@timestamp|YYYY-MM-dd}", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('es.input.json=true');";
 
         pig.executeScript(script);
     }

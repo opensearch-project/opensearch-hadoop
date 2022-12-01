@@ -91,11 +91,11 @@ public class AbstractPigExtraTests extends AbstractPigTests {
         String script =
                 "PARENT = LOAD '" + resourceFile("/parent.txt") + "' using PigStorage('|') as (parent_name: chararray, parent_value: chararray);" +
                 "CHILD = LOAD '" + resourceFile("/child.txt") + "' using PigStorage('|') as (child_name: chararray, parent_name: chararray, child_value: long);" +
-                "STORE PARENT into '"+ resource("pig-test-parent", "data", VERSION)+"' using org.opensearch.pig.hadoop.OpenSearchStorage();" +
-                "STORE CHILD into '"+resource("pig-test-child", "data", VERSION)+"' using org.opensearch.pig.hadoop.OpenSearchStorage();";
+                "STORE PARENT into '"+ resource("pig-test-parent", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage();" +
+                "STORE CHILD into '"+resource("pig-test-child", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage();";
        String script2 =
-                "ES_PARENT = LOAD '"+resource("pig-test-parent", "data", VERSION)+"' using org.opensearch.pig.hadoop.OpenSearchStorage() as (parent_name: chararray, parent_value: chararray);" +
-                "ES_CHILD = LOAD '"+resource("pig-test-child", "data", VERSION)+"' using org.opensearch.pig.hadoop.OpenSearchStorage() as (child_name: chararray, parent_name: chararray, child_value: long);" +
+                "ES_PARENT = LOAD '"+resource("pig-test-parent", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage() as (parent_name: chararray, parent_value: chararray);" +
+                "ES_CHILD = LOAD '"+resource("pig-test-child", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage() as (child_name: chararray, parent_name: chararray, child_value: long);" +
                 "CO_GROUP = COGROUP ES_PARENT by parent_name, ES_CHILD by parent_name;" +
                 "PARENT_CHILD = JOIN ES_PARENT by parent_name, ES_CHILD by parent_name;" +
                 "STORE PARENT_CHILD INTO '" + tmpPig() + "/testjoin-join';" +
@@ -124,7 +124,7 @@ public class AbstractPigExtraTests extends AbstractPigTests {
                 "data = LOAD '" + resourceFile("/group-sample.txt") + "' using PigStorage(',') as (no:long,name:chararray,age:long);" +
                 "data_limit = LIMIT data 1;" +
                 "data_final = FOREACH data_limit GENERATE TRIM(name) as details, no as number;" +
-                "STORE data_final into '"+resource("pig-test-temp_schema", "data", VERSION)+"' using org.opensearch.pig.hadoop.OpenSearchStorage('es.mapping.id=details');";
+                "STORE data_final into '"+resource("pig-test-temp_schema", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage('es.mapping.id=details');";
         pig.executeScript(script);
     }
 
@@ -136,7 +136,7 @@ public class AbstractPigExtraTests extends AbstractPigTests {
         RestUtils.refresh("pig-test-iterate");
 
         String script =
-                "data = LOAD '"+resource("pig-test-iterate", "data", VERSION)+"' using org.opensearch.pig.hadoop.OpenSearchStorage() as (message:chararray,message_date:chararray);" +
+                "data = LOAD '"+resource("pig-test-iterate", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage() as (message:chararray,message_date:chararray);" +
                 "data = FOREACH data GENERATE message_date as date, message as message;" +
                 "STORE data INTO '" + tmpPig() + "/pig-iterate';";
         pig.executeScript(script);
@@ -153,7 +153,7 @@ public class AbstractPigExtraTests extends AbstractPigTests {
                 "answers = LOAD '" + resourceFile("/tuple.txt") + "' using PigStorage(',') as (id:int, parentId:int, score:int);" +
                 "grouped = GROUP answers by id;" +
                 "ILLUSTRATE grouped;" +
-                "STORE grouped into '"+resource("pig-test-tuple-structure", "data", VERSION)+"' using org.opensearch.pig.hadoop.OpenSearchStorage('es.mapping.pig.tuple.use.field.names = true');";
+                "STORE grouped into '"+resource("pig-test-tuple-structure", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage('es.mapping.pig.tuple.use.field.names = true');";
         pig.executeScript(script);
 
         String string = RestUtils.get("pig-test-tuple-structure/_search");

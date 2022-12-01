@@ -77,7 +77,7 @@ import org.opensearch.hadoop.util.ObjectUtils;
 import org.opensearch.hadoop.util.StringUtils;
 
 /**
- * Pig storage for reading and writing data into an ElasticSearch index.
+ * Pig storage for reading and writing data into an OpenSearch index.
  * Uses the tuple implied schema to create the resulting JSON string sent to ElasticSearch.
  * <p/>
  * Typical usage is:

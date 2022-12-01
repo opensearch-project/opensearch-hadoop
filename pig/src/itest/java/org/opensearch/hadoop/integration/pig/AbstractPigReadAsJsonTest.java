@@ -104,7 +104,7 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         RestUtils.refresh("json-pig*");
 
         this.scriptHead =
-                "DEFINE OpenSearchStorage org.opensearch.pig.hadoop.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"','opensearch.output.json=true');";
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"','opensearch.output.json=true');";
     }
 
     @Test

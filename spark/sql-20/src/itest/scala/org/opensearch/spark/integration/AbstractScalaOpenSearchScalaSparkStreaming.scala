@@ -52,7 +52,6 @@ import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentE
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
-import org.opensearch.spark.integration.SparkUtils
 import org.opensearch.spark.serialization.{Bean, Garbage, ModuleCaseClass, Trip}
 
 import scala.collection.JavaConversions.propertiesAsScalaMap
@@ -63,7 +62,7 @@ object AbstractScalaOpenSearchScalaSparkStreaming {
   @transient val conf = new SparkConf()
     .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
     .setMaster("local")
-    .setAppName("estest")
+    .setAppName("opensearchtest")
     .set("spark.executor.extraJavaOptions", "-XX:MaxPermSize=256m")
     .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR)
   @transient var sc: SparkContext = null
@@ -94,7 +93,7 @@ object AbstractScalaOpenSearchScalaSparkStreaming {
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(classOf[Parameterized])
-class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Boolean) extends Serializable {
+class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadata: jl.Boolean) extends Serializable {
 
   val sc = AbstractScalaOpenSearchScalaSparkStreaming.sc
   val cfg = Map(ConfigurationOptions.ES_READ_METADATA -> readMetadata.toString)

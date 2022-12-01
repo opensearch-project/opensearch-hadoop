@@ -38,11 +38,11 @@ import org.apache.hadoop.security.Credentials
 import org.apache.hadoop.security.UserGroupInformation
 import org.apache.spark.SparkConf
 import org.apache.spark.security.HadoopDelegationTokenProvider
-import org.elasticsearch.spark.cfg.SparkSettingsManager
 import org.opensearch.hadoop.cfg.{CompositeSettings, HadoopSettingsManager}
 import org.opensearch.hadoop.mr.security.{EsTokenIdentifier, HadoopUserProvider, TokenUtil}
 import org.opensearch.hadoop.rest.{InitializationUtils, RestClient}
 import org.opensearch.hadoop.security.{AuthenticationMethod, EsToken, UserProvider}
+import org.opensearch.spark.cfg.SparkSettingsManager
 
 /**
  * A provider interface in Spark's Yarn library that obtains tokens for an application.

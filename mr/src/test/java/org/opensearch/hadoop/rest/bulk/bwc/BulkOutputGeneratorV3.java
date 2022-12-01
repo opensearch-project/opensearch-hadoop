@@ -77,11 +77,11 @@ public class BulkOutputGeneratorV3 extends BulkOutputGeneratorBase {
 
     @Override
     protected String getRejectionType() {
-        return "es_rejected_execution_exception";
+        return "opensearch_rejected_execution_exception";
     }
 
     @Override
     protected String getRejectionMsg() {
-        return "rejected execution of org.elasticsearch.transport.TransportService$5@2c37e0bc on EsThreadPoolExecutor[bulk, queue capacity = 0, org.elasticsearch.common.util.concurrent.EsThreadPoolExecutor@7e1fa465[Running, pool size = 1, active threads = 0, queued tasks = 0, completed tasks = 1]]";
+        return "rejected execution of org.opensearch.transport.TransportService$5@2c37e0bc on OpenSearchThreadPoolExecutor[bulk, queue capacity = 0, org.opensearch.common.util.concurrent.OpenSearchThreadPoolExecutor@7e1fa465[Running, pool size = 1, active threads = 0, queued tasks = 0, completed tasks = 1]]";
     }
 }

@@ -30,18 +30,12 @@ package org.opensearch.spark.integration
 
 import java.util.concurrent.TimeUnit
 import java.{lang => jl, util => ju}
+
 import org.apache.spark.rdd.RDD
 import org.apache.spark.streaming.dstream.DStream
-import org.apache.spark.streaming.scheduler._
+import org.apache.spark.streaming.scheduler.{StreamingListenerOutputOperationCompleted, _}
 import org.apache.spark.streaming.{Seconds, StreamingContext, StreamingContextState}
 import org.apache.spark.{SparkConf, SparkContext, SparkException}
-import org.opensearch.hadoop.cfg.ConfigurationOptions._
-import org.opensearch.hadoop.util.TestUtils.resource
-import org.opensearch.hadoop.util.TestUtils.docEndpoint
-import org.opensearch.spark.rdd.OpenSearchSpark
-import org.opensearch.spark.rdd.Metadata._
-import org.opensearch.spark.serialization.ReflectionUtils
-import org.opensearch.spark.streaming._
 import org.hamcrest.Matchers._
 import org.junit.Assert._
 import org.junit._
@@ -50,19 +44,25 @@ import org.junit.runners.Parameterized.Parameters
 import org.junit.runners.{MethodSorters, Parameterized}
 import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
+import org.opensearch.hadoop.cfg.ConfigurationOptions._
 import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
-import org.opensearch.spark.integration.SparkUtils
-import org.opensearch.spark.serialization.{Bean, Garbage, ModuleCaseClass, Trip}
+import org.opensearch.hadoop.util.TestUtils.resource
+import org.opensearch.hadoop.util.TestUtils.docEndpoint
+import org.opensearch.spark.rdd.OpenSearchSpark
+import org.opensearch.spark.rdd.Metadata._
+import org.opensearch.spark.serialization.{Bean, Garbage, ModuleCaseClass, ReflectionUtils, Trip}
+import org.opensearch.spark.streaming._
 
+import org.opensearch.spark.integration.ScalaUtils.propertiesAsScalaMap
 import scala.collection.mutable
 import scala.reflect.ClassTag
 
-object AbstractScalaEsScalaSparkStreaming {
+object AbstractScalaOpenSearchScalaSparkStreaming {
   @transient val conf = new SparkConf()
     .set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
     .setMaster("local")
-    .setAppName("estest")
+    .setAppName("opensearchtest")
     .set("spark.executor.extraJavaOptions", "-XX:MaxPermSize=256m")
     .setJars(SparkUtils.ES_SPARK_TESTING_JAR)
   @transient var sc: SparkContext = null
@@ -93,9 +93,9 @@ object AbstractScalaEsScalaSparkStreaming {
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(classOf[Parameterized])
-class AbstractScalaEsScalaSparkStreaming(val prefix: String, readMetadata: jl.Boolean) extends Serializable {
+class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadata: jl.Boolean) extends Serializable {
 
-  val sc = AbstractScalaEsScalaSparkStreaming.sc
+  val sc = AbstractScalaOpenSearchScalaSparkStreaming.sc
   val cfg = Map(ConfigurationOptions.ES_READ_METADATA -> readMetadata.toString)
   val version = TestUtils.getOpenSearchClusterInfo.getMajorVersion
   val keyword = "keyword"

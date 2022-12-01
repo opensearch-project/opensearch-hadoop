@@ -28,7 +28,7 @@
  */
 package org.opensearch.spark.sql
 
-import org.elasticsearch.spark.rdd.CompatibilityLevel
+import org.opensearch.spark.rdd.CompatibilityLevel
 
 /**
   * For determining Spark Version Compatibility

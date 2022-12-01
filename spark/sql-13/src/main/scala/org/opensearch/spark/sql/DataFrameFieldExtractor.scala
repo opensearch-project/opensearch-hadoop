@@ -30,7 +30,7 @@ package org.opensearch.spark.sql
 
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.types.StructType
-import org.elasticsearch.spark.serialization.ScalaMapFieldExtractor
+import org.opensearch.spark.serialization.ScalaMapFieldExtractor
 import org.opensearch.hadoop.serialization.field.FieldExtractor
 
 class DataFrameFieldExtractor extends ScalaMapFieldExtractor {

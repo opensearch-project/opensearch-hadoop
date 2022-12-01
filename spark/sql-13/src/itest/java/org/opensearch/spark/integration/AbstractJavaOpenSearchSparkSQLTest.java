@@ -78,7 +78,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	private static final transient SparkConf conf = new SparkConf()
 			.setAll(propertiesAsScalaMap(TestSettings.TESTING_PROPS))
 			.set("spark.io.compression.codec", "lz4")
-			.setMaster("local").setAppName("estest");
+			.setMaster("local").setAppName("opensearchtest");
 	
 	private static transient JavaSparkContext sc = null;
 	private static transient SQLContext sqc = null;

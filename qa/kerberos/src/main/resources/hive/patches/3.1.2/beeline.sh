@@ -24,7 +24,7 @@ export SERVICE_LIST="${SERVICE_LIST}${THISSERVICE} "
 beeline () {
   # ++Change the class to SecureBeeline wrapper
   # CLASS=org.apache.hive.beeline.BeeLine;
-  CLASS=org.elasticsearch.hadoop.qa.kerberos.hive.SecureBeeline;
+  CLASS=org.opensearch.hadoop.qa.kerberos.hive.SecureBeeline;
   BEELINECLASS=org.apache.hive.beeline.BeeLine;
 
   # add our test jar path for ES-Hadoop

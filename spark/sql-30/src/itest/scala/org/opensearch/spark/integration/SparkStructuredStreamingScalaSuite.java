@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ AbstractScalaEsSparkStructuredStreaming.class })
+@Suite.SuiteClasses({ AbstractScalaOpenSearchSparkStructuredStreaming.class })
 public class SparkStructuredStreamingScalaSuite {
 
     @ClassRule

@@ -39,7 +39,7 @@ import org.opensearch.hadoop.util.ObjectUtils
 
 package object spark {
 
-  private val init = { ObjectUtils.loadClass("org.elasticsearch.spark.rdd.CompatUtils", classOf[ObjectUtils].getClassLoader) }
+  private val init = { ObjectUtils.loadClass("org.opensearch.spark.rdd.CompatUtils", classOf[ObjectUtils].getClassLoader) }
 
   implicit def sparkContextFunctions(sc: SparkContext)= new SparkContextFunctions(sc)
 

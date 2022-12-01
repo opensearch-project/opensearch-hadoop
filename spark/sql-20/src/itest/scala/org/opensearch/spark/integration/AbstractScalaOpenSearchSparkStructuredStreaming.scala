@@ -66,7 +66,6 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
-import org.opensearch.spark.integration.SparkUtils
 import org.opensearch.spark.sql.streaming.StreamingQueryTestHarness
 
 import scala.collection.JavaConversions.propertiesAsScalaMap
@@ -140,7 +139,7 @@ object Products extends Serializable {
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
 @RunWith(classOf[Parameterized])
-class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean) {
+class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something: Boolean) {
 
   private val tempFolderRule = new TemporaryFolder
 
@@ -162,7 +161,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
   }
 
   def checkpointDir(target: String): String = {
-    checkpoint(target)+"/sinks/elasticsearch"
+    checkpoint(target)+"/sinks/opensearch"
   }
 
   @Test
@@ -324,7 +323,7 @@ class AbstractScalaEsSparkStructuredStreaming(prefix: String, something: Boolean
 
       Source.fromFile(s"${checkpointDir(target)}/0").getLines().foreach(println)
 
-      assertThat(Files.exists(new File(s"$check/test-basic-write-session-commit/sinks/elasticsearch/0").toPath), is(true))
+      assertThat(Files.exists(new File(s"$check/test-basic-write-session-commit/sinks/opensearch/0").toPath), is(true))
     } finally {
       spark.conf.unset(SQLConf.CHECKPOINT_LOCATION.key)
     }

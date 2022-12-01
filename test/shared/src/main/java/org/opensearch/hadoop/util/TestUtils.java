@@ -81,7 +81,7 @@ public class TestUtils {
     }
 
     public static boolean isTypelessVersion(OpenSearchMajorVersion version) {
-        // Types have been deprecated in 2.0.0, and will be removed at a later date
+        // Types have been removed in 2.0.0
         return version.onOrAfter(OpenSearchMajorVersion.V_2_X);
     }
 

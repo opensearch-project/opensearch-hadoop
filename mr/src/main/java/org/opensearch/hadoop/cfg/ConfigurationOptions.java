@@ -231,7 +231,7 @@ public interface ConfigurationOptions {
     String ES_READ_FIELD_INCLUDE = "es.read.field.include";
     String ES_READ_FIELD_EXCLUDE = "es.read.field.exclude";
 
-    String ES_READ_FIELD_AS_ARRAY_INCLUDE = "es.read.field.as.array.include";
+    String OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE = "opensearch.read.field.as.array.include";
     String ES_READ_FIELD_AS_ARRAY_EXCLUDE = "es.read.field.as.array.exclude";
 
     String ES_READ_SOURCE_FILTER = "es.read.source.filter";

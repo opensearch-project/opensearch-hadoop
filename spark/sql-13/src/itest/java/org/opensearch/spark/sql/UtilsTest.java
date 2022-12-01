@@ -28,7 +28,7 @@
  */
 package org.opensearch.spark.sql;
 
-import org.elasticsearch.spark.sql.Utils;
+import org.opensearch.spark.sql.Utils;
 import org.junit.Assert;
 import org.junit.Test;
 

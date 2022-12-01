@@ -37,7 +37,7 @@ import scala.language.implicitConversions
 
 package object streaming {
 
-  private val init = { ObjectUtils.loadClass("org.elasticsearch.spark.rdd.CompatUtils", classOf[ObjectUtils].getClassLoader)}
+  private val init = { ObjectUtils.loadClass("org.opensearch.spark.rdd.CompatUtils", classOf[ObjectUtils].getClassLoader)}
 
   implicit def sparkDStreamFunctions(ds: DStream[_]): SparkDStreamFunctions = new SparkDStreamFunctions(ds)
 

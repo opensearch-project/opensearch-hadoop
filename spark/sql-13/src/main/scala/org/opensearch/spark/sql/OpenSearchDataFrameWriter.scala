@@ -30,14 +30,14 @@ package org.opensearch.spark.sql
 
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.types.StructType
-import org.elasticsearch.spark.rdd.EsRDDWriter
+import org.opensearch.spark.rdd.OpenSearchRDDWriter
 import org.opensearch.hadoop.serialization.{BytesConverter, JdkBytesConverter}
 import org.opensearch.hadoop.serialization.builder.ValueWriter
 import org.opensearch.hadoop.serialization.field.FieldExtractor
 
 private[spark] class OpenSearchDataFrameWriter
   (schema: StructType, override val serializedSettings: String)
-  extends EsRDDWriter[Row](serializedSettings:String) {
+  extends OpenSearchRDDWriter[Row](serializedSettings:String) {
 
   override protected def valueWriter: Class[_ <: ValueWriter[_]] = classOf[DataFrameValueWriter]
   override protected def bytesConverter: Class[_ <: BytesConverter] = classOf[JdkBytesConverter]

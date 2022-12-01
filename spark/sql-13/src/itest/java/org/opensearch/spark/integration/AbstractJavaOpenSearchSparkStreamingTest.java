@@ -54,9 +54,9 @@ import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.TestUtils;
-import org.elasticsearch.spark.rdd.Metadata;
-import org.elasticsearch.spark.rdd.api.java.JavaOpenSearchSpark;
-import org.elasticsearch.spark.streaming.api.java.JavaOpenSearchSparkStreaming;
+import org.opensearch.spark.rdd.Metadata;
+import org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark;
+import org.opensearch.spark.streaming.api.java.JavaOpenSearchSparkStreaming;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -95,7 +95,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
 
     private static final transient SparkConf conf = new SparkConf()
             .setMaster("local")
-            .setAppName("estest")
+            .setAppName("opensearchtest")
             .set("spark.io.compression.codec", "lz4")
             .setJars(SparkUtils.ES_SPARK_TESTING_JAR);
 

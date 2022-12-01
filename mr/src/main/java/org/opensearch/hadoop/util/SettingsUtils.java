@@ -225,7 +225,7 @@ public abstract class SettingsUtils {
             return FieldFilter.toNumberedFilter(includes);
         } catch (OpenSearchHadoopIllegalArgumentException iae) {
             throw new OpenSearchHadoopIllegalArgumentException("Failed to parse [" +
-                    ConfigurationOptions.ES_READ_FIELD_AS_ARRAY_INCLUDE + "] option with value of [" +
+                    ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE + "] option with value of [" +
                     includeString + "]", iae);
         }
     }

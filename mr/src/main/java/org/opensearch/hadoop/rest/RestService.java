@@ -539,12 +539,12 @@ public abstract class RestService implements Serializable {
 
     // expects currentTask to start from 0
     public static List<PartitionDefinition> assignPartitions(List<PartitionDefinition> partitions, int currentTask, int totalTasks) {
-        int esPartitions = partitions.size();
-        if (totalTasks >= esPartitions) {
-            return (currentTask >= esPartitions ? Collections.<PartitionDefinition>emptyList() : Collections.singletonList(partitions.get(currentTask)));
+        int opensearchPartitions = partitions.size();
+        if (totalTasks >= opensearchPartitions) {
+            return (currentTask >= opensearchPartitions ? Collections.<PartitionDefinition>emptyList() : Collections.singletonList(partitions.get(currentTask)));
         } else {
-            int partitionsPerTask = esPartitions / totalTasks;
-            int remainder = esPartitions % totalTasks;
+            int partitionsPerTask = opensearchPartitions / totalTasks;
+            int remainder = opensearchPartitions % totalTasks;
 
             int partitionsPerCurrentTask = partitionsPerTask;
 

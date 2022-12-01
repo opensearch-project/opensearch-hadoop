@@ -28,7 +28,7 @@
  */
 package org.opensearch.spark.sql
 
-import org.elasticsearch.spark.sql.SchemaUtils
+import org.opensearch.spark.sql.SchemaUtils
 import org.opensearch.hadoop.cfg.Settings
 
 object SchemaUtilsTestable {

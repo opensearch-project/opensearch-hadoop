@@ -76,7 +76,7 @@ public class AbstractHiveExtraTests {
                 + "price BIGINT,"
                 + "sold TIMESTAMP, "
                 + "alias STRING) "
-                + HiveSuite.tableProps(resource, null, "'es.mapping.names'='alias:&c'");
+                + HiveSuite.tableProps(resource, null, "'opensearch.mapping.names'='alias:&c'");
 
         String query = "SELECT * from cars2";
         String count = "SELECT count(*) from cars2";
@@ -109,7 +109,7 @@ public class AbstractHiveExtraTests {
         String create = "CREATE EXTERNAL TABLE nixtime ("
                 + "type     BIGINT,"
                 + "dte     TIMESTAMP)"
-                + HiveSuite.tableProps("hive-date-as-long", null, "'es.mapping.names'='dte:&t'");
+                + HiveSuite.tableProps("hive-date-as-long", null, "'opensearch.mapping.names'='dte:&t'");
 
         String query = "SELECT * from nixtime WHERE type = 1";
 

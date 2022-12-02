@@ -68,7 +68,7 @@ class OpenSearchServiceCredentialProvider extends ServiceCredentialProvider {
 
   private[this] val LOG = LogFactory.getLog(classOf[OpenSearchServiceCredentialProvider])
 
-  LOG.info("Loaded EsServiceCredentialProvider")
+  LOG.info("Loaded OpenSearchServiceCredentialProvider")
 
   /**
    * Name of the service for logging purposes and for the purpose of determining if the
@@ -76,7 +76,7 @@ class OpenSearchServiceCredentialProvider extends ServiceCredentialProvider {
    * spark.security.credentials.[serviceName].enabled
    * @return the service name this provider corresponds to
    */
-  override def serviceName: String = "elasticsearch"
+  override def serviceName: String = "opensearch"
 
   /**
     *  Given a configuration, check to see if tokens would be required.
@@ -114,7 +114,7 @@ class OpenSearchServiceCredentialProvider extends ServiceCredentialProvider {
   }
 
   /**
-   * Obtains api key tokens from Elasticsearch and stashes them in the given credentials object
+   * Obtains api key tokens from OpenSearch and stashes them in the given credentials object
    * @param hadoopConf Hadoop configuration, picking up all Hadoop specific settings
    * @param sparkConf All settings that exist in Spark
    * @param creds The credentials object that will be shared between all workers
@@ -135,7 +135,7 @@ class OpenSearchServiceCredentialProvider extends ServiceCredentialProvider {
         override def run: EsToken = client.createNewApiToken(TokenUtil.KEY_NAME_PREFIX + UUID.randomUUID().toString)
       })
       if (LOG.isInfoEnabled) {
-        LOG.info(s"getting token for: Elasticsearch[tokenName=${esToken.getName}, " +
+        LOG.info(s"getting token for: OpenSearch[tokenName=${esToken.getName}, " +
           s"clusterName=${esToken.getClusterName}, user=${user}]")
       }
       val expiration = esToken.getExpirationTime

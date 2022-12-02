@@ -69,7 +69,7 @@ public class LoginUtil {
     }
 
     private static final String SUN_KRB5_LOGIN_MODULE = "com.sun.security.auth.module.Krb5LoginModule";
-    private static final String KERBEROS_CONFIG_NAME = "es-hadoop-user-kerberos";
+    private static final String KERBEROS_CONFIG_NAME = "opensearch-hadoop-user-kerberos";
 
     private static class KerberosPasswordConfiguration extends javax.security.auth.login.Configuration {
         private final String principalName;

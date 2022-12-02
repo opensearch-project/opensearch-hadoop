@@ -47,7 +47,7 @@ public class SecureSettings {
     public SecureSettings(Settings settings) {
         this.settings = settings;
 
-        String keystoreLocation = settings.getProperty(ConfigurationOptions.ES_KEYSTORE_LOCATION);
+        String keystoreLocation = settings.getProperty(ConfigurationOptions.OPENSEARCH_KEYSTORE_LOCATION);
         if (keystoreLocation != null) {
             KeystoreWrapper.KeystoreBuilder builder = KeystoreWrapper.loadStore(keystoreLocation);
             try {

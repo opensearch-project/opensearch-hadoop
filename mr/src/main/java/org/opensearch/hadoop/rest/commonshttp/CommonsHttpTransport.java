@@ -312,7 +312,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             // TODO: Limit this by hosts and ports
             AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, AuthPolicy.BASIC);
             Credentials usernamePassword = new UsernamePasswordCredentials(settings.getNetworkHttpAuthUser(),
-                    secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS));
+                    secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_PASS));
             state.setCredentials(scope, usernamePassword);
             if (log.isDebugEnabled()) {
                 log.debug("Using detected HTTP Auth credentials...");
@@ -346,7 +346,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 // could be running in a remote JVM that does not have the
                 // Kerberos credentials available.
                 if (!StringUtils.hasText(settings.getNetworkSpnegoAuthElasticsearchPrincipal())) {
-                    throw new OpenSearchHadoopIllegalArgumentException("Missing Elasticsearch Kerberos Principal name. " +
+                    throw new OpenSearchHadoopIllegalArgumentException("Missing OpenSearch Kerberos Principal name. " +
                             "Specify one with [" + ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL + "]");
                 }
 
@@ -450,11 +450,11 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             // client is not yet initialized so postpone state
             if (sslEnabled) {
                 if (StringUtils.hasText(settings.getNetworkProxyHttpsUser())) {
-                    if (!StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_PROXY_HTTPS_PASS))) {
-                        log.warn(String.format("HTTPS proxy user specified but no/empty password defined - double check the [%s] property", ConfigurationOptions.ES_NET_PROXY_HTTPS_PASS));
+                    if (!StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS))) {
+                        log.warn(String.format("HTTPS proxy user specified but no/empty password defined - double check the [%s] property", ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS));
                     }
                     HttpState state = new HttpState();
-                    state.setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(settings.getNetworkProxyHttpsUser(), secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_PROXY_HTTPS_PASS)));
+                    state.setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(settings.getNetworkProxyHttpsUser(), secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS)));
                     // client is not yet initialized so simply save the object for later
                     results[1] = state;
                 }
@@ -470,11 +470,11 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             }
             else {
                 if (StringUtils.hasText(settings.getNetworkProxyHttpUser())) {
-                    if (!StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_PROXY_HTTP_PASS))) {
-                        log.warn(String.format("HTTP proxy user specified but no/empty password defined - double check the [%s] property", ConfigurationOptions.ES_NET_PROXY_HTTP_PASS));
+                    if (!StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS))) {
+                        log.warn(String.format("HTTP proxy user specified but no/empty password defined - double check the [%s] property", ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS));
                     }
                     HttpState state = new HttpState();
-                    state.setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(settings.getNetworkProxyHttpUser(), secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_PROXY_HTTP_PASS)));
+                    state.setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(settings.getNetworkProxyHttpUser(), secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS)));
                     // client is not yet initialized so simply save the object for later
                     results[1] = state;
                 }
@@ -515,13 +515,13 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         if (StringUtils.hasText(settings.getNetworkProxySocksUser())) {
             proxyUser = settings.getNetworkProxySocksUser();
         }
-        if (StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_PROXY_SOCKS_PASS))) {
-            proxyPass = secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_PROXY_SOCKS_PASS);
+        if (StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_SOCKS_PASS))) {
+            proxyPass = secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_SOCKS_PASS);
         }
 
         // we actually have a socks proxy, let's start the setup
         if (StringUtils.hasText(proxyHost)) {
-            log.warn("Connecting to Elasticsearch through SOCKS proxy is deprecated in 6.6.0 and will be removed in a later release.");
+            log.warn("Connecting to OpenSearch through SOCKS proxy is deprecated in 6.6.0 and will be removed in a later release.");
             isSecure = false;
             isProxied = true;
             proxyInfo = proxyInfo.concat(String.format("[SOCKS proxy %s:%s]", proxyHost, proxyPort));
@@ -529,7 +529,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             if (!StringUtils.hasText(proxyUser)) {
                 log.warn(String.format(
                         "SOCKS proxy user specified but no/empty password defined - double check the [%s] property",
-                        ConfigurationOptions.ES_NET_PROXY_SOCKS_PASS));
+                        ConfigurationOptions.OPENSEARCH_NET_PROXY_SOCKS_PASS));
             }
 
             if (log.isDebugEnabled()) {
@@ -653,7 +653,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             if (log.isDebugEnabled()) {
                 log.debug("Performing request with runAs user set to ["+runAsUser+"]");
             }
-            http.addRequestHeader("es-security-runas-user", runAsUser);
+            http.addRequestHeader("opensearch-security-runas-user", runAsUser);
         } else if (userProvider != null && userProvider.getUser().getEsToken(clusterName) != null) {
             // If we are using token authentication, set the auth to be preemptive:
             if (log.isDebugEnabled()) {

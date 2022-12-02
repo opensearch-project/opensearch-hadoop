@@ -37,13 +37,13 @@ import org.opensearch.hadoop.serialization.SettingsAware;
 import org.opensearch.hadoop.serialization.field.FieldFilter;
 import org.opensearch.hadoop.util.StringUtils;
 
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT;
 
 public abstract class FilteringValueWriter<T> implements ValueWriter<T>, SettingsAware {
 
     private List<FieldFilter.NumberedInclude> includes;
     private List<String> excludes;
-    private Boolean writeNullValues = Boolean.parseBoolean(ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT);
+    private Boolean writeNullValues = Boolean.parseBoolean(OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT);
 
     @Override
     public void setSettings(Settings settings) {

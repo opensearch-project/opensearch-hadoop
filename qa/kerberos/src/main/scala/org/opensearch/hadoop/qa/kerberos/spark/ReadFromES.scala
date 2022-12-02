@@ -55,7 +55,7 @@ class ReadFromES(args: Array[String]) {
       .map(row => row.toString())
       .saveAsTextFile(dfOutputDir)
 
-    spark.sqlContext.read.format("es").load(s"${resource}_ds")
+    spark.sqlContext.read.format("opensearch").load(s"${resource}_ds")
       .rdd
       .map(row => row.toString())
       .saveAsTextFile(dsOutputDir)

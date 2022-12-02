@@ -139,7 +139,7 @@ public class OpenSearchStorageHandler extends DefaultStorageHandler {
         // #359, HIVE-8307
         for (String key : properties.stringPropertyNames()) {
             // copy only some properties since apparently job properties can contain junk which messes up the XML serialization
-            if (key.startsWith("es.") || key.equals(TABLE_LOCATION) || key.equals(COLUMNS) || key.equals(COLUMNS_TYPES)) {
+            if (key.startsWith("opensearch.") || key.equals(TABLE_LOCATION) || key.equals(COLUMNS) || key.equals(COLUMNS_TYPES)) {
                 jobProperties.put(key, properties.getProperty(key));
             }
         }

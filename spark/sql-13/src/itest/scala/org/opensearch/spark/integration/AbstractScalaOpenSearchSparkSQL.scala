@@ -124,68 +124,68 @@ object AbstractScalaOpenSearchScalaSparkSQL {
     val dslQuery = """ {"query" : { "match_all" : { } } } """
 
     // no query                      meta, push, strict, filter, encode, query
-    list.add(Array("default",        FALSE, TRUE,  FALSE, TRUE, FALSE, noQuery))
-    list.add(Array("defaultstrict",  FALSE, TRUE,  TRUE,  TRUE, FALSE, noQuery))
-    list.add(Array("defaultnopush",  FALSE, FALSE, FALSE, TRUE, FALSE, noQuery))
-    list.add(Array("withmeta",       TRUE,  TRUE,  FALSE, TRUE, FALSE, noQuery))
-    list.add(Array("withmetastrict", TRUE,  TRUE,  TRUE,  TRUE, FALSE, noQuery))
-    list.add(Array("withmetanopush", TRUE,  FALSE, FALSE, TRUE, FALSE, noQuery))
+    list.add(Array("default",        FALSE, TRUE,  FALSE, TRUE, FALSE, noQuery))  // 0
+    list.add(Array("defaultstrict",  FALSE, TRUE,  TRUE,  TRUE, FALSE, noQuery))  // 1
+    list.add(Array("defaultnopush",  FALSE, FALSE, FALSE, TRUE, FALSE, noQuery))  // 2
+    list.add(Array("withmeta",       TRUE,  TRUE,  FALSE, TRUE, FALSE, noQuery))  // 3
+    list.add(Array("withmetastrict", TRUE,  TRUE,  TRUE,  TRUE, FALSE, noQuery))  // 4
+    list.add(Array("withmetanopush", TRUE,  FALSE, FALSE, TRUE, FALSE, noQuery))  // 5
 
     // disable double filtering                  meta, push, strict, filter, encode, query
-    list.add(Array("default_skiphandled",        FALSE, TRUE,  FALSE, FALSE, FALSE, noQuery))
-    list.add(Array("defaultstrict_skiphandled",  FALSE, TRUE,  TRUE,  FALSE, FALSE, noQuery))
-    list.add(Array("defaultnopush_skiphandled",  FALSE, FALSE, FALSE, FALSE, FALSE, noQuery))
-    list.add(Array("withmeta_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, noQuery))
-    list.add(Array("withmetastrict_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, noQuery))
-    list.add(Array("withmetanopush_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, noQuery))
+    list.add(Array("default_skiphandled",        FALSE, TRUE,  FALSE, FALSE, FALSE, noQuery))  // 6
+    list.add(Array("defaultstrict_skiphandled",  FALSE, TRUE,  TRUE,  FALSE, FALSE, noQuery))  // 7
+    list.add(Array("defaultnopush_skiphandled",  FALSE, FALSE, FALSE, FALSE, FALSE, noQuery))  // 8
+    list.add(Array("withmeta_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, noQuery))  // 9
+    list.add(Array("withmetastrict_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, noQuery))  // 10
+    list.add(Array("withmetanopush_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, noQuery))  // 11
 
     // uri query                              meta, push, strict, filter, encode, query
-    list.add(Array("defaulturiquery",         FALSE, TRUE,  FALSE, TRUE, FALSE, uriQuery))
-    list.add(Array("defaulturiquerystrict",   FALSE, TRUE,  TRUE,  TRUE, FALSE, uriQuery))
-    list.add(Array("defaulturiquerynopush",   FALSE, FALSE, FALSE, TRUE, FALSE, uriQuery))
-    list.add(Array("withmetauri_query",       TRUE,  TRUE,  FALSE, TRUE, FALSE, uriQuery))
-    list.add(Array("withmetauri_querystrict", TRUE,  TRUE,  TRUE,  TRUE, FALSE, uriQuery))
-    list.add(Array("withmetauri_querynopush", TRUE,  FALSE, FALSE, TRUE, FALSE, uriQuery))
+    list.add(Array("defaulturiquery",         FALSE, TRUE,  FALSE, TRUE, FALSE, uriQuery))  // 12
+    list.add(Array("defaulturiquerystrict",   FALSE, TRUE,  TRUE,  TRUE, FALSE, uriQuery))  // 13
+    list.add(Array("defaulturiquerynopush",   FALSE, FALSE, FALSE, TRUE, FALSE, uriQuery))  // 14
+    list.add(Array("withmetauri_query",       TRUE,  TRUE,  FALSE, TRUE, FALSE, uriQuery))  // 15
+    list.add(Array("withmetauri_querystrict", TRUE,  TRUE,  TRUE,  TRUE, FALSE, uriQuery))  // 16
+    list.add(Array("withmetauri_querynopush", TRUE,  FALSE, FALSE, TRUE, FALSE, uriQuery))  // 17
 
     // disable double filtering                           meta, push, strict, filter, encode, query
-    list.add(Array("defaulturiquery_skiphandled",         FALSE, TRUE,  FALSE, FALSE, FALSE, uriQuery))
-    list.add(Array("defaulturiquerystrict_skiphandled",   FALSE, TRUE,  TRUE,  FALSE, FALSE, uriQuery))
-    list.add(Array("defaulturiquerynopush_skiphandled",   FALSE, FALSE, FALSE, FALSE, FALSE, uriQuery))
-    list.add(Array("withmetauri_query_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, uriQuery))
-    list.add(Array("withmetauri_querystrict_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, uriQuery))
-    list.add(Array("withmetauri_querynopush_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, uriQuery))
+    list.add(Array("defaulturiquery_skiphandled",         FALSE, TRUE,  FALSE, FALSE, FALSE, uriQuery))  // 18
+    list.add(Array("defaulturiquerystrict_skiphandled",   FALSE, TRUE,  TRUE,  FALSE, FALSE, uriQuery))  // 19
+    list.add(Array("defaulturiquerynopush_skiphandled",   FALSE, FALSE, FALSE, FALSE, FALSE, uriQuery))  // 20
+    list.add(Array("withmetauri_query_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, uriQuery))  // 21
+    list.add(Array("withmetauri_querystrict_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, uriQuery))  // 22
+    list.add(Array("withmetauri_querynopush_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, uriQuery))  // 23
 
     // dsl query                             meta, push, strict, filter, encode, query
-    list.add(Array("defaultdslquery",        FALSE, TRUE,  FALSE, TRUE, FALSE, dslQuery))
-    list.add(Array("defaultstrictdslquery",  FALSE, TRUE,  TRUE,  TRUE, FALSE, dslQuery))
-    list.add(Array("defaultnopushdslquery",  FALSE, FALSE, FALSE, TRUE, FALSE, dslQuery))
-    list.add(Array("withmetadslquery",       TRUE,  TRUE,  FALSE, TRUE, FALSE, dslQuery))
-    list.add(Array("withmetastrictdslquery", TRUE,  TRUE,  TRUE,  TRUE, FALSE, dslQuery))
-    list.add(Array("withmetanopushdslquery", TRUE,  FALSE, FALSE, TRUE, FALSE, dslQuery))
+    list.add(Array("defaultdslquery",        FALSE, TRUE,  FALSE, TRUE, FALSE, dslQuery))  // 24
+    list.add(Array("defaultstrictdslquery",  FALSE, TRUE,  TRUE,  TRUE, FALSE, dslQuery))  // 25
+    list.add(Array("defaultnopushdslquery",  FALSE, FALSE, FALSE, TRUE, FALSE, dslQuery))  // 26
+    list.add(Array("withmetadslquery",       TRUE,  TRUE,  FALSE, TRUE, FALSE, dslQuery))  // 27
+    list.add(Array("withmetastrictdslquery", TRUE,  TRUE,  TRUE,  TRUE, FALSE, dslQuery))  // 28
+    list.add(Array("withmetanopushdslquery", TRUE,  FALSE, FALSE, TRUE, FALSE, dslQuery))  // 29
 
     // disable double filtering                          meta, push, strict, filter, encode, query
-    list.add(Array("defaultdslquery_skiphandled",        FALSE, TRUE,  FALSE, FALSE, FALSE, dslQuery))
-    list.add(Array("defaultstrictdslquery_skiphandled",  FALSE, TRUE,  TRUE,  FALSE, FALSE, dslQuery))
-    list.add(Array("defaultnopushdslquery_skiphandled",  FALSE, FALSE, FALSE, FALSE, FALSE, dslQuery))
-    list.add(Array("withmetadslquery_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, dslQuery))
-    list.add(Array("withmetastrictdslquery_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, dslQuery))
-    list.add(Array("withmetanopushdslquery_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, dslQuery))
+    list.add(Array("defaultdslquery_skiphandled",        FALSE, TRUE,  FALSE, FALSE, FALSE, dslQuery))  // 30
+    list.add(Array("defaultstrictdslquery_skiphandled",  FALSE, TRUE,  TRUE,  FALSE, FALSE, dslQuery))  // 31
+    list.add(Array("defaultnopushdslquery_skiphandled",  FALSE, FALSE, FALSE, FALSE, FALSE, dslQuery))  // 32
+    list.add(Array("withmetadslquery_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, dslQuery))  // 33
+    list.add(Array("withmetastrictdslquery_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, dslQuery))  // 34
+    list.add(Array("withmetanopushdslquery_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, dslQuery))  // 35
 
     // unicode                                      meta, push, strict, filter, encode, query
-    list.add(Array("default_" + "בְּדִיק" + "_",        FALSE, TRUE,  FALSE, TRUE, TRUE, noQuery))
-    list.add(Array("defaultstrict_" + "בְּדִיק" + "_",  FALSE, TRUE,  TRUE,  TRUE, TRUE, noQuery))
-    list.add(Array("defaultnopush_" + "בְּדִיק" + "_",  FALSE, FALSE, FALSE, TRUE, TRUE, noQuery))
-    list.add(Array("withmeta_" + "בְּדִיק" + "_",       TRUE,  TRUE,  FALSE, TRUE, TRUE, noQuery))
-    list.add(Array("withmetastrict_" + "בְּדִיק" + "_", TRUE,  TRUE,  TRUE,  TRUE, TRUE, noQuery))
-    list.add(Array("withmetanopush_" + "בְּדִיק" + "_", TRUE,  FALSE, FALSE, TRUE, TRUE, noQuery))
+    list.add(Array("default_" + "בְּדִיק" + "_",        FALSE, TRUE,  FALSE, TRUE, TRUE, noQuery))  // 36
+    list.add(Array("defaultstrict_" + "בְּדִיק" + "_",  FALSE, TRUE,  TRUE,  TRUE, TRUE, noQuery))  // 37
+    list.add(Array("defaultnopush_" + "בְּדִיק" + "_",  FALSE, FALSE, FALSE, TRUE, TRUE, noQuery))  // 38
+    list.add(Array("withmeta_" + "בְּדִיק" + "_",       TRUE,  TRUE,  FALSE, TRUE, TRUE, noQuery))  // 39
+    list.add(Array("withmetastrict_" + "בְּדִיק" + "_", TRUE,  TRUE,  TRUE,  TRUE, TRUE, noQuery))  // 40
+    list.add(Array("withmetanopush_" + "בְּדִיק" + "_", TRUE,  FALSE, FALSE, TRUE, TRUE, noQuery))  // 41
 
     // disable double filtering                                 meta, push, strict, filter, encode, query
-    list.add(Array("default_skiphandled_" + "בְּדִיק" + "_",        FALSE, TRUE,  FALSE, FALSE, TRUE, noQuery))
-    list.add(Array("defaultstrict_skiphandled_" + "בְּדִיק" + "_",  FALSE, TRUE,  TRUE,  FALSE, TRUE, noQuery))
-    list.add(Array("defaultnopush_skiphandled_" + "בְּדִיק" + "_",  FALSE, FALSE, FALSE, FALSE, TRUE, noQuery))
-    list.add(Array("withmeta_skiphandled_" + "בְּדִיק" + "_",       TRUE,  TRUE,  FALSE, FALSE, TRUE, noQuery))
-    list.add(Array("withmetastrict_skiphandled_" + "בְּדִיק" + "_", TRUE,  TRUE,  TRUE,  FALSE, TRUE, noQuery))
-    list.add(Array("withmetanopush_skiphandled_" + "בְּדִיק" + "_", TRUE,  FALSE, FALSE, FALSE, TRUE, noQuery))
+    list.add(Array("default_skiphandled_" + "בְּדִיק" + "_",        FALSE, TRUE,  FALSE, FALSE, TRUE, noQuery))  // 42
+    list.add(Array("defaultstrict_skiphandled_" + "בְּדִיק" + "_",  FALSE, TRUE,  TRUE,  FALSE, TRUE, noQuery))  // 43
+    list.add(Array("defaultnopush_skiphandled_" + "בְּדִיק" + "_",  FALSE, FALSE, FALSE, FALSE, TRUE, noQuery))  // 44
+    list.add(Array("withmeta_skiphandled_" + "בְּדִיק" + "_",       TRUE,  TRUE,  FALSE, FALSE, TRUE, noQuery))  // 45
+    list.add(Array("withmetastrict_skiphandled_" + "בְּדִיק" + "_", TRUE,  TRUE,  TRUE,  FALSE, TRUE, noQuery))  // 46
+    list.add(Array("withmetanopush_skiphandled_" + "בְּדִיק" + "_", TRUE,  FALSE, FALSE, FALSE, TRUE, noQuery))  // 47
 
     list
   }
@@ -198,7 +198,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   val sc = AbstractScalaOpenSearchScalaSparkSQL.sc
   val sqc = AbstractScalaOpenSearchScalaSparkSQL.sqc
   val cfg = Map(OPENSEARCH_QUERY -> query,
-                ES_READ_METADATA -> readMetadata.toString(),
+                OPENSEARCH_READ_METADATA -> readMetadata.toString(),
                 "opensearch.internal.spark.sql.pushdown" -> pushDown.toString(),
                 "opensearch.internal.spark.sql.pushdown.strict" -> strictPushDown.toString(),
                 "opensearch.internal.spark.sql.pushdown.keep.handled.filters" -> doubleFiltering.toString())
@@ -276,7 +276,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def testIndexCreationDisabled() {
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_INDEX_AUTO_CREATE -> "no")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INDEX_AUTO_CREATE -> "no")
     val index = wrapIndex("spark-test-non-existing")
     val (target, _) = makeTargets(index, "empty-dataframe")
     val idx = sqc.emptyDataFrame.saveToEs(target, newCfg)
@@ -432,7 +432,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     assertEquals(1, nullDescriptionsDf.count)
     assertEquals(null, nullDescriptionsDf.first().getAs("description"))
 
-    val reader2 = sqc.read.format("org.opensearch.spark.sql").option("es.field.read.empty.as.null", "no")
+    val reader2 = sqc.read.format("org.opensearch.spark.sql").option("opensearch.field.read.empty.as.null", "no")
     val outputDf2 = reader2.load("empty_strings_test")
     assertEquals(data.size, outputDf2.count)
     val emptyDescriptionsDf = outputDf2.filter("language = 'Python'")
@@ -458,7 +458,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame1Write() {
+  def testOpenSearchDataFrame1Write() {
     val dataFrame = artistsAsDataFrame
 
     val index = wrapIndex("sparksql-test-scala-basic-write")
@@ -469,7 +469,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame1WriteCount() {
+  def testOpenSearchDataFrame1WriteCount() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
@@ -478,13 +478,13 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame1WriteWithMapping() {
+  def testOpenSearchDataFrame1WriteWithMapping() {
     val dataFrame = artistsAsDataFrame
 
     val index = wrapIndex("sparksql-test-scala-basic-write-id-mapping")
     val (target, docEndpoint) = makeTargets(index, "data")
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_MAPPING_ID -> "id", ES_MAPPING_EXCLUDE -> "url")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_EXCLUDE -> "url")
 
     dataFrame.saveToEs(target, newCfg)
     assertTrue(RestUtils.exists(target))
@@ -494,7 +494,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame11CheckNoWriteNullValue() {
+  def testOpenSearchDataFrame11CheckNoWriteNullValue() {
     val idx = wrapIndex("spark-test-null-data-test-0")
     val (target, docEndpoint) = makeTargets(idx, "data")
 
@@ -503,7 +503,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       """{"id":"2","name":{"first":"Chris","last":"Evans"}}"""
     )
 
-    val conf = Map(ES_MAPPING_ID -> "id")
+    val conf = Map(OPENSEARCH_MAPPING_ID -> "id")
     val rdd = sc.makeRDD(docs)
     val jsonDF = sqc.read.json(rdd).toDF.select("id", "name")
     jsonDF.saveToEs(target, conf)
@@ -516,7 +516,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame12CheckYesWriteNullValue() {
+  def testOpenSearchDataFrame12CheckYesWriteNullValue() {
     val index = wrapIndex("spark-test-null-data-test-1")
     val (target, docEndpoint) = makeTargets(index, "data")
 
@@ -525,7 +525,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       """{"id":"2","name":{"first":"Chris","last":"Evans"}}"""
     )
 
-    val conf = Map(ES_MAPPING_ID -> "id", ES_SPARK_DATAFRAME_WRITE_NULL_VALUES -> "true")
+    val conf = Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES -> "true")
     val rdd = sc.makeRDD(docs)
     val jsonDF = sqc.read.json(rdd).toDF.select("id", "name")
     jsonDF.saveToEs(target, conf)
@@ -538,7 +538,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame11CheckNoWriteNullValueFromRows() {
+  def testOpenSearchDataFrame11CheckNoWriteNullValueFromRows() {
     val index = wrapIndex("spark-test-null-data-test-2")
     val (target, docEndpoint) = makeTargets(index, "data")
 
@@ -553,7 +553,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       StructField("suffix", StringType, nullable = true)
     ))
 
-    val conf = Map("es.mapping.id" -> "id")
+    val conf = Map("opensearch.mapping.id" -> "id")
     val rdd = sc.makeRDD(data)
     val df = sqc.createDataFrame(rdd, schema)
     df.saveToEs(target, conf)
@@ -566,7 +566,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame12CheckYesWriteNullValueFromRows() {
+  def testOpenSearchDataFrame12CheckYesWriteNullValueFromRows() {
     val index = wrapIndex("spark-test-null-data-test-3")
     val (target, docEndpoint) = makeTargets(index, "data")
     val data = Seq(
@@ -580,7 +580,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       StructField("suffix", StringType, nullable = true)
     ))
 
-    val conf = Map("es.mapping.id" -> "id", "es.spark.dataframe.write.null" -> "true")
+    val conf = Map("opensearch.mapping.id" -> "id", "opensearch.spark.dataframe.write.null" -> "true")
     val rdd = sc.makeRDD(data)
     val df = sqc.createDataFrame(rdd, schema)
     df.saveToEs(target, conf)
@@ -593,7 +593,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame2Read() {
+  def testOpenSearchDataFrame2Read() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
@@ -618,11 +618,11 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame2ReadWithIncludeFields() {
+  def testOpenSearchDataFrame2ReadWithIncludeFields() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_INCLUDE -> "id, name, url")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_INCLUDE -> "id, name, url")
 
     val dataFrame = sqc.esDF(target, newCfg)
     val schema = dataFrame.schema.treeString
@@ -644,11 +644,11 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test(expected = classOf[OpenSearchHadoopIllegalStateException])
-  def testEsDataFrame2ReadWithUserSchemaSpecified() {
+  def testOpenSearchDataFrame2ReadWithUserSchemaSpecified() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_INCLUDE -> "id, name, url") += (ES_READ_SOURCE_FILTER -> "name")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_INCLUDE -> "id, name, url") += (OPENSEARCH_READ_SOURCE_FILTER -> "name")
 
     val dataFrame = sqc.esDF(target, newCfg)
     val schema = dataFrame.schema.treeString
@@ -669,7 +669,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame2ReadWithAndWithoutQuery() {
+  def testOpenSearchDataFrame2ReadWithAndWithoutQuery() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
@@ -683,7 +683,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame2ReadWithAndWithoutQueryInJava() {
+  def testOpenSearchDataFrame2ReadWithAndWithoutQueryInJava() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
@@ -701,7 +701,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame3WriteWithRichMapping() {
+  def testOpenSearchDataFrame3WriteWithRichMapping() {
     val input = datInput
     val data = sc.textFile(input)
 
@@ -723,14 +723,14 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val index = wrapIndex("sparksql-test-scala-basic-write-rich-mapping-id-mapping")
     val (target, docEndpoint) = makeTargets(index, "data")
-    dataFrame.saveToEs(target, Map(ES_MAPPING_ID -> "id"))
+    dataFrame.saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id"))
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("345"))
     assertThat(RestUtils.exists(docEndpoint + "/1"), is(true))
   }
 
   @Test(expected = classOf[SparkException])
-  def testEsDataFrame3WriteDecimalType() {
+  def testOpenSearchDataFrame3WriteDecimalType() {
     val schema = StructType(Seq(StructField("decimal", DecimalType.USER_DEFAULT, false)))
 
     val rowRDD = sc.makeRDD(Seq(Row(Decimal(10))))
@@ -742,7 +742,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame4ReadRichMapping() {
+  def testOpenSearchDataFrame4ReadRichMapping() {
     val index = wrapIndex("sparksql-test-scala-basic-write-rich-mapping-id-mapping")
     val (target, _) = makeTargets(index, "data")
 
@@ -784,12 +784,12 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     single.saveToEs(target)
 
     // Make sure that the scroll limit works with both a shard that has data and a shard that has nothing
-    val count = sqc.read.format("es").option("es.scroll.limit", "10").load(target).count()
+    val count = sqc.read.format("opensearch").option("opensearch.scroll.limit", "10").load(target).count()
     assertEquals(1L, count)
   }
 
   @Test
-  def testEsDataFrame50ReadAsDataSource() {
+  def testOpenSearchDataFrame50ReadAsDataSource() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
     var options = s"""resource '$target' """
@@ -804,7 +804,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val dataFrame = sqc.sql(query)
 
     val dsCfg = collection.mutable.Map(cfg.toSeq: _*) += ("path" -> target)
-    val dfLoad = sqc.read.format("es").options(dsCfg.toMap).load()
+    val dfLoad = sqc.read.format("opensearch").options(dsCfg.toMap).load()
     println("root data frame")
     dfLoad.printSchema()
 
@@ -825,7 +825,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrameReadAsDataSourceWithMetadata() {
+  def testOpenSearchDataFrameReadAsDataSourceWithMetadata() {
     assumeTrue(readMetadata)
 
     val index = wrapIndex("sparksql-test-scala-basic-write")
@@ -834,7 +834,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val options = s"""path '$target' , readMetadata "true" """
     val dataFrame = sqc.sql(s"CREATE TEMPORARY TABLE ${wrapTableName(table)}" +
-      " USING es " +
+      " USING opensearch " +
       s" OPTIONS ($options)")
 
     val allRDD = sqc.sql(s"SELECT * FROM ${wrapTableName(table)} WHERE id >= 1 AND id <=10")
@@ -842,7 +842,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     allRDD.take(7).foreach(println)
 
     val dsCfg = collection.mutable.Map(cfg.toSeq: _*) += ("path" -> target)
-    val dfLoad = sqc.read.format("es").options(dsCfg.toMap).load
+    val dfLoad = sqc.read.format("opensearch").options(dsCfg.toMap).load
     dfLoad.show()
   }
 
@@ -859,7 +859,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     sc.makeRDD(Seq(trip1, trip2, trip3)).saveToEs(target)
   }
 
-  private def esDataSource(table: String) = {
+  private def opensearchDataSource(table: String) = {
     val index = wrapIndex("spark-test-scala-sql-varcols")
     val (target, docEndpoint) = makeTargets(index, "data")
 
@@ -867,7 +867,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
 
 //    sqc.sql(s"CREATE TEMPORARY TABLE $table" +
-//      " USING org.elasticsearch.spark.sql " +
+//      " USING org.opensearch.spark.sql " +
 //      s" OPTIONS ($options)")
 
     val dsCfg = collection.mutable.Map(cfg.toSeq: _*) += ("path" -> target)
@@ -876,7 +876,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown01EqualTo() {
-    val df = esDataSource("pd_equalto")
+    val df = opensearchDataSource("pd_equalto")
     val filter = df.filter(df("airport").equalTo("OTP"))
 
     filter.show
@@ -898,7 +898,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown015NullSafeEqualTo() {
-    val df = esDataSource("pd_nullsafeequalto")
+    val df = opensearchDataSource("pd_nullsafeequalto")
     val filter = df.filter(df("airport").eqNullSafe("OTP"))
 
     filter.show
@@ -920,7 +920,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown02GT() {
-    val df = esDataSource("pd_gt")
+    val df = opensearchDataSource("pd_gt")
     val filter = df.filter(df("participants").gt(3))
     assertEquals(1, filter.count())
     assertEquals("feb", filter.select("tag").take(1)(0)(0))
@@ -928,7 +928,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown03GTE() {
-    val df = esDataSource("pd_gte")
+    val df = opensearchDataSource("pd_gte")
     val filter = df.filter(df("participants").geq(3))
     assertEquals(2, filter.count())
     assertEquals("long", filter.select("tag").sort("tag").take(2)(1)(0))
@@ -936,7 +936,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown04LT() {
-    val df = esDataSource("pd_lt")
+    val df = opensearchDataSource("pd_lt")
     df.printSchema()
     val filter = df.filter(df("participants").lt(5))
     assertEquals(1, filter.count())
@@ -945,7 +945,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown05LTE() {
-    val df = esDataSource("pd_lte")
+    val df = opensearchDataSource("pd_lte")
     val filter = df.filter(df("participants").leq(5))
     assertEquals(2, filter.count())
     assertEquals("long", filter.select("tag").sort("tag").take(2)(1)(0))
@@ -953,7 +953,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown06IsNull() {
-    val df = esDataSource("pd_is_null")
+    val df = opensearchDataSource("pd_is_null")
     val filter = df.filter(df("participants").isNull)
     assertEquals(1, filter.count())
     assertEquals("jan", filter.select("tag").take(1)(0)(0))
@@ -961,7 +961,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown07IsNotNull() {
-    val df = esDataSource("pd_is_not_null")
+    val df = opensearchDataSource("pd_is_not_null")
     val filter = df.filter(df("reason").isNotNull)
     assertEquals(1, filter.count())
     assertEquals("jan", filter.select("tag").take(1)(0)(0))
@@ -969,7 +969,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown08In() {
-    val df = esDataSource("pd_in")
+    val df = opensearchDataSource("pd_in")
     var filter = df.filter("airport IN ('OTP', 'SFO', 'MUC')")
 
     if (strictPushDown) {
@@ -984,7 +984,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown08InWithNumbersAsStrings() {
-    val df = esDataSource("pd_in_numbers_strings")
+    val df = opensearchDataSource("pd_in_numbers_strings")
     var filter = df.filter("date IN ('2015-12-28', '2012-12-28')")
 
     if (strictPushDown) {
@@ -998,7 +998,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown08InWithNumber() {
-    val df = esDataSource("pd_in_number")
+    val df = opensearchDataSource("pd_in_number")
     var filter = df.filter("participants IN (1, 2, 3)")
 
     assertEquals(1, filter.count())
@@ -1007,7 +1007,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown08InWithNumberAndStrings() {
-    val df = esDataSource("pd_in_number")
+    val df = opensearchDataSource("pd_in_number")
     var filter = df.filter("participants IN (2, 'bar', 1, 'foo')")
 
     assertEquals(0, filter.count())
@@ -1015,7 +1015,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown09StartsWith() {
-    val df = esDataSource("pd_starts_with")
+    val df = opensearchDataSource("pd_starts_with")
     var filter = df.filter(df("airport").startsWith("O"))
 
     if (!keepHandledFilters && !strictPushDown) {
@@ -1035,7 +1035,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown10EndsWith() {
-    val df = esDataSource("pd_ends_with")
+    val df = opensearchDataSource("pd_ends_with")
     var filter = df.filter(df("airport").endsWith("O"))
 
     if (!keepHandledFilters && !strictPushDown) {
@@ -1055,7 +1055,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown11Contains() {
-    val df = esDataSource("pd_contains")
+    val df = opensearchDataSource("pd_contains")
     val filter = df.filter(df("reason").contains("us"))
     assertEquals(1, filter.count())
     assertEquals("jan", filter.select("tag").take(1)(0)(0))
@@ -1063,7 +1063,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown12And() {
-    val df = esDataSource("pd_and")
+    val df = opensearchDataSource("pd_and")
     var filter = df.filter(df("reason").isNotNull.and(df("tag").equalTo("jan")))
 
     assertEquals(1, filter.count())
@@ -1072,7 +1072,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown13Not() {
-    val df = esDataSource("pd_not")
+    val df = opensearchDataSource("pd_not")
     val filter = df.filter(!df("reason").isNull)
 
     assertEquals(1, filter.count())
@@ -1081,7 +1081,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown14OR() {
-    val df = esDataSource("pd_or")
+    val df = opensearchDataSource("pd_or")
     var filter = df.filter(df("reason").contains("us").or(df("airport").equalTo("OTP")))
 
     if (strictPushDown) {
@@ -1103,7 +1103,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   @Test
   def testEsSchemaFromDocsWithDifferentProperties() {
     val table = wrapIndex("sqlvarcol")
-    esDataSource(table)
+    opensearchDataSource(table)
 
     val index = wrapIndex("spark-test-scala-sql-varcols")
     val (target, _) = makeTargets(index, "data")
@@ -1199,7 +1199,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame51WriteToExistingDataSource() {
+  def testOpenSearchDataFrame51WriteToExistingDataSource() {
     // to keep the select static
     assumeFalse(readMetadata)
 
@@ -1220,7 +1220,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame52OverwriteExistingDataSource() {
+  def testOpenSearchDataFrame52OverwriteExistingDataSource() {
     // to keep the select static
     assumeFalse(readMetadata)
 
@@ -1285,8 +1285,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     sqc.createDataFrame(sc.makeRDD(parents ++ firstChildren), schema)
       .write
-      .format("es")
-      .options(Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
+      .format("opensearch")
+      .options(Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
       .save(target)
 
     assertThat(RestUtils.get(docEndpoint + "/10?routing=1"), containsString("kimchy"))
@@ -1302,8 +1302,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     sqc.createDataFrame(sc.makeRDD(parents ++ newChildren), schema)
       .write
-      .format("es")
-      .options(cfg ++ Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
+      .format("opensearch")
+      .options(cfg ++ Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
       .mode(SaveMode.Overwrite)
       .save(target)
 
@@ -1313,7 +1313,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame53OverwriteExistingDataSourceFromAnotherDataSource() {
+  def testOpenSearchDataFrame53OverwriteExistingDataSourceFromAnotherDataSource() {
     // to keep the select static
     assumeFalse(readMetadata)
 
@@ -1347,7 +1347,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeError() {
+  def testOpenSearchDataFrame60DataSourceSaveModeError() {
     val srcFrame = sqc.read.json(this.getClass.getResource("/small-sample.json").toURI().toString())
     val index = wrapIndex("sparksql-test-savemode_error")
     val (target, _) = makeTargets(index, "data")
@@ -1363,7 +1363,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeAppend() {
+  def testOpenSearchDataFrame60DataSourceSaveModeAppend() {
     val srcFrame = sqc.read.json(this.getClass.getResource("/small-sample.json").toURI().toString())
     srcFrame.printSchema()
     val index = wrapIndex("sparksql-test-savemode_append")
@@ -1379,7 +1379,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeOverwrite() {
+  def testOpenSearchDataFrame60DataSourceSaveModeOverwrite() {
     val srcFrame = sqc.read.json(this.getClass.getResource("/small-sample.json").toURI().toString())
     val index = wrapIndex("sparksql-test-savemode_overwrite")
     val (target, _) = makeTargets(index, "data")
@@ -1393,21 +1393,21 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeOverwriteWithID() {
+  def testOpenSearchDataFrame60DataSourceSaveModeOverwriteWithID() {
     val srcFrame = sqc.read.json(this.getClass.getResource("/small-sample.json").toURI().toString())
     val index = wrapIndex("sparksql-test-savemode_overwrite_id")
     val (target, docEndpoint) = makeTargets(index, "data")
 
-    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("es.mapping.id", "number").save(target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("opensearch.mapping.id", "number").save(target)
     val df = OpenSearchSparkSQL.esDF(sqc, target)
 
     assertEquals(3, df.count())
-    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("es.mapping.id", "number").save(target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("opensearch.mapping.id", "number").save(target)
     assertEquals(3, df.count())
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeIgnore() {
+  def testOpenSearchDataFrame60DataSourceSaveModeIgnore() {
     val srcFrame = sqc.read.json(this.getClass.getResource("/small-sample.json").toURI().toString())
     val index = wrapIndex("sparksql-test-savemode_ignore")
     val (target, _) = makeTargets(index, "data")
@@ -1429,7 +1429,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-array-with-nested-object")
     val (target, _) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "another-array").load(target)
+    val df = sqc.read.format("opensearch").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "another-array").load(target)
 
     df.printSchema()
     assertEquals("array", df.schema("another-array").dataType.typeName)
@@ -1464,7 +1464,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-empty-nested-array")
     val (target, _) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(target)
+    val df = sqc.read.format("opensearch").load(target)
     
     assertEquals("long", df.schema("foo").dataType.typeName)
     assertEquals("struct", df.schema("nested").dataType.typeName)
@@ -1483,7 +1483,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-double-nested-array")
     val (target, docEndpoint) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "nested.bar,foo,nested.bar.scores").load(target)
+    val df = sqc.read.format("opensearch").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "nested.bar,foo,nested.bar.scores").load(target)
 
     assertEquals("array", df.schema("foo").dataType.typeName)
     val bar = df.schema("nested").dataType.asInstanceOf[StructType]("bar")
@@ -1509,7 +1509,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-nested-array-exclude")
     val (target, docEndpoint) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").option(ES_READ_FIELD_EXCLUDE, "nested.bar").load(target)
+    val df = sqc.read.format("opensearch").option(OPENSEARCH_READ_FIELD_EXCLUDE, "nested.bar").load(target)
 
     assertEquals("long", df.schema("foo").dataType.typeName)
     assertEquals("struct", df.schema("nested").dataType.typeName)
@@ -1531,7 +1531,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-geo")
     val (target, _) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "rect.coordinates:2").load(target)
+    val df = sqc.read.format("opensearch").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "rect.coordinates:2").load(target)
     
     val coords = df.schema("rect").dataType.asInstanceOf[StructType]("coordinates")
     assertEquals("array", coords.dataType.typeName)
@@ -1547,7 +1547,6 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testJoinField(): Unit = {
-
     // test mix of short-form and long-form joiner values
     val company1 = Map("id" -> "1", "company" -> "Elastic", "joiner" -> "company")
     val company2 = Map("id" -> "2", "company" -> "Fringe Cafe", "joiner" -> Map("name" -> "company"))
@@ -1572,13 +1571,13 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
         RestUtils.putMapping(index, typename, "data/join/mapping/typed.json")
       }
 
-      sc.makeRDD(parents).saveToEs(target, Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
-      sc.makeRDD(children).saveToEs(target, Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(parents).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(children).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
 
       assertThat(RestUtils.get(docEndpoint + "/10?routing=1"), containsString("kimchy"))
       assertThat(RestUtils.get(docEndpoint + "/10?routing=1"), containsString(""""_routing":"1""""))
 
-      val df = sqc.read.format("es").load(target)
+      val df = sqc.read.format("opensearch").load(target)
       val data = df.where(df("id").equalTo("1").or(df("id").equalTo("10"))).sort(df("id")).collect()
 
       {
@@ -1607,12 +1606,12 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
         RestUtils.putMapping(index, typename, "data/join/mapping/typed.json")
       }
 
-      sc.makeRDD(docs).saveToEs(target, Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(docs).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
 
       assertThat(RestUtils.get(docEndpoint + "/10?routing=1"), containsString("kimchy"))
       assertThat(RestUtils.get(docEndpoint + "/10?routing=1"), containsString(""""_routing":"1""""))
 
-      val df = sqc.read.format("es").load(target)
+      val df = sqc.read.format("opensearch").load(target)
       val data = df.where(df("id").equalTo("1").or(df("id").equalTo("10"))).sort(df("id")).collect()
 
       {
@@ -1663,7 +1662,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     
     RestUtils.refresh(index)
     
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     val dataType = df.schema("location").dataType
     assertEquals("string", dataType.typeName)
@@ -1698,7 +1697,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     
     RestUtils.refresh(index)
     
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     val dataType = df.schema("location").dataType
     assertEquals("string", dataType.typeName)
@@ -1733,7 +1732,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     
     RestUtils.refresh(index)
     
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
 
     val dataType = df.schema("location").dataType
     assertEquals("array", dataType.typeName)
@@ -1770,7 +1769,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     
     RestUtils.refresh(index)
     
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
     
     val dataType = df.schema("location").dataType
     assertEquals("struct", dataType.typeName)
@@ -1812,7 +1811,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val point = """{"name":"point","location":{ "type" : "point", "coordinates": [100.0, 0.0] }}""".stripMargin
 
     sc.makeRDD(Seq(point)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     println(df.schema.treeString)
  
@@ -1857,7 +1856,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val line = """{"name":"line","location":{ "type": "linestring", "coordinates": [[-77.03, 38.89], [-77.00, 38.88]]} }""".stripMargin
       
     sc.makeRDD(Seq(line)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     val dataType = df.schema("location").dataType
     assertEquals("struct", dataType.typeName)
@@ -1901,7 +1900,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val polygon = """{"name":"polygon","location":{ "type" : "Polygon", "coordinates": [[ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]], "crs":null, "foo":"bar" }}""".stripMargin
       
     sc.makeRDD(Seq(polygon)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     val dataType = df.schema("location").dataType
     assertEquals("struct", dataType.typeName)
@@ -1949,7 +1948,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val multipoint = """{"name":"multipoint","location":{ "type" : "multipoint", "coordinates": [ [100.0, 0.0], [101.0, 0.0] ] }}""".stripMargin
       
     sc.makeRDD(Seq(multipoint)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     println(df.schema.treeString)
  
@@ -1995,7 +1994,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val multiline = """{"name":"multi-line","location":{ "type": "multilinestring", "coordinates":[ [[-77.0, 38.8], [-78.0, 38.8]], [[100.0, 0.0], [101.0, 1.0]] ]} }""".stripMargin
       
     sc.makeRDD(Seq(multiline)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     println(df.schema.treeString)
  
@@ -2045,7 +2044,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val multipoly = """{"name":"multi-poly","location":{ "type" : "multipolygon", "coordinates": [ [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 0.0] ]], [[[103.0, 0.0], [104.0, 0.0], [104.0, 1.0], [103.0, 0.0] ]] ]}}""".stripMargin
       
     sc.makeRDD(Seq(multipoly)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     println(df.schema.treeString)
  
@@ -2098,7 +2097,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val envelope = """{"name":"envelope","location":{ "type" : "envelope", "coordinates": [[-45.0, 45.0], [45.0, -45.0] ] }}""".stripMargin
       
     sc.makeRDD(Seq(envelope)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
  
     val dataType = df.schema("location").dataType
     assertEquals("struct", dataType.typeName)
@@ -2144,7 +2143,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val data = """{"name":"nested-simple","employees":[{"name":"anne","salary":6},{"name":"bob","salary":100}, {"name":"charlie","salary":15}] }""".stripMargin
       
     sc.makeRDD(Seq(data)).saveJsonToEs(target)
-    val df = sqc.read.format("es").load(index)
+    val df = sqc.read.format("opensearch").load(index)
 
     println(df.schema.treeString)
     
@@ -2177,7 +2176,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     RestUtils.refresh(wrapIndex("sparksql-multi-index-1"))
     RestUtils.refresh(wrapIndex("sparksql-multi-index-2"))
     val multiIndex = wrapIndex("sparksql-multi-index-1,") + index2
-    val df = sqc.read.format("es").load(multiIndex)
+    val df = sqc.read.format("opensearch").load(multiIndex)
     df.show
     println(df.selectExpr("count(*)").show(5))
     assertEquals(2, df.count())
@@ -2194,7 +2193,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val document3 = """{ "id" : 3, "status_code" : null}""".stripMargin
     sc.makeRDD(Seq(document1, document2, document3)).saveJsonToEs(target)
     RestUtils.refresh(index)
-    val df = sqc.read.format("es").option("opensearch.read.field.as.array.include","status_code").load(index)
+    val df = sqc.read.format("opensearch").option("opensearch.read.field.as.array.include","status_code").load(index)
       .select("id", "status_code")
     var result = df.where("id = 1").first().getList(1)
     assertEquals(123, result.get(0))
@@ -2221,28 +2220,28 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       .save("read_field_include_test")
     val reader = sqc.read.format("org.opensearch.spark.sql").option("opensearch.read.field.as.array.include","features.hashtags")
 
-    // No "es.read.field.include", so everything is included:
+    // No "opensearch.read.field.include", so everything is included:
     var df = reader.load("read_field_include_test")
     var result = df.select("features.hashtags").first().getAs[IndexedSeq[Row]](0)
     assertEquals(2, result(0).size)
     assertEquals("hello", result(0).getAs("text"))
     assertEquals("2", result(0).getAs("count"))
 
-    // "es.read.field.include" has trailing wildcard, so everything included:
-    df = reader.option("es.read.field.include","features.hashtags.*").load("read_field_include_test")
+    // "opensearch.read.field.include" has trailing wildcard, so everything included:
+    df = reader.option("opensearch.read.field.include","features.hashtags.*").load("read_field_include_test")
     result = df.select("features.hashtags").first().getAs[IndexedSeq[Row]](0)
     assertEquals(2, result(0).size)
     assertEquals("hello", result(0).getAs("text"))
     assertEquals("2", result(0).getAs("count"))
 
-    // "es.read.field.include" includes text but not count
-    df = reader.option("es.read.field.include","features.hashtags.text").load("read_field_include_test")
+    // "opensearch.read.field.include" includes text but not count
+    df = reader.option("opensearch.read.field.include","features.hashtags.text").load("read_field_include_test")
     result = df.select("features.hashtags").first().getAs[IndexedSeq[Row]](0)
     assertEquals(1, result(0).size)
     assertEquals("hello", result(0).getAs("text"))
 
-    // "es.read.field.include" does not include the leaves in the hierarchy so they won't be returned
-    df = reader.option("es.read.field.include","features.hashtags").load("read_field_include_test")
+    // "opensearch.read.field.include" does not include the leaves in the hierarchy so they won't be returned
+    df = reader.option("opensearch.read.field.include","features.hashtags").load("read_field_include_test")
     result = df.select("features.hashtags").first().getAs[IndexedSeq[Row]](0)
     assertEquals(0, result(0).size)
   }
@@ -2252,20 +2251,20 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val testIndex = "scripted_upsert_test"
     val updateParams = "count: <4>"
     val updateScript = "if ( ctx.op == 'create' ) {ctx._source.counter = params.count} else {ctx._source.counter += params.count}"
-    val conf = Map("es.mapping.id" -> "id", "es.mapping.exclude" -> "id", "es.write.operation" -> "upsert", "es.update.script.params" ->
-      updateParams, "es.update.script.upsert" -> "true", "es.update.script.inline" -> updateScript)
+    val conf = Map("opensearch.mapping.id" -> "id", "opensearch.mapping.exclude" -> "id", "opensearch.write.operation" -> "upsert", "opensearch.update.script.params" ->
+      updateParams, "opensearch.update.script.upsert" -> "true", "opensearch.update.script.inline" -> updateScript)
     val data = Seq(Row("1", 3))
     val rdd: RDD[Row] = sc.parallelize(data)
     val schema = new StructType().add("id", StringType, nullable = false).add("count", IntegerType, nullable = false)
     val df = sqc.createDataFrame(rdd, schema)
-    df.write.format("es").options(conf).mode(SaveMode.Append).save(testIndex)
+    df.write.format("opensearch").options(conf).mode(SaveMode.Append).save(testIndex)
 
-    val reader = sqc.read.format("es")
+    val reader = sqc.read.format("opensearch")
     var readerDf = reader.load(testIndex)
     var result = readerDf.select("counter").first().get(0)
     assertEquals(4l, result)
 
-    df.write.format("es").options(conf).mode(SaveMode.Append).save(testIndex)
+    df.write.format("opensearch").options(conf).mode(SaveMode.Append).save(testIndex)
     readerDf = reader.load(testIndex)
     result = readerDf.select("counter").first().get(0)
     assertEquals(8l, result)
@@ -2276,10 +2275,10 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val update_params = "new_samples: samples"
     val update_script = "ctx._source.samples = params.new_samples"
     val es_conf = Map(
-      "es.mapping.id" -> "id",
-      "es.write.operation" -> "upsert",
-      "es.update.script.params" -> update_params,
-      "es.update.script.inline" -> update_script
+      "opensearch.mapping.id" -> "id",
+      "opensearch.write.operation" -> "upsert",
+      "opensearch.update.script.params" -> update_params,
+      "opensearch.update.script.inline" -> update_script
     )
     // First do an upsert with two completely new rows:
     var data = Seq(Row("2", List(Row("hello"), Row("world"))), Row("1", List()))
@@ -2329,10 +2328,10 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val update_params = "new_samples: samples"
     val update_script = "ctx._source.samples = params.new_samples"
     val es_conf = Map(
-      "es.mapping.id" -> "id",
-      "es.write.operation" -> "upsert",
-      "es.update.script.params" -> update_params,
-      "es.update.script.inline" -> update_script
+      "opensearch.mapping.id" -> "id",
+      "opensearch.write.operation" -> "upsert",
+      "opensearch.update.script.params" -> update_params,
+      "opensearch.update.script.inline" -> update_script
     )
     // First do an upsert with two completely new rows:
     var data = Seq(Row("2", Map(("hello", "world"))), Row("1", Map()))
@@ -2373,35 +2372,9 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     assertEquals("again", samples.get(0).asInstanceOf[Row].get(0))
   }
 
-  @Test
-  def testWildcard() {
-    val mapping = wrapMapping("data", s"""{
-                                         |      "properties": {
-                                         |        "name": {
-                                         |          "type": "wildcard"
-                                         |        }
-                                         |      }
-                                         |  }
-    """.stripMargin)
-
-    val index = wrapIndex("sparksql-test-wildcard")
-    val typed = "data"
-    val (target, docPath) = makeTargets(index, typed)
-    RestUtils.touch(index)
-    RestUtils.putMapping(index, typed, mapping.getBytes(StringUtils.UTF_8))
-    val wildcardDocument = """{ "name" : "Chipotle Mexican Grill"}""".stripMargin
-    sc.makeRDD(Seq(wildcardDocument)).saveJsonToEs(target)
-    RestUtils.refresh(index)
-    val df = sqc.read.format("es").load(index)
-    val dataType = df.schema("name").dataType
-    assertEquals("string", dataType.typeName)
-    val head = df.head()
-    assertThat(head.getString(0), containsString("Chipotle"))
-  }
-
   /**
    * Take advantage of the fixed method order and clear out all created indices.
-   * The indices will last in Elasticsearch for all parameters of this test suite.
+   * The indices will last in OpenSearch for all parameters of this test suite.
    * This test suite often puts a lot of stress on the system's available file
    * descriptors due to the volume of indices it creates.
    */

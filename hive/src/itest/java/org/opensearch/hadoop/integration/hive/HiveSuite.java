@@ -153,7 +153,7 @@ public class HiveSuite {
         sb.append("TBLPROPERTIES('opensearch.resource'='" + resource + "'");
 
         if (StringUtils.hasText(query)) {
-            sb.append(",'es.query'='" + query + "'");
+            sb.append(",'opensearch.query'='" + query + "'");
         }
 
         if (params != null && params.length > 0) {
@@ -164,9 +164,9 @@ public class HiveSuite {
         }
 
         if (!isLocal) {
-            String host = hadoopConfig.get("es.host");
+            String host = hadoopConfig.get("opensearch.host");
             if (StringUtils.hasText(host)) {
-                sb.append(",'es.host'='" + host + "'");
+                sb.append(",'opensearch.host'='" + host + "'");
             }
             String port = hadoopConfig.get("opensearch.port");
             sb.append(",'opensearch.port'='" + port + "'");

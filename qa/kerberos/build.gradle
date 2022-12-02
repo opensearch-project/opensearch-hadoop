@@ -126,7 +126,7 @@ if (disableTests) {
     // Additionally, when using a local repo, the esCluster plugin is not applied, and thus, cannot be referenced in the
     // build script.
     
-    // Build uber storm jar for testing Storm remotely (es-hadoop + es-storm + qa tests)
+    // Build uber storm jar for testing Storm remotely (opensearch-hadoop + opensearch-storm + qa tests)
     Jar qaKerberosStormJar = project.tasks.create('kerberosStormJar', Jar)
     qaKerberosStormJar.dependsOn(project(':opensearch-storm').tasks.getByName('jar'))
     qaKerberosStormJar.dependsOn(project(':opensearch-storm').tasks.getByName('itestJar'))
@@ -238,8 +238,8 @@ if (disableTests) {
     integrationTest.finalizedBy(kdcFixture.getStopTask())
     integrationTest.systemProperty("java.security.krb5.conf", krb5Conf.toString())
     //integrationTest.systemProperty("sun.security.krb5.debug", "true")
-    integrationTest.systemProperty("es.net.http.auth.user", "test_admin")
-    integrationTest.systemProperty("es.net.http.auth.pass", "x-pack-test-password")
+    integrationTest.systemProperty("opensearch.net.http.auth.user", "test_admin")
+    integrationTest.systemProperty("opensearch.net.http.auth.pass", "x-pack-test-password")
     integrationTest.systemProperty("tests.hive.principal", "${hivePrincipalName}${realm}")
     integrationTest.systemProperty("tests.hive.keytab", hiveKeytab.toString())
     
@@ -265,8 +265,8 @@ if (disableTests) {
                 mainClass = 'org.opensearch.hadoop.qa.kerberos.setup.SetupKerberosUsers'
                 classpath = sourceSets.main.runtimeClasspath
                 systemProperty('opensearch.nodes', opensearchAddress)
-                systemProperty('es.net.http.auth.user', 'test_admin')
-                systemProperty('es.net.http.auth.pass', 'x-pack-test-password')
+                systemProperty('opensearch.net.http.auth.user', 'test_admin')
+                systemProperty('opensearch.net.http.auth.pass', 'x-pack-test-password')
                 systemProperty('principals', "$clientPrincipal$realm")
                 systemProperty('users', "client")
                 systemProperty('proxiers', "$hivePrincipalName$realm")
@@ -494,7 +494,7 @@ if (disableTests) {
         jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.ReadFromES'
         jobSettings([
                 'opensearch.resource': 'qa_kerberos_mr_data',
-                'es.nodes': opensearchAddress,
+                'opensearch.nodes': opensearchAddress,
                 'opensearch.security.authentication': 'kerberos',
                 'opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'mapreduce.map.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",

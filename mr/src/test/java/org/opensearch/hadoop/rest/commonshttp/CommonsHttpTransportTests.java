@@ -40,7 +40,6 @@ import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.SimpleRequest;
-import org.opensearch.hadoop.rest.commonshttp.DelegatedProtocol;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeoutException;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.Protocol;
@@ -129,7 +128,7 @@ public class CommonsHttpTransportTests {
     @Test
     public void testTimeout() {
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_HTTP_TIMEOUT, "3s");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_HTTP_TIMEOUT, "3s");
         String garbageHost = TEST_NET_1 + ":80";
         long maxTime = 3000L + 1000L; // 5s plus some buffer
 

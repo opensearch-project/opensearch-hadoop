@@ -31,8 +31,8 @@ package org.opensearch.hadoop.rest;
 import org.opensearch.hadoop.OpenSearchHadoopException;
 
 /**
- * Exception indicating an unrecoverable parsing error processing answers from Elasticsearch.
- * This might be caused by an unsupported Elasticsearch version or potential proxying
+ * Exception indicating an unrecoverable parsing error processing answers from OpenSearch.
+ * This might be caused by an unsupported OpenSearch version or potential proxying
  * across the network.
  */
 public class OpenSearchHadoopParsingException extends OpenSearchHadoopException {

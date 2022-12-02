@@ -32,7 +32,6 @@ package org.opensearch.hadoop.integration.hive;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.TestUtils;
@@ -96,7 +95,7 @@ public class AbstractHiveReadJsonTest {
     public void basicLoad() throws Exception {
 
         String create = "CREATE EXTERNAL TABLE jsonartistsread" + testInstance + " (data INT, garbage INT, garbage2 STRING) "
-                + tableProps(resource("json-hive-artists", "data", targetVersion), "'opensearch.output.json' = 'true'", "'es.mapping.names'='garbage2:refuse'");
+                + tableProps(resource("json-hive-artists", "data", targetVersion), "'opensearch.output.json' = 'true'", "'opensearch.mapping.names'='garbage2:refuse'");
 
         String select = "SELECT * FROM jsonartistsread" + testInstance;
 
@@ -112,7 +111,7 @@ public class AbstractHiveReadJsonTest {
     public void basicLoadWithNameMappings() throws Exception {
 
         String create = "CREATE EXTERNAL TABLE jsonartistsread" + testInstance + " (refuse INT, garbage INT, data STRING) "
-                + tableProps(resource("json-hive-artists", "data", targetVersion), "'opensearch.output.json' = 'true'", "'es.mapping.names'='data:boomSomethingYouWerentExpecting'");
+                + tableProps(resource("json-hive-artists", "data", targetVersion), "'opensearch.output.json' = 'true'", "'opensearch.mapping.names'='data:boomSomethingYouWerentExpecting'");
 
         String select = "SELECT * FROM jsonartistsread" + testInstance;
 
@@ -141,7 +140,7 @@ public class AbstractHiveReadJsonTest {
     @Test
     public void testMissingIndex() throws Exception {
         String create = "CREATE EXTERNAL TABLE jsonmissingread" + testInstance + " (data STRING) "
-                + tableProps(resource("foobar", "missing", targetVersion), "'es.index.read.missing.as.empty' = 'true'", "'opensearch.output.json' = 'true'");
+                + tableProps(resource("foobar", "missing", targetVersion), "'opensearch.index.read.missing.as.empty' = 'true'", "'opensearch.output.json' = 'true'");
 
         String select = "SELECT * FROM jsonmissingread" + testInstance;
 
@@ -157,7 +156,7 @@ public class AbstractHiveReadJsonTest {
                 + tableProps(
                     resource("json-hive-artists", "data", targetVersion),
                     "'opensearch.output.json' = 'true'",
-                    "'es.read.source.filter'='name'"
+                    "'opensearch.read.source.filter'='name'"
                 );
 
         String select = "SELECT * FROM jsonartistscollisionread" + testInstance;
@@ -193,7 +192,7 @@ public class AbstractHiveReadJsonTest {
 
     private String tableProps(String resource, String... params) {
         List<String> copy = new ArrayList(Arrays.asList(params));
-        copy.add("'" + ConfigurationOptions.ES_READ_METADATA + "'='" + readMetadata + "'");
+        copy.add("'" + ConfigurationOptions.OPENSEARCH_READ_METADATA + "'='" + readMetadata + "'");
         return HiveSuite.tableProps(resource, query, copy.toArray(new String[copy.size()]));
     }
 }

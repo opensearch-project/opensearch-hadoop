@@ -46,7 +46,7 @@ interface HiveConstants {
     String DATE_WRITABLE_V2 = "org.apache.hadoop.hive.serde2.io.DateWritableV2";
     String TABLE_LOCATION = "location";
 
-    String MAPPING_NAMES = "es.mapping.names";
+    String MAPPING_NAMES = "opensearch.mapping.names";
     String COLUMN_COMMENTS = "columns.comments";
 
     String INPUT_TBL_PROPERTIES = "opensearch.internal.hive.input.tbl.properties";

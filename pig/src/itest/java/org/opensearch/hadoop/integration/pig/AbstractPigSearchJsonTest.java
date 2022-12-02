@@ -100,7 +100,7 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     @Test
     public void testTuple() throws Exception {
         String script =
-                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('es.query=" + query + "','es.read.metadata=" + readMetadata +"');" +
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');" +
                 "A = LOAD '"+resource("json-pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage();" +
                 "X = LIMIT A 3;" +
                 //"DESCRIBE A;";
@@ -118,7 +118,7 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     @Test
     public void testTupleWithSchema() throws Exception {
         String script =
-                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('es.query=" + query + "','es.read.metadata=" + readMetadata +"');" +
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');" +
                 "A = LOAD '"+resource("json-pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage() AS (name:chararray);" +
                 "B = ORDER A BY name DESC;" +
                 "X = LIMIT B 3;" +
@@ -134,7 +134,7 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     @Test
     public void testFieldAlias() throws Exception {
         String script =
-                       "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('es.query="+ query + "','es.read.metadata=" + readMetadata +"');"
+                       "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query="+ query + "','opensearch.read.metadata=" + readMetadata +"');"
                       + "A = LOAD '"+resource("json-pig-fieldalias", "data", VERSION)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testfieldalias';";
@@ -150,7 +150,7 @@ public class AbstractPigSearchJsonTest extends AbstractPigTests {
     @Test
     public void testMissingIndex() throws Exception {
         String script =
-                      "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('es.index.read.missing.as.empty=true','es.query=" + query + "','es.read.metadata=" + readMetadata +"');"
+                      "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.index.read.missing.as.empty=true','opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');"
                       + "A = LOAD '"+resource("foo", "bar", VERSION)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testmissingindex';";

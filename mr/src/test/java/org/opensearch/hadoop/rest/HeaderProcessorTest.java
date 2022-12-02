@@ -56,7 +56,7 @@ public class HeaderProcessorTest {
     @Test
     public void testApplyValidHeader() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty("es.net.http.header.Max-Forwards", "10");
+        settings.setProperty("opensearch.net.http.header.Max-Forwards", "10");
 
         Header[] headers = applyHeaders(settings);
 
@@ -71,7 +71,7 @@ public class HeaderProcessorTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void applyReservedHeader() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty("es.net.http.header.Content-Type", "application/x-ldjson");
+        settings.setProperty("opensearch.net.http.header.Content-Type", "application/x-ldjson");
 
         applyHeaders(settings);
 
@@ -81,7 +81,7 @@ public class HeaderProcessorTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void applyEmptyHeaderName() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty("es.net.http.header.", "application/x-ldjson");
+        settings.setProperty("opensearch.net.http.header.", "application/x-ldjson");
 
         applyHeaders(settings);
 
@@ -91,7 +91,7 @@ public class HeaderProcessorTest {
     @Test
     public void testApplyArrayValues() throws Exception {
         Settings settings = new TestSettings();
-        settings.asProperties().put("es.net.http.header.Accept-Encoding", new Object[]{"gzip","deflate"});
+        settings.asProperties().put("opensearch.net.http.header.Accept-Encoding", new Object[]{"gzip","deflate"});
 
         Header[] headers = applyHeaders(settings);
 
@@ -106,7 +106,7 @@ public class HeaderProcessorTest {
     @Test
     public void testApplyMultiValues() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty("es.net.http.header.Accept-Encoding", "gzip,deflate");
+        settings.setProperty("opensearch.net.http.header.Accept-Encoding", "gzip,deflate");
 
         Header[] headers = applyHeaders(settings);
 

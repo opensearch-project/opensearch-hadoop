@@ -119,7 +119,7 @@ class DataFrameValueWriterTest {
   @Test
   def testIgnoreScalaToJavaToScalaFieldExclusion(): Unit = {
     val settings = new TestSettings()
-    settings.setProperty(ConfigurationOptions.ES_MAPPING_EXCLUDE, "skey.ignoreme")
+    settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_EXCLUDE, "skey.ignoreme")
 
     val schema = StructType(Seq(StructField("skey", StructType(Seq(StructField("jkey", StringType), StructField("ignoreme", StringType))))))
     val row = Row(Row("value", "value"))

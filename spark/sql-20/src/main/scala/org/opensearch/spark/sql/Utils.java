@@ -45,17 +45,17 @@ abstract class Utils {
         return field.type();
     }
 
-    static final String ROW_INFO_ORDER_PROPERTY = "es.internal.spark.sql.row.order";
-    static final String ROW_INFO_ARRAY_PROPERTY = "es.internal.spark.sql.row.arrays";
+    static final String ROW_INFO_ORDER_PROPERTY = "opensearch.internal.spark.sql.row.order";
+    static final String ROW_INFO_ARRAY_PROPERTY = "opensearch.internal.spark.sql.row.arrays";
     static final String ROOT_LEVEL_NAME = "_";
 
-    static final String DATA_SOURCE_PUSH_DOWN = "es.internal.spark.sql.pushdown";
-    static final String DATA_SOURCE_PUSH_DOWN_STRICT = "es.internal.spark.sql.pushdown.strict";
+    static final String DATA_SOURCE_PUSH_DOWN = "opensearch.internal.spark.sql.pushdown";
+    static final String DATA_SOURCE_PUSH_DOWN_STRICT = "opensearch.internal.spark.sql.pushdown.strict";
     // double filtering (run Spark filters) or not
-    static final String DATA_SOURCE_KEEP_HANDLED_FILTERS = "es.internal.spark.sql.pushdown.keep.handled.filters";
+    static final String DATA_SOURCE_KEEP_HANDLED_FILTERS = "opensearch.internal.spark.sql.pushdown.keep.handled.filters";
 
     // columns selected by Spark SQL query
-    static final String DATA_SOURCE_REQUIRED_COLUMNS = "es.internal.spark.sql.required.columns";
+    static final String DATA_SOURCE_REQUIRED_COLUMNS = "opensearch.internal.spark.sql.required.columns";
 
     static boolean isPushDown(Settings cfg) {
         return Booleans.parseBoolean(cfg.getProperty(DATA_SOURCE_PUSH_DOWN), true);

@@ -46,7 +46,7 @@ import org.junit.runners.Parameterized.Parameters;
 import static org.opensearch.hadoop.serialization.builder.AbstractExtendedBooleanValueReaderTest.ExpectedOutcome.*;
 
 /**
- * Test meant to exercise the extended boolean parsing logic from Elasticsearch
+ * Test meant to exercise the extended boolean parsing logic from OpenSearch
  */
 @RunWith(Parameterized.class)
 public abstract class AbstractExtendedBooleanValueReaderTest {

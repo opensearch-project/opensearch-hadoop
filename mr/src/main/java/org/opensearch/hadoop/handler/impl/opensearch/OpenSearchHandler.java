@@ -63,10 +63,10 @@ import org.opensearch.hadoop.util.ecs.MessageTemplate;
 import org.opensearch.hadoop.util.unit.Booleans;
 
 /**
- * Generic Error Handler that converts error events into JSON documents, and stores them in an Elasticsearch index.
+ * Generic Error Handler that converts error events into JSON documents, and stores them in an OpenSearch index.
  * <p>
  * Handler results returned from this handler are configurable; In the case that the event is successfully written to
- * Elasticsearch it returns HANDLED by default and if the event cannot be written for any reason it returns ABORT by
+ * OpenSearch it returns HANDLED by default and if the event cannot be written for any reason it returns ABORT by
  * default.
  * <p>
  *
@@ -74,9 +74,9 @@ import org.opensearch.hadoop.util.unit.Booleans;
  * @param <O> in case of retries, this is the type of the retry value
  * @param <C> the type of error collector used
  */
-public class ElasticsearchHandler<I extends Exceptional, O, C extends ErrorCollector<O>> implements ErrorHandler<I, O, C> {
+public class OpenSearchHandler<I extends Exceptional, O, C extends ErrorCollector<O>> implements ErrorHandler<I, O, C> {
 
-    private static final Log LOG = LogFactory.getLog(ElasticsearchHandler.class);
+    private static final Log LOG = LogFactory.getLog(OpenSearchHandler.class);
 
     private static final String CONST_EVENT_CATEGORY = "error";
 
@@ -114,11 +114,11 @@ public class ElasticsearchHandler<I extends Exceptional, O, C extends ErrorColle
     private Resource endpoint;
     private RestRepository writeClient;
 
-    public static <I extends Exceptional, O, C extends ErrorCollector<O>> ElasticsearchHandler<I, O, C> create(Settings rootSettings, EventConverter<I> converter) {
-        return new ElasticsearchHandler<I, O, C>(rootSettings, converter);
+    public static <I extends Exceptional, O, C extends ErrorCollector<O>> OpenSearchHandler<I, O, C> create(Settings rootSettings, EventConverter<I> converter) {
+        return new OpenSearchHandler<I, O, C>(rootSettings, converter);
     }
 
-    public ElasticsearchHandler(Settings rootSettings, EventConverter<I> eventConverter) {
+    public OpenSearchHandler(Settings rootSettings, EventConverter<I> eventConverter) {
         this.rootSettings = rootSettings;
         this.eventConverter = eventConverter;
     }
@@ -156,7 +156,7 @@ public class ElasticsearchHandler<I extends Exceptional, O, C extends ErrorColle
 
         if (inheritRoot) {
             LOG.info("OpenSearch Error Handler inheriting root configuration");
-            this.clientSettings = new CompositeSettings(Arrays.asList(clientSettings, rootSettings.excludeFilter("es.internal")));
+            this.clientSettings = new CompositeSettings(Arrays.asList(clientSettings, rootSettings.excludeFilter("opensearch.internal")));
         } else {
             LOG.info("OpenSearch Error Handler proceeding without inheriting root configuration options as configured");
         }
@@ -167,7 +167,7 @@ public class ElasticsearchHandler<I extends Exceptional, O, C extends ErrorColle
         IndexExtractor iformat = ObjectUtils.instantiate(clientSettings.getMappingIndexExtractorClassName(), handlerSettings);
         iformat.compile(resource.toString());
         if (iformat.hasPattern()) {
-            throw new IllegalArgumentException(String.format("Cannot use index format within Elasticsearch Error Handler. Format was [%s]", resource.toString()));
+            throw new IllegalArgumentException(String.format("Cannot use index format within OpenSearch Error Handler. Format was [%s]", resource.toString()));
         }
         this.endpoint = resource;
 

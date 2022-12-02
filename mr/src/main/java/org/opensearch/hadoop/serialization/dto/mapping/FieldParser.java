@@ -38,7 +38,7 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.serialization.FieldType;
 
 /**
- * All logic pertaining to parsing Elasticsearch schemas and rendering Mapping and Field objects.
+ * All logic pertaining to parsing OpenSearch schemas and rendering Mapping and Field objects.
  */
 public final class FieldParser {
 

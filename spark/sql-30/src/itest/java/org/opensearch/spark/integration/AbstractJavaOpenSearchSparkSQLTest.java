@@ -131,7 +131,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 		String docEndpoint = docEndpoint("sparksql-test-scala-basic-write-id-mapping", "data", version);
 
 		JavaOpenSearchSparkSQL.saveToEs(dataset, target,
-				ImmutableMap.of(ES_MAPPING_ID, "id"));
+				ImmutableMap.of(OPENSEARCH_MAPPING_ID, "id"));
 		assertTrue(RestUtils.exists(target));
 		assertThat(RestUtils.get(target + "/_search?"), containsString("345"));
 		assertThat(RestUtils.exists(docEndpoint + "/1"), is(true));
@@ -143,7 +143,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 
         String target = resource("sparksql-test-scala-basic-write-exclude-mapping", "data", version);
 		JavaOpenSearchSparkSQL.saveToEs(dataset, target,
-                ImmutableMap.of(ES_MAPPING_EXCLUDE, "url"));
+                ImmutableMap.of(OPENSEARCH_MAPPING_EXCLUDE, "url"));
         assertTrue(RestUtils.exists(target));
         assertThat(RestUtils.get(target + "/_search?"), not(containsString("url")));
     }
@@ -153,7 +153,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
 
         // Dataset<Row> dataset = JavaOpenSearchSparkSQL.esDF(sqc, target);
-        Dataset<Row> dataset = sqc.read().format("es").load(target);
+        Dataset<Row> dataset = sqc.read().format("opensearch").load(target);
         assertTrue(dataset.count() > 300);
         String schema = dataset.schema().treeString();
 		System.out.println(schema);
@@ -175,7 +175,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	public void testEsDatasetReadMetadata() throws Exception {
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
 
-		Dataset<Row> dataset = sqc.read().format("es").option("es.read.metadata", "true").load(target).where("id = 1");
+		Dataset<Row> dataset = sqc.read().format("opensearch").option("opensearch.read.metadata", "true").load(target).where("id = 1");
 
 		// Since _metadata field isn't a part of _source,
 		// we want to check that it could be fetched in any position.

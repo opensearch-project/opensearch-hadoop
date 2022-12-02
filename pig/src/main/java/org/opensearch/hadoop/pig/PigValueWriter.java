@@ -120,10 +120,10 @@ public class PigValueWriter extends FilteringValueWriter<PigTuple> {
             break;
             // DateTime introduced in Pig 12
         case 65: //DataType.BIGINTEGER
-            throw new OpenSearchHadoopSerializationException("Big integers are not supported by Elasticsearch - consider using a different type (such as string)");
+            throw new OpenSearchHadoopSerializationException("Big integers are not supported by OpenSearch - consider using a different type (such as string)");
             // DateTime introduced in Pig 12
         case 70: //DataType.BIGDECIMAL
-            throw new OpenSearchHadoopSerializationException("Big decimals are not supported by Elasticsearch - consider using a different type (such as string)");
+            throw new OpenSearchHadoopSerializationException("Big decimals are not supported by OpenSearch - consider using a different type (such as string)");
         case DataType.MAP:
             ResourceSchema nestedSchema = field.getSchema();
 

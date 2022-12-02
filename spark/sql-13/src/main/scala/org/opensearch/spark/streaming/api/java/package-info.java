@@ -28,6 +28,6 @@
  */
 
 /**
- * Java API for Elasticsearch Spark Streaming.
+ * Java API for OpenSearch Spark Streaming.
  */
 package org.opensearch.spark.streaming.api.java;

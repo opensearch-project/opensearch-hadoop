@@ -69,7 +69,7 @@ import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_WRITE_OPERATION
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_WRITE_OPERATION
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
 import org.opensearch.spark.cfg.SparkSettingsManager
 import org.opensearch.spark.serialization.ScalaValueWriter
@@ -93,15 +93,15 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
   Version.logVersion()
   
   override def createRelation(@transient sqlContext: SQLContext, parameters: Map[String, String]): BaseRelation = {
-    ElasticsearchRelation(params(parameters), sqlContext)
+    OpenSearchRelation(params(parameters), sqlContext)
   }
 
   override def createRelation(@transient sqlContext: SQLContext, parameters: Map[String, String], schema: StructType): BaseRelation = {
-    ElasticsearchRelation(params(parameters), sqlContext, Some(schema))
+    OpenSearchRelation(params(parameters), sqlContext, Some(schema))
   }
 
   override def createRelation(@transient sqlContext: SQLContext, mode: SaveMode, parameters: Map[String, String], data: DataFrame): BaseRelation = {
-    val relation = ElasticsearchRelation(params(parameters), sqlContext, Some(data.schema))
+    val relation = OpenSearchRelation(params(parameters), sqlContext, Some(data.schema))
     mode match {
       case Append         => relation.insert(data, false)
       case Overwrite      => relation.insert(data, true)
@@ -125,8 +125,8 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
     // indices with the index pattern functionality. Potentially could add this later if a need
     // arises by appending patterns to the provided index, but that's probably feature overload.
     if (partitionColumns != Nil) {
-      throw new OpenSearchHadoopIllegalArgumentException("Partition columns are not supported for Elasticsearch. " +
-        "If you need to partition your data by column values on Elasticsearch, please use an index pattern instead.")
+      throw new OpenSearchHadoopIllegalArgumentException("Partition columns are not supported for OpenSearch. " +
+        "If you need to partition your data by column values on OpenSearch, please use an index pattern instead.")
     }
 
     // Add in the transport pooling key for this job
@@ -137,14 +137,14 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // For now we only support Update and Append style output modes
     if (outputMode == OutputMode.Update()) {
-      val writeOperation = jobSettings.getProperty(ES_WRITE_OPERATION);
+      val writeOperation = jobSettings.getProperty(OPENSEARCH_WRITE_OPERATION);
       if (writeOperation == null) {
-        jobSettings.setProperty(ES_WRITE_OPERATION, ConfigurationOptions.ES_OPERATION_UPSERT)
-      } else if (writeOperation != ConfigurationOptions.ES_OPERATION_UPSERT) {
-        throw new OpenSearchHadoopIllegalArgumentException("Output mode update is only supported if es.write.operation is unset or set to upsert")
+        jobSettings.setProperty(OPENSEARCH_WRITE_OPERATION, ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT)
+      } else if (writeOperation != ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT) {
+        throw new OpenSearchHadoopIllegalArgumentException("Output mode update is only supported if opensearch.write.operation is unset or set to upsert")
       }
     } else if (outputMode != OutputMode.Append()) {
-      throw new OpenSearchHadoopIllegalArgumentException("Append and update are the only supported OutputModes for Elasticsearch. " +
+      throw new OpenSearchHadoopIllegalArgumentException("Append and update are the only supported OutputModes for OpenSearch. " +
         s"Cannot continue with [$outputMode].")
     }
 
@@ -192,7 +192,7 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // validate path is available
     finalParams.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE_READ,
-      finalParams.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE, throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
+      finalParams.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE, throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for OpenSearch resources.")))
 
     finalParams
   }
@@ -202,35 +202,35 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
     var params = parameters.map { case (k, v) => (k.replace('_', '.'), v)}. map { case (k, v) =>
       if (k.startsWith("opensearch.")) (k, v)
       else if (k == "path") (ConfigurationOptions.OPENSEARCH_RESOURCE, v)
-      else if (k == "queryname") (SparkSqlStreamingConfigs.ES_INTERNAL_QUERY_NAME, v)
-      else if (k == "checkpointlocation") (SparkSqlStreamingConfigs.ES_INTERNAL_USER_CHECKPOINT_LOCATION, v)
+      else if (k == "queryname") (SparkSqlStreamingConfigs.OPENSEARCH_INTERNAL_QUERY_NAME, v)
+      else if (k == "checkpointlocation") (SparkSqlStreamingConfigs.OPENSEARCH_INTERNAL_USER_CHECKPOINT_LOCATION, v)
       else ("opensearch." + k, v)
     }
 
-    params = params + (SparkSqlStreamingConfigs.ES_INTERNAL_APP_NAME -> sparkSession.sparkContext.appName)
-    params = params + (SparkSqlStreamingConfigs.ES_INTERNAL_APP_ID -> sparkSession.sparkContext.applicationId)
+    params = params + (SparkSqlStreamingConfigs.OPENSEARCH_INTERNAL_APP_NAME -> sparkSession.sparkContext.appName)
+    params = params + (SparkSqlStreamingConfigs.OPENSEARCH_INTERNAL_APP_ID -> sparkSession.sparkContext.applicationId)
 
     sparkSession.conf.getOption(SQLConf.CHECKPOINT_LOCATION.key).foreach { loc =>
-      params = params + (SparkSqlStreamingConfigs.ES_INTERNAL_SESSION_CHECKPOINT_LOCATION -> loc)
+      params = params + (SparkSqlStreamingConfigs.OPENSEARCH_INTERNAL_SESSION_CHECKPOINT_LOCATION -> loc)
     }
 
     // validate path
     params.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE_WRITE,
       params.getOrElse(ConfigurationOptions.OPENSEARCH_RESOURCE,
-        throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for Elasticsearch resources.")))
+        throw new OpenSearchHadoopIllegalArgumentException("resource must be specified for OpenSearch resources.")))
 
     params
   }
 }
 
-private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @transient val sqlContext: SQLContext, userSchema: Option[StructType] = None)
+private[sql] case class OpenSearchRelation(parameters: Map[String, String], @transient val sqlContext: SQLContext, userSchema: Option[StructType] = None)
   extends BaseRelation with PrunedFilteredScan with InsertableRelation
   {
 
   @transient lazy val cfg = {
     val conf = new SparkSettingsManager().load(sqlContext.sparkContext.getConf).merge(parameters.asJava)
-    InitializationUtils.setUserProviderIfNotSet(conf, classOf[HadoopUserProvider], LogFactory.getLog(classOf[ElasticsearchRelation]))
-    InitializationUtils.discoverClusterInfo(conf, LogFactory.getLog(classOf[ElasticsearchRelation]))
+    InitializationUtils.setUserProviderIfNotSet(conf, classOf[HadoopUserProvider], LogFactory.getLog(classOf[OpenSearchRelation]))
+    InitializationUtils.discoverClusterInfo(conf, LogFactory.getLog(classOf[OpenSearchRelation]))
     conf
   }
 
@@ -257,7 +257,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       val metadata = cfg.getReadMetadataField
       // if metadata is not selected, don't ask for it
       if (!requiredColumns.contains(metadata)) {
-        paramWithScan += (ConfigurationOptions.ES_READ_METADATA -> false.toString())
+        paramWithScan += (ConfigurationOptions.OPENSEARCH_READ_METADATA -> false.toString())
       }
       else {
         filteredColumns = requiredColumns.filter( _ != metadata)

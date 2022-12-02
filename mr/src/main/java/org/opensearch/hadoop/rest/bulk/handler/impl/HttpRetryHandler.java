@@ -63,10 +63,10 @@ public class HttpRetryHandler extends BulkWriteErrorHandler {
     public HttpRetryHandler(Settings settings) {
         String retryPolicyName = settings.getBatchWriteRetryPolicy();
 
-        if (ConfigurationOptions.ES_BATCH_WRITE_RETRY_POLICY_SIMPLE.equals(retryPolicyName)) {
+        if (ConfigurationOptions.OPENSEARCH_BATCH_WRITE_RETRY_POLICY_SIMPLE.equals(retryPolicyName)) {
             retryPolicyName = SimpleHttpRetryPolicy.class.getName();
         }
-        else if (ConfigurationOptions.ES_BATCH_WRITE_RETRY_POLICY_NONE.equals(retryPolicyName)) {
+        else if (ConfigurationOptions.OPENSEARCH_BATCH_WRITE_RETRY_POLICY_NONE.equals(retryPolicyName)) {
             retryPolicyName = NoHttpRetryPolicy.class.getName();
         }
 

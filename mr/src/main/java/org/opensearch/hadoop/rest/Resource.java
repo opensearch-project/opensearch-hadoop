@@ -34,11 +34,10 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.util.Assert;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
 
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_OPERATION_UPDATE;
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_OPERATION_UPSERT;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT;
 
 
 /**
@@ -119,7 +118,7 @@ public class Resource {
         String ingestPipeline = settings.getIngestPipeline();
         if (StringUtils.hasText(ingestPipeline)) {
             Assert.isTrue(!StringUtils.hasWhitespace(ingestPipeline), "Ingest Pipeline name should not contain whitespaces");
-            Assert.isTrue(!(ES_OPERATION_UPDATE.equals(settings.getOperation()) || ES_OPERATION_UPSERT.equals(settings.getOperation())), "Cannot specify an ingest pipeline when doing updates or upserts");
+            Assert.isTrue(!(OPENSEARCH_OPERATION_UPDATE.equals(settings.getOperation()) || OPENSEARCH_OPERATION_UPSERT.equals(settings.getOperation())), "Cannot specify an ingest pipeline when doing updates or upserts");
             bulkEndpoint = bulkEndpoint + "?pipeline=" + ingestPipeline;
         }
 

@@ -43,19 +43,19 @@ public abstract class BulkCommands {
         String operation = settings.getOperation();
         BulkFactory factory = null;
 
-        if (ConfigurationOptions.ES_OPERATION_CREATE.equals(operation)) {
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_CREATE.equals(operation)) {
             factory = new CreateBulkFactory(settings, metaExtractor, version);
         }
-        else if (ConfigurationOptions.ES_OPERATION_INDEX.equals(operation)) {
+        else if (ConfigurationOptions.OPENSEARCH_OPERATION_INDEX.equals(operation)) {
             factory = new IndexBulkFactory(settings, metaExtractor, version);
         }
-        else if (ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation)) {
+        else if (ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation)) {
             factory = new UpdateBulkFactory(settings, metaExtractor, version);
         }
-        else if (ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation)) {
+        else if (ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation)) {
             factory = new UpdateBulkFactory(settings, true, metaExtractor, version);
         }
-        else if (ConfigurationOptions.ES_OPERATION_DELETE.equals(operation)) {
+        else if (ConfigurationOptions.OPENSEARCH_OPERATION_DELETE.equals(operation)) {
             factory = new DeleteBulkFactory(settings, metaExtractor, version);
         }
         else {

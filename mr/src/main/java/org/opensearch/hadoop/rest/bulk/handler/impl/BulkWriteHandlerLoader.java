@@ -34,7 +34,7 @@ import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
 import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;
 import org.opensearch.hadoop.handler.impl.DropAndLog;
-import org.opensearch.hadoop.handler.impl.opensearch.ElasticsearchHandler;
+import org.opensearch.hadoop.handler.impl.opensearch.OpenSearchHandler;
 import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.opensearch.hadoop.rest.bulk.handler.DelayableErrorCollector;
 import org.opensearch.hadoop.rest.bulk.handler.IBulkWriteErrorHandler;
@@ -44,8 +44,8 @@ import org.opensearch.hadoop.rest.bulk.handler.IBulkWriteErrorHandler;
  */
 public class BulkWriteHandlerLoader extends AbstractHandlerLoader<IBulkWriteErrorHandler> {
 
-    public static final String ES_WRITE_REST_ERROR_HANDLERS = "es.write.rest.error.handlers";
-    public static final String ES_WRITE_REST_ERROR_HANDLER = "es.write.rest.error.handler";
+    public static final String OPENSEARCH_WRITE_REST_ERROR_HANDLERS = "opensearch.write.rest.error.handlers";
+    public static final String OPENSEARCH_WRITE_REST_ERROR_HANDLER = "opensearch.write.rest.error.handler";
 
     public BulkWriteHandlerLoader() {
         super(IBulkWriteErrorHandler.class);
@@ -53,12 +53,12 @@ public class BulkWriteHandlerLoader extends AbstractHandlerLoader<IBulkWriteErro
 
     @Override
     protected String getHandlersPropertyName() {
-        return ES_WRITE_REST_ERROR_HANDLERS;
+        return OPENSEARCH_WRITE_REST_ERROR_HANDLERS;
     }
 
     @Override
     protected String getHandlerPropertyName() {
-        return ES_WRITE_REST_ERROR_HANDLER;
+        return OPENSEARCH_WRITE_REST_ERROR_HANDLER;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class BulkWriteHandlerLoader extends AbstractHandlerLoader<IBulkWriteErro
                 genericHandler = DropAndLog.create(new BulkLogRenderer());
                 break;
             case OPENSEARCH:
-                genericHandler = ElasticsearchHandler.create(getSettings(), new BulkErrorEventConverter());
+                genericHandler = OpenSearchHandler.create(getSettings(), new BulkErrorEventConverter());
                 break;
             default:
                 throw new OpenSearchHadoopIllegalArgumentException(

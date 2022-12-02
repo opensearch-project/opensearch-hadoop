@@ -171,7 +171,7 @@ public class PigTypeToJsonTest {
     @Test
     public void testMapWithFilterInclude() {
         TestSettings cfg = new TestSettings();
-        cfg.setProperty("es.mapping.include", "map.t*");
+        cfg.setProperty("opensearch.mapping.include", "map.t*");
 
         String expected = "{\"map\":{\"two\":2,\"three\":3}}";
         Map<String, Number> map = new LinkedHashMap<String, Number>();
@@ -184,7 +184,7 @@ public class PigTypeToJsonTest {
     @Test
     public void testMapWithFilterExclude() {
         TestSettings cfg = new TestSettings();
-        cfg.setProperty("es.mapping.exclude", "o*, map.t*");
+        cfg.setProperty("opensearch.mapping.exclude", "o*, map.t*");
 
         String expected = "{\"map\":{\"one\":1}}";
         Map<String, Number> map = new LinkedHashMap<String, Number>();

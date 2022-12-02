@@ -99,13 +99,7 @@ class OpenSearchFixturePlugin implements Plugin<Project> {
         File scriptsDir = new File(project.buildDir, 'scripts')
         scriptsDir.mkdirs()
         File script = null
-        if (majorVersion <= 2) {
-            scriptsDir.mkdirs()
-            script = new File(scriptsDir, "increment.groovy").setText("ctx._source.counter+=1", 'UTF-8')
-        } else if (majorVersion == 5) {
-            scriptsDir.mkdirs()
-            script = new File(scriptsDir, "increment.painless").setText("ctx._source.counter = ctx._source.getOrDefault('counter', 0) + 1", 'UTF-8')
-        }
+        script = new File(scriptsDir, "increment.painless").setText("ctx._source.counter = ctx._source.getOrDefault('counter', 0) + 1", 'UTF-8')
         if (script != null) {
             integTestCluster.extraConfigFile("script", script)
         }

@@ -40,7 +40,7 @@ import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.unit.TimeValue;
 
 /**
- * Utility class acting as a heart-beat to Hadoop to prevent it from killing es-hadoop jobs, especially when indexing data which can take time a long time.
+ * Utility class acting as a heart-beat to Hadoop to prevent it from killing opensearch-hadoop jobs, especially when indexing data which can take time a long time.
  */
 class HeartBeat {
 

@@ -79,8 +79,8 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
 
     private static final String OPENSEARCH_CREDENTIALS = "OPENSEARCH_CREDENTIALS";
 
-    public static final String USER_PRINCIPAL = "es.storm.autocredentials.user.principal";
-    public static final String USER_KEYTAB = "es.storm.autocredentials.user.keytab";
+    public static final String USER_PRINCIPAL = "opensearch.storm.autocredentials.user.principal";
+    public static final String USER_KEYTAB = "opensearch.storm.autocredentials.user.keytab";
 
     private StormSettings clusterSettings;
 

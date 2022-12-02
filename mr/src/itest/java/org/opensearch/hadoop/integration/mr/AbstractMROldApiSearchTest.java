@@ -41,14 +41,12 @@ import org.apache.hadoop.mapred.JobConf;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.mr.EsInputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.ClusterInfo;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.TestUtils;
 import org.junit.Assert;
@@ -103,7 +101,7 @@ public class AbstractMROldApiSearchTest {
         String target = resource(indexPrefix + "mroldapi-savewithconstantrouting", type, clusterInfo.getMajorVersion());
 
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_MAPPING_ROUTING, "<foobar/>");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ROUTING, "<foobar/>");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, target);
 
         JobClient.runJob(conf);
@@ -137,7 +135,7 @@ public class AbstractMROldApiSearchTest {
     @Test
     public void testSearchNonExistingIndex() throws Exception {
         JobConf conf = createJobConf();
-        conf.setBoolean(ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY, true);
+        conf.setBoolean(ConfigurationOptions.OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY, true);
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("foobar", "save", clusterInfo.getMajorVersion()));
 
         JobClient.runJob(conf);
@@ -185,7 +183,7 @@ public class AbstractMROldApiSearchTest {
     public void testNested() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "mroldapi-nested", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "no");
 
         //conf.set(Stream.class.getName(), "OUT");
         JobClient.runJob(conf);
@@ -204,8 +202,8 @@ public class AbstractMROldApiSearchTest {
         conf.set(ConfigurationOptions.OPENSEARCH_QUERY, query);
         conf.setNumReduceTasks(0);
 
-        conf.set(ConfigurationOptions.ES_READ_METADATA, String.valueOf(readMetadata));
-        conf.set(ConfigurationOptions.ES_READ_METADATA_VERSION, String.valueOf(true));
+        conf.set(ConfigurationOptions.OPENSEARCH_READ_METADATA, String.valueOf(readMetadata));
+        conf.set(ConfigurationOptions.OPENSEARCH_READ_METADATA_VERSION, String.valueOf(true));
         conf.set(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, String.valueOf(readAsJson));
 
         new QueryTestParams(tempFolder).provisionQueries(conf);

@@ -36,7 +36,7 @@ import java.io.IOException;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 
 /**
- * Stores token authentication information for an Elasticsearch user.
+ * Stores token authentication information for an OpenSearch user.
  */
 public class EsToken {
 

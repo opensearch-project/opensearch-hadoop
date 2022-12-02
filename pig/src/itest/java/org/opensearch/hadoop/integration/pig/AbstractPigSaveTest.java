@@ -36,7 +36,6 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.Provisioner;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -144,7 +143,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
                 loadArtistSource() +
                 "B = FOREACH A GENERATE name, ToDate(" + millis + "l) AS timestamp, url, picture;" +
                 "ILLUSTRATE B;" +
-                "STORE B INTO '"+resource("pig-fieldalias", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('es.mapping.names=nAme:@name, timestamp:@timestamp, uRL:url, picturE:picture');";
+                "STORE B INTO '"+resource("pig-fieldalias", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.mapping.names=nAme:@name, timestamp:@timestamp, uRL:url, picturE:picture');";
 
         pig.executeScript(script);
     }
@@ -194,8 +193,8 @@ public class AbstractPigSaveTest extends AbstractPigTests {
                 loadArtistSource() +
                 "B = FOREACH A GENERATE id, name, TOBAG(url, picture) AS links;" +
                 "STORE B INTO '"+resource("pig-createwithid", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
-                                + ConfigurationOptions.ES_WRITE_OPERATION + "=create','"
-                                + ConfigurationOptions.ES_MAPPING_ID + "=id');";
+                                + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "=create','"
+                                + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "=id');";
         pig.executeScript(script);
     }
 
@@ -216,7 +215,7 @@ public class AbstractPigSaveTest extends AbstractPigTests {
                 loadArtistSource() +
                 "B = FOREACH A GENERATE id, name, TOBAG(url, picture) AS links;" +
                 "STORE B INTO '"+resource("pig-updatewoid", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
-                                + ConfigurationOptions.ES_WRITE_OPERATION + "=update');";
+                                + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "=update');";
         pig.executeScript(script);
     }
 
@@ -226,8 +225,8 @@ public class AbstractPigSaveTest extends AbstractPigTests {
                 loadArtistSource() +
                 "B = FOREACH A GENERATE id, name, TOBAG(url, picture) AS links;" +
                 "STORE B INTO '"+resource("pig-update", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
-                                + ConfigurationOptions.ES_WRITE_OPERATION + "=upsert','"
-                                + ConfigurationOptions.ES_MAPPING_ID + "=id');";
+                                + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "=upsert','"
+                                + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "=id');";
         pig.executeScript(script);
     }
 
@@ -243,8 +242,8 @@ public class AbstractPigSaveTest extends AbstractPigTests {
                 loadArtistSource() +
                 "B = FOREACH A GENERATE id, name, TOBAG(url, picture) AS links;" +
                 "STORE B INTO '"+resource("pig-updatewoupsert", "data", VERSION)+"' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
-                                + ConfigurationOptions.ES_WRITE_OPERATION + "=update','"
-                                + ConfigurationOptions.ES_MAPPING_ID + "=id');";
+                                + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "=update','"
+                                + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "=id');";
         pig.executeScript(script);
     }
 

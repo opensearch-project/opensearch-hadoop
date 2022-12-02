@@ -220,7 +220,7 @@ public abstract class MappingUtils {
     }
 
     /**
-     * If "es.mapping.join" is set, this returns the field name for the join field's parent sub-field.
+     * If "opensearch.mapping.join" is set, this returns the field name for the join field's parent sub-field.
      * @param settings to pull info from
      * @return the parent sub-field to pull routing information from.
      */

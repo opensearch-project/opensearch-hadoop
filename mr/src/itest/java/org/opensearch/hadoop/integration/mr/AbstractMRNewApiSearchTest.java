@@ -39,14 +39,12 @@ import org.apache.hadoop.mapreduce.Job;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.mr.EsInputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.ClusterInfo;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.TestUtils;
 import org.junit.Assert;
@@ -118,7 +116,7 @@ public class AbstractMRNewApiSearchTest {
     @Test
     public void testSearchNonExistingIndex() throws Exception {
         Configuration conf = createConf();
-        conf.setBoolean(ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY, true);
+        conf.setBoolean(ConfigurationOptions.OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY, true);
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource(indexPrefix + "foobar", "save", clusterInfo.getMajorVersion()));
 
         new Job(conf).waitForCompletion(true);
@@ -168,7 +166,7 @@ public class AbstractMRNewApiSearchTest {
         job.setOutputValueClass(mapType);
         conf.set(ConfigurationOptions.OPENSEARCH_QUERY, query);
 
-        conf.set(ConfigurationOptions.ES_READ_METADATA, String.valueOf(readMetadata));
+        conf.set(ConfigurationOptions.OPENSEARCH_READ_METADATA, String.valueOf(readMetadata));
         conf.set(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, String.valueOf(readAsJson));
 
         new QueryTestParams(tempFolder).provisionQueries(conf);

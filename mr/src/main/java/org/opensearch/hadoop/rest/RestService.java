@@ -239,7 +239,7 @@ public abstract class RestService implements Serializable {
 
             if (!allIndicesExist && !settings.getIndexReadMissingAsEmpty()) {
                 throw new OpenSearchHadoopIllegalArgumentException(
-                        String.format("Index [%s] missing and settings [%s] is set to false", settings.getResourceRead(), ConfigurationOptions.ES_INDEX_READ_MISSING_AS_EMPTY));
+                        String.format("Index [%s] missing and settings [%s] is set to false", settings.getResourceRead(), ConfigurationOptions.OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY));
             }
             /*
              * allIndicesExist will be false if even a single index does not exist (if multiple are in the resources string). If it is

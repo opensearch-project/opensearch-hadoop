@@ -202,7 +202,7 @@ public abstract class SettingsUtils {
             throw new OpenSearchHadoopIllegalStateException("User specified source filters were found ["+userProvided+"], " +
                     "but the connector is executing in a state where it has provided its own source filtering " +
                     "["+internalScrollFields+"]. Please clear the user specified source fields under the " +
-                    "["+ConfigurationOptions.ES_READ_SOURCE_FILTER+"] property to continue. Bailing out...");
+                    "["+ConfigurationOptions.OPENSEARCH_READ_SOURCE_FILTER +"] property to continue. Bailing out...");
         }
 
         String sourceFields = null;

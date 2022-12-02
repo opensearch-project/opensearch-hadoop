@@ -63,7 +63,7 @@ import org.opensearch.hadoop.util.TrackingBytesArray;
 import org.opensearch.hadoop.util.unit.TimeValue;
 
 /**
- * Oversees the addition of bulk entries into an internal buffer, the flushing of documents to Elasticsearch,
+ * Oversees the addition of bulk entries into an internal buffer, the flushing of documents to OpenSearch,
  * and the handling of failures in bulk operations.
  */
 public class BulkProcessor implements Closeable, StatsAware {
@@ -212,7 +212,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                     if (retryLimit >= 0 && totalAttempts > retryLimit) {
                         throw new OpenSearchHadoopException("Executed too many bulk requests without success. Attempted [" +
                                 totalAttempts + "] write operations, which exceeds the bulk request retry limit specified" +
-                                "by [" + ConfigurationOptions.ES_BATCH_WRITE_RETRY_LIMIT + "], and found data still " +
+                                "by [" + ConfigurationOptions.OPENSEARCH_BATCH_WRITE_RETRY_LIMIT + "], and found data still " +
                                 "not accepted. Perhaps there is an error handler that is not terminating? Bailing out..."
                         );
                     }

@@ -67,7 +67,7 @@ public class BulkWriteFailure extends BaseExceptional {
     }
 
     /**
-     * The number of times that this version of the document has been sent to Elasticsearch. In the event that a document
+     * The number of times that this version of the document has been sent to OpenSearch. In the event that a document
      * is revised by a handler before being retried, this number will reset in the event of another failure. If a document
      * is retried without being revised, this number will increment across retries.
      *

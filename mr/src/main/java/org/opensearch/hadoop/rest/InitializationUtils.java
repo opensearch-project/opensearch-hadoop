@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -61,16 +61,20 @@ public abstract class InitializationUtils {
     public static void checkIdForOperation(Settings settings) {
         String operation = settings.getOperation();
 
-        if (ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation) || ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation)) {
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation)
+                || ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation)) {
             Assert.isTrue(StringUtils.hasText(settings.getMappingId()),
-                    String.format("Operation [%s] requires an id but none (%s) was specified", operation, ConfigurationOptions.ES_MAPPING_ID));
+                    String.format("Operation [%s] requires an id but none (%s) was specified", operation,
+                            ConfigurationOptions.OPENSEARCH_MAPPING_ID));
         }
     }
 
     public static void checkIndexNameForRead(Settings settings) {
         Resource readResource = new Resource(settings, true);
         if (readResource.index().contains("{") && readResource.index().contains("}")) {
-            throw new OpenSearchHadoopIllegalArgumentException("Cannot read indices that have curly brace field extraction patterns in them: " + readResource.index());
+            throw new OpenSearchHadoopIllegalArgumentException(
+                    "Cannot read indices that have curly brace field extraction patterns in them: "
+                            + readResource.index());
         }
     }
 
@@ -83,8 +87,10 @@ public abstract class InitializationUtils {
                 if (bootstrap.indexExists(readResource.index())) {
                     RestClient.Health status = bootstrap.getHealth(readResource.index());
                     if (status == RestClient.Health.RED) {
-                        throw new OpenSearchHadoopIllegalStateException("Index specified [" + readResource.index() + "] is either red or " +
-                                "includes an index that is red, and thus all requested data cannot be safely and fully loaded. " +
+                        throw new OpenSearchHadoopIllegalStateException("Index specified [" + readResource.index()
+                                + "] is either red or " +
+                                "includes an index that is red, and thus all requested data cannot be safely and fully loaded. "
+                                +
                                 "Bailing out...");
                     }
                 }
@@ -137,15 +143,19 @@ public abstract class InitializationUtils {
             // remove non-client nodes
             ddNodes.retainAll(toRetain);
             if (log.isDebugEnabled()) {
-                log.debug(String.format("Filtered discovered only nodes %s to client-only %s", SettingsUtils.discoveredOrDeclaredNodes(settings), ddNodes));
+                log.debug(String.format("Filtered discovered only nodes %s to client-only %s",
+                        SettingsUtils.discoveredOrDeclaredNodes(settings), ddNodes));
             }
 
             if (ddNodes.isEmpty()) {
                 if (settings.getNodesDiscovery()) {
-                    message += String.format("; looks like the client nodes discovered have been removed; is the cluster in a stable state? %s", clientNodes);
-                }
-                else {
-                    message += String.format("; node discovery is disabled and none of nodes specified fit the criterion %s", SettingsUtils.discoveredOrDeclaredNodes(settings));
+                    message += String.format(
+                            "; looks like the client nodes discovered have been removed; is the cluster in a stable state? %s",
+                            clientNodes);
+                } else {
+                    message += String.format(
+                            "; node discovery is disabled and none of nodes specified fit the criterion %s",
+                            SettingsUtils.discoveredOrDeclaredNodes(settings));
                 }
                 throw new OpenSearchHadoopIllegalArgumentException(message);
             }
@@ -179,15 +189,19 @@ public abstract class InitializationUtils {
             // remove non-data nodes
             ddNodes.retainAll(toRetain);
             if (log.isDebugEnabled()) {
-                log.debug(String.format("Filtered discovered only nodes %s to data-only %s", SettingsUtils.discoveredOrDeclaredNodes(settings), ddNodes));
+                log.debug(String.format("Filtered discovered only nodes %s to data-only %s",
+                        SettingsUtils.discoveredOrDeclaredNodes(settings), ddNodes));
             }
 
             if (ddNodes.isEmpty()) {
                 if (settings.getNodesDiscovery()) {
-                    message += String.format("; looks like the data nodes discovered have been removed; is the cluster in a stable state? %s", dataNodes);
-                }
-                else {
-                    message += String.format("; node discovery is disabled and none of nodes specified fit the criterion %s", SettingsUtils.discoveredOrDeclaredNodes(settings));
+                    message += String.format(
+                            "; looks like the data nodes discovered have been removed; is the cluster in a stable state? %s",
+                            dataNodes);
+                } else {
+                    message += String.format(
+                            "; node discovery is disabled and none of nodes specified fit the criterion %s",
+                            SettingsUtils.discoveredOrDeclaredNodes(settings));
                 }
                 throw new OpenSearchHadoopIllegalArgumentException(message);
             }
@@ -221,15 +235,19 @@ public abstract class InitializationUtils {
             // remove non-client nodes
             ddNodes.retainAll(toRetain);
             if (log.isDebugEnabled()) {
-                log.debug(String.format("Filtered discovered only nodes %s to ingest-only %s", SettingsUtils.discoveredOrDeclaredNodes(settings), ddNodes));
+                log.debug(String.format("Filtered discovered only nodes %s to ingest-only %s",
+                        SettingsUtils.discoveredOrDeclaredNodes(settings), ddNodes));
             }
 
             if (ddNodes.isEmpty()) {
                 if (settings.getNodesDiscovery()) {
-                    message += String.format("; looks like the ingest nodes discovered have been removed; is the cluster in a stable state? %s", clientNodes);
-                }
-                else {
-                    message += String.format("; node discovery is disabled and none of nodes specified fit the criterion %s", SettingsUtils.discoveredOrDeclaredNodes(settings));
+                    message += String.format(
+                            "; looks like the ingest nodes discovered have been removed; is the cluster in a stable state? %s",
+                            clientNodes);
+                } else {
+                    message += String.format(
+                            "; node discovery is disabled and none of nodes specified fit the criterion %s",
+                            SettingsUtils.discoveredOrDeclaredNodes(settings));
                 }
                 throw new OpenSearchHadoopIllegalArgumentException(message);
             }
@@ -244,43 +262,58 @@ public abstract class InitializationUtils {
         // wan means all node restrictions are off the table
         if (settings.getNodesWANOnly()) {
             Assert.isTrue(!settings.getNodesDiscovery(), "Discovery cannot be enabled when running in WAN mode");
-            Assert.isTrue(!settings.getNodesClientOnly(), "Client-only nodes cannot be enabled when running in WAN mode");
+            Assert.isTrue(!settings.getNodesClientOnly(),
+                    "Client-only nodes cannot be enabled when running in WAN mode");
             Assert.isTrue(!settings.getNodesDataOnly(), "Data-only nodes cannot be enabled when running in WAN mode");
-            Assert.isTrue(!settings.getNodesIngestOnly(), "Ingest-only nodes cannot be enabled when running in WAN mode");
+            Assert.isTrue(!settings.getNodesIngestOnly(),
+                    "Ingest-only nodes cannot be enabled when running in WAN mode");
         }
 
         // pick between data or client or ingest only nodes
         boolean alreadyRestricted = false;
-        boolean[] restrictions = {settings.getNodesClientOnly(), settings.getNodesDataOnly(), settings.getNodesIngestOnly()};
+        boolean[] restrictions = { settings.getNodesClientOnly(), settings.getNodesDataOnly(),
+                settings.getNodesIngestOnly() };
         for (boolean restriction : restrictions) {
-            Assert.isTrue((alreadyRestricted && restriction) == false, "Use either client-only or data-only or ingest-only nodes but not a combination");
+            Assert.isTrue((alreadyRestricted && restriction) == false,
+                    "Use either client-only or data-only or ingest-only nodes but not a combination");
             alreadyRestricted = alreadyRestricted || restriction;
         }
 
-        // field inclusion/exclusion + input as json does not mix and the user should be informed.
+        // field inclusion/exclusion + input as json does not mix and the user should be
+        // informed.
         if (settings.getInputAsJson()) {
-            Assert.isTrue(settings.getMappingIncludes().isEmpty(), "When writing data as JSON, the field inclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
-            Assert.isTrue(settings.getMappingExcludes().isEmpty(), "When writing data as JSON, the field exclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
+            Assert.isTrue(settings.getMappingIncludes().isEmpty(),
+                    "When writing data as JSON, the field inclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
+            Assert.isTrue(settings.getMappingExcludes().isEmpty(),
+                    "When writing data as JSON, the field exclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
         }
 
-        //check the configuration is coherent in order to use the delete operation
-        if (ConfigurationOptions.ES_OPERATION_DELETE.equals(settings.getOperation())) {
-            Assert.isTrue(!settings.getInputAsJson(), "When using delete operation, providing data as JSON is not coherent because this operation does not need document as a payload. This is most likely not what the user intended. Bailing out...");
-            Assert.isTrue(settings.getMappingIncludes().isEmpty(), "When using delete operation, the field inclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
-            Assert.isTrue(settings.getMappingExcludes().isEmpty(), "When using delete operation, the field exclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
-            Assert.isTrue(settings.getMappingId() != null && !StringUtils.EMPTY.equals(settings.getMappingId()), "When using delete operation, the property " + ConfigurationOptions.ES_MAPPING_ID + " must be set and must not be empty since we need the document id in order to delete it. Bailing out...");
+        // check the configuration is coherent in order to use the delete operation
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_DELETE.equals(settings.getOperation())) {
+            Assert.isTrue(!settings.getInputAsJson(),
+                    "When using delete operation, providing data as JSON is not coherent because this operation does not need document as a payload. This is most likely not what the user intended. Bailing out...");
+            Assert.isTrue(settings.getMappingIncludes().isEmpty(),
+                    "When using delete operation, the field inclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
+            Assert.isTrue(settings.getMappingExcludes().isEmpty(),
+                    "When using delete operation, the field exclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
+            Assert.isTrue(settings.getMappingId() != null && !StringUtils.EMPTY.equals(settings.getMappingId()),
+                    "When using delete operation, the property " + ConfigurationOptions.OPENSEARCH_MAPPING_ID
+                            + " must be set and must not be empty since we need the document id in order to delete it. Bailing out...");
         }
 
         // Check to make sure user doesn't specify more than one script type
         boolean hasScript = false;
-        String[] scripts = {settings.getUpdateScriptInline(), settings.getUpdateScriptFile(), settings.getUpdateScriptStored()};
+        String[] scripts = { settings.getUpdateScriptInline(), settings.getUpdateScriptFile(),
+                settings.getUpdateScriptStored() };
         for (String script : scripts) {
             boolean isSet = StringUtils.hasText(script);
-            Assert.isTrue((hasScript && isSet) == false, "Multiple scripts are specified. Please specify only one via [es.update.script.inline], [es.update.script.file], or [es.update.script.stored]");
+            Assert.isTrue((hasScript && isSet) == false,
+                    "Multiple scripts are specified. Please specify only one via [opensearch.update.script.inline], [opensearch.update.script.file], or [opensearch.update.script.stored]");
             hasScript = hasScript || isSet;
         }
 
-        // Early attempt to catch the internal field filtering clashing with user specified field filtering
+        // Early attempt to catch the internal field filtering clashing with user
+        // specified field filtering
         SettingsUtils.determineSourceFields(settings); // ignore return, just checking for the throw.
     }
 
@@ -293,25 +326,27 @@ public abstract class InitializationUtils {
         // File Scripts
         if (StringUtils.hasText(settings.getUpdateScriptFile())) {
             throw new OpenSearchHadoopIllegalArgumentException("Cannot use file scripts on ES 6.x and above. Please use " +
-                    "stored scripts with [" + ConfigurationOptions.ES_UPDATE_SCRIPT_STORED + "] instead.");
+                    "stored scripts with [" + ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_STORED + "] instead.");
         }
 
         // Timestamp and TTL in index/updates
         if (StringUtils.hasText(settings.getMappingTimestamp())) {
             throw new OpenSearchHadoopIllegalArgumentException("Cannot use timestamps on index/update requests in ES 6.x " +
-                    "and above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TIMESTAMP + "] setting.");
+                    "and above. Please remove the [" + ConfigurationOptions.OPENSEARCH_MAPPING_TIMESTAMP + "] setting.");
         }
         if (StringUtils.hasText(settings.getMappingTtl())) {
             throw new OpenSearchHadoopIllegalArgumentException("Cannot use TTL on index/update requests in ES 6.x and " +
-                    "above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TTL + "] setting.");
+                    "above. Please remove the [" + ConfigurationOptions.OPENSEARCH_MAPPING_TTL + "] setting.");
         }
     }
 
     /**
      * Creates a bootstrap client to discover and validate cluster information.
      *
-     * Unlike {@link InitializationUtils#discoverClusterInfo(Settings, Log)}, this method always calls the cluster in order to validate
-     * headers. If cluster name, uuid, and version are present in the settings, this will validate them against the cluster, warning
+     * Unlike {@link InitializationUtils#discoverClusterInfo(Settings, Log)}, this
+     * method always calls the cluster in order to validate
+     * headers. If cluster name, uuid, and version are present in the settings, this
+     * will validate them against the cluster, warning
      * and overriding if they are different.
      */
     public static ClusterInfo discoverAndValidateClusterInfo(Settings settings, Log log) {
@@ -321,7 +356,7 @@ public abstract class InitializationUtils {
         try {
             mainInfo = bootstrap.mainInfo();
             if (log.isDebugEnabled()) {
-                log.debug(String.format("Discovered Elasticsearch cluster [%s/%s], version [%s]",
+                log.debug(String.format("Discovered OpenSearch cluster [%s/%s], version [%s]",
                         mainInfo.getClusterName().getName(),
                         mainInfo.getClusterName().getUUID(),
                         mainInfo.getMajorVersion()));
@@ -329,7 +364,8 @@ public abstract class InitializationUtils {
         } catch (OpenSearchHadoopException ex) {
             throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
                     + "typically this happens if the network/OpenSearch cluster is not accessible or when targeting "
-                    + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
+                    + "a WAN/Cloud instance without the proper setting '%s'",
+                    ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
         } finally {
             bootstrap.close();
         }
@@ -340,30 +376,35 @@ public abstract class InitializationUtils {
         String version = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION);
         if (StringUtils.hasText(clusterName) && StringUtils.hasText(version)) { // UUID is optional for now
             if (mainInfo.getClusterName().getName().equals(clusterName) == false) {
-                log.warn(String.format("Discovered incorrect cluster name in settings. Expected [%s] but received [%s]; replacing...",
+                log.warn(String.format(
+                        "Discovered incorrect cluster name in settings. Expected [%s] but received [%s]; replacing...",
                         mainInfo.getClusterName().getName(),
                         clusterName));
             }
             if (mainInfo.getClusterName().getUUID().equals(clusterUUID) == false) {
-                log.warn(String.format("Discovered incorrect cluster UUID in settings. Expected [%s] but received [%s]; replacing...",
+                log.warn(String.format(
+                        "Discovered incorrect cluster UUID in settings. Expected [%s] but received [%s]; replacing...",
                         mainInfo.getClusterName().getUUID(),
                         clusterUUID));
             }
             OpenSearchMajorVersion existingVersion = OpenSearchMajorVersion.parse(version);
             if (mainInfo.getMajorVersion().equals(existingVersion) == false) {
-                log.warn(String.format("Discovered incorrect cluster version in settings. Expected [%s] but received [%s]; replacing...",
+                log.warn(String.format(
+                        "Discovered incorrect cluster version in settings. Expected [%s] but received [%s]; replacing...",
                         mainInfo.getMajorVersion(),
                         existingVersion));
             }
         }
 
-        // Update connection settings to ensure that they match those given by the server connection.
+        // Update connection settings to ensure that they match those given by the
+        // server connection.
         settings.setInternalClusterInfo(mainInfo);
         return mainInfo;
     }
 
     /**
-     * Retrieves the OpenSearch cluster name and version from the settings, or, if they should be missing,
+     * Retrieves the OpenSearch cluster name and version from the settings, or, if
+     * they should be missing,
      * creates a bootstrap client and obtains their values.
      */
     public static ClusterInfo discoverClusterInfo(Settings settings, Log log) {
@@ -374,7 +415,8 @@ public abstract class InitializationUtils {
         String version = settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_VERSION);
         if (StringUtils.hasText(clusterName) && StringUtils.hasText(version)) { // UUID is optional for now
             if (log.isDebugEnabled()) {
-                log.debug(String.format("OpenSearch cluster [NAME:%s][UUID:%s][VERSION:%s] already present in configuration; skipping discovery",
+                log.debug(String.format(
+                        "OpenSearch cluster [NAME:%s][UUID:%s][VERSION:%s] already present in configuration; skipping discovery",
                         clusterName, clusterUUID, version));
             }
             remoteClusterName = new ClusterName(clusterName, clusterUUID);
@@ -397,14 +439,17 @@ public abstract class InitializationUtils {
         } catch (OpenSearchHadoopException ex) {
             throw new OpenSearchHadoopIllegalArgumentException(String.format("Cannot detect OpenSearch version - "
                     + "typically this happens if the network/OpenSearch cluster is not accessible or when targeting "
-                    + "a WAN/Cloud instance without the proper setting '%s'", ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
+                    + "a WAN/Cloud instance without the proper setting '%s'",
+                    ConfigurationOptions.OPENSEARCH_NODES_WAN_ONLY), ex);
         } finally {
             bootstrap.close();
         }
     }
 
     /**
-     * @deprecated Use {@link InitializationUtils#discoverClusterInfo(Settings, Log)} instead
+     * @deprecated Use
+     *             {@link InitializationUtils#discoverClusterInfo(Settings, Log)}
+     *             instead
      */
     @Deprecated
     public static OpenSearchMajorVersion discoverEsVersion(Settings settings, Log log) {
@@ -432,19 +477,23 @@ public abstract class InitializationUtils {
     private static void doCheckIndexExistence(Settings settings, RestRepository client) {
         // check index existence
         if (!client.resourceExists(false)) {
-            throw new OpenSearchHadoopIllegalArgumentException(String.format("Target index [%s] does not exist and auto-creation is disabled [setting '%s' is '%s']",
-                    settings.getResourceWrite(), ConfigurationOptions.ES_INDEX_AUTO_CREATE, settings.getIndexAutoCreate()));
+            throw new OpenSearchHadoopIllegalArgumentException(String.format(
+                    "Target index [%s] does not exist and auto-creation is disabled [setting '%s' is '%s']",
+                    settings.getResourceWrite(), ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE,
+                    settings.getIndexAutoCreate()));
         }
     }
-    
-    public static boolean setMetadataExtractorIfNotSet(Settings settings, Class<? extends MetadataExtractor> clazz, Log log) {
+
+    public static boolean setMetadataExtractorIfNotSet(Settings settings, Class<? extends MetadataExtractor> clazz,
+            Log log) {
         if (!StringUtils.hasText(settings.getMappingMetadataExtractorClassName())) {
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
 
             String name = clazz.getName();
-            settings.setProperty(ConfigurationOptions.ES_MAPPING_METADATA_EXTRACTOR_CLASS, name);
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_METADATA_EXTRACTOR_CLASS, name);
             if (logger.isDebugEnabled()) {
-                logger.debug(String.format("Using pre-defined metadata extractor [%s] as default", settings.getMappingMetadataExtractorClassName()));
+                logger.debug(String.format("Using pre-defined metadata extractor [%s] as default",
+                        settings.getMappingMetadataExtractorClassName()));
             }
             return true;
         }
@@ -457,9 +506,10 @@ public abstract class InitializationUtils {
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
 
             String name = clazz.getName();
-            settings.setProperty(ConfigurationOptions.ES_MAPPING_DEFAULT_EXTRACTOR_CLASS, name);
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_DEFAULT_EXTRACTOR_CLASS, name);
             if (logger.isDebugEnabled()) {
-                logger.debug(String.format("Using pre-defined field extractor [%s] as default", settings.getMappingIdExtractorClassName()));
+                logger.debug(String.format("Using pre-defined field extractor [%s] as default",
+                        settings.getMappingIdExtractorClassName()));
             }
             return true;
         }
@@ -475,12 +525,15 @@ public abstract class InitializationUtils {
             if (settings.getInputAsJson()) {
                 name = NoOpValueWriter.class.getName();
                 if (logger.isDebugEnabled()) {
-                    logger.debug(String.format("Elasticsearch input marked as JSON; bypassing serialization through [%s] instead of [%s]", name, clazz));
+                    logger.debug(String.format(
+                            "OpenSearch input marked as JSON; bypassing serialization through [%s] instead of [%s]",
+                            name, clazz));
                 }
             }
-            settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, name);
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, name);
             if (logger.isDebugEnabled()) {
-                logger.debug(String.format("Using pre-defined writer serializer [%s] as default", settings.getSerializerValueWriterClassName()));
+                logger.debug(String.format("Using pre-defined writer serializer [%s] as default",
+                        settings.getSerializerValueWriterClassName()));
             }
             return true;
         }
@@ -490,10 +543,12 @@ public abstract class InitializationUtils {
 
     public static boolean setBytesConverterIfNeeded(Settings settings, Class<? extends BytesConverter> clazz, Log log) {
         if (settings.getInputAsJson() && !StringUtils.hasText(settings.getSerializerBytesConverterClassName())) {
-            settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_BYTES_CLASS, clazz.getName());
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_BYTES_CLASS, clazz.getName());
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
             if (logger.isDebugEnabled()) {
-                logger.debug(String.format("JSON input specified; using pre-defined bytes/json converter [%s] as default", settings.getSerializerBytesConverterClassName()));
+                logger.debug(
+                        String.format("JSON input specified; using pre-defined bytes/json converter [%s] as default",
+                                settings.getSerializerBytesConverterClassName()));
             }
             return true;
         }
@@ -504,10 +559,11 @@ public abstract class InitializationUtils {
     public static boolean setValueReaderIfNotSet(Settings settings, Class<? extends ValueReader> clazz, Log log) {
 
         if (!StringUtils.hasText(settings.getSerializerValueReaderClassName())) {
-            settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_READER_VALUE_CLASS, clazz.getName());
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_READER_VALUE_CLASS, clazz.getName());
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
             if (logger.isDebugEnabled()) {
-                logger.debug(String.format("Using pre-defined reader serializer [%s] as default", settings.getSerializerValueReaderClassName()));
+                logger.debug(String.format("Using pre-defined reader serializer [%s] as default",
+                        settings.getSerializerValueReaderClassName()));
             }
             return true;
         }
@@ -520,7 +576,8 @@ public abstract class InitializationUtils {
             settings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_USER_PROVIDER_CLASS, clazz.getName());
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
             if (logger.isDebugEnabled()) {
-                logger.debug(String.format("Using pre-defined user provider [%s] as default", settings.getSecurityUserProviderClass()));
+                logger.debug(String.format("Using pre-defined user provider [%s] as default",
+                        settings.getSecurityUserProviderClass()));
             }
             return true;
         }

@@ -72,10 +72,10 @@ public abstract class AbstractStormBoltTests {
     @Parameters
     public static Collection<Object[]> configs() throws IOException {
         // no ack
-        Map noAck = new HashMap(ImmutableMap.of(StormConfigurationOptions.ES_STORM_BOLT_ACK, Boolean.FALSE.toString()));
+        Map noAck = new HashMap(ImmutableMap.of(StormConfigurationOptions.OPENSEARCH_STORM_BOLT_ACK, Boolean.FALSE.toString()));
 
         // write ack
-        Map ack = new HashMap(ImmutableMap.of(StormConfigurationOptions.ES_STORM_BOLT_ACK, Boolean.TRUE.toString()));
+        Map ack = new HashMap(ImmutableMap.of(StormConfigurationOptions.OPENSEARCH_STORM_BOLT_ACK, Boolean.TRUE.toString()));
         return Arrays.asList(new Object[][] { { noAck, "storm-bolt" }, { ack, "storm-bolt-ack" } });
     }
 }

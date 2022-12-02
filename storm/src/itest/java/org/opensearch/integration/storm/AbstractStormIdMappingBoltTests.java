@@ -58,13 +58,13 @@ public class AbstractStormIdMappingBoltTests extends AbstractStormBoltTests {
         List doc2 = ImmutableList.of("OTP", "Otopeni", "SFO", "San Fran", "number", 2);
 
         Map localCfg = new LinkedHashMap(conf);
-        localCfg.put(ConfigurationOptions.ES_MAPPING_ID, "number");
+        localCfg.put(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
 
         String target = index + "/id-write";
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("test-spout-2", new TestSpout(ImmutableList.of(doc2, doc1), new Fields("key1", "valo1", "key2",
                 "valo2", "key3", "number")));
-        builder.setBolt("es-bolt-2", new TestBolt(new OpenSearchBolt(target, localCfg))).shuffleGrouping("test-spout-2");
+        builder.setBolt("opensearch-bolt-2", new TestBolt(new OpenSearchBolt(target, localCfg))).shuffleGrouping("test-spout-2");
 
         MultiIndexSpoutStormSuite.run(index + "id-write", builder.createTopology(), COMPONENT_HAS_COMPLETED);
 

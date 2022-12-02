@@ -103,8 +103,8 @@ public class AbstractKerberosClientTest {
                     TestSettings testSettings = new TestSettings();
                     InitializationUtils.setUserProviderIfNotSet(testSettings, JdkUserProvider.class, null);
                     // Remove the regular auth settings
-                    testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_USER);
-                    testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
+                    testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_USER);
+                    testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_PASS);
 
                     // Set kerberos settings
                     testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
@@ -141,8 +141,8 @@ public class AbstractKerberosClientTest {
                     TestSettings testSettings = new TestSettings();
                     InitializationUtils.setUserProviderIfNotSet(testSettings, JdkUserProvider.class, null);
                     // Remove the regular auth settings
-                    testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_USER);
-                    testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
+                    testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_USER);
+                    testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_PASS);
 
                     // Set kerberos settings
                     testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
@@ -174,8 +174,8 @@ public class AbstractKerberosClientTest {
                     TestSettings testSettings = new TestSettings();
                     InitializationUtils.setUserProviderIfNotSet(testSettings, JdkUserProvider.class, null);
                     // Remove the regular auth settings
-                    testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_USER);
-                    testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
+                    testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_USER);
+                    testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_PASS);
 
                     // Set kerberos settings
                     testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
@@ -269,8 +269,8 @@ public class AbstractKerberosClientTest {
                 assertEquals(UserGroupInformation.AuthenticationMethod.KERBEROS, currentUser.getRealAuthenticationMethod());
 
                 Settings testSettings = new TestSettings();
-                testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_USER);
-                testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
+                testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_USER);
+                testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_PASS);
 
                 InitializationUtils.setUserProviderIfNotSet(testSettings, HadoopUserProvider.class, new NoOpLog());
                 testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
@@ -347,8 +347,8 @@ public class AbstractKerberosClientTest {
                     InitializationUtils.setUserProviderIfNotSet(innerTestSettings, JdkUserProvider.class, LOG);
                     InitializationUtils.discoverClusterInfo(innerTestSettings, LOG);
                     // Remove the regular auth settings
-                    innerTestSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_USER);
-                    innerTestSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
+                    innerTestSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_USER);
+                    innerTestSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_PASS);
 
                     innerTestSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
                     innerTestSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_MUTUAL, "true");
@@ -381,8 +381,8 @@ public class AbstractKerberosClientTest {
         // Configure client settings
         InitializationUtils.setUserProviderIfNotSet(testSettings, JdkUserProvider.class, LOG);
         // Remove the regular auth settings
-        testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_USER);
-        testSettings.asProperties().remove(ConfigurationOptions.ES_NET_HTTP_AUTH_PASS);
+        testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_USER);
+        testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_PASS);
         // Add Kerberos auth settings
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");

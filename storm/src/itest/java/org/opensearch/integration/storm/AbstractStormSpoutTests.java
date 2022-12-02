@@ -74,19 +74,19 @@ public abstract class AbstractStormSpoutTests {
     @Parameters
     public static Collection<Object[]> configs() throws IOException {
         // no ack
-        Map noAck = new LinkedHashMap(Collections.singletonMap(StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE, Boolean.FALSE.toString()));
+        Map noAck = new LinkedHashMap(Collections.singletonMap(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE, Boolean.FALSE.toString()));
 
         // read ack
-        Map ack = new LinkedHashMap(Collections.singletonMap(StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE, Boolean.TRUE.toString()));
+        Map ack = new LinkedHashMap(Collections.singletonMap(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE, Boolean.TRUE.toString()));
 
         // read ack bounded queue
-        Map ackWithSize = new LinkedHashMap(ImmutableMap.of(StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE, Boolean.TRUE.toString(), StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_QUEUE_SIZE, "1"));
+        Map ackWithSize = new LinkedHashMap(ImmutableMap.of(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE, Boolean.TRUE.toString(), StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_QUEUE_SIZE, "1"));
 
         // read ack bounded queue with no retries
-        Map ackWithSizeNoRetries = new LinkedHashMap(ImmutableMap.of(StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE, Boolean.TRUE.toString(),
-                StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_QUEUE_SIZE, "1",
-                StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE, "1",
-                StormConfigurationOptions.ES_STORM_SPOUT_FIELDS, "message"));
+        Map ackWithSizeNoRetries = new LinkedHashMap(ImmutableMap.of(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE, Boolean.TRUE.toString(),
+                StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_QUEUE_SIZE, "1",
+                StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE, "1",
+                StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_FIELDS, "message"));
 
         return Arrays.asList(new Object[][] {
             { noAck, "storm-spout" },

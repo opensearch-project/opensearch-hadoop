@@ -97,8 +97,8 @@ public final class OpenSearchMapReduceUtil {
 
     /**
      * Given the settings contained within the job conf, retrieve an authentication token from either the currently logged in
-     * user or from the Elasticsearch cluster and add it to the job's credential set.
-     * @param jobConf containing the settings to connect to Elasticsearch, as well as for storing the authentication token
+     * user or from the OpenSearch cluster and add it to the job's credential set.
+     * @param jobConf containing the settings to connect to OpenSearch, as well as for storing the authentication token
      */
     public static void initCredentials(JobConf jobConf) {
         Settings settings = HadoopSettingsManager.loadFrom(jobConf);

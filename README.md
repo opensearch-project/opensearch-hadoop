@@ -96,7 +96,7 @@ JobClient.runJob(conf);
 ```java
 Configuration conf = new Configuration();
 conf.set("opensearch.resource", "radio/artists");
-conf.set("es.query", "?q=me*");             // replace this with the relevant query
+conf.set("opensearch.query", "?q=me*");             // replace this with the relevant query
 Job job = new Job(conf)
 job.setInputFormatClass(EsInputFormat.class);
 ...
@@ -115,9 +115,9 @@ job.waitForCompletion(true);
 ## [Apache Hive][]
 ES-Hadoop provides a Hive storage handler for Elasticsearch, meaning one can define an [external table][] on top of ES.
 
-Add es-hadoop-<version>.jar to `hive.aux.jars.path` or register it manually in your Hive script (recommended):
+Add opensearch-hadoop-<version>.jar to `hive.aux.jars.path` or register it manually in your Hive script (recommended):
 ```
-ADD JAR /path_to_jar/es-hadoop-<version>.jar;
+ADD JAR /path_to_jar/opensearch-hadoop-<version>.jar;
 ```
 ### Reading
 To read data from ES, define a table backed by the desired index:
@@ -127,7 +127,7 @@ CREATE EXTERNAL TABLE artists (
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
 STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler'
-TBLPROPERTIES('opensearch.resource' = 'radio/artists', 'es.query' = '?q=me*');
+TBLPROPERTIES('opensearch.resource' = 'radio/artists', 'opensearch.query' = '?q=me*');
 ```
 The fields defined in the table are mapped to the JSON when communicating with Elasticsearch. Notice the use of `TBLPROPERTIES` to define the location, that is the query used for reading from this table.
 
@@ -160,7 +160,7 @@ ES-Hadoop provides both read and write functions for Pig so you can access Elast
 
 Register ES-Hadoop jar into your script or add it to your Pig classpath:
 ```
-REGISTER /path_to_jar/es-hadoop-<version>.jar;
+REGISTER /path_to_jar/opensearch-hadoop-<version>.jar;
 ```
 Additionally one can define an alias to save some chars:
 ```
@@ -171,7 +171,7 @@ and use `$ESSTORAGE` for storage definition.
 ### Reading
 To read data from ES, use `OpenSearchStorage` and specify the query through the `LOAD` function:
 ```SQL
-A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage('es.query=?q=me*');
+A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage('opensearch.query=?q=me*');
 DUMP A;
 ```
 
@@ -188,10 +188,10 @@ ES-Hadoop provides native (Java and Scala) integration with Spark: for reading a
 ### Scala
 
 ### Reading
-To read data from ES, create a dedicated `RDD` and specify the query as an argument:
+To read data from OpenSearch, create a dedicated `RDD` and specify the query as an argument:
 
 ```scala
-import org.elasticsearch.spark._
+import org.opensearch.spark._
 
 ..
 val conf = ...
@@ -201,20 +201,20 @@ sc.esRDD("radio/artists", "?q=me*")
 
 #### Spark SQL
 ```scala
-import org.elasticsearch.spark.sql._
+import org.opensearch.spark.sql._
 
 // DataFrame schema automatically inferred
-val df = sqlContext.read.format("es").load("buckethead/albums")
+val df = sqlContext.read.format("opensearch").load("buckethead/albums")
 
-// operations get pushed down and translated at runtime to Elasticsearch QueryDSL
+// operations get pushed down and translated at runtime to OpenSearch QueryDSL
 val playlist = df.filter(df("category").equalTo("pikes").and(df("year").geq(2016)))
 ```
 
 ### Writing
-Import the `org.elasticsearch.spark._` package to gain `savetoEs` methods on your `RDD`s:
+Import the `org.opensearch.spark._` package to gain `savetoEs` methods on your `RDD`s:
 
 ```scala
-import org.elasticsearch.spark._
+import org.opensearch.spark._
 
 val conf = ...
 val sc = new SparkContext(conf)
@@ -228,7 +228,7 @@ sc.makeRDD(Seq(numbers, airports)).saveToEs("spark/docs")
 #### Spark SQL
 
 ```scala
-import org.elasticsearch.spark.sql._
+import org.opensearch.spark.sql._
 
 val df = sqlContext.read.json("examples/people.json")
 df.saveToEs("spark/people")
@@ -236,14 +236,14 @@ df.saveToEs("spark/people")
 
 ### Java
 
-In a Java environment, use the `org.elasticsearch.spark.rdd.java.api` package, in particular the `JavaOpenSearchSpark` class.
+In a Java environment, use the `org.opensearch.spark.rdd.java.api` package, in particular the `JavaOpenSearchSpark` class.
 
 ### Reading
 To read data from ES, create a dedicated `RDD` and specify the query as an argument.
 
 ```java
 import org.apache.spark.api.java.JavaSparkContext;
-import org.elasticsearch.spark.rdd.api.java.JavaOpenSearchSpark;
+import org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark;
 
 SparkConf conf = ...
 JavaSparkContext jsc = new JavaSparkContext(conf);
@@ -255,7 +255,7 @@ JavaPairRDD<String, Map<String, Object>> esRDD = JavaOpenSearchSpark.esRDD(jsc, 
 
 ```java
 SQLContext sql = new SQLContext(sc);
-DataFrame df = sql.read().format("es").load("buckethead/albums");
+DataFrame df = sql.read().format("opensearch").load("buckethead/albums");
 DataFrame playlist = df.filter(df.col("category").equalTo("pikes").and(df.col("year").geq(2016)))
 ```
 
@@ -263,7 +263,7 @@ DataFrame playlist = df.filter(df.col("category").equalTo("pikes").and(df.col("y
 
 Use `JavaOpenSearchSpark` to index any `RDD` to Elasticsearch:
 ```java
-import org.elasticsearch.spark.rdd.api.java.JavaOpenSearchSpark;
+import org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark;
 
 SparkConf conf = ...
 JavaSparkContext jsc = new JavaSparkContext(conf);
@@ -294,7 +294,7 @@ import org.opensearch.storm.OpenSearchSpout;
 
 TopologyBuilder builder = new TopologyBuilder();
 builder.setSpout("opensearch-spout", new OpenSearchSpout("storm/docs", "?q=me*"), 5);
-builder.setBolt("bolt", new PrinterBolt()).shuffleGrouping("es-spout");
+builder.setBolt("bolt", new PrinterBolt()).shuffleGrouping("opensearch-spout");
 ```
 
 ### Writing
@@ -305,7 +305,7 @@ import org.opensearch.storm.OpenSearchBolt;
 
 TopologyBuilder builder = new TopologyBuilder();
 builder.setSpout("spout", new RandomSentenceSpout(), 10);
-builder.setBolt("es-bolt", new EsBolt("storm/docs"), 5).shuffleGrouping("spout");
+builder.setBolt("opensearch-bolt", new EsBolt("storm/docs"), 5).shuffleGrouping("spout");
 ```
 
 ## Building the source

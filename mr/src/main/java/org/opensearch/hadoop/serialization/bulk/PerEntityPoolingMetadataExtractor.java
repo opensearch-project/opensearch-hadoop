@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -51,9 +51,9 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
         public Object field(Object target) {
             return field;
         }
-        
+
         protected Object field() {
-        	return field;
+            return field;
         }
 
         public void setField(Object field) {
@@ -65,17 +65,21 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
             return needsInit;
         }
     }
-    
+
     public void setSettings(Settings settings) {
-    	this.settings = settings;
-    	this.version = settings.getInternalVersionOrThrow();
+        this.settings = settings;
+        this.version = settings.getInternalVersionOrThrow();
     }
 
     /**
-     * A special field extractor meant to be used for metadata fields that are supported in
-     * some versions of Elasticsearch, but not others. In the case that a metadata field is
-     * unsupported for the configured version of Elasticsearch, this extractor which throws
-     * exceptions for using unsupported metadata tags is returned instead of the regular one.
+     * A special field extractor meant to be used for metadata fields that are
+     * supported in
+     * some versions of OpenSearch, but not others. In the case that a metadata
+     * field is
+     * unsupported for the configured version of OpenSearch, this extractor which
+     * throws
+     * exceptions for using unsupported metadata tags is returned instead of the
+     * regular one.
      */
     private static class UnsupportedMetadataFieldExtractor extends StaticFieldExtractor {
         private Metadata unsupportedMetadata;
@@ -103,18 +107,19 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
     public FieldExtractor get(Metadata metadata) {
         FieldExtractor fieldExtractor = pool.get(metadata);
 
-        if (fieldExtractor == null || (fieldExtractor instanceof StaticFieldExtractor && ((StaticFieldExtractor)fieldExtractor).needsInit())) {
+        if (fieldExtractor == null || (fieldExtractor instanceof StaticFieldExtractor
+                && ((StaticFieldExtractor) fieldExtractor).needsInit())) {
             Object value = getValue(metadata);
             if (value == null) {
                 return null;
             }
-            
+
             if (fieldExtractor == null) {
                 fieldExtractor = _createExtractorFor(metadata);
             }
-            
-            if(fieldExtractor instanceof StaticFieldExtractor && ((StaticFieldExtractor)fieldExtractor).needsInit()) {
-            	((StaticFieldExtractor)fieldExtractor).setField(value);
+
+            if (fieldExtractor instanceof StaticFieldExtractor && ((StaticFieldExtractor) fieldExtractor).needsInit()) {
+                ((StaticFieldExtractor) fieldExtractor).setField(value);
             }
             pool.put(metadata, fieldExtractor);
         }
@@ -122,7 +127,7 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
     }
 
     /**
-     * If a metadata tag is unsupported for this version of Elasticsearch then a
+     * If a metadata tag is unsupported for this version of OpenSearch then a
      */
     private FieldExtractor _createExtractorFor(Metadata metadata) {
         //TTL and Timestamp metadata on index and update requests is not supported.
@@ -133,13 +138,13 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
         }
         return createExtractorFor(metadata);
     }
-    
+
     protected FieldExtractor createExtractorFor(Metadata metadata) {
-    	return new StaticFieldExtractor();
+        return new StaticFieldExtractor();
     }
 
     public abstract Object getValue(Metadata metadata);
-    
+
     @Override
     public void setObject(Object entity) {
         this.entity = entity;

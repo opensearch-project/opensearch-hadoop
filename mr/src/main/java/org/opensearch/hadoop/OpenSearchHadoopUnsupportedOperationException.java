@@ -31,7 +31,7 @@ package org.opensearch.hadoop;
 
 /**
  * Denotes an operation that is not allowed to be performed, often due to the feature support of
- * the version of Elasticsearch being used.
+ * the version of OpenSearch being used.
  */
 public class OpenSearchHadoopUnsupportedOperationException extends OpenSearchHadoopException {
 

@@ -57,7 +57,7 @@ public interface ConfigurationOptions {
     String OPENSEARCH_RESOURCE_READ = "opensearch.resource.read";
     String OPENSEARCH_RESOURCE_WRITE = "opensearch.resource.write";
 
-    String OPENSEARCH_QUERY = "es.query";
+    String OPENSEARCH_QUERY = "opensearch.query";
 
     /** Clients only */
     String OPENSEARCH_NODES_CLIENT_ONLY = "opensearch.nodes.client.only";
@@ -78,259 +78,259 @@ public interface ConfigurationOptions {
     String OPENSEARCH_NODES_RESOLVE_HOST_NAME = "opensearch.nodes.resolve.hostname";
 
     /** Secure Settings Keystore */
-    String ES_KEYSTORE_LOCATION = "es.keystore.location";
+    String OPENSEARCH_KEYSTORE_LOCATION = "opensearch.keystore.location";
 
     /** OpenSearch batch size given in bytes */
     String OPENSEARCH_BATCH_SIZE_BYTES = "opensearch.batch.size.bytes";
     String OPENSEARCH_BATCH_SIZE_BYTES_DEFAULT = "1mb";
 
     /** OpenSearch batch size given in entries */
-    String OPENSEARCH_BATCH_SIZE_ENTRIES = "es.batch.size.entries";
+    String OPENSEARCH_BATCH_SIZE_ENTRIES = "opensearch.batch.size.entries";
     String OPENSEARCH_BATCH_SIZE_ENTRIES_DEFAULT = "1000";
 
     /** OpenSearch disable auto-flush on batch overflow */
-    String OPENSEARCH_BATCH_FLUSH_MANUAL = "es.batch.flush.manual";
+    String OPENSEARCH_BATCH_FLUSH_MANUAL = "opensearch.batch.flush.manual";
     String OPENSEARCH_BATCH_FLUSH_MANUAL_DEFAULT = "false";
 
     /** Whether to trigger an index refresh after doing batch writing */
-    String OPENSEARCH_BATCH_WRITE_REFRESH = "es.batch.write.refresh";
+    String OPENSEARCH_BATCH_WRITE_REFRESH = "opensearch.batch.write.refresh";
     String OPENSEARCH_BATCH_WRITE_REFRESH_DEFAULT = "true";
 
     /** HTTP bulk retries **/
-    String OPENSEARCH_BATCH_WRITE_RETRY_COUNT = "es.batch.write.retry.count";
+    String OPENSEARCH_BATCH_WRITE_RETRY_COUNT = "opensearch.batch.write.retry.count";
     String OPENSEARCH_BATCH_WRITE_RETRY_COUNT_DEFAULT = "3";
 
-    String ES_BATCH_WRITE_RETRY_LIMIT = "es.batch.write.retry.limit";
-    String ES_BATCH_WRITE_RETRY_LIMIT_DEFAULT = "50";
+    String OPENSEARCH_BATCH_WRITE_RETRY_LIMIT = "opensearch.batch.write.retry.limit";
+    String OPENSEARCH_BATCH_WRITE_RETRY_LIMIT_DEFAULT = "50";
 
-    String ES_BATCH_WRITE_RETRY_WAIT = "es.batch.write.retry.wait";
-    String ES_BATCH_WRITE_RETRY_WAIT_DEFAULT = "10s";
+    String OPENSEARCH_BATCH_WRITE_RETRY_WAIT = "opensearch.batch.write.retry.wait";
+    String OPENSEARCH_BATCH_WRITE_RETRY_WAIT_DEFAULT = "10s";
 
-    String ES_BATCH_WRITE_RETRY_POLICY = "es.batch.write.retry.policy";
-    String ES_BATCH_WRITE_RETRY_POLICY_NONE = "none";
-    String ES_BATCH_WRITE_RETRY_POLICY_SIMPLE = "simple";
-    String ES_BATCH_WRITE_RETRY_POLICY_DEFAULT = ES_BATCH_WRITE_RETRY_POLICY_SIMPLE;
+    String OPENSEARCH_BATCH_WRITE_RETRY_POLICY = "opensearch.batch.write.retry.policy";
+    String OPENSEARCH_BATCH_WRITE_RETRY_POLICY_NONE = "none";
+    String OPENSEARCH_BATCH_WRITE_RETRY_POLICY_SIMPLE = "simple";
+    String OPENSEARCH_BATCH_WRITE_RETRY_POLICY_DEFAULT = OPENSEARCH_BATCH_WRITE_RETRY_POLICY_SIMPLE;
 
     /** HTTP connection timeout */
-    String ES_HTTP_TIMEOUT = "es.http.timeout";
-    String ES_HTTP_TIMEOUT_DEFAULT = "1m";
+    String OPENSEARCH_HTTP_TIMEOUT = "opensearch.http.timeout";
+    String OPENSEARCH_HTTP_TIMEOUT_DEFAULT = "1m";
 
-    String ES_HTTP_RETRIES = "es.http.retries";
-    String ES_HTTP_RETRIES_DEFAULT = "3";
+    String OPENSEARCH_HTTP_RETRIES = "opensearch.http.retries";
+    String OPENSEARCH_HTTP_RETRIES_DEFAULT = "3";
 
     /** Scroll keep-alive */
-    String ES_SCROLL_KEEPALIVE = "es.scroll.keepalive";
-    String ES_SCROLL_KEEPALIVE_DEFAULT = "5m";
+    String OPENSEARCH_SCROLL_KEEPALIVE = "opensearch.scroll.keepalive";
+    String OPENSEARCH_SCROLL_KEEPALIVE_DEFAULT = "5m";
 
     /** Scroll size */
-    String ES_SCROLL_SIZE = "es.scroll.size";
-    String ES_SCROLL_SIZE_DEFAULT = "1000";
+    String OPENSEARCH_SCROLL_SIZE = "opensearch.scroll.size";
+    String OPENSEARCH_SCROLL_SIZE_DEFAULT = "1000";
 
     /** Scroll limit */
-    String ES_SCROLL_LIMIT = "es.scroll.limit";
-    String ES_SCROLL_LIMIT_DEFAULT = "-1";
+    String OPENSEARCH_SCROLL_LIMIT = "opensearch.scroll.limit";
+    String OPENSEARCH_SCROLL_LIMIT_DEFAULT = "-1";
 
     /** Scroll fields */
 
-    String ES_HEART_BEAT_LEAD = "es.action.heart.beat.lead";
-    String ES_HEART_BEAT_LEAD_DEFAULT = "15s";
+    String OPENSEARCH_HEART_BEAT_LEAD = "opensearch.action.heart.beat.lead";
+    String OPENSEARCH_HEART_BEAT_LEAD_DEFAULT = "15s";
 
     /** Serialization settings */
 
     /** Value writer - setup automatically; can be overridden for custom types */
-    String ES_SERIALIZATION_WRITER_VALUE_CLASS = "es.ser.writer.value.class";
+    String OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS = "opensearch.ser.writer.value.class";
 
     /** JSON/Bytes writer - setup automatically; can be overridden for custom types */
-    String ES_SERIALIZATION_WRITER_BYTES_CLASS = "es.ser.writer.bytes.class";
+    String OPENSEARCH_SERIALIZATION_WRITER_BYTES_CLASS = "opensearch.ser.writer.bytes.class";
 
     /** Value reader - setup automatically; can be overridden for custom types */
-    String ES_SERIALIZATION_READER_VALUE_CLASS = "es.ser.reader.value.class";
+    String OPENSEARCH_SERIALIZATION_READER_VALUE_CLASS = "opensearch.ser.reader.value.class";
 
     /** Input options **/
-    String ES_MAX_DOCS_PER_PARTITION = "es.input.max.docs.per.partition";
+    String OPENSEARCH_MAX_DOCS_PER_PARTITION = "opensearch.input.max.docs.per.partition";
 
-    String ES_INPUT_JSON = "es.input.json";
-    String ES_INPUT_JSON_DEFAULT = "no";
+    String OPENSEARCH_INPUT_JSON = "opensearch.input.json";
+    String OPENSEARCH_INPUT_JSON_DEFAULT = "no";
 
     /** Index settings */
-    String ES_INDEX_AUTO_CREATE = "es.index.auto.create";
-    String ES_INDEX_AUTO_CREATE_DEFAULT = "yes";
+    String OPENSEARCH_INDEX_AUTO_CREATE = "opensearch.index.auto.create";
+    String OPENSEARCH_INDEX_AUTO_CREATE_DEFAULT = "yes";
 
-    String ES_INDEX_READ_MISSING_AS_EMPTY = "es.index.read.missing.as.empty";
-    String ES_INDEX_READ_MISSING_AS_EMPTY_DEFAULT = "false";
+    String OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY = "opensearch.index.read.missing.as.empty";
+    String OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY_DEFAULT = "false";
 
-    String ES_INDEX_READ_ALLOW_RED_STATUS = "es.index.read.allow.red.status";
-    String ES_INDEX_READ_ALLOW_RED_STATUS_DEFAULT = "false";
+    String OPENSEARCH_INDEX_READ_ALLOW_RED_STATUS = "opensearch.index.read.allow.red.status";
+    String OPENSEARCH_INDEX_READ_ALLOW_RED_STATUS_DEFAULT = "false";
 
-    /** Elasticsearch shard search preference */
-    String ES_READ_SHARD_PREFERENCE = "es.read.shard.preference";
-    String ES_READ_SHARD_PREFERENCE_DEFAULT = "";
+    /** OpenSearch shard search preference */
+    String OPENSEARCH_READ_SHARD_PREFERENCE = "opensearch.read.shard.preference";
+    String OPENSEARCH_READ_SHARD_PREFERENCE_DEFAULT = "";
 
     /** Mapping types */
-    String ES_MAPPING_DEFAULT_EXTRACTOR_CLASS = "es.mapping.default.extractor.class";
+    String OPENSEARCH_MAPPING_DEFAULT_EXTRACTOR_CLASS = "opensearch.mapping.default.extractor.class";
     
-    String ES_MAPPING_METADATA_EXTRACTOR_CLASS = "es.mapping.metadata.extractor.class";
+    String OPENSEARCH_MAPPING_METADATA_EXTRACTOR_CLASS = "opensearch.mapping.metadata.extractor.class";
 
-    String ES_MAPPING_ID = "es.mapping.id";
-    String ES_MAPPING_ID_EXTRACTOR_CLASS = "es.mapping.id.extractor.class";
-    String ES_MAPPING_PARENT = "es.mapping.parent";
-    String ES_MAPPING_PARENT_EXTRACTOR_CLASS = "es.mapping.parent.extractor.class";
-    String ES_MAPPING_JOIN = "es.mapping.join";
-    String ES_MAPPING_JOIN_EXTRACTOR_CLASS = "es.mapping.join.extractor.class";
-    String ES_MAPPING_VERSION = "es.mapping.version";
-    String ES_MAPPING_VERSION_EXTRACTOR_CLASS = "es.mapping.version.extractor.class";
-    String ES_MAPPING_ROUTING = "es.mapping.routing";
-    String ES_MAPPING_ROUTING_EXTRACTOR_CLASS = "es.mapping.routing.extractor.class";
-    String ES_MAPPING_TTL = "es.mapping.ttl";
-    String ES_MAPPING_TTL_EXTRACTOR_CLASS = "es.mapping.ttl.extractor.class";
-    String ES_MAPPING_TIMESTAMP = "es.mapping.timestamp";
-    String ES_MAPPING_TIMESTAMP_EXTRACTOR_CLASS = "es.mapping.timestamp.extractor.class";
-    String ES_MAPPING_INDEX_EXTRACTOR_CLASS = "es.mapping.index.extractor.class";
-    String ES_MAPPING_DEFAULT_INDEX_EXTRACTOR_CLASS = DefaultIndexExtractor.class.getName();
-    String ES_MAPPING_INDEX_FORMATTER_CLASS = "es.mapping.index.formatter.class";
-    String ES_MAPPING_DEFAULT_INDEX_FORMATTER_CLASS = DateIndexFormatter.class.getName();
-    String ES_MAPPING_PARAMS_EXTRACTOR_CLASS = "es.mapping.params.extractor.class";
-    String ES_MAPPING_PARAMS_DEFAULT_EXTRACTOR_CLASS = DefaultParamsExtractor.class.getName();
-    String ES_MAPPING_CONSTANT_AUTO_QUOTE = "es.mapping.constant.auto.quote";
-    String ES_MAPPING_CONSTANT_AUTO_QUOTE_DEFAULT = "true";
+    String OPENSEARCH_MAPPING_ID = "opensearch.mapping.id";
+    String OPENSEARCH_MAPPING_ID_EXTRACTOR_CLASS = "opensearch.mapping.id.extractor.class";
+    String OPENSEARCH_MAPPING_PARENT = "opensearch.mapping.parent";
+    String OPENSEARCH_MAPPING_PARENT_EXTRACTOR_CLASS = "opensearch.mapping.parent.extractor.class";
+    String OPENSEARCH_MAPPING_JOIN = "opensearch.mapping.join";
+    String OPENSEARCH_MAPPING_JOIN_EXTRACTOR_CLASS = "opensearch.mapping.join.extractor.class";
+    String OPENSEARCH_MAPPING_VERSION = "opensearch.mapping.version";
+    String OPENSEARCH_MAPPING_VERSION_EXTRACTOR_CLASS = "opensearch.mapping.version.extractor.class";
+    String OPENSEARCH_MAPPING_ROUTING = "opensearch.mapping.routing";
+    String OPENSEARCH_MAPPING_ROUTING_EXTRACTOR_CLASS = "opensearch.mapping.routing.extractor.class";
+    String OPENSEARCH_MAPPING_TTL = "opensearch.mapping.ttl";
+    String OPENSEARCH_MAPPING_TTL_EXTRACTOR_CLASS = "opensearch.mapping.ttl.extractor.class";
+    String OPENSEARCH_MAPPING_TIMESTAMP = "opensearch.mapping.timestamp";
+    String OPENSEARCH_MAPPING_TIMESTAMP_EXTRACTOR_CLASS = "opensearch.mapping.timestamp.extractor.class";
+    String OPENSEARCH_MAPPING_INDEX_EXTRACTOR_CLASS = "opensearch.mapping.index.extractor.class";
+    String OPENSEARCH_MAPPING_DEFAULT_INDEX_EXTRACTOR_CLASS = DefaultIndexExtractor.class.getName();
+    String OPENSEARCH_MAPPING_INDEX_FORMATTER_CLASS = "opensearch.mapping.index.formatter.class";
+    String OPENSEARCH_MAPPING_DEFAULT_INDEX_FORMATTER_CLASS = DateIndexFormatter.class.getName();
+    String OPENSEARCH_MAPPING_PARAMS_EXTRACTOR_CLASS = "opensearch.mapping.params.extractor.class";
+    String OPENSEARCH_MAPPING_PARAMS_DEFAULT_EXTRACTOR_CLASS = DefaultParamsExtractor.class.getName();
+    String OPENSEARCH_MAPPING_CONSTANT_AUTO_QUOTE = "opensearch.mapping.constant.auto.quote";
+    String OPENSEARCH_MAPPING_CONSTANT_AUTO_QUOTE_DEFAULT = "true";
 
-    String ES_MAPPING_DATE_RICH_OBJECT = "es.mapping.date.rich";
-    String ES_MAPPING_DATE_RICH_OBJECT_DEFAULT = "true";
+    String OPENSEARCH_MAPPING_DATE_RICH_OBJECT = "opensearch.mapping.date.rich";
+    String OPENSEARCH_MAPPING_DATE_RICH_OBJECT_DEFAULT = "true";
 
-    String ES_MAPPING_VERSION_TYPE = "es.mapping.version.type";
-    String ES_MAPPING_VERSION_TYPE_INTERNAL = "internal";
-    String ES_MAPPING_VERSION_TYPE_EXTERNAL = "external";
-    String ES_MAPPING_VERSION_TYPE_EXTERNAL_GT = "external_gt";
-    String ES_MAPPING_VERSION_TYPE_EXTERNAL_GTE = "external_gte";
-    String ES_MAPPING_VERSION_TYPE_FORCE = "force";
+    String OPENSEARCH_MAPPING_VERSION_TYPE = "opensearch.mapping.version.type";
+    String OPENSEARCH_MAPPING_VERSION_TYPE_INTERNAL = "internal";
+    String OPENSEARCH_MAPPING_VERSION_TYPE_EXTERNAL = "external";
+    String OPENSEARCH_MAPPING_VERSION_TYPE_EXTERNAL_GT = "external_gt";
+    String OPENSEARCH_MAPPING_VERSION_TYPE_EXTERNAL_GTE = "external_gte";
+    String OPENSEARCH_MAPPING_VERSION_TYPE_FORCE = "force";
 
-    String ES_MAPPING_INCLUDE = "es.mapping.include";
-    String ES_MAPPING_INCLUDE_DEFAULT = "";
-    String ES_MAPPING_EXCLUDE = "es.mapping.exclude";
-    String ES_MAPPING_EXCLUDE_DEFAULT = "";
+    String OPENSEARCH_MAPPING_INCLUDE = "opensearch.mapping.include";
+    String OPENSEARCH_MAPPING_INCLUDE_DEFAULT = "";
+    String OPENSEARCH_MAPPING_EXCLUDE = "opensearch.mapping.exclude";
+    String OPENSEARCH_MAPPING_EXCLUDE_DEFAULT = "";
 
     /** Ingest Node **/
-    String ES_INGEST_PIPELINE = "es.ingest.pipeline";
-    String ES_INGEST_PIPELINE_DEFAULT = "";
+    String OPENSEARCH_INGEST_PIPELINE = "opensearch.ingest.pipeline";
+    String OPENSEARCH_INGEST_PIPELINE_DEFAULT = "";
 
     /** Technology Specific **/
-    String ES_SPARK_DATAFRAME_WRITE_NULL_VALUES = "es.spark.dataframe.write.null";
-    String ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT = "false";
+    String OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES = "opensearch.spark.dataframe.write.null";
+    String OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT = "false";
 
     /** Read settings */
 
     /** Field options **/
-    String ES_READ_FIELD_EMPTY_AS_NULL = "es.read.field.empty.as.null";
-    String ES_READ_FIELD_EMPTY_AS_NULL_LEGACY = "es.field.read.empty.as.null";
-    String ES_READ_FIELD_EMPTY_AS_NULL_DEFAULT = "yes";
+    String OPENSEARCH_READ_FIELD_EMPTY_AS_NULL = "opensearch.read.field.empty.as.null";
+    String OPENSEARCH_READ_FIELD_EMPTY_AS_NULL_LEGACY = "opensearch.field.read.empty.as.null";
+    String OPENSEARCH_READ_FIELD_EMPTY_AS_NULL_DEFAULT = "yes";
 
-    String ES_READ_FIELD_VALIDATE_PRESENCE = "es.read.field.validate.presence";
-    String ES_READ_FIELD_VALIDATE_PRESENCE_LEGACY = "es.field.read.validate.presence";
-    String ES_READ_FIELD_VALIDATE_PRESENCE_DEFAULT = "warn";
+    String OPENSEARCH_READ_FIELD_VALIDATE_PRESENCE = "opensearch.read.field.validate.presence";
+    String OPENSEARCH_READ_FIELD_VALIDATE_PRESENCE_LEGACY = "opensearch.field.read.validate.presence";
+    String OPENSEARCH_READ_FIELD_VALIDATE_PRESENCE_DEFAULT = "warn";
 
-    String ES_READ_FIELD_INCLUDE = "es.read.field.include";
-    String ES_READ_FIELD_EXCLUDE = "es.read.field.exclude";
+    String OPENSEARCH_READ_FIELD_INCLUDE = "opensearch.read.field.include";
+    String OPENSEARCH_READ_FIELD_EXCLUDE = "opensearch.read.field.exclude";
 
     String OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE = "opensearch.read.field.as.array.include";
-    String ES_READ_FIELD_AS_ARRAY_EXCLUDE = "es.read.field.as.array.exclude";
+    String OPENSEARCH_READ_FIELD_AS_ARRAY_EXCLUDE = "opensearch.read.field.as.array.exclude";
 
-    String ES_READ_SOURCE_FILTER = "es.read.source.filter";
+    String OPENSEARCH_READ_SOURCE_FILTER = "opensearch.read.source.filter";
 
     /** Metadata */
-    String ES_READ_METADATA = "es.read.metadata";
-    String ES_READ_METADATA_DEFAULT = "false";
-    String ES_READ_METADATA_FIELD = "es.read.metadata.field";
-    String ES_READ_METADATA_FIELD_DEFAULT = "_metadata";
-    String ES_READ_METADATA_VERSION = "es.read.metadata.version";
-    String ES_READ_METADATA_VERSION_DEFAULT = "false";
-    String ES_READ_UNMAPPED_FIELDS_IGNORE = "es.read.unmapped.fields.ignore";
-    String ES_READ_UNMAPPED_FIELDS_IGNORE_DEFAULT = "true";
+    String OPENSEARCH_READ_METADATA = "opensearch.read.metadata";
+    String OPENSEARCH_READ_METADATA_DEFAULT = "false";
+    String OPENSEARCH_READ_METADATA_FIELD = "opensearch.read.metadata.field";
+    String OPENSEARCH_READ_METADATA_FIELD_DEFAULT = "_metadata";
+    String OPENSEARCH_READ_METADATA_VERSION = "opensearch.read.metadata.version";
+    String OPENSEARCH_READ_METADATA_VERSION_DEFAULT = "false";
+    String OPENSEARCH_READ_UNMAPPED_FIELDS_IGNORE = "opensearch.read.unmapped.fields.ignore";
+    String OPENSEARCH_READ_UNMAPPED_FIELDS_IGNORE_DEFAULT = "true";
 
 
     /** Operation types */
-    String ES_WRITE_OPERATION = "es.write.operation";
-    String ES_OPERATION_INDEX = "index";
-    String ES_OPERATION_CREATE = "create";
-    String ES_OPERATION_UPDATE = "update";
-    String ES_OPERATION_UPSERT = "upsert";
-    String ES_OPERATION_DELETE = "delete";
-    String ES_WRITE_OPERATION_DEFAULT = ES_OPERATION_INDEX;
+    String OPENSEARCH_WRITE_OPERATION = "opensearch.write.operation";
+    String OPENSEARCH_OPERATION_INDEX = "index";
+    String OPENSEARCH_OPERATION_CREATE = "create";
+    String OPENSEARCH_OPERATION_UPDATE = "update";
+    String OPENSEARCH_OPERATION_UPSERT = "upsert";
+    String OPENSEARCH_OPERATION_DELETE = "delete";
+    String OPENSEARCH_WRITE_OPERATION_DEFAULT = OPENSEARCH_OPERATION_INDEX;
 
-    String ES_UPDATE_RETRY_ON_CONFLICT = "es.update.retry.on.conflict";
-    String ES_UPDATE_RETRY_ON_CONFLICT_DEFAULT = "0";
+    String OPENSEARCH_UPDATE_RETRY_ON_CONFLICT = "opensearch.update.retry.on.conflict";
+    String OPENSEARCH_UPDATE_RETRY_ON_CONFLICT_DEFAULT = "0";
 
-    String ES_UPDATE_SCRIPT_FILE = "es.update.script.file";
-    String ES_UPDATE_SCRIPT_INLINE = "es.update.script.inline";
-    String ES_UPDATE_SCRIPT_UPSERT = "es.update.script.upsert";
-    String ES_UPDATE_SCRIPT_UPSERT_DEFAULT = "false";
-    String ES_UPDATE_SCRIPT_STORED = "es.update.script.stored";
-    String ES_UPDATE_SCRIPT_LEGACY = "es.update.script";
-    String ES_UPDATE_SCRIPT_LANG = "es.update.script.lang";
-    String ES_UPDATE_SCRIPT_PARAMS = "es.update.script.params";
-    String ES_UPDATE_SCRIPT_PARAMS_JSON = "es.update.script.params.json";
+    String OPENSEARCH_UPDATE_SCRIPT_FILE = "opensearch.update.script.file";
+    String OPENSEARCH_UPDATE_SCRIPT_INLINE = "opensearch.update.script.inline";
+    String OPENSEARCH_UPDATE_SCRIPT_UPSERT = "opensearch.update.script.upsert";
+    String OPENSEARCH_UPDATE_SCRIPT_UPSERT_DEFAULT = "false";
+    String OPENSEARCH_UPDATE_SCRIPT_STORED = "opensearch.update.script.stored";
+    String OPENSEARCH_UPDATE_SCRIPT_LEGACY = "opensearch.update.script";
+    String OPENSEARCH_UPDATE_SCRIPT_LANG = "opensearch.update.script.lang";
+    String OPENSEARCH_UPDATE_SCRIPT_PARAMS = "opensearch.update.script.params";
+    String OPENSEARCH_UPDATE_SCRIPT_PARAMS_JSON = "opensearch.update.script.params.json";
 
     /** Output options **/
     String OPENSEARCH_OUTPUT_JSON = "opensearch.output.json";
-    String ES_OUTPUT_JSON_DEFAULT = "no";
+    String OPENSEARCH_OUTPUT_JSON_DEFAULT = "no";
 
     /** Network options */
-    String ES_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT = "es.net.transport.pooling.expiration.timeout";
-    String ES_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT_DEFAULT = "5m";
+    String OPENSEARCH_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT = "opensearch.net.transport.pooling.expiration.timeout";
+    String OPENSEARCH_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT_DEFAULT = "5m";
 
     // SSL
-    String ES_NET_USE_SSL = "es.net.ssl";
-    String ES_NET_USE_SSL_DEFAULT = "false";
+    String OPENSEARCH_NET_USE_SSL = "opensearch.net.ssl";
+    String OPENSEARCH_NET_USE_SSL_DEFAULT = "false";
 
-    String ES_NET_SSL_PROTOCOL = "es.net.ssl.protocol";
-    String ES_NET_SSL_PROTOCOL_DEFAULT = "TLS"; // SSL as an alternative
+    String OPENSEARCH_NET_SSL_PROTOCOL = "opensearch.net.ssl.protocol";
+    String OPENSEARCH_NET_SSL_PROTOCOL_DEFAULT = "TLS"; // SSL as an alternative
 
-    String ES_NET_SSL_KEYSTORE_LOCATION = "es.net.ssl.keystore.location";
-    String ES_NET_SSL_KEYSTORE_TYPE = "es.net.ssl.keystore.type";
-    String ES_NET_SSL_KEYSTORE_TYPE_DEFAULT = "JKS"; // PKCS12 could also be used
-    String ES_NET_SSL_KEYSTORE_PASS = "es.net.ssl.keystore.pass";
+    String OPENSEARCH_NET_SSL_KEYSTORE_LOCATION = "opensearch.net.ssl.keystore.location";
+    String OPENSEARCH_NET_SSL_KEYSTORE_TYPE = "opensearch.net.ssl.keystore.type";
+    String OPENSEARCH_NET_SSL_KEYSTORE_TYPE_DEFAULT = "JKS"; // PKCS12 could also be used
+    String OPENSEARCH_NET_SSL_KEYSTORE_PASS = "opensearch.net.ssl.keystore.pass";
 
-    String ES_NET_SSL_TRUST_STORE_LOCATION = "es.net.ssl.truststore.location";
-    String ES_NET_SSL_TRUST_STORE_PASS = "es.net.ssl.truststore.pass";
+    String OPENSEARCH_NET_SSL_TRUST_STORE_LOCATION = "opensearch.net.ssl.truststore.location";
+    String OPENSEARCH_NET_SSL_TRUST_STORE_PASS = "opensearch.net.ssl.truststore.pass";
 
-    String ES_NET_SSL_CERT_ALLOW_SELF_SIGNED = "es.net.ssl.cert.allow.self.signed";
-    String ES_NET_SSL_CERT_ALLOW_SELF_SIGNED_DEFAULT = "false";
+    String OPENSEARCH_NET_SSL_CERT_ALLOW_SELF_SIGNED = "opensearch.net.ssl.cert.allow.self.signed";
+    String OPENSEARCH_NET_SSL_CERT_ALLOW_SELF_SIGNED_DEFAULT = "false";
 
-    String ES_NET_HTTP_HEADER_PREFIX = "es.net.http.header.";
-    String ES_NET_HTTP_HEADER_OPAQUE_ID = ES_NET_HTTP_HEADER_PREFIX + "X-Opaque-ID";
-    String ES_NET_HTTP_HEADER_USER_AGENT = ES_NET_HTTP_HEADER_PREFIX + "User-Agent";
-    String ES_NET_HTTP_AUTH_USER = "es.net.http.auth.user";
-    String ES_NET_HTTP_AUTH_PASS = "es.net.http.auth.pass";
+    String OPENSEARCH_NET_HTTP_HEADER_PREFIX = "opensearch.net.http.header.";
+    String OPENSEARCH_NET_HTTP_HEADER_OPAQUE_ID = OPENSEARCH_NET_HTTP_HEADER_PREFIX + "X-Opaque-ID";
+    String OPENSEARCH_NET_HTTP_HEADER_USER_AGENT = OPENSEARCH_NET_HTTP_HEADER_PREFIX + "User-Agent";
+    String OPENSEARCH_NET_HTTP_AUTH_USER = "opensearch.net.http.auth.user";
+    String OPENSEARCH_NET_HTTP_AUTH_PASS = "opensearch.net.http.auth.pass";
 
     String OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL = "opensearch.net.spnego.auth.opensearch.principal";
     String OPENSEARCH_NET_SPNEGO_AUTH_MUTUAL = "opensearch.net.spnego.auth.mutual";
     String OPENSEARCH_NET_SPNEGO_AUTH_MUTUAL_DEFAULT = "false";
 
-    String ES_NET_PROXY_HTTP_HOST = "es.net.proxy.http.host";
-    String ES_NET_PROXY_HTTP_PORT = "es.net.proxy.http.port";
-    String ES_NET_PROXY_HTTP_USER = "es.net.proxy.http.user";
-    String ES_NET_PROXY_HTTP_PASS = "es.net.proxy.http.pass";
-    String ES_NET_PROXY_HTTP_USE_SYSTEM_PROPS = "es.net.proxy.http.use.system.props";
-    String ES_NET_PROXY_HTTP_USE_SYSTEM_PROPS_DEFAULT = "yes";
+    String OPENSEARCH_NET_PROXY_HTTP_HOST = "opensearch.net.proxy.http.host";
+    String OPENSEARCH_NET_PROXY_HTTP_PORT = "opensearch.net.proxy.http.port";
+    String OPENSEARCH_NET_PROXY_HTTP_USER = "opensearch.net.proxy.http.user";
+    String OPENSEARCH_NET_PROXY_HTTP_PASS = "opensearch.net.proxy.http.pass";
+    String OPENSEARCH_NET_PROXY_HTTP_USE_SYSTEM_PROPS = "opensearch.net.proxy.http.use.system.props";
+    String OPENSEARCH_NET_PROXY_HTTP_USE_SYSTEM_PROPS_DEFAULT = "yes";
 
-    String ES_NET_PROXY_HTTPS_HOST = "es.net.proxy.https.host";
-    String ES_NET_PROXY_HTTPS_PORT = "es.net.proxy.https.port";
-    String ES_NET_PROXY_HTTPS_USER = "es.net.proxy.https.user";
-    String ES_NET_PROXY_HTTPS_PASS = "es.net.proxy.https.pass";
-    String ES_NET_PROXY_HTTPS_USE_SYSTEM_PROPS = "es.net.proxy.https.use.system.props";
-    String ES_NET_PROXY_HTTPS_USE_SYSTEM_PROPS_DEFAULT = "yes";
+    String OPENSEARCH_NET_PROXY_HTTPS_HOST = "opensearch.net.proxy.https.host";
+    String OPENSEARCH_NET_PROXY_HTTPS_PORT = "opensearch.net.proxy.https.port";
+    String OPENSEARCH_NET_PROXY_HTTPS_USER = "opensearch.net.proxy.https.user";
+    String OPENSEARCH_NET_PROXY_HTTPS_PASS = "opensearch.net.proxy.https.pass";
+    String OPENSEARCH_NET_PROXY_HTTPS_USE_SYSTEM_PROPS = "opensearch.net.proxy.https.use.system.props";
+    String OPENSEARCH_NET_PROXY_HTTPS_USE_SYSTEM_PROPS_DEFAULT = "yes";
 
     @Deprecated
-    String ES_NET_PROXY_SOCKS_HOST = "es.net.proxy.socks.host";
+    String OPENSEARCH_NET_PROXY_SOCKS_HOST = "opensearch.net.proxy.socks.host";
     @Deprecated
-    String ES_NET_PROXY_SOCKS_PORT = "es.net.proxy.socks.port";
+    String OPENSEARCH_NET_PROXY_SOCKS_PORT = "opensearch.net.proxy.socks.port";
     @Deprecated
-    String ES_NET_PROXY_SOCKS_USER = "es.net.proxy.socks.user";
+    String OPENSEARCH_NET_PROXY_SOCKS_USER = "opensearch.net.proxy.socks.user";
     @Deprecated
-    String ES_NET_PROXY_SOCKS_PASS = "es.net.proxy.socks.pass";
+    String OPENSEARCH_NET_PROXY_SOCKS_PASS = "opensearch.net.proxy.socks.pass";
     @Deprecated
-    String ES_NET_PROXY_SOCKS_USE_SYSTEM_PROPS = "es.net.proxy.socks.use.system.props";
+    String OPENSEARCH_NET_PROXY_SOCKS_USE_SYSTEM_PROPS = "opensearch.net.proxy.socks.use.system.props";
     @Deprecated
-    String ES_NET_PROXY_SOCKS_USE_SYSTEM_PROPS_DEFAULT = "yes";
+    String OPENSEARCH_NET_PROXY_SOCKS_USE_SYSTEM_PROPS_DEFAULT = "yes";
 
     /** Security options **/
     String OPENSEARCH_SECURITY_AUTHENTICATION = "opensearch.security.authentication";

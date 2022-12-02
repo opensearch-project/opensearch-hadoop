@@ -61,7 +61,7 @@ public class AbstractStormSimpleBoltTests extends AbstractStormBoltTests {
         String target = index + "/simple-write";
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("test-spout-1", new TestSpout(ImmutableList.of(doc2, doc1), new Fields("doc")));
-        builder.setBolt("es-bolt-1", new TestBolt(new OpenSearchBolt(target, conf))).shuffleGrouping("test-spout-1");
+        builder.setBolt("opensearch-bolt-1", new TestBolt(new OpenSearchBolt(target, conf))).shuffleGrouping("test-spout-1");
 
         MultiIndexSpoutStormSuite.run(index + "simple", builder.createTopology(), AbstractStormSuite.COMPONENT_HAS_COMPLETED);
 

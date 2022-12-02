@@ -36,7 +36,7 @@ import org.opensearch.hadoop.rest.bulk.handler.BulkWriteFailure;
 import org.opensearch.hadoop.util.IOUtils;
 
 /**
- * Event handler used by Elasticsearch Handler to convert bulk failures into ECS fields
+ * Event handler used by OpenSearch Handler to convert bulk failures into ECS fields
  */
 public class BulkErrorEventConverter extends BaseEventConverter<BulkWriteFailure> {
 

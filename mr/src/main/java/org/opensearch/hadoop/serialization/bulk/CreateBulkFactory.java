@@ -40,6 +40,6 @@ public class CreateBulkFactory extends AbstractBulkFactory {
 
     @Override
     protected String getOperation() {
-        return ConfigurationOptions.ES_OPERATION_CREATE;
+        return ConfigurationOptions.OPENSEARCH_OPERATION_CREATE;
     }
 }

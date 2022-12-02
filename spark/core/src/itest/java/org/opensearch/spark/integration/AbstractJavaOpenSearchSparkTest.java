@@ -38,7 +38,6 @@ import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.TestSettings;
@@ -116,7 +115,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         String target = "spark-test-java-id-write/data";
         JavaRDD<Map<String, ?>> javaRDD = sc.parallelize(ImmutableList.of(doc1, doc2));
         // eliminate with static import
-        JavaOpenSearchSpark.saveToEs(javaRDD, target, ImmutableMap.of(ES_MAPPING_ID, "number"));
+        JavaOpenSearchSpark.saveToEs(javaRDD, target, ImmutableMap.of(OPENSEARCH_MAPPING_ID, "number"));
 
         assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
         assertTrue(RestUtils.exists(target + "/1"));
@@ -172,7 +171,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         String target = "spark-test-java-exclude-write/data";
 
         JavaRDD<Map<String, ?>> javaRDD = sc.parallelize(ImmutableList.of(doc1, doc2));
-        JavaOpenSearchSpark.saveToEs(javaRDD, target, ImmutableMap.of(ES_MAPPING_EXCLUDE, "airport"));
+        JavaOpenSearchSpark.saveToEs(javaRDD, target, ImmutableMap.of(OPENSEARCH_MAPPING_EXCLUDE, "airport"));
 
         assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
         assertTrue(RestUtils.exists(target));

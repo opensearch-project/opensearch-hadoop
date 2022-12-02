@@ -27,6 +27,6 @@
  * under the License.
  */
 /**
- * Java API for Elasticsearch Spark SQL.
+ * Java API for OpenSearch Spark SQL.
  */
 package org.opensearch.spark.sql.api.java;

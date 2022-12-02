@@ -86,10 +86,6 @@ public class RestUtils {
         }
     }
 
-    public static void createMultiTypeIndex(String index) throws Exception {
-        put(index, "{\"settings\":{\"index.mapping.single_type\":false}}".getBytes());
-    }
-
     public static void putMapping(String index, String type, byte[] content) throws Exception {
         RestClient rc = new ExtendedRestClient();
         BytesArray bs = new BytesArray(content);

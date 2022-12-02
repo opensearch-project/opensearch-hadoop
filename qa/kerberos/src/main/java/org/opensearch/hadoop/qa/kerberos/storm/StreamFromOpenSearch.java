@@ -76,7 +76,7 @@ public class StreamFromOpenSearch {
         conf.put(ConfigurationOptions.OPENSEARCH_NODES, esNodes);
         conf.put(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION, "kerberos");
         conf.put(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
-        conf.put(ConfigurationOptions.ES_INPUT_JSON, "true");
+        conf.put(ConfigurationOptions.OPENSEARCH_INPUT_JSON, "true");
         StormSubmitter.submitTopology("test-read", conf, builder.createTopology());
     }
 }

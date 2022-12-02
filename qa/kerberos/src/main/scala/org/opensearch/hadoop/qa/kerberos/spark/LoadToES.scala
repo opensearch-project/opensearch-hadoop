@@ -55,7 +55,7 @@ class LoadToES(args: Array[String]) {
 
     df.rdd.map(row => row.getValuesMap(row.schema.fieldNames)).saveToEs(s"${resource}_rdd")
     df.saveToEs(s"${resource}_df")
-    df.write.format("es").save(s"${resource}_ds")
+    df.write.format("opensearch").save(s"${resource}_ds")
   }
 }
 

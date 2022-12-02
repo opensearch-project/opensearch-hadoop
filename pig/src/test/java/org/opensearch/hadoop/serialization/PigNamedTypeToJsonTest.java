@@ -258,7 +258,7 @@ public class PigNamedTypeToJsonTest {
     @Test
     public void testNamedTupleWithExclusion() {
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_EXCLUDE, "namedtuple.second");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_EXCLUDE, "namedtuple.second");
         String expected = "{\"namedtuple\":[{\"first\":\"one\"}]}";
         assertThat(pigTypeToJson(createTuple(TupleFactory.getInstance().newTuple(Arrays.asList(new String[] { "one", "two" })),
                 createSchema("namedtuple: (first:chararray, second:chararray)")), settings), is(expected));
@@ -286,7 +286,7 @@ public class PigNamedTypeToJsonTest {
         PigValueWriter writer = new PigValueWriter(true);
         if (settings != null) {
             // Make sure to write with use.field.names as true
-            settings.setProperty("es.mapping.pig.tuple.use.field.names", "true");
+            settings.setProperty("opensearch.mapping.pig.tuple.use.field.names", "true");
             writer.setSettings(settings);
         }
         ContentBuilder.generate(out, writer).value(obj).flush().close();

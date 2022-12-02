@@ -377,7 +377,7 @@ public abstract class AbstractBulkFactory implements BulkFactory {
             writeObjectEnd(after);
             after = compact(after);
         }
-        if (ConfigurationOptions.ES_OPERATION_DELETE.equals(getOperation())) {
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_DELETE.equals(getOperation())) {
             return new DeleteTemplatedBulk(before, after);
         }
         boolean isScriptUpdate = settings.hasUpdateScript();

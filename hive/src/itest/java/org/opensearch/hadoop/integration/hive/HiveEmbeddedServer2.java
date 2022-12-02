@@ -249,14 +249,14 @@ class HiveEmbeddedServer2 implements HiveInstance {
     }
 
     private void removeESSettings(HiveConf conf) {
-        //delete all "es" properties
+        //delete all "opensearch" properties
         Set<String> props = testSettings.stringPropertyNames();
         Iterator<Map.Entry<String, String>> iter = conf.iterator();
         while (iter.hasNext()) {
             Entry<String, String> entry = iter.next();
             String key = entry.getKey();
             // remove transient settings only to avoid reloading the configuration (which might override some manual settings)
-            if (key.startsWith("es.") && !props.contains(key)) {
+            if (key.startsWith("opensearch.") && !props.contains(key)) {
                 // NB: don't use remove since the iterator works on a copy not on the real thing
                 conf.unset(key);
             }

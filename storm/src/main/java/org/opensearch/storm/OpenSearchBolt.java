@@ -92,7 +92,7 @@ public class OpenSearchBolt implements IRichBolt {
         boltConfig.put(OPENSEARCH_RESOURCE_WRITE, target);
 
         if (writeAck != null) {
-            boltConfig.put(StormConfigurationOptions.ES_STORM_BOLT_ACK, Boolean.toString(writeAck));
+            boltConfig.put(StormConfigurationOptions.OPENSEARCH_STORM_BOLT_ACK, Boolean.toString(writeAck));
         }
 
         if (configuration != null) {
@@ -115,7 +115,7 @@ public class OpenSearchBolt implements IRichBolt {
         if (ackWrites) {
             settings.setProperty(OPENSEARCH_BATCH_FLUSH_MANUAL, Boolean.TRUE.toString());
 
-            // align Bolt / es-hadoop batch settings
+            // align Bolt / opensearch-hadoop batch settings
             numberOfEntries = settings.getStormBulkSize();
             settings.setProperty(OPENSEARCH_BATCH_SIZE_ENTRIES, String.valueOf(numberOfEntries));
 

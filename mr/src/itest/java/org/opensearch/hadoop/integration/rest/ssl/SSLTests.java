@@ -91,7 +91,7 @@ public class SSLTests {
     @Before
     public void setup() throws Exception {
         KeystoreWrapper keystoreWrapper = KeystoreWrapper.newStore().build();
-        keystoreWrapper.setSecureSetting(ES_NET_SSL_TRUST_STORE_PASS, "testpass");
+        keystoreWrapper.setSecureSetting(OPENSEARCH_NET_SSL_TRUST_STORE_PASS, "testpass");
         File ks = TEMP_FOLDER.newFile();
         OutputStream ksOut = new FileOutputStream(ks);
         keystoreWrapper.saveKeystore(ksOut);
@@ -99,10 +99,10 @@ public class SSLTests {
 
         cfg = new PropertiesSettings();
         cfg.setPort(SSL_PORT);
-        cfg.setProperty(ES_KEYSTORE_LOCATION, ks.toURI().toString());
-        cfg.setProperty(ES_NET_USE_SSL, "true");
-        cfg.setProperty(ES_NET_SSL_CERT_ALLOW_SELF_SIGNED, "true");
-        cfg.setProperty(ES_NET_SSL_TRUST_STORE_LOCATION, "ssl/client.jks");
+        cfg.setProperty(OPENSEARCH_KEYSTORE_LOCATION, ks.toURI().toString());
+        cfg.setProperty(OPENSEARCH_NET_USE_SSL, "true");
+        cfg.setProperty(OPENSEARCH_NET_SSL_CERT_ALLOW_SELF_SIGNED, "true");
+        cfg.setProperty(OPENSEARCH_NET_SSL_TRUST_STORE_LOCATION, "ssl/client.jks");
         cfg.setProperty(OPENSEARCH_NODES_PATH_PREFIX, PREFIX);
 
         transport = new CommonsHttpTransport(cfg.copy(), new SecureSettings(cfg), "localhost");

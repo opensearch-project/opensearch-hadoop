@@ -45,7 +45,7 @@ import org.opensearch.hadoop.serialization.field.FieldExtractor
 import org.opensearch.spark.sql.{DataFrameFieldExtractor, DataFrameValueWriter}
 
 /**
- * Takes in iterator of InternalRow objects from a partition of data, writes it to Elasticsearch, and manages
+ * Takes in iterator of InternalRow objects from a partition of data, writes it to OpenSearch, and manages
  * the streaming commit protocol.
  */
 private [sql] class OpenSearchStreamQueryWriter(serializedSettings: String,

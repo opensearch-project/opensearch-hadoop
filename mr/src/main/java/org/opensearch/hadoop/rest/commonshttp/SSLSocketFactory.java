@@ -121,11 +121,11 @@ class SSLSocketFactory implements SecureProtocolSocketFactory {
         sslProtocol = settings.getNetworkSSLProtocol();
 
         keyStoreLocation = settings.getNetworkSSLKeyStoreLocation();
-        keyStorePass = secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_SSL_KEYSTORE_PASS);
+        keyStorePass = secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_SSL_KEYSTORE_PASS);
         keyStoreType = settings.getNetworkSSLKeyStoreType();
 
         trustStoreLocation = settings.getNetworkSSLTrustStoreLocation();
-        trustStorePass = secureSettings.getSecureProperty(ConfigurationOptions.ES_NET_SSL_TRUST_STORE_PASS);
+        trustStorePass = secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_SSL_TRUST_STORE_PASS);
 
         trust = (settings.getNetworkSSLAcceptSelfSignedCert() ? new SelfSignedStrategy() : null);
     }

@@ -182,7 +182,7 @@ public class HiveTypeToJsonTest {
     @Test
     public void testMapWithFilterInclude() {
         TestSettings cfg = new TestSettings();
-        cfg.setProperty("es.mapping.include", "a*");
+        cfg.setProperty("opensearch.mapping.include", "a*");
 
         Map map = new LinkedHashMap();
         map.put(new Text("aaa"), new Text("bbb"));
@@ -197,7 +197,7 @@ public class HiveTypeToJsonTest {
     @Test
     public void testMapWithFilterExclude() {
         TestSettings cfg = new TestSettings();
-        cfg.setProperty("es.mapping.exclude", "xxx");
+        cfg.setProperty("opensearch.mapping.exclude", "xxx");
 
         Map map = new LinkedHashMap();
         map.put(new Text("aaa"), new Text("bbb"));

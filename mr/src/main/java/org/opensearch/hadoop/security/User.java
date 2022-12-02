@@ -60,18 +60,18 @@ public interface User {
 
     /**
      * @param clusterName The cluster name
-     * @return a previously added Elasticsearch authentication token, or null if it does not exist
+     * @return a previously added OpenSearch authentication token, or null if it does not exist
      */
     EsToken getEsToken(String clusterName);
 
     /**
-     * @return all previously added Elasticsearch authentication tokens, or an empty iterable if none exist
+     * @return all previously added OpenSearch authentication tokens, or an empty iterable if none exist
      */
     Iterable<EsToken> getAllEsTokens();
 
     /**
      * Adds the given esToken to the user
-     * @param esToken Authentication token for Elasticsearch
+     * @param esToken Authentication token for OpenSearch
      */
     void addEsToken(EsToken esToken);
 

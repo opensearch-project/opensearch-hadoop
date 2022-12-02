@@ -83,15 +83,15 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
   Version.logVersion()
   
   override def createRelation(@transient sqlContext: SQLContext, parameters: Map[String, String]): BaseRelation = {
-    ElasticsearchRelation(params(parameters), sqlContext)
+    OpenSearchRelation(params(parameters), sqlContext)
   }
 
   override def createRelation(@transient sqlContext: SQLContext, parameters: Map[String, String], schema: StructType): BaseRelation = {
-    ElasticsearchRelation(params(parameters), sqlContext, Some(schema))
+    OpenSearchRelation(params(parameters), sqlContext, Some(schema))
   }
 
   override def createRelation(@transient sqlContext: SQLContext, mode: SaveMode, parameters: Map[String, String], data: DataFrame): BaseRelation = {
-    val relation = ElasticsearchRelation(params(parameters), sqlContext, Some(data.schema))
+    val relation = OpenSearchRelation(params(parameters), sqlContext, Some(data.schema))
     mode match {
       case Append         => relation.insert(data, false)
       case Overwrite      => relation.insert(data, true)
@@ -147,14 +147,14 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
   }
 }
 
-private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @transient val sqlContext: SQLContext, userSchema: Option[StructType] = None)
+private[sql] case class OpenSearchRelation(parameters: Map[String, String], @transient val sqlContext: SQLContext, userSchema: Option[StructType] = None)
   extends BaseRelation with PrunedFilteredScan with InsertableRelation
   {
 
   @transient private[sql] lazy val cfg = {
     val conf = new SparkSettingsManager().load(sqlContext.sparkContext.getConf).merge(parameters.asJava)
-    InitializationUtils.setUserProviderIfNotSet(conf, classOf[HadoopUserProvider], LogFactory.getLog(classOf[ElasticsearchRelation]))
-    InitializationUtils.discoverClusterInfo(conf, LogFactory.getLog(classOf[ElasticsearchRelation]))
+    InitializationUtils.setUserProviderIfNotSet(conf, classOf[HadoopUserProvider], LogFactory.getLog(classOf[OpenSearchRelation]))
+    InitializationUtils.discoverClusterInfo(conf, LogFactory.getLog(classOf[OpenSearchRelation]))
     conf
   }
 
@@ -181,7 +181,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       val metadata = cfg.getReadMetadataField
       // if metadata is not selected, don't ask for it
       if (!requiredColumns.contains(metadata)) {
-        paramWithScan += (ConfigurationOptions.ES_READ_METADATA -> false.toString())
+        paramWithScan += (ConfigurationOptions.OPENSEARCH_READ_METADATA -> false.toString())
       }
       else {
         filteredColumns = requiredColumns.filter( _ != metadata)

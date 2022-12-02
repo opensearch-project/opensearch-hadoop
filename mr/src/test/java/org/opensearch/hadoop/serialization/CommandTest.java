@@ -75,11 +75,11 @@ public class CommandTest {
 
         Collection<Object[]> result = new ArrayList<>();
 
-        String[] operations = new String[]{ConfigurationOptions.ES_OPERATION_INDEX,
-                ConfigurationOptions.ES_OPERATION_CREATE,
-                ConfigurationOptions.ES_OPERATION_UPDATE,
-                ConfigurationOptions.ES_OPERATION_UPSERT,
-                ConfigurationOptions.ES_OPERATION_DELETE};
+        String[] operations = new String[]{ConfigurationOptions.OPENSEARCH_OPERATION_INDEX,
+                ConfigurationOptions.OPENSEARCH_OPERATION_CREATE,
+                ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE,
+                ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT,
+                ConfigurationOptions.OPENSEARCH_OPERATION_DELETE};
         boolean[] asJsons = new boolean[]{false, true};
         OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[]{OpenSearchMajorVersion.V_2_X,
                 OpenSearchMajorVersion.V_3_X};
@@ -116,9 +116,9 @@ public class CommandTest {
 
     @Test
     public void testNoHeader() throws Exception {
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_DELETE.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_DELETE.equals(operation));
         create(settings()).write(data).copyTo(ba);
         String result = prefix() + "}}" + map();
         assertEquals(result, ba.toString());
@@ -128,10 +128,10 @@ public class CommandTest {
     // check user friendliness and escape the string if needed
     public void testConstantId() throws Exception {
         assumeFalse(isDeleteOP() && jsonInput);
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         Settings settings = settings();
         noId = true;
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_ID, "<foobar>");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "<foobar>");
 
         create(settings).write(data).copyTo(ba);
         String result = prefix() + "\"_id\":\"foobar\"}}" + map();
@@ -142,10 +142,10 @@ public class CommandTest {
     @Test
     public void testParent() throws Exception {
         assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_PARENT, "<5>");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_PARENT, "<5>");
 
         create(settings).write(data).copyTo(ba);
         String result = prefix() + "\"parent\":5}}" + map();
@@ -155,10 +155,10 @@ public class CommandTest {
     @Test
     public void testVersion() throws Exception {
         assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_VERSION, "<3>");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_VERSION, "<3>");
 
         create(settings).write(data).copyTo(ba);
         String result = prefix() + "\"version\":3,\"version_type\":\"external\"}}" + map();
@@ -168,9 +168,9 @@ public class CommandTest {
     @Test
     public void testTtl() throws Exception {
         assumeFalse(isDeleteOP() && jsonInput);
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_TTL, "<2>");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_TTL, "<2>");
 
         create(settings).write(data).copyTo(ba);
         String result = prefix() + "\"_ttl\":2}}" + map();
@@ -180,21 +180,22 @@ public class CommandTest {
     @Test
     public void testTimestamp() throws Exception {
         assumeFalse(isDeleteOP() && jsonInput);
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_TIMESTAMP, "<3>");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_TIMESTAMP, "<3>");
         create(settings).write(data).copyTo(ba);
         String result = prefix() + "\"_timestamp\":3}}" + map();
         assertEquals(result, ba.toString());
     }
 
+
     @Test
     public void testRouting() throws Exception {
         assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_ROUTING, "<4>");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ROUTING, "<4>");
 
         create(settings).write(data).copyTo(ba);
         String result = prefix() + "\"routing\":4}}" + map();
@@ -204,12 +205,12 @@ public class CommandTest {
     @Test
     public void testAllX() throws Exception {
         assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_TTL, "<2>");
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_ROUTING, "s");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "n");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_TTL, "<2>");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ROUTING, "s");
 
         create(settings).write(data).copyTo(ba);
         String result = "{\"" + operation + "\":{\"_id\":1,\"routing\":\"v\",\"_ttl\":2}}" + map();
@@ -219,7 +220,7 @@ public class CommandTest {
     @Test
     public void testIdPattern() throws Exception {
         assumeFalse(isDeleteOP() && jsonInput);
-        assumeFalse(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
+        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         Settings settings = settings();
         if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
             settings.setResourceWrite("{n}");
@@ -240,22 +241,22 @@ public class CommandTest {
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testIdMandatory() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
+        assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
         Settings set = settings();
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "");
         create(set).write(data).copyTo(ba);
     }
 
     @Test
     public void testUpdateOnlyInlineScript() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
+        assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
         assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
         Settings set = settings();
 
-        set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = 3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_UPDATE_RETRY_ON_CONFLICT, "3");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "counter = 3");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "groovy");
 
         create(set).write(data).copyTo(ba);
         String result =
@@ -266,14 +267,14 @@ public class CommandTest {
 
     @Test
     public void testUpdateOnlyFileScript() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
+        assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
         assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
         Settings set = settings();
 
-        set.setProperty(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_FILE, "set_count");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_UPDATE_RETRY_ON_CONFLICT, "3");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_FILE, "set_count");
+        set.setProperty(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "groovy");
 
         create(set).write(data).copyTo(ba);
         String result =
@@ -282,66 +283,9 @@ public class CommandTest {
         assertEquals(result, ba.toString());
     }
 
-    @Test
-    public void testUpdateOnlyParamInlineScript() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"" + operation + "\":{\"_id\":1}}\n" +
-                        "{\"script\":{\"source\":\"counter = param1; anothercounter = param2\",\"lang\":\"groovy\",\"params\":{\"param1\":1,\"param2\":1}}}\n";
-
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testUpsertParamInlineScript() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"update\":{\"_id\":3}}\n" +
-                        "{\"script\":{\"source\":\"counter = param1; anothercounter = param2\",\"lang\":\"groovy\",\"params\":{\"param1\":1,\"param2\":1}},\"upsert\":{\"n\":1,\"s\":\"v\"}}\n";
-
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testScriptedUpsertParamInlineScript() throws Exception {
-        assumeTrue(ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation));
-        Settings set = settings();
-
-        set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "n");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_UPSERT, "true");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = param1; anothercounter = param2");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        set.setProperty(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:n ");
-
-        create(set).write(data).copyTo(ba);
-
-        String result =
-                "{\"update\":{\"_id\":1}}\n" +
-                        "{\"script\":{\"source\":\"counter = param1; anothercounter = param2\",\"lang\":\"groovy\",\"params\":{\"param1\":1,\"param2\":1}},\"scripted_upsert\": true,\"upsert\":{}}\n";
-
-        assertEquals(result, ba.toString());
-    }
-
     private BulkCommand create(Settings settings) {
         if (!StringUtils.hasText(settings.getResourceWrite())) {
-            settings.setProperty(ConfigurationOptions.ES_WRITE_OPERATION, operation);
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, operation);
         }
         return BulkCommands.create(settings, null, version);
     }
@@ -350,23 +294,23 @@ public class CommandTest {
         Settings set = new TestSettings();
 
         set.setInternalVersion(version);
-        set.setProperty(ConfigurationOptions.ES_INPUT_JSON, Boolean.toString(jsonInput));
+        set.setProperty(ConfigurationOptions.OPENSEARCH_INPUT_JSON, Boolean.toString(jsonInput));
         InitializationUtils.setValueWriterIfNotSet(set, JdkValueWriter.class, null);
         InitializationUtils.setFieldExtractorIfNotSet(set, MapFieldExtractor.class, null);
         InitializationUtils.setBytesConverterIfNeeded(set, JdkBytesConverter.class, null);
         InitializationUtils.setUserProviderIfNotSet(set, HadoopUserProvider.class, null);
 
-        set.setProperty(ConfigurationOptions.ES_WRITE_OPERATION, operation);
-        if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
+        set.setProperty(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, operation);
+        if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
             set.setResourceWrite("foo");
         } else {
             set.setResourceWrite("foo");
         }
         if (isUpdateOp()) {
-            set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "<2>");
+            set.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "<2>");
         }
         if (isUpsertOp()) {
-            set.setProperty(ConfigurationOptions.ES_MAPPING_ID, "<3>");
+            set.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "<3>");
         }
         return set;
     }
@@ -397,14 +341,14 @@ public class CommandTest {
     }
 
     private boolean isUpdateOp() {
-        return ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation);
+        return ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation);
     }
 
     private boolean isUpsertOp() {
-        return ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation);
+        return ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation);
     }
 
     private boolean isDeleteOP() {
-        return ConfigurationOptions.ES_OPERATION_DELETE.equals(operation);
+        return ConfigurationOptions.OPENSEARCH_OPERATION_DELETE.equals(operation);
     }
 }

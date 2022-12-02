@@ -83,10 +83,10 @@ import org.opensearch.hadoop.util.StringUtils;
  * Typical usage is:
  *
  * <pre>
- * A = LOAD 'twitter/_search?q=kimchy' USING org.elasticsearch.hadoop.pig.ESStorage();
+ * A = LOAD 'twitter/_search?q=kimchy' USING org.opensearch.hadoop.pig.ESStorage();
  * </pre>
  * <pre>
- * STORE A INTO '<index>' USING org.elasticsearch.hadoop.pig.ESStorage();
+ * STORE A INTO '<index>' USING org.opensearch.hadoop.pig.ESStorage();
  * </pre>
  *
  * The ElasticSearch host/port can be specified through Hadoop properties (see package description)
@@ -97,7 +97,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
     private static final Log log = LogFactory.getLog(OpenSearchStorage.class);
     private final boolean trace = log.isTraceEnabled();
 
-    private static final String CREDENTIALS_ADDED = "es.pig.credentials.added";
+    private static final String CREDENTIALS_ADDED = "opensearch.pig.credentials.added";
 
     private Properties properties = new Properties();
 
@@ -418,7 +418,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
                     tokenBootstrap.close();
                 }
             } else {
-                log.info("Not loading Elasticsearch API Key for auth delegation since no Kerberos TGT exist.");
+                log.info("Not loading OpenSearch API Key for auth delegation since no Kerberos TGT exist.");
             }
         }
     }

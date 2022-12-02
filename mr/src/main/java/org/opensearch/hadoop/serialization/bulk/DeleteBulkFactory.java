@@ -44,7 +44,7 @@ public class DeleteBulkFactory extends AbstractBulkFactory {
 
     @Override
     protected String getOperation() {
-        return ConfigurationOptions.ES_OPERATION_DELETE;
+        return ConfigurationOptions.OPENSEARCH_OPERATION_DELETE;
     }
 
     @Override

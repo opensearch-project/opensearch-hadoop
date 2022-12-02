@@ -103,7 +103,7 @@ class OpenSearchServiceCredentialProvider extends HadoopDelegationTokenProvider 
   }
 
   /**
-   * Obtains api key tokens from Elasticsearch and stashes them in the given credentials object
+   * Obtains api key tokens from OpenSearch and stashes them in the given credentials object
    * @param hadoopConf Hadoop configuration, picking up all Hadoop specific settings
    * @param sparkConf All settings that exist in Spark
    * @param creds The credentials object that will be shared between all workers
@@ -124,7 +124,7 @@ class OpenSearchServiceCredentialProvider extends HadoopDelegationTokenProvider 
         override def run: EsToken = client.createNewApiToken(TokenUtil.KEY_NAME_PREFIX + UUID.randomUUID().toString)
       })
       if (LOG.isInfoEnabled) {
-        LOG.info(s"getting token for: Elasticsearch[tokenName=${esToken.getName}, " +
+        LOG.info(s"getting token for: OpenSearch[tokenName=${esToken.getName}, " +
           s"clusterName=${esToken.getClusterName}, user=${user}]")
       }
       val expiration = esToken.getExpirationTime

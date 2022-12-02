@@ -220,7 +220,7 @@ public class RestRepository implements Closeable, StatsAware {
     @Override
     public void close() {
         if (log.isDebugEnabled()) {
-            log.debug("Closing repository and connection to Elasticsearch ...");
+            log.debug("Closing repository and connection to OpenSearch ...");
         }
 
         // bail out if closed before

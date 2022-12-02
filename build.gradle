@@ -50,5 +50,5 @@ if (project.hasProperty("find-artifact")) {
 task generateDependenciesReport(type: ConcatFilesTask) {
     files = fileTree(dir: project.rootDir,  include: '**/dependencies.csv' )
     headerLine = "name,version,url,license"
-    target = new File(System.getProperty('csv')?: "${project.buildDir}/reports/dependencies/es-hadoop-dependencies.csv")
+    target = new File(System.getProperty('csv')?: "${project.buildDir}/reports/dependencies/opensearch-hadoop-dependencies.csv")
 }

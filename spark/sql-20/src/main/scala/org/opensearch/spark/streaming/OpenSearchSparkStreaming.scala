@@ -64,13 +64,13 @@ object OpenSearchSparkStreaming {
 
   // Save as JSON
   def saveJsonToEs(ds: DStream[_], resource: String): Unit = {
-    saveToEs(ds, resource, Map(ES_INPUT_JSON -> true.toString))
+    saveToEs(ds, resource, Map(OPENSEARCH_INPUT_JSON -> true.toString))
   }
   def saveJsonToEs(ds: DStream[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(ds, resource, collection.mutable.Map(cfg.toSeq: _*) += (ES_INPUT_JSON -> true.toString))
+    saveToEs(ds, resource, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
   def saveJsonToEs(ds: DStream[_], cfg: Map[String, String]): Unit = {
-    saveToEs(ds, collection.mutable.Map(cfg.toSeq: _*) += (ES_INPUT_JSON -> true.toString))
+    saveToEs(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
 
   // Implementation

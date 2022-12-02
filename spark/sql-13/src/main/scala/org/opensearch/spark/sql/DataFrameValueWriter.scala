@@ -47,7 +47,7 @@ import org.apache.spark.sql.types.DataTypes.LongType
 import org.apache.spark.sql.types.DataTypes.ShortType
 import org.apache.spark.sql.types.DataTypes.StringType
 import org.apache.spark.sql.types.DataTypes.TimestampType
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT
 import org.opensearch.hadoop.serialization.builder.ValueWriter.Result
 import org.opensearch.hadoop.cfg.Settings
 import org.opensearch.hadoop.serialization.{OpenSearchHadoopSerializationException, Generator, SettingsAware}
@@ -61,7 +61,7 @@ class DataFrameValueWriter(writeUnknownTypes: Boolean = false) extends Filtering
     this(false)
   }
 
-  private var writeNullValues: Boolean = Booleans.parseBoolean(ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT)
+  private var writeNullValues: Boolean = Booleans.parseBoolean(OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT)
 
   override def setSettings(settings: Settings): Unit = {
     super.setSettings(settings)
@@ -272,7 +272,7 @@ class DataFrameValueWriter(writeUnknownTypes: Boolean = false) extends Filtering
       case _             => {
         val className = schema.getClass().getName()
         if ("org.apache.spark.sql.types.DecimalType".equals(className) || "org.apache.spark.sql.catalyst.types.DecimalType".equals(className)) {
-          throw new OpenSearchHadoopSerializationException("Decimal types are not supported by Elasticsearch - consider using a different type (such as string)")
+          throw new OpenSearchHadoopSerializationException("Decimal types are not supported by OpenSearch - consider using a different type (such as string)")
         }
         return handleUnknown(value, generator)
       }

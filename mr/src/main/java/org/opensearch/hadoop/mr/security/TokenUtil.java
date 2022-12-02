@@ -49,7 +49,7 @@ import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.ClusterName;
 
 /**
- * Provides the main logic for obtaining Hadoop specific Tokens containing Elasticsearch authentication
+ * Provides the main logic for obtaining Hadoop specific Tokens containing OpenSearch authentication
  * info, caching them in User objects (Subjects or Hadoop UGI), and adding them to jobs and job configurations.
  */
 public class TokenUtil {
@@ -67,10 +67,10 @@ public class TokenUtil {
     }
 
     /**
-     * Obtain the given user's authentication token from Elasticsearch by performing the getAuthToken operation
+     * Obtain the given user's authentication token from OpenSearch by performing the getAuthToken operation
      * as the given user, thus ensuring the subject's private credentials available on the thread's access control
      * context for the life of the operation.
-     * @param client The Elasticsearch client
+     * @param client The OpenSearch client
      * @param user the user object that contains credentials for obtaining an auth token
      * @return the authentication token in ES-Hadoop specific format.
      */
@@ -91,7 +91,7 @@ public class TokenUtil {
 
     /**
      * Obtain and return an authentication token for the current user.
-     * @param client The Elasticsearch client
+     * @param client The OpenSearch client
      * @return the authentication token instance in Hadoop Token format.
      */
     public static Token<EsTokenIdentifier> obtainToken(RestClient client, User user) {
@@ -102,7 +102,7 @@ public class TokenUtil {
     /**
      * Obtain an authentication token for the given user and add it to the
      * user's credentials.
-     * @param client The Elasticsearch client
+     * @param client The OpenSearch client
      * @param user The user for obtaining and storing the token
      * @throws IOException If making a remote call to the authentication service fails
      */
@@ -125,7 +125,7 @@ public class TokenUtil {
      * a fresh authentication token instead of checking for existing ones on the
      * current user.
      *
-     * @param client The Elasticsearch client
+     * @param client The OpenSearch client
      * @param user The user for whom to obtain the token
      * @param job The job instance in which the token should be stored
      */
@@ -148,7 +148,7 @@ public class TokenUtil {
      * a fresh authentication token instead of checking for existing ones on the
      * current user.
      *
-     * @param client The Elasticsearch client
+     * @param client The OpenSearch client
      * @param user The user for whom to obtain the token
      * @param jobConf The job configuration in which the token should be stored
      */
@@ -169,7 +169,7 @@ public class TokenUtil {
      * Retrieves an authentication token from the given user, obtaining a new token if necessary,
      * and adds it to the credentials for the given map reduce job.
      *
-     * @param client The Elasticsearch client
+     * @param client The OpenSearch client
      * @param clusterName the name of the cluster you are connecting to
      * @param user The user for whom to obtain the token
      * @param job The job instance in which the token should be stored
@@ -188,7 +188,7 @@ public class TokenUtil {
      * Retrieves an authentication token from the given user, obtaining a new token if necessary,
      * and adds it to the credentials for the given map reduce job configuration.
      *
-     * @param client The Elasticsearch client
+     * @param client The OpenSearch client
      * @param clusterName the name of the cluster you are connecting to
      * @param user The user for whom to obtain the token
      * @param job The job instance in which the token should be stored

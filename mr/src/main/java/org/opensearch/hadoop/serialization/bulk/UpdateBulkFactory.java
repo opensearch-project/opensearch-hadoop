@@ -86,7 +86,7 @@ class UpdateBulkFactory extends AbstractBulkFactory {
 
     @Override
     protected String getOperation() {
-        return ConfigurationOptions.ES_OPERATION_UPDATE;
+        return ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE;
     }
 
     @Override

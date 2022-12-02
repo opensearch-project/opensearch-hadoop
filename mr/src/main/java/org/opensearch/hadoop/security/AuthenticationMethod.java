@@ -35,27 +35,27 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Defines the constants for determining the type of authentication to Elasticsearch we will be using.
+ * Defines the constants for determining the type of authentication to OpenSearch we will be using.
  */
 public enum AuthenticationMethod {
 
     /**
-     * Simple mode uses no security features to authenticate to the Elasticsearch cluster
+     * Simple mode uses no security features to authenticate to the OpenSearch cluster
      */
     SIMPLE("simple"),
 
     /**
-     * Basic mode uses basic HTTP authentication using a username and password to authenticate to the Elasticsearch cluster
+     * Basic mode uses basic HTTP authentication using a username and password to authenticate to the OpenSearch cluster
      */
     BASIC("basic"),
 
     /**
-     * PKI mode uses certificates that are provided to Elasticsearch during the SSL negotiation phase to determine identity.
+     * PKI mode uses certificates that are provided to OpenSearch during the SSL negotiation phase to determine identity.
      */
     PKI("pki"),
 
     /**
-     * Kerberos mode uses SPNEGO via HTTP to authenticate to the Elasticsearch cluster
+     * Kerberos mode uses SPNEGO via HTTP to authenticate to the OpenSearch cluster
      */
     KERBEROS("kerberos");
 

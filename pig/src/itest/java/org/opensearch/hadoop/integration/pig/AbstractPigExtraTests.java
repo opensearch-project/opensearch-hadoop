@@ -124,7 +124,7 @@ public class AbstractPigExtraTests extends AbstractPigTests {
                 "data = LOAD '" + resourceFile("/group-sample.txt") + "' using PigStorage(',') as (no:long,name:chararray,age:long);" +
                 "data_limit = LIMIT data 1;" +
                 "data_final = FOREACH data_limit GENERATE TRIM(name) as details, no as number;" +
-                "STORE data_final into '"+resource("pig-test-temp_schema", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage('es.mapping.id=details');";
+                "STORE data_final into '"+resource("pig-test-temp_schema", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.mapping.id=details');";
         pig.executeScript(script);
     }
 
@@ -153,7 +153,7 @@ public class AbstractPigExtraTests extends AbstractPigTests {
                 "answers = LOAD '" + resourceFile("/tuple.txt") + "' using PigStorage(',') as (id:int, parentId:int, score:int);" +
                 "grouped = GROUP answers by id;" +
                 "ILLUSTRATE grouped;" +
-                "STORE grouped into '"+resource("pig-test-tuple-structure", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage('es.mapping.pig.tuple.use.field.names = true');";
+                "STORE grouped into '"+resource("pig-test-tuple-structure", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.mapping.pig.tuple.use.field.names = true');";
         pig.executeScript(script);
 
         String string = RestUtils.get("pig-test-tuple-structure/_search");

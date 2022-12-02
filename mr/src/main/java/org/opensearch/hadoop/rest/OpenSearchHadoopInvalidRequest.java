@@ -31,7 +31,7 @@ package org.opensearch.hadoop.rest;
 import org.opensearch.hadoop.OpenSearchHadoopException;
 
 /**
- * Exception caused by an invalid request as reported by the Elasticsearch response.
+ * Exception caused by an invalid request as reported by the OpenSearch response.
  */
 public class OpenSearchHadoopInvalidRequest extends OpenSearchHadoopException {
 

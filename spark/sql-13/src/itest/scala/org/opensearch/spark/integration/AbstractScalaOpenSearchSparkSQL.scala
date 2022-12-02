@@ -124,68 +124,68 @@ object AbstractScalaOpenSearchScalaSparkSQL {
     val dslQuery = """ {"query" : { "match_all" : { } } } """
 
     // no query                      meta, push, strict, filter, encode, query
-    list.add(Array("default",        FALSE, TRUE,  FALSE, TRUE, FALSE, noQuery))
-    list.add(Array("defaultstrict",  FALSE, TRUE,  TRUE,  TRUE, FALSE, noQuery))
-    list.add(Array("defaultnopush",  FALSE, FALSE, FALSE, TRUE, FALSE, noQuery))
-    list.add(Array("withmeta",       TRUE,  TRUE,  FALSE, TRUE, FALSE, noQuery))
-    list.add(Array("withmetastrict", TRUE,  TRUE,  TRUE,  TRUE, FALSE, noQuery))
-    list.add(Array("withmetanopush", TRUE,  FALSE, FALSE, TRUE, FALSE, noQuery))
+    list.add(Array("default",        FALSE, TRUE,  FALSE, TRUE, FALSE, noQuery))  // 0
+    list.add(Array("defaultstrict",  FALSE, TRUE,  TRUE,  TRUE, FALSE, noQuery))  // 1
+    list.add(Array("defaultnopush",  FALSE, FALSE, FALSE, TRUE, FALSE, noQuery))  // 2
+    list.add(Array("withmeta",       TRUE,  TRUE,  FALSE, TRUE, FALSE, noQuery))  // 3
+    list.add(Array("withmetastrict", TRUE,  TRUE,  TRUE,  TRUE, FALSE, noQuery))  // 4
+    list.add(Array("withmetanopush", TRUE,  FALSE, FALSE, TRUE, FALSE, noQuery))  // 5
 
     // disable double filtering                  meta, push, strict, filter, encode, query
-    list.add(Array("default_skiphandled",        FALSE, TRUE,  FALSE, FALSE, FALSE, noQuery))
-    list.add(Array("defaultstrict_skiphandled",  FALSE, TRUE,  TRUE,  FALSE, FALSE, noQuery))
-    list.add(Array("defaultnopush_skiphandled",  FALSE, FALSE, FALSE, FALSE, FALSE, noQuery))
-    list.add(Array("withmeta_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, noQuery))
-    list.add(Array("withmetastrict_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, noQuery))
-    list.add(Array("withmetanopush_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, noQuery))
+    list.add(Array("default_skiphandled",        FALSE, TRUE,  FALSE, FALSE, FALSE, noQuery))  // 6
+    list.add(Array("defaultstrict_skiphandled",  FALSE, TRUE,  TRUE,  FALSE, FALSE, noQuery))  // 7
+    list.add(Array("defaultnopush_skiphandled",  FALSE, FALSE, FALSE, FALSE, FALSE, noQuery))  // 8
+    list.add(Array("withmeta_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, noQuery))  // 9
+    list.add(Array("withmetastrict_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, noQuery))  // 10
+    list.add(Array("withmetanopush_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, noQuery))  // 11
 
     // uri query                              meta, push, strict, filter, encode, query
-    list.add(Array("defaulturiquery",         FALSE, TRUE,  FALSE, TRUE, FALSE, uriQuery))
-    list.add(Array("defaulturiquerystrict",   FALSE, TRUE,  TRUE,  TRUE, FALSE, uriQuery))
-    list.add(Array("defaulturiquerynopush",   FALSE, FALSE, FALSE, TRUE, FALSE, uriQuery))
-    list.add(Array("withmetauri_query",       TRUE,  TRUE,  FALSE, TRUE, FALSE, uriQuery))
-    list.add(Array("withmetauri_querystrict", TRUE,  TRUE,  TRUE,  TRUE, FALSE, uriQuery))
-    list.add(Array("withmetauri_querynopush", TRUE,  FALSE, FALSE, TRUE, FALSE, uriQuery))
+    list.add(Array("defaulturiquery",         FALSE, TRUE,  FALSE, TRUE, FALSE, uriQuery))  // 12
+    list.add(Array("defaulturiquerystrict",   FALSE, TRUE,  TRUE,  TRUE, FALSE, uriQuery))  // 13
+    list.add(Array("defaulturiquerynopush",   FALSE, FALSE, FALSE, TRUE, FALSE, uriQuery))  // 14
+    list.add(Array("withmetauri_query",       TRUE,  TRUE,  FALSE, TRUE, FALSE, uriQuery))  // 15
+    list.add(Array("withmetauri_querystrict", TRUE,  TRUE,  TRUE,  TRUE, FALSE, uriQuery))  // 16
+    list.add(Array("withmetauri_querynopush", TRUE,  FALSE, FALSE, TRUE, FALSE, uriQuery))  // 17
 
     // disable double filtering                           meta, push, strict, filter, encode, query
-    list.add(Array("defaulturiquery_skiphandled",         FALSE, TRUE,  FALSE, FALSE, FALSE, uriQuery))
-    list.add(Array("defaulturiquerystrict_skiphandled",   FALSE, TRUE,  TRUE,  FALSE, FALSE, uriQuery))
-    list.add(Array("defaulturiquerynopush_skiphandled",   FALSE, FALSE, FALSE, FALSE, FALSE, uriQuery))
-    list.add(Array("withmetauri_query_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, uriQuery))
-    list.add(Array("withmetauri_querystrict_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, uriQuery))
-    list.add(Array("withmetauri_querynopush_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, uriQuery))
+    list.add(Array("defaulturiquery_skiphandled",         FALSE, TRUE,  FALSE, FALSE, FALSE, uriQuery))  // 18
+    list.add(Array("defaulturiquerystrict_skiphandled",   FALSE, TRUE,  TRUE,  FALSE, FALSE, uriQuery))  // 19
+    list.add(Array("defaulturiquerynopush_skiphandled",   FALSE, FALSE, FALSE, FALSE, FALSE, uriQuery))  // 20
+    list.add(Array("withmetauri_query_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, uriQuery))  // 21
+    list.add(Array("withmetauri_querystrict_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, uriQuery))  // 22
+    list.add(Array("withmetauri_querynopush_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, uriQuery))  // 23
 
     // dsl query                             meta, push, strict, filter, encode, query
-    list.add(Array("defaultdslquery",        FALSE, TRUE,  FALSE, TRUE, FALSE, dslQuery))
-    list.add(Array("defaultstrictdslquery",  FALSE, TRUE,  TRUE,  TRUE, FALSE, dslQuery))
-    list.add(Array("defaultnopushdslquery",  FALSE, FALSE, FALSE, TRUE, FALSE, dslQuery))
-    list.add(Array("withmetadslquery",       TRUE,  TRUE,  FALSE, TRUE, FALSE, dslQuery))
-    list.add(Array("withmetastrictdslquery", TRUE,  TRUE,  TRUE,  TRUE, FALSE, dslQuery))
-    list.add(Array("withmetanopushdslquery", TRUE,  FALSE, FALSE, TRUE, FALSE, dslQuery))
+    list.add(Array("defaultdslquery",        FALSE, TRUE,  FALSE, TRUE, FALSE, dslQuery))  // 24
+    list.add(Array("defaultstrictdslquery",  FALSE, TRUE,  TRUE,  TRUE, FALSE, dslQuery))  // 25
+    list.add(Array("defaultnopushdslquery",  FALSE, FALSE, FALSE, TRUE, FALSE, dslQuery))  // 26
+    list.add(Array("withmetadslquery",       TRUE,  TRUE,  FALSE, TRUE, FALSE, dslQuery))  // 27
+    list.add(Array("withmetastrictdslquery", TRUE,  TRUE,  TRUE,  TRUE, FALSE, dslQuery))  // 28
+    list.add(Array("withmetanopushdslquery", TRUE,  FALSE, FALSE, TRUE, FALSE, dslQuery))  // 29
 
     // disable double filtering                          meta, push, strict, filter, encode, query
-    list.add(Array("defaultdslquery_skiphandled",        FALSE, TRUE,  FALSE, FALSE, FALSE, dslQuery))
-    list.add(Array("defaultstrictdslquery_skiphandled",  FALSE, TRUE,  TRUE,  FALSE, FALSE, dslQuery))
-    list.add(Array("defaultnopushdslquery_skiphandled",  FALSE, FALSE, FALSE, FALSE, FALSE, dslQuery))
-    list.add(Array("withmetadslquery_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, dslQuery))
-    list.add(Array("withmetastrictdslquery_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, dslQuery))
-    list.add(Array("withmetanopushdslquery_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, dslQuery))
+    list.add(Array("defaultdslquery_skiphandled",        FALSE, TRUE,  FALSE, FALSE, FALSE, dslQuery))  // 30
+    list.add(Array("defaultstrictdslquery_skiphandled",  FALSE, TRUE,  TRUE,  FALSE, FALSE, dslQuery))  // 31
+    list.add(Array("defaultnopushdslquery_skiphandled",  FALSE, FALSE, FALSE, FALSE, FALSE, dslQuery))  // 32
+    list.add(Array("withmetadslquery_skiphandled",       TRUE,  TRUE,  FALSE, FALSE, FALSE, dslQuery))  // 33
+    list.add(Array("withmetastrictdslquery_skiphandled", TRUE,  TRUE,  TRUE,  FALSE, FALSE, dslQuery))  // 34
+    list.add(Array("withmetanopushdslquery_skiphandled", TRUE,  FALSE, FALSE, FALSE, FALSE, dslQuery))  // 35
 
     // unicode                                      meta, push, strict, filter, encode, query
-    list.add(Array("default_" + "בְּדִיק" + "_",        FALSE, TRUE,  FALSE, TRUE, TRUE, noQuery))
-    list.add(Array("defaultstrict_" + "בְּדִיק" + "_",  FALSE, TRUE,  TRUE,  TRUE, TRUE, noQuery))
-    list.add(Array("defaultnopush_" + "בְּדִיק" + "_",  FALSE, FALSE, FALSE, TRUE, TRUE, noQuery))
-    list.add(Array("withmeta_" + "בְּדִיק" + "_",       TRUE,  TRUE,  FALSE, TRUE, TRUE, noQuery))
-    list.add(Array("withmetastrict_" + "בְּדִיק" + "_", TRUE,  TRUE,  TRUE,  TRUE, TRUE, noQuery))
-    list.add(Array("withmetanopush_" + "בְּדִיק" + "_", TRUE,  FALSE, FALSE, TRUE, TRUE, noQuery))
+    list.add(Array("default_" + "בְּדִיק" + "_",        FALSE, TRUE,  FALSE, TRUE, TRUE, noQuery))  // 36
+    list.add(Array("defaultstrict_" + "בְּדִיק" + "_",  FALSE, TRUE,  TRUE,  TRUE, TRUE, noQuery))  // 37
+    list.add(Array("defaultnopush_" + "בְּדִיק" + "_",  FALSE, FALSE, FALSE, TRUE, TRUE, noQuery))  // 38
+    list.add(Array("withmeta_" + "בְּדִיק" + "_",       TRUE,  TRUE,  FALSE, TRUE, TRUE, noQuery))  // 39
+    list.add(Array("withmetastrict_" + "בְּדִיק" + "_", TRUE,  TRUE,  TRUE,  TRUE, TRUE, noQuery))  // 40
+    list.add(Array("withmetanopush_" + "בְּדִיק" + "_", TRUE,  FALSE, FALSE, TRUE, TRUE, noQuery))  // 41
 
     // disable double filtering                                 meta, push, strict, filter, encode, query
-    list.add(Array("default_skiphandled_" + "בְּדִיק" + "_",        FALSE, TRUE,  FALSE, FALSE, TRUE, noQuery))
-    list.add(Array("defaultstrict_skiphandled_" + "בְּדִיק" + "_",  FALSE, TRUE,  TRUE,  FALSE, TRUE, noQuery))
-    list.add(Array("defaultnopush_skiphandled_" + "בְּדִיק" + "_",  FALSE, FALSE, FALSE, FALSE, TRUE, noQuery))
-    list.add(Array("withmeta_skiphandled_" + "בְּדִיק" + "_",       TRUE,  TRUE,  FALSE, FALSE, TRUE, noQuery))
-    list.add(Array("withmetastrict_skiphandled_" + "בְּדִיק" + "_", TRUE,  TRUE,  TRUE,  FALSE, TRUE, noQuery))
-    list.add(Array("withmetanopush_skiphandled_" + "בְּדִיק" + "_", TRUE,  FALSE, FALSE, FALSE, TRUE, noQuery))
+    list.add(Array("default_skiphandled_" + "בְּדִיק" + "_",        FALSE, TRUE,  FALSE, FALSE, TRUE, noQuery))  // 42
+    list.add(Array("defaultstrict_skiphandled_" + "בְּדִיק" + "_",  FALSE, TRUE,  TRUE,  FALSE, TRUE, noQuery))  // 43
+    list.add(Array("defaultnopush_skiphandled_" + "בְּדִיק" + "_",  FALSE, FALSE, FALSE, FALSE, TRUE, noQuery))  // 44
+    list.add(Array("withmeta_skiphandled_" + "בְּדִיק" + "_",       TRUE,  TRUE,  FALSE, FALSE, TRUE, noQuery))  // 45
+    list.add(Array("withmetastrict_skiphandled_" + "בְּדִיק" + "_", TRUE,  TRUE,  TRUE,  FALSE, TRUE, noQuery))  // 46
+    list.add(Array("withmetanopush_skiphandled_" + "בְּדִיק" + "_", TRUE,  FALSE, FALSE, FALSE, TRUE, noQuery))  // 47
 
     list
   }

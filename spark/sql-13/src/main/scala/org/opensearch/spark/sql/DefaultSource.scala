@@ -181,7 +181,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       val metadata = cfg.getReadMetadataField
       // if metadata is not selected, don't ask for it
       if (!requiredColumns.contains(metadata)) {
-        paramWithScan += (ConfigurationOptions.ES_READ_METADATA -> false.toString())
+        paramWithScan += (ConfigurationOptions.OPENSEARCH_READ_METADATA -> false.toString())
       }
       else {
         filteredColumns = requiredColumns.filter( _ != metadata)

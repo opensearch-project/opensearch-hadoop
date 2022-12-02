@@ -40,6 +40,6 @@ class IndexBulkFactory extends AbstractBulkFactory {
 
     @Override
     protected String getOperation() {
-        return ConfigurationOptions.ES_OPERATION_INDEX;
+        return ConfigurationOptions.OPENSEARCH_OPERATION_INDEX;
     }
 }

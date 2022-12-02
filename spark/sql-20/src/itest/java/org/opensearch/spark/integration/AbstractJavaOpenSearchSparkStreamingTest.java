@@ -49,7 +49,6 @@ import org.apache.spark.streaming.scheduler.StreamingListenerReceiverStarted;
 import org.apache.spark.streaming.scheduler.StreamingListenerReceiverStopped;
 import org.apache.spark.streaming.scheduler.StreamingListenerStreamingStarted;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
@@ -130,7 +129,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
 
     public AbstractJavaOpenSearchSparkStreamingTest(String prefix, boolean readMetadata) {
         this.prefix = prefix;
-        this.cfg.put(ES_READ_METADATA, Boolean.toString(readMetadata));
+        this.cfg.put(OPENSEARCH_READ_METADATA, Boolean.toString(readMetadata));
     }
 
     @Before
@@ -167,7 +166,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         String target = wrapIndex(resource("spark-test-nonexisting-scala-basic-write", "data", version));
 
         Map<String, String> localConf = new HashMap<>(cfg);
-        localConf.put(ES_INDEX_AUTO_CREATE, "no");
+        localConf.put(OPENSEARCH_INDEX_AUTO_CREATE, "no");
 
         JavaRDD<Map<String, Object>> batch = sc.parallelize(docs);
         Queue<JavaRDD<Map<String, Object>>> rddQueue = new LinkedList<>();
@@ -184,7 +183,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsDataFrame1Write() throws Exception {
+    public void testOpenSearchDataFrame1Write() throws Exception {
         Map<String, Object> doc1 = new HashMap<>();
         doc1.put("one", null);
         Set<String> values = new HashSet<>();
@@ -236,7 +235,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         docs.add(doc2);
 
         Map<String, String> localConf = new HashMap<>(cfg);
-        localConf.put("es.mapping.id", "number");
+        localConf.put("opensearch.mapping.id", "number");
 
         String target = wrapIndex(resource("spark-streaming-test-scala-id-write", "data", version));
         String docEndpoint = wrapIndex(docEndpoint("spark-streaming-test-scala-id-write", "data", version));
@@ -378,7 +377,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         String target = wrapIndex(resource("spark-streaming-test-scala-write-exclude", "data", version));
 
         Map<String, String> localConf = new HashMap<>(cfg);
-        localConf.put(ES_MAPPING_EXCLUDE, "airport");
+        localConf.put(OPENSEARCH_MAPPING_EXCLUDE, "airport");
 
         JavaRDD<Map<String, Object>> batch = sc.parallelize(docs);
         Queue<JavaRDD<Map<String, Object>>> rddQueue = new LinkedList<>();
@@ -422,7 +421,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         String target = wrapIndex(resource("spark-streaming-test-scala-ingest-write", "data", version));
 
         Map<String, String> localConf = new HashMap<>(cfg);
-        localConf.put(ES_INGEST_PIPELINE, pipelineName);
+        localConf.put(OPENSEARCH_INGEST_PIPELINE, pipelineName);
         localConf.put(OPENSEARCH_NODES_INGEST_ONLY, "true");
 
         JavaRDD<Map<String, Object>> batch = sc.parallelize(docs);
@@ -539,10 +538,10 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
 
         String lang = "painless";
         Map<String, String> props = new HashMap<>();
-        props.put("es.write.operation", "upsert");
-        props.put("es.input.json", "true");
-        props.put("es.mapping.id", "id");
-        props.put("es.update.script.lang", lang);
+        props.put("opensearch.write.operation", "upsert");
+        props.put("opensearch.input.json", "true");
+        props.put("opensearch.mapping.id", "id");
+        props.put("opensearch.update.script.lang", lang);
 
         String doc1 = "{\"id\":\"1\",\"address\":{\"zipcode\":\"12345\",\"id\":\"1\"}}";
         List<String> docs1 = new ArrayList<>();
@@ -551,8 +550,8 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         String upScript = "ctx._source.address.add(params.new_address)";
 
         Map<String, String> localConf1 = new HashMap<>(props);
-        localConf1.put("es.update.script.params", upParams);
-        localConf1.put("es.update.script", upScript);
+        localConf1.put("opensearch.update.script.params", upParams);
+        localConf1.put("opensearch.update.script", upScript);
 
         JavaRDD<String> batch1 = sc.parallelize(docs1);
         Queue<JavaRDD<String>> rddQueue1 = new LinkedList<>();
@@ -571,8 +570,8 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         String noteUpScript = "ctx._source.note = params.new_note";
 
         Map<String, String> localConf2 = new HashMap<>(props);
-        localConf2.put("es.update.script.params", noteUpParams);
-        localConf2.put("es.update.script", noteUpScript);
+        localConf2.put("opensearch.update.script.params", noteUpParams);
+        localConf2.put("opensearch.update.script", noteUpScript);
 
         JavaRDD<String> batch2 = sc.parallelize(docs2);
         Queue<JavaRDD<String>> rddQueue2 = new LinkedList<>();

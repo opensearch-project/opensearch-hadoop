@@ -38,14 +38,14 @@ import org.junit.Test;
 
 import java.util.UUID;
 
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT;
 
 public class AbstractTransportPoolTest {
 
     @Test
     public void removeOldConnections() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty(ES_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT, "2s");
+        settings.setProperty(OPENSEARCH_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT, "2s");
 
         String host = SettingsUtils.discoveredOrDeclaredNodes(settings).get(0);
 

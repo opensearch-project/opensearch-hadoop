@@ -153,7 +153,7 @@ public class HiveSuite {
         sb.append("TBLPROPERTIES('opensearch.resource'='" + resource + "'");
 
         if (StringUtils.hasText(query)) {
-            sb.append(",'es.query'='" + query + "'");
+            sb.append(",'opensearch.query'='" + query + "'");
         }
 
         if (params != null && params.length > 0) {

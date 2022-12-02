@@ -29,7 +29,6 @@
 package org.opensearch.hadoop.integration.hive;
 
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.TestUtils;
@@ -114,7 +113,7 @@ public class AbstractHiveSaveTest {
                         + "id       BIGINT, "
                         + "name     STRING, "
                         + "ts       STRING) "
-                        + tableProps(resource("hive-savemeta", "data", targetVersion), "'es.mapping.id' = 'id'", "'es.mapping.version' = '<\"5\">'");
+                        + tableProps(resource("hive-savemeta", "data", targetVersion), "'opensearch.mapping.id' = 'id'", "'opensearch.mapping.version' = '<\"5\">'");
 
         String selectTest = "SELECT s.name, s.ts FROM sourcewithmetadata s";
 
@@ -240,7 +239,7 @@ public class AbstractHiveSaveTest {
                         + "dTE     TIMESTAMP, "
                         + "Name     STRING, "
                         + "links    STRUCT<uRl:STRING, pICture:STRING>) "
-                        + tableProps(resource("hive-aliassave", "data", targetVersion), "'es.mapping.names' = 'dTE:@timestamp, uRl:url_123'");
+                        + tableProps(resource("hive-aliassave", "data", targetVersion), "'opensearch.mapping.names' = 'dTE:@timestamp, uRl:url_123'");
 
         // since the date format is different in Hive vs ISO8601/Joda, save only the date (which is the same) as a string
         // we do this since unix_timestamp() saves the date as a long (in seconds) and w/o mapping the date is not recognized as data
@@ -410,8 +409,8 @@ public class AbstractHiveSaveTest {
                         + "name     STRING, "
                         + "links    STRUCT<url:STRING, picture:STRING>) "
                         + tableProps(resource("hive-createsave", "data", targetVersion),
-                                "'" + ConfigurationOptions.ES_MAPPING_ID + "'='id'",
-                                "'" + ConfigurationOptions.ES_WRITE_OPERATION + "'='create'");
+                                "'" + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "'='id'",
+                                "'" + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "'='create'");
 
         String selectTest = "SELECT s.name, struct(s.url, s.picture) FROM createsource s";
 
@@ -449,8 +448,8 @@ public class AbstractHiveSaveTest {
                         + "name     STRING, "
                         + "links    STRUCT<url:STRING, picture:STRING>) "
                         + tableProps(resource("hive-createsave", "data", targetVersion),
-                                "'" + ConfigurationOptions.ES_MAPPING_ID + "'='id'",
-                                "'" + ConfigurationOptions.ES_WRITE_OPERATION + "'='create'");
+                                "'" + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "'='id'",
+                                "'" + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "'='create'");
 
         String selectTest = "SELECT s.name, struct(s.url, s.picture) FROM createsourceduplicate s";
 
@@ -482,8 +481,8 @@ public class AbstractHiveSaveTest {
                         + "name     STRING, "
                         + "links    STRUCT<url:STRING, picture:STRING>) "
                         + tableProps(resource("hive-updatesave", "data", targetVersion),
-                                "'" + ConfigurationOptions.ES_MAPPING_ID + "'='id'",
-                                "'" + ConfigurationOptions.ES_WRITE_OPERATION + "'='upsert'");
+                                "'" + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "'='id'",
+                                "'" + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "'='upsert'");
 
         String selectTest = "SELECT s.name, struct(s.url, s.picture) FROM updatesource s";
 
@@ -521,8 +520,8 @@ public class AbstractHiveSaveTest {
                         + "name     STRING, "
                         + "links    STRUCT<url:STRING, picture:STRING>) "
                         + tableProps(resource("hive-updatewoupsertsave", "data", targetVersion),
-                                "'" + ConfigurationOptions.ES_MAPPING_ID + "'='id'",
-                                "'" + ConfigurationOptions.ES_WRITE_OPERATION + "'='update'");
+                                "'" + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "'='id'",
+                                "'" + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "'='update'");
 
         String selectTest = "SELECT s.name, struct(s.url, s.picture) FROM updatewoupsertsource s";
 
@@ -624,7 +623,7 @@ public class AbstractHiveSaveTest {
                 "CREATE EXTERNAL TABLE fieldexclude ("
                         + "id       BIGINT, "
                         + "name     STRING)"
-                        + tableProps(resource("hive-fieldexclude", "data", targetVersion), "'es.mapping.id'='id'", "'es.mapping.exclude'='id'");
+                        + tableProps(resource("hive-fieldexclude", "data", targetVersion), "'opensearch.mapping.id'='id'", "'opensearch.mapping.exclude'='id'");
 
         String selectTest = "SELECT s.id, s.name FROM sourcefieldexclude s";
 

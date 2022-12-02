@@ -43,7 +43,6 @@ import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Encoders;
 import org.apache.spark.sql.SparkSession;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
@@ -60,9 +59,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.junit.runners.Parameterized;
 
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE;
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INGEST_PIPELINE;
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_MAPPING_EXCLUDE;
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY;
 import static org.hamcrest.Matchers.both;
 import static org.hamcrest.Matchers.containsString;
@@ -196,7 +195,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
         test.run(
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
-                        .option(ES_INDEX_AUTO_CREATE, "no")
+                        .option(OPENSEARCH_INDEX_AUTO_CREATE, "no")
                         .format("es"),
                 target
         );
@@ -267,7 +266,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
         test.run(
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
-                        .option("es.mapping.id", "id")
+                        .option("opensearch.mapping.id", "id")
                         .format("es"),
                 target
         );
@@ -306,7 +305,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
         test.run(
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
-                        .option(ES_MAPPING_EXCLUDE, "name")
+                        .option(OPENSEARCH_MAPPING_EXCLUDE, "name")
                         .format("es"),
                 target
         );
@@ -347,7 +346,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
         test.run(
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
-                        .option(ES_INGEST_PIPELINE, pipelineName)
+                        .option(OPENSEARCH_INGEST_PIPELINE, pipelineName)
                         .option(OPENSEARCH_NODES_INGEST_ONLY, "true")
                         .format("es"),
                 target
@@ -461,9 +460,9 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
 
         // Common configurations
         Map<String, String> updateProperties = new HashMap<>();
-        updateProperties.put("es.write.operation", "upsert");
-        updateProperties.put("es.mapping.id", "id");
-        updateProperties.put("es.update.script.lang", lang);
+        updateProperties.put("opensearch.write.operation", "upsert");
+        updateProperties.put("opensearch.mapping.id", "id");
+        updateProperties.put("opensearch.update.script.lang", lang);
 
         // Run 1
         ContactBean doc1;
@@ -487,8 +486,8 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                     .writeStream()
                     .option("checkpointLocation", checkpoint(target))
                     .options(updateProperties)
-                    .option("es.update.script.params", "new_address:address")
-                    .option("es.update.script", script1)
+                    .option("opensearch.update.script.params", "new_address:address")
+                    .option("opensearch.update.script", script1)
                     .format("es"),
                 target
             );
@@ -512,8 +511,8 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                     .writeStream()
                     .option("checkpointLocation", checkpoint(target))
                     .options(updateProperties)
-                    .option("es.update.script.params", "new_note:note")
-                    .option("es.update.script", script2)
+                    .option("opensearch.update.script.params", "new_note:note")
+                    .option("opensearch.update.script", script2)
                     .format("es"),
                 target
             );

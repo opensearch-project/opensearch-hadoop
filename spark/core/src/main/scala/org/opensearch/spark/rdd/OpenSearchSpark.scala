@@ -33,7 +33,7 @@ import scala.collection.Map
 import org.apache.commons.logging.LogFactory
 import org.apache.spark.SparkContext
 import org.apache.spark.rdd.RDD
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INPUT_JSON
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_INPUT_JSON
 import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_OUTPUT_JSON
 import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_QUERY
 import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE_READ
@@ -119,11 +119,11 @@ object OpenSearchSpark {
   }
 
   // JSON variant
-  def saveJsonToEs(rdd: RDD[_], resource: String): Unit = { saveToEs(rdd, resource, Map(ES_INPUT_JSON -> true.toString)) }
+  def saveJsonToEs(rdd: RDD[_], resource: String): Unit = { saveToEs(rdd, resource, Map(OPENSEARCH_INPUT_JSON -> true.toString)) }
   def saveJsonToEs(rdd: RDD[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(rdd, resource, collection.mutable.Map(cfg.toSeq: _*) += (ES_INPUT_JSON -> true.toString))
+    saveToEs(rdd, resource, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
   def saveJsonToEs(rdd: RDD[_], cfg: Map[String, String]): Unit = {
-    saveToEs(rdd, collection.mutable.Map(cfg.toSeq: _*) += (ES_INPUT_JSON -> true.toString))
+    saveToEs(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
 }

@@ -32,7 +32,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import org.junit.Assume;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
@@ -72,63 +71,25 @@ public class ResourceTest {
     }
 
     @Test
-    public void testToString() throws Exception {
-        Resource res = createResource("foo/bar");
-        assertEquals("foo/bar", res.toString());
-    }
-
-    @Test
     public void testJustIndex() throws Exception {
-        Resource res = createResource("foo/_all");
-        assertEquals("foo/_all", res.toString());
-    }
-
-    @Test
-    public void testJustType() throws Exception {
-        Resource res = createResource("_all/foo");
-        assertEquals("_all/foo", res.toString());
-    }
-
-    @Test
-    public void testAllTypeless() throws Exception {
-        Resource res = createResource("_all");
-        assertEquals("_all", res.toString());
-    }
-
-    @Test
-    public void testIndexAndType() throws Exception {
-        Resource res = createResource("foo/bar");
-        assertEquals("foo/bar", res.toString());
-    }
-
-    @Test
-    public void testIndexTypeless() throws Exception {
         Resource res = createResource("foo");
         assertEquals("foo", res.toString());
     }
 
     @Test
-    public void testUnderscore() throws Exception {
-        Resource res = createResource("fo_o/ba_r");
-        assertEquals("fo_o/ba_r", res.toString());
+    public void testAll() throws Exception {
+        Resource res = createResource("_all");
+        assertEquals("_all", res.toString());
     }
 
     @Test
-    public void testUnderscoreTypeless() throws Exception {
+    public void testUnderscore() throws Exception {
         Resource res = createResource("fo_o");
         assertEquals("fo_o", res.toString());
     }
 
     @Test
     public void testQueryUri() throws Exception {
-        Settings s = new TestSettings();
-        Resource res = createResource("foo/bar/_search=?somequery", s);
-        assertEquals("foo/bar", res.toString());
-        assertEquals("?somequery", s.getQuery());
-    }
-
-    @Test
-    public void testQueryUriTypeless() throws Exception {
         Settings s = new TestSettings();
         Resource res = createResource("foo/_search=?somequery", s);
         assertEquals("foo", res.toString());
@@ -137,14 +98,6 @@ public class ResourceTest {
 
     @Test
     public void testQueryUriWithParams() throws Exception {
-        Settings s = new TestSettings();
-        Resource res = createResource("foo/bar/_search=?somequery&bla=bla", s);
-        assertEquals("foo/bar", res.toString());
-        assertEquals("?somequery&bla=bla", s.getQuery());
-    }
-
-    @Test
-    public void testQueryUriWithParamsTypeless() throws Exception {
         Settings s = new TestSettings();
         Resource res = createResource("foo/_search=?somequery&bla=bla", s);
         assertEquals("foo", res.toString());
@@ -155,14 +108,6 @@ public class ResourceTest {
     public void testQueryUriConflict() throws Exception {
         Settings s = new TestSettings();
         s.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "{\"match_all\":{}}");
-        Resource res = createResource("foo/bar/_search=?somequery", s);
-        assertEquals("foo/bar", res.toString());
-    }
-
-    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
-    public void testQueryUriConflictTypeless() throws Exception {
-        Settings s = new TestSettings();
-        s.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "{\"match_all\":{}}");
         Resource res = createResource("foo/_search=?somequery", s);
         assertEquals("foo", res.toString());
     }
@@ -171,26 +116,12 @@ public class ResourceTest {
     public void testQueryUriConflictWithParams() throws Exception {
         Settings s = new TestSettings();
         s.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "{\"match_all\":{}}");
-        Resource res = createResource("foo/bar/_search=?somequery&bla=bla", s);
-        assertEquals("foo/bar", res.toString());
-    }
-
-    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
-    public void testQueryUriConflictWithParamsTypeless() throws Exception {
-        Settings s = new TestSettings();
-        s.setProperty(ConfigurationOptions.OPENSEARCH_QUERY, "{\"match_all\":{}}");
         Resource res = createResource("foo/_search=?somequery&bla=bla", s);
         assertEquals("foo", res.toString());
     }
 
     @Test
     public void testDynamicFieldLowercase() throws Exception {
-        Resource res = createResource("foo/Fbar");
-        res = createResource("foo-{F}/bar");
-    }
-
-    @Test
-    public void testDynamicFieldTypeless() throws Exception {
         Resource res = createResource("foo");
         res = createResource("foo-{F}");
     }
@@ -208,18 +139,7 @@ public class ResourceTest {
     @Test
     public void testBulkWithIngestPipeline() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_INGEST_PIPELINE, "ingest-pipeline");
-        Resource res = createResource("pipeline/test", settings);
-        assertEquals("pipeline/test", res.toString());
-        assertEquals("pipeline/_aliases", res.aliases());
-        assertEquals("pipeline/test/_bulk?pipeline=ingest-pipeline", res.bulk());
-        assertEquals("pipeline/_refresh", res.refresh());
-    }
-
-    @Test
-    public void testBulkWithIngestPipelineTypeless() throws Exception {
-        Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_INGEST_PIPELINE, "ingest-pipeline");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE, "ingest-pipeline");
         Resource res = createResource("pipeline", settings);
         assertEquals("pipeline", res.toString());
         assertEquals("pipeline/_aliases", res.aliases());
@@ -231,23 +151,23 @@ public class ResourceTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testBulkWithBadIngestPipeline() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_INGEST_PIPELINE, "ingest pipeline");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE, "ingest pipeline");
         createResource("pipeline/test", settings);
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testBulkUpdateBreaksWithIngestPipeline() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_INGEST_PIPELINE, "ingest-pipeline");
-        settings.setProperty(ConfigurationOptions.ES_WRITE_OPERATION, ConfigurationOptions.ES_OPERATION_UPDATE);
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE, "ingest-pipeline");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE);
         createResource("pipeline/test", settings);
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testBulkUpsertBreaksWithIngestPipeline() throws Exception {
         Settings settings = new TestSettings();
-        settings.setProperty(ConfigurationOptions.ES_INGEST_PIPELINE, "ingest-pipeline");
-        settings.setProperty(ConfigurationOptions.ES_WRITE_OPERATION, ConfigurationOptions.ES_OPERATION_UPSERT);
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE, "ingest-pipeline");
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT);
         createResource("pipeline/test", settings);
     }
 

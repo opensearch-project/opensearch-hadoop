@@ -58,7 +58,7 @@ public class AbstractStormIdMappingBoltTests extends AbstractStormBoltTests {
         List doc2 = ImmutableList.of("OTP", "Otopeni", "SFO", "San Fran", "number", 2);
 
         Map localCfg = new LinkedHashMap(conf);
-        localCfg.put(ConfigurationOptions.ES_MAPPING_ID, "number");
+        localCfg.put(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
 
         String target = index + "/id-write";
         TopologyBuilder builder = new TopologyBuilder();

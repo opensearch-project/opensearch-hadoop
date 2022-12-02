@@ -96,7 +96,7 @@ JobClient.runJob(conf);
 ```java
 Configuration conf = new Configuration();
 conf.set("opensearch.resource", "radio/artists");
-conf.set("es.query", "?q=me*");             // replace this with the relevant query
+conf.set("opensearch.query", "?q=me*");             // replace this with the relevant query
 Job job = new Job(conf)
 job.setInputFormatClass(EsInputFormat.class);
 ...
@@ -127,7 +127,7 @@ CREATE EXTERNAL TABLE artists (
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
 STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler'
-TBLPROPERTIES('opensearch.resource' = 'radio/artists', 'es.query' = '?q=me*');
+TBLPROPERTIES('opensearch.resource' = 'radio/artists', 'opensearch.query' = '?q=me*');
 ```
 The fields defined in the table are mapped to the JSON when communicating with Elasticsearch. Notice the use of `TBLPROPERTIES` to define the location, that is the query used for reading from this table.
 
@@ -171,7 +171,7 @@ and use `$ESSTORAGE` for storage definition.
 ### Reading
 To read data from ES, use `OpenSearchStorage` and specify the query through the `LOAD` function:
 ```SQL
-A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage('es.query=?q=me*');
+A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage('opensearch.query=?q=me*');
 DUMP A;
 ```
 

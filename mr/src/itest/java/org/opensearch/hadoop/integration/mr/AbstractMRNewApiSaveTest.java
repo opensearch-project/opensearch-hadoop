@@ -47,7 +47,6 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.Stream;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.mr.EsOutputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
@@ -55,7 +54,6 @@ import org.opensearch.hadoop.mr.MultiOutputFormat;
 import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.ClusterInfo;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.TestUtils;
@@ -129,7 +127,7 @@ public class AbstractMRNewApiSaveTest {
         Job json = new Job(job.getConfiguration());
         json.setMapperClass(Mapper.class);
         json.setMapOutputValueClass(Text.class);
-        json.getConfiguration().set(ConfigurationOptions.ES_INPUT_JSON, "true");
+        json.getConfiguration().set(ConfigurationOptions.OPENSEARCH_INPUT_JSON, "true");
         TextInputFormat.addInputPath(json, new Path(MRSuite.testData.sampleArtistsJson(conf)));
 
         return Arrays.asList(new Object[][] {
@@ -176,7 +174,7 @@ public class AbstractMRNewApiSaveTest {
     public void testSaveWithId() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-savewithid", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
 
         runJob(conf);
     }
@@ -184,8 +182,8 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testCreateWithId() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "create");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "create");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
@@ -194,8 +192,8 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testCreateWithIdShouldFailOnDuplicate() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "create");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "create");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
 
         assertFalse("job should have failed", runJob(conf));
@@ -212,7 +210,7 @@ public class AbstractMRNewApiSaveTest {
         client.close();
 
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-ingested", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INGEST_PIPELINE, "mrnewapi-pipeline");
+        conf.set(ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE, "mrnewapi-pipeline");
         conf.set(ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY, "true");
 
         runJob(conf);
@@ -220,7 +218,7 @@ public class AbstractMRNewApiSaveTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testUpdateWithoutId() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-update", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
@@ -229,8 +227,8 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testUpsertWithId() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-update", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
@@ -239,8 +237,8 @@ public class AbstractMRNewApiSaveTest {
     @Test
     public void testUpdateWithoutUpsert() throws Exception {
         Configuration conf = createConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-updatewoupsert", "data", clusterInfo.getMajorVersion()));
 
         assertFalse("job should have failed", runJob(conf));
@@ -251,14 +249,14 @@ public class AbstractMRNewApiSaveTest {
         Configuration conf = createConf();
         // use an existing id to allow the update to succeed
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
 
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        conf.set(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_RETRY_ON_CONFLICT, "3");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = 3");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "int counter = 3");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -267,14 +265,14 @@ public class AbstractMRNewApiSaveTest {
     public void testUpdateOnlyParamScript() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; String anothercounter = params.param2");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "int counter = params.param1; String anothercounter = params.param2");
 
         runJob(conf);
     }
@@ -283,14 +281,14 @@ public class AbstractMRNewApiSaveTest {
     public void testUpdateOnlyParamJsonScript() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-createwithid", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -299,10 +297,10 @@ public class AbstractMRNewApiSaveTest {
     public void testUpsertScript() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-upsert-script", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = 1");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "counter = 1");
 
         runJob(conf);
     }
@@ -311,13 +309,13 @@ public class AbstractMRNewApiSaveTest {
     public void testUpsertParamScript() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-upsert-script-param", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = Integer.parseInt(params.param2)");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = Integer.parseInt(params.param2)");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -326,13 +324,13 @@ public class AbstractMRNewApiSaveTest {
     public void testUpsertParamJsonScript() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-upsert-script-param", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -341,7 +339,7 @@ public class AbstractMRNewApiSaveTest {
     public void testIndexAutoCreateDisabled() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-non-existing", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "no");
 
         runJob(conf);
     }
@@ -350,7 +348,7 @@ public class AbstractMRNewApiSaveTest {
     public void testIndexPattern() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-pattern-{tag}", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
         runJob(conf);
     }
@@ -359,7 +357,7 @@ public class AbstractMRNewApiSaveTest {
     public void testIndexPatternWithFormatting() throws Exception {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-pattern-format-{@timestamp|YYYY-MM-dd}", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
         runJob(conf);
     }

@@ -39,7 +39,6 @@ import java.util.List;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.TestUtils;
@@ -125,7 +124,7 @@ public class AbstractHiveSearchTest {
                 + "name     STRING, "
                 + "links     STRUCT<url:STRING, picture:STRING>, "
                 + "meta     MAP<STRING, STRING>) "
-                + tableProps(resource("hive-artists", "data", targetVersion), "'es.read.metadata.field'='meta'");
+                + tableProps(resource("hive-artists", "data", targetVersion), "'opensearch.read.metadata.field'='meta'");
 
         String select = "SELECT meta FROM artistsload" + testInstance;
 
@@ -241,7 +240,7 @@ public class AbstractHiveSearchTest {
                 + "dTE     TIMESTAMP, "
                 + "Name     STRING, "
                 + "links    STRUCT<uRl:STRING, pICture:STRING>) "
-                + tableProps(resource("hive-aliassave", "data", targetVersion), "'es.mapping.names' = 'dTE:@timestamp, uRl:url_123'");
+                + tableProps(resource("hive-aliassave", "data", targetVersion), "'opensearch.mapping.names' = 'dTE:@timestamp, uRl:url_123'");
 
         String select = "SELECT * FROM aliasload" + testInstance;
 
@@ -260,7 +259,7 @@ public class AbstractHiveSearchTest {
                 + "dTE     TIMESTAMP, "
                 + "Name     STRING, "
                 + "links    STRUCT<uRl:STRING, pICture:STRING>) "
-                + tableProps(resource("foobar", "missing", targetVersion), "'es.index.read.missing.as.empty' = 'true'");
+                + tableProps(resource("foobar", "missing", targetVersion), "'opensearch.index.read.missing.as.empty' = 'true'");
 
         String select = "SELECT * FROM missing" + testInstance;
 
@@ -276,7 +275,7 @@ public class AbstractHiveSearchTest {
                 + "id         BIGINT, "
                 + "name     STRING, "
                 + "links     STRUCT<url:STRING, picture:STRING>) "
-                + tableProps(resource("hive-artists", "data", targetVersion), "'es.read.source.filter' = 'name,links'");
+                + tableProps(resource("hive-artists", "data", targetVersion), "'opensearch.read.source.filter' = 'name,links'");
 
         String select = "SELECT * FROM collisiontest" + testInstance;
 
@@ -463,7 +462,7 @@ public class AbstractHiveSearchTest {
 
     private String tableProps(String resource, String... params) {
         List<String> copy = new ArrayList(Arrays.asList(params));
-        copy.add("'" + ConfigurationOptions.ES_READ_METADATA + "'='" + readMetadata + "'");
+        copy.add("'" + ConfigurationOptions.OPENSEARCH_READ_METADATA + "'='" + readMetadata + "'");
         return HiveSuite.tableProps(resource, query, copy.toArray(new String[copy.size()]));
     }
 }

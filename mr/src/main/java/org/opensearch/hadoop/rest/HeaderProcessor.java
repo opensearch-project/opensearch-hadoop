@@ -43,7 +43,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_NET_HTTP_HEADER_PREFIX;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NET_HTTP_HEADER_PREFIX;
 
 /**
  * Pulls HTTP header information from Configurations, validates them, joins them with connector defaults, and
@@ -131,8 +131,8 @@ public final class HeaderProcessor {
         for (Map.Entry<Object, Object> prop : settings.asProperties().entrySet()) {
             String key = prop.getKey().toString();
 
-            if (key.startsWith(ES_NET_HTTP_HEADER_PREFIX)) {
-                String headerName = key.substring(ES_NET_HTTP_HEADER_PREFIX.length());
+            if (key.startsWith(OPENSEARCH_NET_HTTP_HEADER_PREFIX)) {
+                String headerName = key.substring(OPENSEARCH_NET_HTTP_HEADER_PREFIX.length());
                 validateName(headerName, prop);
                 ensureNotReserved(headerName, workingHeaders);
                 workingHeaders.put(headerName, extractHeaderValue(prop.getValue()));

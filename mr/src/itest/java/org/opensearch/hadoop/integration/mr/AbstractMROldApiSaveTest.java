@@ -55,7 +55,6 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.Stream;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.mr.EsOutputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
@@ -63,7 +62,6 @@ import org.opensearch.hadoop.mr.MultiOutputFormat;
 import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.ClusterInfo;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.TestUtils;
@@ -147,13 +145,13 @@ public class AbstractMROldApiSaveTest {
         JobConf standard = new JobConf(conf);
         standard.setMapperClass(TabMapper.class);
         standard.setMapOutputValueClass(LinkedMapWritable.class);
-        standard.set(ConfigurationOptions.ES_INPUT_JSON, "false");
+        standard.set(ConfigurationOptions.OPENSEARCH_INPUT_JSON, "false");
         FileInputFormat.setInputPaths(standard, new Path(MRSuite.testData.sampleArtistsDat(conf)));
 
         JobConf json = new JobConf(conf);
         json.setMapperClass(IdentityMapper.class);
         json.setMapOutputValueClass(Text.class);
-        json.set(ConfigurationOptions.ES_INPUT_JSON, "true");
+        json.set(ConfigurationOptions.OPENSEARCH_INPUT_JSON, "true");
         FileInputFormat.setInputPaths(json, new Path(MRSuite.testData.sampleArtistsJson(conf)));
 
         return Arrays.asList(new Object[][] {
@@ -195,7 +193,7 @@ public class AbstractMROldApiSaveTest {
         JobConf conf = createJobConf();
 
         // use only when dealing with constant input
-        assumeFalse(conf.get(ConfigurationOptions.ES_INPUT_JSON).equals("true"));
+        assumeFalse(conf.get(ConfigurationOptions.OPENSEARCH_INPUT_JSON).equals("true"));
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-constant", "data", clusterInfo.getMajorVersion()));
         conf.setMapperClass(ConstantMapper.class);
 
@@ -213,7 +211,7 @@ public class AbstractMROldApiSaveTest {
     @Test
     public void testBasicIndexWithId() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-savewithid", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
@@ -226,7 +224,7 @@ public class AbstractMROldApiSaveTest {
         String target = resource(index, type, clusterInfo.getMajorVersion());
 
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_MAPPING_ROUTING, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ROUTING, "number");
 
         RestUtils.touch(index);
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, index);
@@ -242,7 +240,7 @@ public class AbstractMROldApiSaveTest {
         String target = resource(index, type, clusterInfo.getMajorVersion());
 
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_MAPPING_ROUTING, "<foobar/>");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ROUTING, "<foobar/>");
 
         RestUtils.touch(index);
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, index);
@@ -254,8 +252,8 @@ public class AbstractMROldApiSaveTest {
     @Test
     public void testCreateWithId() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "create");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "create");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-createwithid", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
@@ -277,7 +275,7 @@ public class AbstractMROldApiSaveTest {
         client.close();
 
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-ingested", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INGEST_PIPELINE, "mroldapi-pipeline");
+        conf.set(ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE, "mroldapi-pipeline");
         conf.set(ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY, "true");
 
         runJob(conf);
@@ -287,7 +285,7 @@ public class AbstractMROldApiSaveTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testUpdateWithoutId() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-update", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
@@ -296,8 +294,8 @@ public class AbstractMROldApiSaveTest {
     @Test
     public void testUpsertWithId() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-update", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
@@ -306,8 +304,8 @@ public class AbstractMROldApiSaveTest {
     @Test(expected = IOException.class)
     public void testUpdateWithoutUpsert() throws Exception {
         JobConf conf = createJobConf();
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-updatewoupsert", "data", clusterInfo.getMajorVersion()));
 
         runJob(conf);
@@ -318,14 +316,14 @@ public class AbstractMROldApiSaveTest {
         JobConf conf = createJobConf();
         // use an existing id to allow the update to succeed
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-createwithid", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
 
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        conf.set(ConfigurationOptions.ES_UPDATE_RETRY_ON_CONFLICT, "3");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_RETRY_ON_CONFLICT, "3");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = 3");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "int counter = 3");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -334,14 +332,14 @@ public class AbstractMROldApiSaveTest {
     public void testUpdateOnlyParamScript() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-createwithid", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS, " param1:<1>,   param2:number ");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; String anothercounter = params.param2");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "int counter = params.param1; String anothercounter = params.param2");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -350,14 +348,14 @@ public class AbstractMROldApiSaveTest {
     public void testUpdateOnlyParamJsonScript() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-createwithid", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "int counter = params.param1; int anothercounter = params.param2");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -366,14 +364,14 @@ public class AbstractMROldApiSaveTest {
     public void testUpdateOnlyParamJsonScriptWithArray() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-createwithid", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"some_list\": [\"one\", \"two\"]}");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS_JSON, "{ \"some_list\": [\"one\", \"two\"]}");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "HashSet list = new HashSet(); list.add(ctx._source.list); list.add(params.some_list); ctx._source.list = list.toArray()");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "HashSet list = new HashSet(); list.add(ctx._source.list); list.add(params.some_list); ctx._source.list = list.toArray()");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
 
@@ -400,14 +398,14 @@ public class AbstractMROldApiSaveTest {
 
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-createwitharray", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "update");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "<1>");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"new_date\": [\"add me\", \"and me\"]}");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "update");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "<1>");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS_JSON, "{ \"new_date\": [\"add me\", \"and me\"]}");
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "HashSet tmp = new HashSet(); tmp.addAll(ctx._source.tags); tmp.addAll(params.new_date); ctx._source.tags = tmp.toArray()");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "HashSet tmp = new HashSet(); tmp.addAll(ctx._source.tags); tmp.addAll(params.new_date); ctx._source.tags = tmp.toArray()");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -417,10 +415,10 @@ public class AbstractMROldApiSaveTest {
     public void testUpsertScript() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-upsert-script", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter = 1");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "counter = 1");
 
         runJob(conf);
     }
@@ -429,12 +427,12 @@ public class AbstractMROldApiSaveTest {
     public void testUpsertParamScript() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-upsert-script-param", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter += param1; anothercounter += param2");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, "param2:name , param3:number, param1:<1>");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "counter += param1; anothercounter += param2");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "groovy");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS, "param2:name , param3:number, param1:<1>");
 
         runJob(conf);
     }
@@ -443,12 +441,12 @@ public class AbstractMROldApiSaveTest {
     public void testUpsertParamJsonScript() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-upsert-script-json-param", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "counter += param1; anothercounter += param2");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "groovy");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "counter += param1; anothercounter += param2");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "groovy");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS_JSON, "{ \"param1\":1, \"param2\":2}");
 
         runJob(conf);
     }
@@ -463,14 +461,14 @@ public class AbstractMROldApiSaveTest {
 
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-createwitharrayupsert", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
-        conf.set(ConfigurationOptions.ES_WRITE_OPERATION, "upsert");
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "<1>");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_PARAMS, (conf.get(ConfigurationOptions.ES_INPUT_JSON).equals("true") ? "update_tags:name" :"update_tags:list"));
+        conf.set(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, "upsert");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "<1>");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_PARAMS, (conf.get(ConfigurationOptions.OPENSEARCH_INPUT_JSON).equals("true") ? "update_tags:name" :"update_tags:list"));
 
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_INLINE, "ctx._source.tags = params.update_tags");
-        conf.set(ConfigurationOptions.ES_UPDATE_SCRIPT_LANG, "painless");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_INLINE, "ctx._source.tags = params.update_tags");
+        conf.set(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "painless");
 
         runJob(conf);
     }
@@ -480,7 +478,7 @@ public class AbstractMROldApiSaveTest {
     public void testIndexAutoCreateDisabled() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-non-existing", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "no");
 
         runJob(conf);
     }
@@ -490,8 +488,8 @@ public class AbstractMROldApiSaveTest {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-external-version-implied", "data", clusterInfo.getMajorVersion()));
         // an id must be provided if version type or value are set
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
-        conf.set(ConfigurationOptions.ES_MAPPING_VERSION, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_VERSION, "number");
 
         runJob(conf);
     }
@@ -500,7 +498,7 @@ public class AbstractMROldApiSaveTest {
     public void testIndexPattern() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-pattern-{tag}", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
         runJob(conf);
     }
@@ -509,7 +507,7 @@ public class AbstractMROldApiSaveTest {
     public void testIndexPatternWithFormatting() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-pattern-format-{@timestamp|YYYY-MM-dd}", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
         runJob(conf);
     }
@@ -518,7 +516,7 @@ public class AbstractMROldApiSaveTest {
     public void testIndexPatternWithFormattingAndId() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-pattern-format-{@timestamp|YYYY-MM-dd}-with-id", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "number");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "number");
 
         runJob(conf);
     }
@@ -527,7 +525,7 @@ public class AbstractMROldApiSaveTest {
     public void testIndexWithEscapedJson() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-simple-escaped-fields", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "yes");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
 
         runJob(conf);
     }
@@ -537,7 +535,7 @@ public class AbstractMROldApiSaveTest {
     public void testNested() throws Exception {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-nested", "data", clusterInfo.getMajorVersion()));
-        conf.set(ConfigurationOptions.ES_INDEX_AUTO_CREATE, "no");
+        conf.set(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "no");
 
         RestUtils.putMapping(indexPrefix + "mroldapi-nested", "data", "org/opensearch/hadoop/integration/mr-nested.json");
 

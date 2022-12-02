@@ -44,10 +44,10 @@ import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
 import org.apache.spark.sql.streaming.OutputMode
 import org.apache.spark.sql.types.Decimal
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_INDEX_AUTO_CREATE
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_EXCLUDE
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_MAPPING_ID
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_SPARK_DATAFRAME_WRITE_NULL_VALUES
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_MAPPING_EXCLUDE
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_MAPPING_ID
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES
 import org.opensearch.hadoop.util.TestUtils.resource
 import org.opensearch.hadoop.util.TestUtils.docEndpoint
 import org.opensearch.spark.sql.streaming.SparkSqlStreamingConfigs
@@ -375,7 +375,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         test.stream
           .writeStream
           .option("checkpointLocation", checkpoint(target))
-          .option(ES_INDEX_AUTO_CREATE, "no")
+          .option(OPENSEARCH_INDEX_AUTO_CREATE, "no")
           .format("es")
           .start(target)
       }
@@ -397,7 +397,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         test.stream
           .writeStream
           .option("checkpointLocation", checkpoint(target))
-          .option(ES_MAPPING_ID, "id")
+          .option(OPENSEARCH_MAPPING_ID, "id")
           .format("es")
           .start(target)
       }
@@ -424,7 +424,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         test.stream
           .writeStream
           .option("checkpointLocation", checkpoint(target))
-          .option(ES_MAPPING_EXCLUDE, "id")
+          .option(OPENSEARCH_MAPPING_EXCLUDE, "id")
           .format("es")
           .start(target)
       }
@@ -453,7 +453,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         test.stream
           .writeStream
           .option("checkpointLocation", checkpoint(target))
-          .option(ConfigurationOptions.ES_INGEST_PIPELINE, pipelineName)
+          .option(ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE, pipelineName)
           .format("es")
           .start(target)
       }
@@ -507,7 +507,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         test.stream
           .writeStream
           .option("checkpointLocation", checkpoint(target))
-          .option(ES_MAPPING_ID, "id")
+          .option(OPENSEARCH_MAPPING_ID, "id")
           .format("es")
           .start(target)
       }
@@ -529,8 +529,8 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         test.stream
           .writeStream
           .option("checkpointLocation", checkpoint(target))
-          .option(ES_MAPPING_ID, "id")
-          .option(ES_SPARK_DATAFRAME_WRITE_NULL_VALUES, "true")
+          .option(OPENSEARCH_MAPPING_ID, "id")
+          .option(OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES, "true")
           .format("es")
           .start(target)
       }
@@ -562,7 +562,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           })
           .writeStream
           .option("checkpointLocation", checkpoint(target))
-          .option(ES_MAPPING_ID, "id")
+          .option(OPENSEARCH_MAPPING_ID, "id")
           .format("es")
           .start(target)
       }
@@ -602,7 +602,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .outputMode("update")
           .option("checkpointLocation", checkpoint(target))
-          .option(ES_MAPPING_ID, "id")
+          .option(OPENSEARCH_MAPPING_ID, "id")
           .format("es")
           .start(target)
       }

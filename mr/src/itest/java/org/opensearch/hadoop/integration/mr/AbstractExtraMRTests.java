@@ -110,13 +110,13 @@ public class AbstractExtraMRTests {
         JobConf standard = new JobConf(conf);
         standard.setMapperClass(TabMapper.class);
         standard.setMapOutputValueClass(LinkedMapWritable.class);
-        standard.set(ConfigurationOptions.ES_INPUT_JSON, "false");
+        standard.set(ConfigurationOptions.OPENSEARCH_INPUT_JSON, "false");
         FileInputFormat.setInputPaths(standard, new Path(MRSuite.testData.gibberishDat(conf)));
 
         JobConf json = new JobConf(conf);
         json.setMapperClass(IdentityMapper.class);
         json.setMapOutputValueClass(Text.class);
-        json.set(ConfigurationOptions.ES_INPUT_JSON, "true");
+        json.set(ConfigurationOptions.OPENSEARCH_INPUT_JSON, "true");
         FileInputFormat.setInputPaths(json, new Path(MRSuite.testData.gibberishJson(conf)));
 
         return Arrays.asList(new Object[][] { { standard, "" }, { json, "json-" } });
@@ -149,7 +149,7 @@ public class AbstractExtraMRTests {
     public void testSaveDocWithEscapedCharsAndMapping() throws Exception {
         JobConf conf = new JobConf(config);
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mroldapi-gibberish-with-mapping", "data", targetVersion));
-        conf.set(ConfigurationOptions.ES_MAPPING_ID, "@id");
+        conf.set(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "@id");
         runJob(conf);
     }
 
@@ -216,8 +216,8 @@ public class AbstractExtraMRTests {
         HadoopCfgUtils.setGenericOptions(conf);
         conf.setNumReduceTasks(0);
 
-        conf.set(ConfigurationOptions.ES_READ_METADATA, String.valueOf(random.nextBoolean()));
-        conf.set(ConfigurationOptions.ES_READ_METADATA_VERSION, String.valueOf(true));
+        conf.set(ConfigurationOptions.OPENSEARCH_READ_METADATA, String.valueOf(random.nextBoolean()));
+        conf.set(ConfigurationOptions.OPENSEARCH_READ_METADATA_VERSION, String.valueOf(true));
         conf.set(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "true");
 
         FileInputFormat.setInputPaths(conf, new Path(MRSuite.testData.gibberishDat(conf)));

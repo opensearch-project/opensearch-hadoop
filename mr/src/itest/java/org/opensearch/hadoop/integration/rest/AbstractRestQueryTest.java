@@ -72,8 +72,8 @@ public class AbstractRestQueryTest {
         settings = new TestSettings("rest/savebulk");
         settings.setInternalVersion(version);
         //testSettings.setPort(9200)
-        settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
-        settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
         client = new RestRepository(settings);
         client.waitForYellow();
     }

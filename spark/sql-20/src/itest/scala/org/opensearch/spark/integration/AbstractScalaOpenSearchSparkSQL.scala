@@ -217,7 +217,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   val sc = AbstractScalaOpenSearchScalaSparkSQL.sc
   val sqc = AbstractScalaOpenSearchScalaSparkSQL.sqc
   val cfg = Map(OPENSEARCH_QUERY -> query,
-                ES_READ_METADATA -> readMetadata.toString(),
+                OPENSEARCH_READ_METADATA -> readMetadata.toString(),
                 "es.internal.spark.sql.pushdown" -> pushDown.toString(),
                 "es.internal.spark.sql.pushdown.strict" -> strictPushDown.toString(),
                 "es.internal.spark.sql.pushdown.keep.handled.filters" -> doubleFiltering.toString())
@@ -294,7 +294,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
   def testIndexCreationDisabled() {
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_INDEX_AUTO_CREATE -> "no")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INDEX_AUTO_CREATE -> "no")
     val index = wrapIndex("spark-test-non-existing-empty-dataframe")
     val (target, _) = makeTargets(index, "data")
     val idx = sqc.emptyDataFrame.saveToEs(target, newCfg)
@@ -476,7 +476,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame1Write() {
+  def testOpenSearchDataFrame1Write() {
     val dataFrame = artistsAsDataFrame
 
     val index = wrapIndex("sparksql-test-scala-basic-write")
@@ -487,7 +487,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame1WriteCount() {
+  def testOpenSearchDataFrame1WriteCount() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
@@ -496,12 +496,12 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame1WriteWithMapping() {
+  def testOpenSearchDataFrame1WriteWithMapping() {
     val dataFrame = artistsAsDataFrame
 
     val index = wrapIndex("sparksql-test-scala-basic-write-id-mapping")
     val (target, docPath) = makeTargets(index, "data")
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_MAPPING_ID -> "id", ES_MAPPING_EXCLUDE -> "url")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_EXCLUDE -> "url")
 
     dataFrame.saveToEs(target, newCfg)
     assertTrue(RestUtils.exists(target))
@@ -511,7 +511,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame1WriteNullValue() {
+  def testOpenSearchDataFrame1WriteNullValue() {
     val index = wrapIndex("spark-test-null-data-test-0")
     val (target, docPath) = makeTargets(index, "data")
 
@@ -520,7 +520,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       """{"id":"2","name":{"first":"Chris","last":"Evans"}}"""
     )
 
-    val conf = Map(ES_MAPPING_ID -> "id")
+    val conf = Map(OPENSEARCH_MAPPING_ID -> "id")
     val rdd = sc.makeRDD(docs)
     val jsonDF = sqc.read.json(rdd).toDF.select("id", "name")
     jsonDF.saveToEs(target, conf)
@@ -533,7 +533,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame12CheckYesWriteNullValue() {
+  def testOpenSearchDataFrame12CheckYesWriteNullValue() {
     val index = wrapIndex("spark-test-null-data-test-1")
     val (target, docPath) = makeTargets(index, "data")
 
@@ -542,7 +542,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       """{"id":"2","name":{"first":"Chris","last":"Evans"}}"""
     )
 
-    val conf = Map(ES_MAPPING_ID -> "id", ES_SPARK_DATAFRAME_WRITE_NULL_VALUES -> "true")
+    val conf = Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES -> "true")
     val rdd = sc.makeRDD(docs)
     val jsonDF = sqc.read.json(rdd).toDF.select("id", "name")
     jsonDF.saveToEs(target, conf)
@@ -556,7 +556,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
 
   @Test
-  def testEsDataFrame11CheckNoWriteNullValueFromRows() {
+  def testOpenSearchDataFrame11CheckNoWriteNullValueFromRows() {
     val index = wrapIndex("spark-test-null-data-test-2")
     val (target, docPath) = makeTargets(index, "data")
 
@@ -571,7 +571,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       StructField("suffix", StringType, nullable = true)
     ))
 
-    val conf = Map("es.mapping.id" -> "id")
+    val conf = Map("opensearch.mapping.id" -> "id")
     val rdd = sc.makeRDD(data)
     val df = sqc.createDataFrame(rdd, schema)
     df.saveToEs(target, conf)
@@ -584,7 +584,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame12CheckYesWriteNullValueFromRows() {
+  def testOpenSearchDataFrame12CheckYesWriteNullValueFromRows() {
     val index = wrapIndex("spark-test-null-data-test-3")
     val (target, docPath) = makeTargets(index, "data")
     val data = Seq(
@@ -598,7 +598,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       StructField("suffix", StringType, nullable = true)
     ))
 
-    val conf = Map("es.mapping.id" -> "id", "es.spark.dataframe.write.null" -> "true")
+    val conf = Map("opensearch.mapping.id" -> "id", "opensearch.spark.dataframe.write.null" -> "true")
     val rdd = sc.makeRDD(data)
     val df = sqc.createDataFrame(rdd, schema)
     df.saveToEs(target, conf)
@@ -611,7 +611,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame2Read() {
+  def testOpenSearchDataFrame2Read() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
@@ -636,11 +636,11 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame2ReadWithIncludeFields() {
+  def testOpenSearchDataFrame2ReadWithIncludeFields() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_INCLUDE -> "id, name, url")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_INCLUDE -> "id, name, url")
 
     val dataFrame = sqc.esDF(target, newCfg)
     val schema = dataFrame.schema.treeString
@@ -662,11 +662,11 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test(expected = classOf[OpenSearchHadoopIllegalStateException])
-  def testEsDataFrame2ReadWithUserSchemaSpecified() {
+  def testOpenSearchDataFrame2ReadWithUserSchemaSpecified() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (ES_READ_FIELD_INCLUDE -> "id, name, url") += (ES_READ_SOURCE_FILTER -> "name")
+    val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_INCLUDE -> "id, name, url") += (OPENSEARCH_READ_SOURCE_FILTER -> "name")
 
     val dataFrame = sqc.esDF(target, newCfg)
     val schema = dataFrame.schema.treeString
@@ -687,7 +687,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame2ReadWithAndWithoutQuery() {
+  def testOpenSearchDataFrame2ReadWithAndWithoutQuery() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
@@ -701,7 +701,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame2ReadWithAndWithoutQueryInJava() {
+  def testOpenSearchDataFrame2ReadWithAndWithoutQueryInJava() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
@@ -719,7 +719,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame3WriteWithRichMapping() {
+  def testOpenSearchDataFrame3WriteWithRichMapping() {
     val path = Paths.get(AbstractScalaOpenSearchScalaSparkSQL.testData.sampleArtistsDatUri())
     // because Windows... 
     val lines = Files.readAllLines(path, StandardCharsets.ISO_8859_1).asScala
@@ -744,14 +744,14 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val index = wrapIndex("sparksql-test-scala-basic-write-rich-mapping-id-mapping")
     val (target, docPath) = makeTargets(index, "data")
-    dataFrame.saveToEs(target, Map(ES_MAPPING_ID -> "id"))
+    dataFrame.saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id"))
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("345"))
     assertThat(RestUtils.exists(docPath + "/1"), is(true))
   }
 
   @Test(expected = classOf[SparkException])
-  def testEsDataFrame3WriteDecimalType() {
+  def testOpenSearchDataFrame3WriteDecimalType() {
     val schema = StructType(Seq(StructField("decimal", DecimalType.USER_DEFAULT, false)))
 
     val rowRDD = sc.makeRDD(Seq(Row(Decimal(10))))
@@ -763,7 +763,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame4WriteConflictingData(): Unit = {
+  def testOpenSearchDataFrame4WriteConflictingData(): Unit = {
     val schema = StructType(Seq(StructField("id", StringType), StructField("version", IntegerType), StructField("field", StringType)))
     val rowRDD1 = sc.makeRDD(Seq(Row("id", 1, "hello")))
     val rowRDD2 = sc.makeRDD(Seq(Row("id", 2, "hello")))
@@ -779,8 +779,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val (errorTarget, _) = makeTargets(errorIndex, typeName)
 
     val conf = Map(
-      ConfigurationOptions.ES_MAPPING_ID -> "id",
-      ConfigurationOptions.ES_MAPPING_VERSION -> "version",
+      ConfigurationOptions.OPENSEARCH_MAPPING_ID -> "id",
+      ConfigurationOptions.OPENSEARCH_MAPPING_VERSION -> "version",
       "es.write.rest.error.handlers" -> "es",
       "es.write.rest.error.handler.es.client.resource" -> errorTarget,
       "es.write.rest.error.handler.es.label.extraData" -> "labelValue",
@@ -799,7 +799,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame4ReadRichMapping() {
+  def testOpenSearchDataFrame4ReadRichMapping() {
     val index = wrapIndex("sparksql-test-scala-basic-write-rich-mapping-id-mapping")
     val (target, _) = makeTargets(index, "data")
 
@@ -824,7 +824,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame50ReadAsDataSource() {
+  def testOpenSearchDataFrame50ReadAsDataSource() {
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
     var options = s"""resource '$target' """
@@ -876,12 +876,12 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     single.saveToEs(target)
 
     // Make sure that the scroll limit works with both a shard that has data and a shard that has nothing
-    val count = sqc.read.format("es").option("es.scroll.limit", "10").load(target).count()
+    val count = sqc.read.format("es").option("opensearch.scroll.limit", "10").load(target).count()
     assertEquals(1L, count)
   }
 
   @Test
-  def testEsDataFrameReadAsDataSourceWithMetadata() {
+  def testOpenSearchDataFrameReadAsDataSourceWithMetadata() {
     assumeTrue(readMetadata)
 
     val index = wrapIndex("sparksql-test-scala-basic-write")
@@ -1255,7 +1255,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame51WriteToExistingDataSource() {
+  def testOpenSearchDataFrame51WriteToExistingDataSource() {
     // to keep the select static
     assumeFalse(readMetadata)
 
@@ -1276,7 +1276,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame52OverwriteExistingDataSource() {
+  def testOpenSearchDataFrame52OverwriteExistingDataSource() {
     // to keep the select static
     assumeFalse(readMetadata)
 
@@ -1342,7 +1342,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     sqc.createDataFrame(sc.makeRDD(parents ++ firstChildren), schema)
       .write
       .format("es")
-      .options(Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
+      .options(Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
       .save(target)
 
     assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString("kimchy"))
@@ -1359,7 +1359,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     sqc.createDataFrame(sc.makeRDD(parents ++ newChildren), schema)
       .write
       .format("es")
-      .options(cfg ++ Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
+      .options(cfg ++ Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
       .mode(SaveMode.Overwrite)
       .save(target)
 
@@ -1369,7 +1369,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame53OverwriteExistingDataSourceFromAnotherDataSource() {
+  def testOpenSearchDataFrame53OverwriteExistingDataSourceFromAnotherDataSource() {
     // to keep the select static
     assumeFalse(readMetadata)
 
@@ -1407,7 +1407,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeError() {
+  def testOpenSearchDataFrame60DataSourceSaveModeError() {
     val srcFrame = artistsJsonAsDataFrame
     val index = wrapIndex("sparksql-test-savemode_error")
     val (target, _) = makeTargets(index, "data")
@@ -1423,7 +1423,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeAppend() {
+  def testOpenSearchDataFrame60DataSourceSaveModeAppend() {
     val srcFrame = artistsJsonAsDataFrame
     srcFrame.printSchema()
     val index = wrapIndex("sparksql-test-savemode_append")
@@ -1439,7 +1439,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeOverwrite() {
+  def testOpenSearchDataFrame60DataSourceSaveModeOverwrite() {
     val srcFrame = artistsJsonAsDataFrame
     val index = wrapIndex("sparksql-test-savemode_overwrite")
     val (target, _) = makeTargets(index, "data")
@@ -1454,21 +1454,21 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeOverwriteWithID() {
+  def testOpenSearchDataFrame60DataSourceSaveModeOverwriteWithID() {
     val srcFrame = artistsJsonAsDataFrame
     val index = wrapIndex("sparksql-test-savemode_overwrite_id")
     val (target, _) = makeTargets(index, "data")
 
-    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("es.mapping.id", "number").save(target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("opensearch.mapping.id", "number").save(target)
     val df = OpenSearchSparkSQL.esDF(sqc, target)
 
     assertEquals(3, df.count())
-    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("es.mapping.id", "number").save(target)
+    srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("opensearch.mapping.id", "number").save(target)
     assertEquals(3, df.count())
   }
 
   @Test
-  def testEsDataFrame60DataSourceSaveModeIgnore() {
+  def testOpenSearchDataFrame60DataSourceSaveModeIgnore() {
     val srcFrame = artistsJsonAsDataFrame
     val index = wrapIndex("sparksql-test-savemode_ignore")
     val (target, docPath) = makeTargets(index, "data")
@@ -1570,7 +1570,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-nested-array-exclude")
     val (target, _) = makeTargets(index, "data")
     sc.makeRDD(Seq(json)).saveJsonToEs(target)
-    val df = sqc.read.format("es").option(ES_READ_FIELD_EXCLUDE, "nested.bar").load(target)
+    val df = sqc.read.format("es").option(OPENSEARCH_READ_FIELD_EXCLUDE, "nested.bar").load(target)
 
     assertEquals("long", df.schema("foo").dataType.typeName)
     assertEquals("struct", df.schema("nested").dataType.typeName)
@@ -1632,8 +1632,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
         RestUtils.putMapping(index, typename, "data/join/mapping/typed.json")
       }
 
-      sc.makeRDD(parents).saveToEs(target, Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
-      sc.makeRDD(children).saveToEs(target, Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(parents).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(children).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
 
       assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString("kimchy"))
       assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString(""""_routing":"1""""))
@@ -1667,7 +1667,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
         RestUtils.putMapping(index, typename, "data/join/mapping/typed.json")
       }
 
-      sc.makeRDD(docs).saveToEs(target, Map(ES_MAPPING_ID -> "id", ES_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(docs).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
 
       assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString("kimchy"))
       assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString(""""_routing":"1""""))
@@ -2302,28 +2302,28 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       .save("read_field_include_test")
     val reader = sqc.read.format("org.opensearch.spark.sql").option("opensearch.read.field.as.array.include","features.hashtags")
 
-    // No "es.read.field.include", so everything is included:
+    // No "opensearch.read.field.include", so everything is included:
     var df = reader.load("read_field_include_test")
     var result = df.select("features.hashtags").first().getAs[IndexedSeq[Row]](0)
     assertEquals(2, result(0).size)
     assertEquals("hello", result(0).getAs("text"))
     assertEquals("2", result(0).getAs("count"))
 
-    // "es.read.field.include" has trailing wildcard, so everything included:
-    df = reader.option("es.read.field.include","features.hashtags.*").load("read_field_include_test")
+    // "opensearch.read.field.include" has trailing wildcard, so everything included:
+    df = reader.option("opensearch.read.field.include","features.hashtags.*").load("read_field_include_test")
     result = df.select("features.hashtags").first().getAs[IndexedSeq[Row]](0)
     assertEquals(2, result(0).size)
     assertEquals("hello", result(0).getAs("text"))
     assertEquals("2", result(0).getAs("count"))
 
-    // "es.read.field.include" includes text but not count
-    df = reader.option("es.read.field.include","features.hashtags.text").load("read_field_include_test")
+    // "opensearch.read.field.include" includes text but not count
+    df = reader.option("opensearch.read.field.include","features.hashtags.text").load("read_field_include_test")
     result = df.select("features.hashtags").first().getAs[IndexedSeq[Row]](0)
     assertEquals(1, result(0).size)
     assertEquals("hello", result(0).getAs("text"))
 
-    // "es.read.field.include" does not include the leaves in the hierarchy so they won't be returned
-    df = reader.option("es.read.field.include","features.hashtags").load("read_field_include_test")
+    // "opensearch.read.field.include" does not include the leaves in the hierarchy so they won't be returned
+    df = reader.option("opensearch.read.field.include","features.hashtags").load("read_field_include_test")
     result = df.select("features.hashtags").first().getAs[IndexedSeq[Row]](0)
     assertEquals(0, result(0).size)
   }
@@ -2333,8 +2333,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val testIndex = "scripted_upsert_test"
     val updateParams = "count: <4>"
     val updateScript = "if ( ctx.op == 'create' ) {ctx._source.counter = params.count} else {ctx._source.counter += params.count}"
-    val conf = Map("es.mapping.id" -> "id", "es.mapping.exclude" -> "id", "es.write.operation" -> "upsert", "es.update.script.params" ->
-      updateParams, "es.update.script.upsert" -> "true", "es.update.script.inline" -> updateScript)
+    val conf = Map("opensearch.mapping.id" -> "id", "opensearch.mapping.exclude" -> "id", "opensearch.write.operation" -> "upsert", "opensearch.update.script.params" ->
+      updateParams, "opensearch.update.script.upsert" -> "true", "opensearch.update.script.inline" -> updateScript)
     val data = Seq(Row("1", 3))
     val rdd: RDD[Row] = sc.parallelize(data)
     val schema = new StructType().add("id", StringType, nullable = false).add("count", IntegerType, nullable = false)
@@ -2357,10 +2357,10 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val update_params = "new_samples: samples"
     val update_script = "ctx._source.samples = params.new_samples"
     val es_conf = Map(
-      "es.mapping.id" -> "id",
-      "es.write.operation" -> "upsert",
-      "es.update.script.params" -> update_params,
-      "es.update.script.inline" -> update_script
+      "opensearch.mapping.id" -> "id",
+      "opensearch.write.operation" -> "upsert",
+      "opensearch.update.script.params" -> update_params,
+      "opensearch.update.script.inline" -> update_script
     )
     // First do an upsert with two completely new rows:
     var data = Seq(Row("2", List(Row("hello"), Row("world"))), Row("1", List()))
@@ -2410,10 +2410,10 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val update_params = "new_samples: samples"
     val update_script = "ctx._source.samples = params.new_samples"
     val es_conf = Map(
-      "es.mapping.id" -> "id",
-      "es.write.operation" -> "upsert",
-      "es.update.script.params" -> update_params,
-      "es.update.script.inline" -> update_script
+      "opensearch.mapping.id" -> "id",
+      "opensearch.write.operation" -> "upsert",
+      "opensearch.update.script.params" -> update_params,
+      "opensearch.update.script.inline" -> update_script
     )
     // First do an upsert with two completely new rows:
     var data = Seq(Row("2", Map(("hello", "world"))), Row("1", Map()))

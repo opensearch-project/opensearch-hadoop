@@ -49,7 +49,7 @@ class ScriptTemplateBulk extends TemplatedBulk {
 
     @Override
     protected void doWriteObject(Object object, BytesArray storage, ValueWriter<?> writer) {
-        if (ConfigurationOptions.ES_OPERATION_UPSERT.equals(settings.getOperation())) {
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(settings.getOperation())) {
             if (settings.hasScriptUpsert()) {
                 FastByteArrayOutputStream bos = new FastByteArrayOutputStream(storage);
                 JacksonJsonGenerator generator = new JacksonJsonGenerator(bos);

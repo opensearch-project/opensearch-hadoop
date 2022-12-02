@@ -36,7 +36,6 @@ import java.util.List;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
@@ -113,13 +112,13 @@ public class AbstractHiveSearchJsonTest {
 
         String createList = "CREATE EXTERNAL TABLE jsonnestedmaplistload" + testInstance + "("
                 + "nested   ARRAY<INT>) "
-                + tableProps(resource("json-hive-nestedmap", "data", targetVersion), "'es.mapping.names' = 'nested:data.map.key'");
+                + tableProps(resource("json-hive-nestedmap", "data", targetVersion), "'opensearch.mapping.names' = 'nested:data.map.key'");
 
         String selectList = "SELECT * FROM jsonnestedmaplistload" + testInstance;
 
         String createMap = "CREATE EXTERNAL TABLE jsonnestedmapmapload" + testInstance + "("
                 + "nested   MAP<STRING,ARRAY<INT>>) "
-                + tableProps(resource("json-hive-nestedmap", "data", targetVersion), "'es.mapping.names' = 'nested:data.map'");
+                + tableProps(resource("json-hive-nestedmap", "data", targetVersion), "'opensearch.mapping.names' = 'nested:data.map'");
 
         String selectMap = "SELECT * FROM jsonnestedmapmapload" + testInstance;
 
@@ -152,13 +151,13 @@ public class AbstractHiveSearchJsonTest {
 
         String createList = "CREATE EXTERNAL TABLE jsonnestedsinglemaplistload" + testInstance + "("
                 + "nested   ARRAY<INT>) "
-                + tableProps(resource("json-hive-nestedmap", "data", targetVersion), "'es.mapping.names' = 'nested:data.single.key'");
+                + tableProps(resource("json-hive-nestedmap", "data", targetVersion), "'opensearch.mapping.names' = 'nested:data.single.key'");
 
         String selectList = "SELECT * FROM jsonnestedsinglemaplistload" + testInstance;
 
         String createMap = "CREATE EXTERNAL TABLE jsonnestedsinglemapmapload" + testInstance + "("
                 + "nested   MAP<STRING,ARRAY<INT>>) "
-                + tableProps(resource("json-hive-nestedmap", "data", targetVersion), "'es.mapping.names' = 'nested:data.single'");
+                + tableProps(resource("json-hive-nestedmap", "data", targetVersion), "'opensearch.mapping.names' = 'nested:data.single'");
 
         String selectMap = "SELECT * FROM jsonnestedsinglemapmapload" + testInstance;
 
@@ -219,7 +218,7 @@ public class AbstractHiveSearchJsonTest {
                 + "dTE     TIMESTAMP, "
                 + "Name     STRING, "
                 + "links    STRUCT<uRl:STRING, pICture:STRING>) "
-                + tableProps(resource("foobar", "missing", targetVersion), "'es.index.read.missing.as.empty' = 'true'");
+                + tableProps(resource("foobar", "missing", targetVersion), "'opensearch.index.read.missing.as.empty' = 'true'");
 
         String select = "SELECT * FROM jsonmissing" + testInstance;
 
@@ -286,7 +285,7 @@ public class AbstractHiveSearchJsonTest {
 
     private String tableProps(String resource, String... params) {
         List<String> copy = new ArrayList(Arrays.asList(params));
-        copy.add("'" + ConfigurationOptions.ES_READ_METADATA + "'='" + readMetadata + "'");
+        copy.add("'" + ConfigurationOptions.OPENSEARCH_READ_METADATA + "'='" + readMetadata + "'");
         return HiveSuite.tableProps(resource, query, copy.toArray(new String[copy.size()]));
     }
 }

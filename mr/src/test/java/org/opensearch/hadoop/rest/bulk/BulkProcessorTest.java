@@ -104,7 +104,7 @@ public class BulkProcessorTest {
         testSettings.setResourceWrite("foo");
         testSettings.setInternalClusterInfo(esClusterInfo);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_ENTRIES, "10");
-        testSettings.setProperty(ConfigurationOptions.ES_BATCH_WRITE_RETRY_WAIT, "1ms");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_WRITE_RETRY_WAIT, "1ms");
 
         resource = new Resource(testSettings, false);
     }
@@ -765,7 +765,7 @@ public class BulkProcessorTest {
     public void testBulk08_HandlerLoopsForever() throws Exception {
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "looper");
         testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".looper", NeverSurrenderHandler.class.getName());
-        testSettings.setProperty(ConfigurationOptions.ES_BATCH_WRITE_RETRY_LIMIT, "6");
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_WRITE_RETRY_LIMIT, "6");
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)

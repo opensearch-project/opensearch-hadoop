@@ -70,7 +70,7 @@ public class AbstractRestSaveTest {
     public void testBulkWrite() throws Exception {
         TestSettings testSettings = new TestSettings("rest/savebulk");
         //testSettings.setPort(9200)
-        testSettings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
         RestRepository client = new RestRepository(testSettings);
 
         Scanner in = new Scanner(getClass().getResourceAsStream("/artists.dat")).useDelimiter("\\n|\\t");
@@ -94,7 +94,7 @@ public class AbstractRestSaveTest {
     public void testEmptyBulkWrite() throws Exception {
         TestSettings testSettings = new TestSettings("rest/emptybulk");
         testSettings.setInternalClusterInfo(TestUtils.getOpenSearchClusterInfo());
-        testSettings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
         RestRepository restRepo = new RestRepository(testSettings);
         RestClient client = restRepo.getRestClient();
         client.bulk(new Resource(testSettings, false), new TrackingBytesArray(new BytesArray("{}")));
@@ -108,8 +108,8 @@ public class AbstractRestSaveTest {
         Settings settings = new TestSettings("rest/deletebulk");
         RestUtils.delete("rest");
         InitializationUtils.discoverClusterInfo(settings, LOG);
-        settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_DEFAULT_EXTRACTOR_CLASS, ConstantFieldExtractor.class.getName());
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_DEFAULT_EXTRACTOR_CLASS, ConstantFieldExtractor.class.getName());
         settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_FLUSH_MANUAL, "false");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_ENTRIES, "1000");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_BYTES, "1mb");
@@ -134,8 +134,8 @@ public class AbstractRestSaveTest {
         Settings settings = new TestSettings("delete_empty/test");
         RestUtils.delete("delete_empty");
         InitializationUtils.discoverClusterInfo(settings, LOG);
-        settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
-        settings.setProperty(ConfigurationOptions.ES_MAPPING_DEFAULT_EXTRACTOR_CLASS, ConstantFieldExtractor.class.getName());
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_DEFAULT_EXTRACTOR_CLASS, ConstantFieldExtractor.class.getName());
         settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_FLUSH_MANUAL, "false");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_ENTRIES, "1000");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_SIZE_BYTES, "1mb");

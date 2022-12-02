@@ -188,7 +188,7 @@ public class JdkTypeToJsonTest {
     @Test
     public void testMapWithFilterInclude() {
         TestSettings cfg = new TestSettings();
-        cfg.setProperty("es.mapping.include", "key, nested.a*");
+        cfg.setProperty("opensearch.mapping.include", "key, nested.a*");
 
         Map nested = new LinkedHashMap();
         nested.put("aaa", "bbb");
@@ -204,7 +204,7 @@ public class JdkTypeToJsonTest {
     @Test
     public void testMapWithFilterExclude() {
         TestSettings cfg = new TestSettings();
-        cfg.setProperty("es.mapping.exclude", "key, nested.xxx");
+        cfg.setProperty("opensearch.mapping.exclude", "key, nested.xxx");
 
         Map nested = new LinkedHashMap();
         nested.put("aaa", "bbb");

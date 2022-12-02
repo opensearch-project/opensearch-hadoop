@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.OpenSearchAssume;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
@@ -160,8 +159,8 @@ public class AbstractHiveSaveJsonTest {
                 "CREATE EXTERNAL TABLE jsoncreatesave ("
                         + "json     STRING) "
                         + tableProps(resource("json-hive-createsave", "data", targetVersion),
-                                "'" + ConfigurationOptions.ES_MAPPING_ID + "'='number'",
-                                "'" + ConfigurationOptions.ES_WRITE_OPERATION + "'='create'");
+                                "'" + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "'='number'",
+                                "'" + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "'='create'");
 
         // transfer data
         String insert =
@@ -188,8 +187,8 @@ public class AbstractHiveSaveJsonTest {
                 "CREATE EXTERNAL TABLE jsoncreatesaveduplicate ("
                         + "json     STRING) "
                         + tableProps(resource("json-hive-createsave", "data", targetVersion),
-                                "'" + ConfigurationOptions.ES_MAPPING_ID + "'='number'",
-                                "'" + ConfigurationOptions.ES_WRITE_OPERATION + "'='create'");
+                                "'" + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "'='number'",
+                                "'" + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "'='create'");
 
         String selectTest = "SELECT s.json FROM jsoncreatesourceduplicate s";
 
@@ -219,8 +218,8 @@ public class AbstractHiveSaveJsonTest {
                 "CREATE EXTERNAL TABLE jsonupdatesave ("
                         + "json     STRING) "
                         + tableProps(resource("json-hive-updatesave", "data", targetVersion),
-                                "'" + ConfigurationOptions.ES_MAPPING_ID + "'='number'",
-                                "'" + ConfigurationOptions.ES_WRITE_OPERATION + "'='upsert'");
+                                "'" + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "'='number'",
+                                "'" + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "'='upsert'");
 
         String selectTest = "SELECT s.json FROM jsonupdatesource s";
 
@@ -251,8 +250,8 @@ public class AbstractHiveSaveJsonTest {
                 "CREATE EXTERNAL TABLE jsonupdatewoupsertsave ("
                         + "json     STRING) "
                         + tableProps(resource("json-hive-updatewoupsertsave", "data", targetVersion),
-                                "'" + ConfigurationOptions.ES_MAPPING_ID + "'='number'",
-                                "'" + ConfigurationOptions.ES_WRITE_OPERATION + "'='update'");
+                                "'" + ConfigurationOptions.OPENSEARCH_MAPPING_ID + "'='number'",
+                                "'" + ConfigurationOptions.OPENSEARCH_WRITE_OPERATION + "'='update'");
 
         String selectTest = "SELECT s.json FROM jsonupdatewoupsertsource s";
 
@@ -343,7 +342,7 @@ public class AbstractHiveSaveJsonTest {
 
     private static String tableProps(String resource, String... params) {
         List<String> parms = new ArrayList<String>();
-        parms.add("'es.input.json'='true'");
+        parms.add("'opensearch.input.json'='true'");
         if (params != null) {
             Collections.addAll(parms, params);
         }

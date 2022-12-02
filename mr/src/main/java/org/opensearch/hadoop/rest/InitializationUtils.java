@@ -61,11 +61,11 @@ public abstract class InitializationUtils {
     public static void checkIdForOperation(Settings settings) {
         String operation = settings.getOperation();
 
-        if (ConfigurationOptions.ES_OPERATION_UPDATE.equals(operation)
-                || ConfigurationOptions.ES_OPERATION_UPSERT.equals(operation)) {
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation)
+                || ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation)) {
             Assert.isTrue(StringUtils.hasText(settings.getMappingId()),
                     String.format("Operation [%s] requires an id but none (%s) was specified", operation,
-                            ConfigurationOptions.ES_MAPPING_ID));
+                            ConfigurationOptions.OPENSEARCH_MAPPING_ID));
         }
     }
 
@@ -289,7 +289,7 @@ public abstract class InitializationUtils {
         }
 
         // check the configuration is coherent in order to use the delete operation
-        if (ConfigurationOptions.ES_OPERATION_DELETE.equals(settings.getOperation())) {
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_DELETE.equals(settings.getOperation())) {
             Assert.isTrue(!settings.getInputAsJson(),
                     "When using delete operation, providing data as JSON is not coherent because this operation does not need document as a payload. This is most likely not what the user intended. Bailing out...");
             Assert.isTrue(settings.getMappingIncludes().isEmpty(),
@@ -297,7 +297,7 @@ public abstract class InitializationUtils {
             Assert.isTrue(settings.getMappingExcludes().isEmpty(),
                     "When using delete operation, the field exclusion feature is ignored. This is most likely not what the user intended. Bailing out...");
             Assert.isTrue(settings.getMappingId() != null && !StringUtils.EMPTY.equals(settings.getMappingId()),
-                    "When using delete operation, the property " + ConfigurationOptions.ES_MAPPING_ID
+                    "When using delete operation, the property " + ConfigurationOptions.OPENSEARCH_MAPPING_ID
                             + " must be set and must not be empty since we need the document id in order to delete it. Bailing out...");
         }
 
@@ -308,7 +308,7 @@ public abstract class InitializationUtils {
         for (String script : scripts) {
             boolean isSet = StringUtils.hasText(script);
             Assert.isTrue((hasScript && isSet) == false,
-                    "Multiple scripts are specified. Please specify only one via [es.update.script.inline], [es.update.script.file], or [es.update.script.stored]");
+                    "Multiple scripts are specified. Please specify only one via [opensearch.update.script.inline], [opensearch.update.script.file], or [opensearch.update.script.stored]");
             hasScript = hasScript || isSet;
         }
 
@@ -326,17 +326,17 @@ public abstract class InitializationUtils {
         // File Scripts
         if (StringUtils.hasText(settings.getUpdateScriptFile())) {
             throw new OpenSearchHadoopIllegalArgumentException("Cannot use file scripts on ES 6.x and above. Please use " +
-                    "stored scripts with [" + ConfigurationOptions.ES_UPDATE_SCRIPT_STORED + "] instead.");
+                    "stored scripts with [" + ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_STORED + "] instead.");
         }
 
         // Timestamp and TTL in index/updates
         if (StringUtils.hasText(settings.getMappingTimestamp())) {
             throw new OpenSearchHadoopIllegalArgumentException("Cannot use timestamps on index/update requests in ES 6.x " +
-                    "and above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TIMESTAMP + "] setting.");
+                    "and above. Please remove the [" + ConfigurationOptions.OPENSEARCH_MAPPING_TIMESTAMP + "] setting.");
         }
         if (StringUtils.hasText(settings.getMappingTtl())) {
             throw new OpenSearchHadoopIllegalArgumentException("Cannot use TTL on index/update requests in ES 6.x and " +
-                    "above. Please remove the [" + ConfigurationOptions.ES_MAPPING_TTL + "] setting.");
+                    "above. Please remove the [" + ConfigurationOptions.OPENSEARCH_MAPPING_TTL + "] setting.");
         }
     }
 
@@ -479,7 +479,7 @@ public abstract class InitializationUtils {
         if (!client.resourceExists(false)) {
             throw new OpenSearchHadoopIllegalArgumentException(String.format(
                     "Target index [%s] does not exist and auto-creation is disabled [setting '%s' is '%s']",
-                    settings.getResourceWrite(), ConfigurationOptions.ES_INDEX_AUTO_CREATE,
+                    settings.getResourceWrite(), ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE,
                     settings.getIndexAutoCreate()));
         }
     }
@@ -490,7 +490,7 @@ public abstract class InitializationUtils {
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
 
             String name = clazz.getName();
-            settings.setProperty(ConfigurationOptions.ES_MAPPING_METADATA_EXTRACTOR_CLASS, name);
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_METADATA_EXTRACTOR_CLASS, name);
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Using pre-defined metadata extractor [%s] as default",
                         settings.getMappingMetadataExtractorClassName()));
@@ -506,7 +506,7 @@ public abstract class InitializationUtils {
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
 
             String name = clazz.getName();
-            settings.setProperty(ConfigurationOptions.ES_MAPPING_DEFAULT_EXTRACTOR_CLASS, name);
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_DEFAULT_EXTRACTOR_CLASS, name);
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Using pre-defined field extractor [%s] as default",
                         settings.getMappingIdExtractorClassName()));
@@ -530,7 +530,7 @@ public abstract class InitializationUtils {
                             name, clazz));
                 }
             }
-            settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_VALUE_CLASS, name);
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, name);
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Using pre-defined writer serializer [%s] as default",
                         settings.getSerializerValueWriterClassName()));
@@ -543,7 +543,7 @@ public abstract class InitializationUtils {
 
     public static boolean setBytesConverterIfNeeded(Settings settings, Class<? extends BytesConverter> clazz, Log log) {
         if (settings.getInputAsJson() && !StringUtils.hasText(settings.getSerializerBytesConverterClassName())) {
-            settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_WRITER_BYTES_CLASS, clazz.getName());
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_BYTES_CLASS, clazz.getName());
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
             if (logger.isDebugEnabled()) {
                 logger.debug(
@@ -559,7 +559,7 @@ public abstract class InitializationUtils {
     public static boolean setValueReaderIfNotSet(Settings settings, Class<? extends ValueReader> clazz, Log log) {
 
         if (!StringUtils.hasText(settings.getSerializerValueReaderClassName())) {
-            settings.setProperty(ConfigurationOptions.ES_SERIALIZATION_READER_VALUE_CLASS, clazz.getName());
+            settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_READER_VALUE_CLASS, clazz.getName());
             Log logger = (log != null ? log : LogFactory.getLog(clazz));
             if (logger.isDebugEnabled()) {
                 logger.debug(String.format("Using pre-defined reader serializer [%s] as default",

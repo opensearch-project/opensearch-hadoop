@@ -54,7 +54,7 @@ class JsonScriptTemplateBulk extends JsonTemplatedBulk {
         Assert.notNull(object, "Empty/null JSON document given...");
 
         BytesArray ba = null;
-        if (ConfigurationOptions.ES_OPERATION_UPSERT.equals(settings.getOperation())) {
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(settings.getOperation())) {
             ba = storage;
             if (settings.hasScriptUpsert()) {
                 jsonWriter.convert("{}", ba);

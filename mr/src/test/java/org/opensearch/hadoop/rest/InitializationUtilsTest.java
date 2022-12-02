@@ -125,9 +125,9 @@ public class InitializationUtilsTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateMultipleScripts() throws Exception {
         Settings set = new TestSettings();
-        set.setProperty(ES_UPDATE_SCRIPT_FILE, "test");
-        set.setProperty(ES_UPDATE_SCRIPT_INLINE, "test");
-        set.setProperty(ES_UPDATE_SCRIPT_STORED, "test");
+        set.setProperty(OPENSEARCH_UPDATE_SCRIPT_FILE, "test");
+        set.setProperty(OPENSEARCH_UPDATE_SCRIPT_INLINE, "test");
+        set.setProperty(OPENSEARCH_UPDATE_SCRIPT_STORED, "test");
         validateSettings(set);
     }
 
@@ -135,7 +135,7 @@ public class InitializationUtilsTest {
     public void testValidateWriteTTLRemoved() throws Exception {
         Settings set = new TestSettings();
         set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_3_X));
-        set.setProperty(ES_MAPPING_TTL, "1000");
+        set.setProperty(OPENSEARCH_MAPPING_TTL, "1000");
         validateSettingsForWriting(set);
     }
 
@@ -143,46 +143,46 @@ public class InitializationUtilsTest {
     public void testValidateWriteTimestampRemoved() throws Exception {
         Settings set = new TestSettings();
         set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_3_X));
-        set.setProperty(ES_MAPPING_TIMESTAMP, "1000");
+        set.setProperty(OPENSEARCH_MAPPING_TIMESTAMP, "1000");
         validateSettingsForWriting(set);
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsInputAsJson() {
         Settings set = new TestSettings();
-        set.setProperty(ES_WRITE_OPERATION, "delete");
-        set.setProperty(ES_INPUT_JSON, "true");
+        set.setProperty(OPENSEARCH_WRITE_OPERATION, "delete");
+        set.setProperty(OPENSEARCH_INPUT_JSON, "true");
         validateSettings(set);
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsIncludeFields() {
         Settings set = new TestSettings();
-        set.setProperty(ES_WRITE_OPERATION, "delete");
-        set.setProperty(ES_MAPPING_INCLUDE, "field");
+        set.setProperty(OPENSEARCH_WRITE_OPERATION, "delete");
+        set.setProperty(OPENSEARCH_MAPPING_INCLUDE, "field");
         validateSettings(set);
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsExcludeFields() {
         Settings set = new TestSettings();
-        set.setProperty(ES_WRITE_OPERATION, "delete");
-        set.setProperty(ES_MAPPING_EXCLUDE, "field");
+        set.setProperty(OPENSEARCH_WRITE_OPERATION, "delete");
+        set.setProperty(OPENSEARCH_MAPPING_EXCLUDE, "field");
         validateSettings(set);
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsIdNotSet() {
         Settings set = new TestSettings();
-        set.setProperty(ES_WRITE_OPERATION, "delete");
+        set.setProperty(OPENSEARCH_WRITE_OPERATION, "delete");
         validateSettings(set);
     }
 
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateDeleteOperationVsEmptyId() {
         Settings set = new TestSettings();
-        set.setProperty(ES_WRITE_OPERATION, "delete");
-        set.setProperty(ES_MAPPING_ID, "");
+        set.setProperty(OPENSEARCH_WRITE_OPERATION, "delete");
+        set.setProperty(OPENSEARCH_MAPPING_ID, "");
         validateSettings(set);
     }
 }

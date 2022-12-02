@@ -48,7 +48,7 @@ import org.opensearch.hadoop.util.unit.ByteSizeValue;
 import org.opensearch.hadoop.util.unit.TimeValue;
 
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;
-import static org.opensearch.hadoop.cfg.ConfigurationOptions.ES_NET_HTTP_HEADER_OPAQUE_ID;
+import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_NET_HTTP_HEADER_OPAQUE_ID;
 import static org.opensearch.hadoop.cfg.InternalConfigurationOptions.*;
 
 /**
@@ -145,7 +145,7 @@ public abstract class Settings {
         return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_DISCOVERY), !getNodesWANOnly());
     }
 
-    public String getShardPreference() { return getProperty(ES_READ_SHARD_PREFERENCE, ES_READ_SHARD_PREFERENCE_DEFAULT); }
+    public String getShardPreference() { return getProperty(OPENSEARCH_READ_SHARD_PREFERENCE, OPENSEARCH_READ_SHARD_PREFERENCE_DEFAULT); }
 
     public String getNodesPathPrefix() {
         return getProperty(OPENSEARCH_NODES_PATH_PREFIX, OPENSEARCH_NODES_PATH_PREFIX_DEFAULT);
@@ -169,11 +169,11 @@ public abstract class Settings {
     }
 
     public long getHttpTimeout() {
-        return TimeValue.parseTimeValue(getProperty(ES_HTTP_TIMEOUT, ES_HTTP_TIMEOUT_DEFAULT)).getMillis();
+        return TimeValue.parseTimeValue(getProperty(OPENSEARCH_HTTP_TIMEOUT, OPENSEARCH_HTTP_TIMEOUT_DEFAULT)).getMillis();
     }
 
     public int getHttpRetries() {
-        return Integer.valueOf(getProperty(ES_HTTP_RETRIES, ES_HTTP_RETRIES_DEFAULT));
+        return Integer.valueOf(getProperty(OPENSEARCH_HTTP_RETRIES, OPENSEARCH_HTTP_RETRIES_DEFAULT));
     }
 
     public int getBatchSizeInBytes() {
@@ -189,15 +189,15 @@ public abstract class Settings {
     }
 
     public int getBatchWriteRetryLimit() {
-        return Integer.parseInt(getProperty(ES_BATCH_WRITE_RETRY_LIMIT, ES_BATCH_WRITE_RETRY_LIMIT_DEFAULT));
+        return Integer.parseInt(getProperty(OPENSEARCH_BATCH_WRITE_RETRY_LIMIT, OPENSEARCH_BATCH_WRITE_RETRY_LIMIT_DEFAULT));
     }
 
     public long getBatchWriteRetryWait() {
-        return TimeValue.parseTimeValue(getProperty(ES_BATCH_WRITE_RETRY_WAIT, ES_BATCH_WRITE_RETRY_WAIT_DEFAULT)).getMillis();
+        return TimeValue.parseTimeValue(getProperty(OPENSEARCH_BATCH_WRITE_RETRY_WAIT, OPENSEARCH_BATCH_WRITE_RETRY_WAIT_DEFAULT)).getMillis();
     }
 
     public String getBatchWriteRetryPolicy() {
-        return getProperty(ES_BATCH_WRITE_RETRY_POLICY, ES_BATCH_WRITE_RETRY_POLICY_DEFAULT);
+        return getProperty(OPENSEARCH_BATCH_WRITE_RETRY_POLICY, OPENSEARCH_BATCH_WRITE_RETRY_POLICY_DEFAULT);
     }
 
     public boolean getBatchRefreshAfterWrite() {
@@ -209,15 +209,15 @@ public abstract class Settings {
     }
 
     public long getScrollKeepAlive() {
-        return TimeValue.parseTimeValue(getProperty(ES_SCROLL_KEEPALIVE, ES_SCROLL_KEEPALIVE_DEFAULT)).getMillis();
+        return TimeValue.parseTimeValue(getProperty(OPENSEARCH_SCROLL_KEEPALIVE, OPENSEARCH_SCROLL_KEEPALIVE_DEFAULT)).getMillis();
     }
 
     public long getScrollSize() {
-        return Long.valueOf(getProperty(ES_SCROLL_SIZE, ES_SCROLL_SIZE_DEFAULT));
+        return Long.valueOf(getProperty(OPENSEARCH_SCROLL_SIZE, OPENSEARCH_SCROLL_SIZE_DEFAULT));
     }
 
     public long getScrollLimit() {
-        return Long.valueOf(getProperty(ES_SCROLL_LIMIT, ES_SCROLL_LIMIT_DEFAULT));
+        return Long.valueOf(getProperty(OPENSEARCH_SCROLL_LIMIT, OPENSEARCH_SCROLL_LIMIT_DEFAULT));
     }
 
     public String getScrollFields() {
@@ -229,185 +229,185 @@ public abstract class Settings {
     }
 
     public String getSerializerValueWriterClassName() {
-        return getProperty(ES_SERIALIZATION_WRITER_VALUE_CLASS);
+        return getProperty(OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS);
     }
 
 
     public String getSerializerBytesConverterClassName() {
-        return getProperty(ES_SERIALIZATION_WRITER_BYTES_CLASS);
+        return getProperty(OPENSEARCH_SERIALIZATION_WRITER_BYTES_CLASS);
     }
 
     public String getSerializerValueReaderClassName() {
-        return getProperty(ES_SERIALIZATION_READER_VALUE_CLASS);
+        return getProperty(OPENSEARCH_SERIALIZATION_READER_VALUE_CLASS);
     }
 
     public boolean getIndexAutoCreate() {
-        return Booleans.parseBoolean(getProperty(ES_INDEX_AUTO_CREATE, ES_INDEX_AUTO_CREATE_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_INDEX_AUTO_CREATE, OPENSEARCH_INDEX_AUTO_CREATE_DEFAULT));
     }
 
     public boolean getIndexReadMissingAsEmpty() {
-        return Booleans.parseBoolean(getProperty(ES_INDEX_READ_MISSING_AS_EMPTY, ES_INDEX_READ_MISSING_AS_EMPTY_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY, OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY_DEFAULT));
     }
 
     public boolean getIndexReadAllowRedStatus() {
-        return Booleans.parseBoolean(getProperty(ES_INDEX_READ_ALLOW_RED_STATUS, ES_INDEX_READ_ALLOW_RED_STATUS_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_INDEX_READ_ALLOW_RED_STATUS, OPENSEARCH_INDEX_READ_ALLOW_RED_STATUS_DEFAULT));
     }
 
     public boolean getInputAsJson() {
-        return Booleans.parseBoolean(getProperty(ES_INPUT_JSON, ES_INPUT_JSON_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_INPUT_JSON, OPENSEARCH_INPUT_JSON_DEFAULT));
     }
 
     public boolean getOutputAsJson() {
-        return Booleans.parseBoolean(getProperty(OPENSEARCH_OUTPUT_JSON, ES_OUTPUT_JSON_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_OUTPUT_JSON, OPENSEARCH_OUTPUT_JSON_DEFAULT));
     }
 
     public String getOperation() {
-        return getProperty(ES_WRITE_OPERATION, ES_WRITE_OPERATION_DEFAULT).toLowerCase(Locale.ROOT);
+        return getProperty(OPENSEARCH_WRITE_OPERATION, OPENSEARCH_WRITE_OPERATION_DEFAULT).toLowerCase(Locale.ROOT);
     }
 
     public String getMappingId() {
-        return getProperty(ES_MAPPING_ID);
+        return getProperty(OPENSEARCH_MAPPING_ID);
     }
 
     public String getMappingParent() {
-        return getProperty(ES_MAPPING_PARENT);
+        return getProperty(OPENSEARCH_MAPPING_PARENT);
     }
 
     public String getMappingJoin() {
-        return getProperty(ES_MAPPING_JOIN);
+        return getProperty(OPENSEARCH_MAPPING_JOIN);
     }
 
     public String getMappingVersion() {
-        return getProperty(ES_MAPPING_VERSION);
+        return getProperty(OPENSEARCH_MAPPING_VERSION);
     }
 
     public boolean hasMappingVersionType() {
         String versionType = getMappingVersionType();
-        return (StringUtils.hasText(getMappingVersion()) && StringUtils.hasText(versionType) && !versionType.equals(ES_MAPPING_VERSION_TYPE_INTERNAL));
+        return (StringUtils.hasText(getMappingVersion()) && StringUtils.hasText(versionType) && !versionType.equals(OPENSEARCH_MAPPING_VERSION_TYPE_INTERNAL));
     }
 
     public String getMappingVersionType() {
-        return getProperty(ES_MAPPING_VERSION_TYPE, ES_MAPPING_VERSION_TYPE_EXTERNAL);
+        return getProperty(OPENSEARCH_MAPPING_VERSION_TYPE, OPENSEARCH_MAPPING_VERSION_TYPE_EXTERNAL);
     }
 
     public String getMappingRouting() {
-        return getProperty(ES_MAPPING_ROUTING);
+        return getProperty(OPENSEARCH_MAPPING_ROUTING);
     }
 
     public String getMappingTtl() {
-        return getProperty(ES_MAPPING_TTL);
+        return getProperty(OPENSEARCH_MAPPING_TTL);
     }
 
     public String getMappingTimestamp() {
-        return getProperty(ES_MAPPING_TIMESTAMP);
+        return getProperty(OPENSEARCH_MAPPING_TIMESTAMP);
     }
 
     public String getMappingDefaultClassExtractor() {
-        return getProperty(ES_MAPPING_DEFAULT_EXTRACTOR_CLASS);
+        return getProperty(OPENSEARCH_MAPPING_DEFAULT_EXTRACTOR_CLASS);
     }
     
     public String getMappingMetadataExtractorClassName() {
-        return getProperty(ES_MAPPING_METADATA_EXTRACTOR_CLASS);
+        return getProperty(OPENSEARCH_MAPPING_METADATA_EXTRACTOR_CLASS);
     }
 
     public String getMappingIdExtractorClassName() {
-        return getProperty(ES_MAPPING_ID_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
+        return getProperty(OPENSEARCH_MAPPING_ID_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
     }
 
     public String getMappingParentExtractorClassName() {
-        return getProperty(ES_MAPPING_PARENT_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
+        return getProperty(OPENSEARCH_MAPPING_PARENT_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
     }
 
     public String getMappingJoinExtractorClassName() {
-        return getProperty(ES_MAPPING_JOIN_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
+        return getProperty(OPENSEARCH_MAPPING_JOIN_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
     }
 
     public String getMappingVersionExtractorClassName() {
-        return getProperty(ES_MAPPING_VERSION_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
+        return getProperty(OPENSEARCH_MAPPING_VERSION_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
     }
 
     public String getMappingRoutingExtractorClassName() {
-        return getProperty(ES_MAPPING_ROUTING_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
+        return getProperty(OPENSEARCH_MAPPING_ROUTING_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
     }
 
     public String getMappingTtlExtractorClassName() {
-        return getProperty(ES_MAPPING_TTL_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
+        return getProperty(OPENSEARCH_MAPPING_TTL_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
     }
 
     public String getMappingTimestampExtractorClassName() {
-        return getProperty(ES_MAPPING_TIMESTAMP_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
+        return getProperty(OPENSEARCH_MAPPING_TIMESTAMP_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
     }
 
     public String getMappingIndexExtractorClassName() {
-        return getProperty(ES_MAPPING_INDEX_EXTRACTOR_CLASS, ES_MAPPING_DEFAULT_INDEX_EXTRACTOR_CLASS);
+        return getProperty(OPENSEARCH_MAPPING_INDEX_EXTRACTOR_CLASS, OPENSEARCH_MAPPING_DEFAULT_INDEX_EXTRACTOR_CLASS);
     }
 
     public String getMappingIndexFormatterClassName() {
-        return getProperty(ES_MAPPING_INDEX_FORMATTER_CLASS, ES_MAPPING_DEFAULT_INDEX_FORMATTER_CLASS);
+        return getProperty(OPENSEARCH_MAPPING_INDEX_FORMATTER_CLASS, OPENSEARCH_MAPPING_DEFAULT_INDEX_FORMATTER_CLASS);
     }
 
     public String getMappingParamsExtractorClassName() {
-        return getProperty(ES_MAPPING_PARAMS_EXTRACTOR_CLASS, ES_MAPPING_PARAMS_DEFAULT_EXTRACTOR_CLASS);
+        return getProperty(OPENSEARCH_MAPPING_PARAMS_EXTRACTOR_CLASS, OPENSEARCH_MAPPING_PARAMS_DEFAULT_EXTRACTOR_CLASS);
     }
 
     public boolean getMappingConstantAutoQuote() {
-        return Booleans.parseBoolean(getProperty(ES_MAPPING_CONSTANT_AUTO_QUOTE, ES_MAPPING_CONSTANT_AUTO_QUOTE_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_MAPPING_CONSTANT_AUTO_QUOTE, OPENSEARCH_MAPPING_CONSTANT_AUTO_QUOTE_DEFAULT));
     }
 
     public boolean getMappingDateRich() {
-        return Booleans.parseBoolean(getProperty(ES_MAPPING_DATE_RICH_OBJECT, ES_MAPPING_DATE_RICH_OBJECT_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_MAPPING_DATE_RICH_OBJECT, OPENSEARCH_MAPPING_DATE_RICH_OBJECT_DEFAULT));
     }
 
     public String getMappingIncludes() {
-        return getProperty(ES_MAPPING_INCLUDE, ES_MAPPING_INCLUDE_DEFAULT);
+        return getProperty(OPENSEARCH_MAPPING_INCLUDE, OPENSEARCH_MAPPING_INCLUDE_DEFAULT);
     }
 
     public String getMappingExcludes() {
-        return getProperty(ES_MAPPING_EXCLUDE, ES_MAPPING_EXCLUDE_DEFAULT);
+        return getProperty(OPENSEARCH_MAPPING_EXCLUDE, OPENSEARCH_MAPPING_EXCLUDE_DEFAULT);
     }
 
-    public String getIngestPipeline() { return getProperty(ES_INGEST_PIPELINE, ES_INGEST_PIPELINE_DEFAULT); }
+    public String getIngestPipeline() { return getProperty(OPENSEARCH_INGEST_PIPELINE, OPENSEARCH_INGEST_PIPELINE_DEFAULT); }
 
     public int getUpdateRetryOnConflict() {
-        return Integer.parseInt(getProperty(ES_UPDATE_RETRY_ON_CONFLICT, ES_UPDATE_RETRY_ON_CONFLICT_DEFAULT));
+        return Integer.parseInt(getProperty(OPENSEARCH_UPDATE_RETRY_ON_CONFLICT, OPENSEARCH_UPDATE_RETRY_ON_CONFLICT_DEFAULT));
     }
 
     public String getUpdateScript() {
-        return getProperty(ES_UPDATE_SCRIPT_LEGACY);
+        return getProperty(OPENSEARCH_UPDATE_SCRIPT_LEGACY);
     }
 
     public String getUpdateScriptInline() {
-        return getLegacyProperty(ES_UPDATE_SCRIPT_LEGACY, ES_UPDATE_SCRIPT_INLINE, null);
+        return getLegacyProperty(OPENSEARCH_UPDATE_SCRIPT_LEGACY, OPENSEARCH_UPDATE_SCRIPT_INLINE, null);
     }
 
     public Boolean getUpdateScriptUpsert() {
-        return Booleans.parseBoolean(getProperty(ES_UPDATE_SCRIPT_UPSERT, ES_UPDATE_SCRIPT_UPSERT_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_UPDATE_SCRIPT_UPSERT, OPENSEARCH_UPDATE_SCRIPT_UPSERT_DEFAULT));
     }
 
     public String getUpdateScriptFile() {
-        return getProperty(ES_UPDATE_SCRIPT_FILE);
+        return getProperty(OPENSEARCH_UPDATE_SCRIPT_FILE);
     }
 
     public String getUpdateScriptStored() {
-        return getProperty(ES_UPDATE_SCRIPT_STORED);
+        return getProperty(OPENSEARCH_UPDATE_SCRIPT_STORED);
     }
 
     public String getUpdateScriptLang() {
-        return getProperty(ES_UPDATE_SCRIPT_LANG);
+        return getProperty(OPENSEARCH_UPDATE_SCRIPT_LANG);
     }
 
     public String getUpdateScriptParams() {
-        return getProperty(ES_UPDATE_SCRIPT_PARAMS);
+        return getProperty(OPENSEARCH_UPDATE_SCRIPT_PARAMS);
     }
 
     public String getUpdateScriptParamsJson() {
-        return getProperty(ES_UPDATE_SCRIPT_PARAMS_JSON);
+        return getProperty(OPENSEARCH_UPDATE_SCRIPT_PARAMS_JSON);
     }
 
     public boolean hasUpdateScript() {
         String op = getOperation();
         boolean hasScript = false;
-        if (ConfigurationOptions.ES_OPERATION_UPDATE.equals(op) || ConfigurationOptions.ES_OPERATION_UPSERT.equals(op)) {
+        if (ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(op) || ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(op)) {
             hasScript = StringUtils.hasText(getUpdateScriptInline());
             hasScript |= StringUtils.hasText(getUpdateScriptFile());
             hasScript |= StringUtils.hasText(getUpdateScriptStored());
@@ -425,7 +425,7 @@ public abstract class Settings {
 
     public boolean hasScriptUpsert() {
         String op = getOperation();
-        return ConfigurationOptions.ES_OPERATION_UPSERT.equals(op) && getUpdateScriptUpsert();
+        return ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(op) && getUpdateScriptUpsert();
     }
 
     private String getLegacyProperty(String legacyProperty, String newProperty, String defaultValue) {
@@ -438,19 +438,19 @@ public abstract class Settings {
     }
 
     public boolean getReadFieldEmptyAsNull() {
-        return Booleans.parseBoolean(getLegacyProperty(ES_READ_FIELD_EMPTY_AS_NULL_LEGACY, ES_READ_FIELD_EMPTY_AS_NULL, ES_READ_FIELD_EMPTY_AS_NULL_DEFAULT));
+        return Booleans.parseBoolean(getLegacyProperty(OPENSEARCH_READ_FIELD_EMPTY_AS_NULL_LEGACY, OPENSEARCH_READ_FIELD_EMPTY_AS_NULL, OPENSEARCH_READ_FIELD_EMPTY_AS_NULL_DEFAULT));
     }
 
     public FieldPresenceValidation getReadFieldExistanceValidation() {
-        return FieldPresenceValidation.valueOf(getLegacyProperty(ES_READ_FIELD_VALIDATE_PRESENCE_LEGACY, ES_READ_FIELD_VALIDATE_PRESENCE, ES_READ_FIELD_VALIDATE_PRESENCE_DEFAULT).toUpperCase(Locale.ENGLISH));
+        return FieldPresenceValidation.valueOf(getLegacyProperty(OPENSEARCH_READ_FIELD_VALIDATE_PRESENCE_LEGACY, OPENSEARCH_READ_FIELD_VALIDATE_PRESENCE, OPENSEARCH_READ_FIELD_VALIDATE_PRESENCE_DEFAULT).toUpperCase(Locale.ENGLISH));
     }
 
     public String getReadFieldInclude() {
-        return getProperty(ES_READ_FIELD_INCLUDE, StringUtils.EMPTY);
+        return getProperty(OPENSEARCH_READ_FIELD_INCLUDE, StringUtils.EMPTY);
     }
 
     public String getReadFieldExclude() {
-        return getProperty(ES_READ_FIELD_EXCLUDE, StringUtils.EMPTY);
+        return getProperty(OPENSEARCH_READ_FIELD_EXCLUDE, StringUtils.EMPTY);
     }
 
     public String getReadFieldAsArrayInclude() {
@@ -458,63 +458,63 @@ public abstract class Settings {
     }
 
     public String getReadFieldAsArrayExclude() {
-        return getProperty(ES_READ_FIELD_AS_ARRAY_EXCLUDE, StringUtils.EMPTY);
+        return getProperty(OPENSEARCH_READ_FIELD_AS_ARRAY_EXCLUDE, StringUtils.EMPTY);
     }
 
     public String getReadSourceFilter() {
-        return getProperty(ES_READ_SOURCE_FILTER, StringUtils.EMPTY);
+        return getProperty(OPENSEARCH_READ_SOURCE_FILTER, StringUtils.EMPTY);
     }
 
     public TimeValue getHeartBeatLead() {
-        return TimeValue.parseTimeValue(getProperty(ES_HEART_BEAT_LEAD, ES_HEART_BEAT_LEAD_DEFAULT));
+        return TimeValue.parseTimeValue(getProperty(OPENSEARCH_HEART_BEAT_LEAD, OPENSEARCH_HEART_BEAT_LEAD_DEFAULT));
     }
 
     public TimeValue getTransportPoolingExpirationTimeout() {
-        return TimeValue.parseTimeValue(getProperty(ES_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT, ES_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT_DEFAULT));
+        return TimeValue.parseTimeValue(getProperty(OPENSEARCH_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT, OPENSEARCH_NET_TRANSPORT_POOLING_EXPIRATION_TIMEOUT_DEFAULT));
     }
 
     // SSL
     public boolean getNetworkSSLEnabled() {
-        return Booleans.parseBoolean(getProperty(ES_NET_USE_SSL, ES_NET_USE_SSL_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NET_USE_SSL, OPENSEARCH_NET_USE_SSL_DEFAULT));
     }
 
     public String getNetworkSSLKeyStoreLocation() {
-        return getProperty(ES_NET_SSL_KEYSTORE_LOCATION);
+        return getProperty(OPENSEARCH_NET_SSL_KEYSTORE_LOCATION);
     }
 
     public String getNetworkSSLProtocol() {
-        return getProperty(ES_NET_SSL_PROTOCOL, ES_NET_SSL_PROTOCOL_DEFAULT);
+        return getProperty(OPENSEARCH_NET_SSL_PROTOCOL, OPENSEARCH_NET_SSL_PROTOCOL_DEFAULT);
     }
 
     public String getNetworkSSLKeyStoreType() {
-        return getProperty(ES_NET_SSL_KEYSTORE_TYPE, ES_NET_SSL_KEYSTORE_TYPE_DEFAULT);
+        return getProperty(OPENSEARCH_NET_SSL_KEYSTORE_TYPE, OPENSEARCH_NET_SSL_KEYSTORE_TYPE_DEFAULT);
     }
 
     @Deprecated
     public String getNetworkSSLKeyStorePass() {
-        return getProperty(ES_NET_SSL_KEYSTORE_PASS);
+        return getProperty(OPENSEARCH_NET_SSL_KEYSTORE_PASS);
     }
 
     public String getNetworkSSLTrustStoreLocation() {
-        return getProperty(ES_NET_SSL_TRUST_STORE_LOCATION);
+        return getProperty(OPENSEARCH_NET_SSL_TRUST_STORE_LOCATION);
     }
 
     @Deprecated
     public String getNetworkSSLTrustStorePass() {
-        return getProperty(ES_NET_SSL_TRUST_STORE_PASS);
+        return getProperty(OPENSEARCH_NET_SSL_TRUST_STORE_PASS);
     }
 
     public boolean getNetworkSSLAcceptSelfSignedCert() {
-        return Booleans.parseBoolean(getProperty(ES_NET_SSL_CERT_ALLOW_SELF_SIGNED, ES_NET_SSL_CERT_ALLOW_SELF_SIGNED_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NET_SSL_CERT_ALLOW_SELF_SIGNED, OPENSEARCH_NET_SSL_CERT_ALLOW_SELF_SIGNED_DEFAULT));
     }
 
     public String getNetworkHttpAuthUser() {
-        return getProperty(ES_NET_HTTP_AUTH_USER);
+        return getProperty(OPENSEARCH_NET_HTTP_AUTH_USER);
     }
 
     @Deprecated
     public String getNetworkHttpAuthPass() {
-        return getProperty(ES_NET_HTTP_AUTH_PASS);
+        return getProperty(OPENSEARCH_NET_HTTP_AUTH_PASS);
     }
 
     public String getNetworkSpnegoAuthElasticsearchPrincipal() {
@@ -526,66 +526,66 @@ public abstract class Settings {
     }
 
     public String getNetworkProxyHttpHost() {
-        return getProperty(ES_NET_PROXY_HTTP_HOST);
+        return getProperty(OPENSEARCH_NET_PROXY_HTTP_HOST);
     }
 
     public int getNetworkProxyHttpPort() {
-        return Integer.valueOf(getProperty(ES_NET_PROXY_HTTP_PORT, "-1"));
+        return Integer.valueOf(getProperty(OPENSEARCH_NET_PROXY_HTTP_PORT, "-1"));
     }
 
     public String getNetworkProxyHttpUser() {
-        return getProperty(ES_NET_PROXY_HTTP_USER);
+        return getProperty(OPENSEARCH_NET_PROXY_HTTP_USER);
     }
 
     @Deprecated
     public String getNetworkProxyHttpPass() {
-        return getProperty(ES_NET_PROXY_HTTP_PASS);
+        return getProperty(OPENSEARCH_NET_PROXY_HTTP_PASS);
     }
 
     public boolean getNetworkHttpUseSystemProperties() {
-        return Booleans.parseBoolean(getProperty(ES_NET_PROXY_HTTP_USE_SYSTEM_PROPS, ES_NET_PROXY_HTTP_USE_SYSTEM_PROPS_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NET_PROXY_HTTP_USE_SYSTEM_PROPS, OPENSEARCH_NET_PROXY_HTTP_USE_SYSTEM_PROPS_DEFAULT));
     }
 
     public String getNetworkProxyHttpsHost() {
-        return getProperty(ES_NET_PROXY_HTTPS_HOST);
+        return getProperty(OPENSEARCH_NET_PROXY_HTTPS_HOST);
     }
 
     public int getNetworkProxyHttpsPort() {
-        return Integer.valueOf(getProperty(ES_NET_PROXY_HTTPS_PORT, "-1"));
+        return Integer.valueOf(getProperty(OPENSEARCH_NET_PROXY_HTTPS_PORT, "-1"));
     }
 
     public String getNetworkProxyHttpsUser() {
-        return getProperty(ES_NET_PROXY_HTTPS_USER);
+        return getProperty(OPENSEARCH_NET_PROXY_HTTPS_USER);
     }
 
     @Deprecated
     public String getNetworkProxyHttpsPass() {
-        return getProperty(ES_NET_PROXY_HTTPS_PASS);
+        return getProperty(OPENSEARCH_NET_PROXY_HTTPS_PASS);
     }
 
     public boolean getNetworkHttpsUseSystemProperties() {
-        return Booleans.parseBoolean(getProperty(ES_NET_PROXY_HTTPS_USE_SYSTEM_PROPS, ES_NET_PROXY_HTTPS_USE_SYSTEM_PROPS_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NET_PROXY_HTTPS_USE_SYSTEM_PROPS, OPENSEARCH_NET_PROXY_HTTPS_USE_SYSTEM_PROPS_DEFAULT));
     }
 
     public String getNetworkProxySocksHost() {
-        return getProperty(ES_NET_PROXY_SOCKS_HOST);
+        return getProperty(OPENSEARCH_NET_PROXY_SOCKS_HOST);
     }
 
     public int getNetworkProxySocksPort() {
-        return Integer.valueOf(getProperty(ES_NET_PROXY_SOCKS_PORT, "-1"));
+        return Integer.valueOf(getProperty(OPENSEARCH_NET_PROXY_SOCKS_PORT, "-1"));
     }
 
     public String getNetworkProxySocksUser() {
-        return getProperty(ES_NET_PROXY_SOCKS_USER);
+        return getProperty(OPENSEARCH_NET_PROXY_SOCKS_USER);
     }
 
     @Deprecated
     public String getNetworkProxySocksPass() {
-        return getProperty(ES_NET_PROXY_SOCKS_PASS);
+        return getProperty(OPENSEARCH_NET_PROXY_SOCKS_PASS);
     }
 
     public boolean getNetworkSocksUseSystemProperties() {
-        return Booleans.parseBoolean(getProperty(ES_NET_PROXY_SOCKS_USE_SYSTEM_PROPS, ES_NET_PROXY_SOCKS_USE_SYSTEM_PROPS_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_NET_PROXY_SOCKS_USE_SYSTEM_PROPS, OPENSEARCH_NET_PROXY_SOCKS_USE_SYSTEM_PROPS_DEFAULT));
     }
 
     public boolean getNodesResolveHostnames() {
@@ -644,7 +644,7 @@ public abstract class Settings {
     }
 
     public Settings setMaxDocsPerPartition(int size) {
-        setProperty(ES_MAX_DOCS_PER_PARTITION, Integer.toString(size));
+        setProperty(OPENSEARCH_MAX_DOCS_PER_PARTITION, Integer.toString(size));
         return this;
     }
 
@@ -665,7 +665,7 @@ public abstract class Settings {
     }
 
     public Integer getMaxDocsPerPartition() {
-        String value = getProperty(ES_MAX_DOCS_PER_PARTITION);
+        String value = getProperty(OPENSEARCH_MAX_DOCS_PER_PARTITION);
         if (StringUtils.hasText(value)) {
             return Integer.parseInt(value);
         }
@@ -673,23 +673,23 @@ public abstract class Settings {
     }
 
     public boolean getReadMetadata() {
-        return Booleans.parseBoolean(getProperty(ES_READ_METADATA, ES_READ_METADATA_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_READ_METADATA, OPENSEARCH_READ_METADATA_DEFAULT));
     }
 
     public String getReadMetadataField() {
-        return getProperty(ES_READ_METADATA_FIELD, ES_READ_METADATA_FIELD_DEFAULT);
+        return getProperty(OPENSEARCH_READ_METADATA_FIELD, OPENSEARCH_READ_METADATA_FIELD_DEFAULT);
     }
 
     public boolean getReadMetadataVersion() {
-        return Booleans.parseBoolean(getProperty(ES_READ_METADATA_VERSION, ES_READ_METADATA_VERSION_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_READ_METADATA_VERSION, OPENSEARCH_READ_METADATA_VERSION_DEFAULT));
     }
 
     public boolean getReadMappingMissingFieldsIgnore() {
-        return Booleans.parseBoolean(getProperty(ES_READ_UNMAPPED_FIELDS_IGNORE, ES_READ_UNMAPPED_FIELDS_IGNORE_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_READ_UNMAPPED_FIELDS_IGNORE, OPENSEARCH_READ_UNMAPPED_FIELDS_IGNORE_DEFAULT));
     }
 
     public boolean getDataFrameWriteNullValues() {
-        return Booleans.parseBoolean(getProperty(ES_SPARK_DATAFRAME_WRITE_NULL_VALUES, ES_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT));
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES, OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES_DEFAULT));
     }
 
     public AuthenticationMethod getSecurityAuthenticationMethod() {
@@ -787,7 +787,7 @@ public abstract class Settings {
     public abstract Properties asProperties();
 
     public Settings setOpaqueId(String opaqueId) {
-        setProperty(ES_NET_HTTP_HEADER_OPAQUE_ID, cleanOpaqueId(opaqueId));
+        setProperty(OPENSEARCH_NET_HTTP_HEADER_OPAQUE_ID, cleanOpaqueId(opaqueId));
         return this;
     }
 
@@ -809,11 +809,11 @@ public abstract class Settings {
     }
 
     public String getOpaqueId() {
-        return getProperty(ES_NET_HTTP_HEADER_OPAQUE_ID);
+        return getProperty(OPENSEARCH_NET_HTTP_HEADER_OPAQUE_ID);
     }
 
     public Settings setUserAgent(String userAgent) {
-        setProperty(ES_NET_HTTP_HEADER_USER_AGENT, cleanOpaqueId(userAgent));
+        setProperty(OPENSEARCH_NET_HTTP_HEADER_USER_AGENT, cleanOpaqueId(userAgent));
         return this;
     }
 }

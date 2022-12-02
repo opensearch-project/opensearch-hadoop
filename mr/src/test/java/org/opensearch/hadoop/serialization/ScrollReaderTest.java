@@ -359,8 +359,8 @@ public class ScrollReaderTest {
 
         Settings testSettings = new TestSettings();
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "a.b.d:2,a.b.f");
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
 
         JdkValueReader valueReader = ObjectUtils.instantiate(JdkValueReader.class.getName(), testSettings);
@@ -392,8 +392,8 @@ public class ScrollReaderTest {
 
         Settings testSettings = new TestSettings();
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "a.b.d:2,a.b,a.b.f");
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
 
         JdkValueReader valueReader = ObjectUtils.instantiate(JdkValueReader.class.getName(), testSettings);
@@ -425,8 +425,8 @@ public class ScrollReaderTest {
 
         Settings testSettings = new TestSettings();
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "a:3");
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
 
         JdkValueReader valueReader = ObjectUtils.instantiate(JdkValueReader.class.getName(), testSettings);
@@ -449,8 +449,8 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("empty-list"));
         Settings testSettings = new TestSettings();
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "status_code");
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
         JdkValueReader valueReader = ObjectUtils.instantiate(JdkValueReader.class.getName(), testSettings);
         ScrollReader reader = new ScrollReader(ScrollReaderConfigBuilder.builder(valueReader, mappings.getResolvedView(), testSettings));
@@ -468,8 +468,8 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("numbers-as-strings"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
 
         JdkValueReader valueReader = ObjectUtils.instantiate(JdkValueReader.class.getName(), testSettings);
@@ -487,8 +487,8 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("numbers-as-strings"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLERS , "throw");
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLER + ".throw" , ExceptionThrowingHandler.class.getName());
@@ -508,8 +508,8 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("numbers-as-strings"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLERS , "throw");
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLER + ".throw" , AbortingExceptionThrowingHandler.class.getName());
@@ -529,8 +529,8 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("numbers-as-strings"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLERS , "evil");
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLER + ".evil" , NeverSurrenderHandler.class.getName());
@@ -550,8 +550,8 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("numbers-as-strings"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLERS , "skipskipskip");
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLER + ".skipskipskip" , NothingToSeeHereHandler.class.getName());
@@ -573,8 +573,8 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("numbers-as-strings"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLERS , "marco,polo,skip");
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLER + ".marco" , MarcoHandler.class.getName());
@@ -598,8 +598,8 @@ public class ScrollReaderTest {
         InputStream stream = getClass().getResourceAsStream(scrollData("numbers-as-strings"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLERS , "fix");
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLER + ".fix" , CorrectingHandler.class.getName());
@@ -620,8 +620,8 @@ public class ScrollReaderTest {
         MappingSet mappings = getMappingSet("numbers-as-strings"); // The schema doesn't matter since there's no data
         InputStream stream = getClass().getResourceAsStream(scrollData("no-scroll-id"));
         Settings testSettings = new TestSettings();
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA, "" + readMetadata);
-        testSettings.setProperty(ConfigurationOptions.ES_READ_METADATA_FIELD, "" + metadataField);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA, "" + readMetadata);
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_READ_METADATA_FIELD, "" + metadataField);
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_OUTPUT_JSON, "" + readAsJson);
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLERS , "fix");
         testSettings.setProperty(DeserializationHandlerLoader.ES_READ_DATA_ERROR_HANDLER + ".fix" , CorrectingHandler.class.getName());

@@ -69,7 +69,7 @@ import org.apache.spark.sql.SQLContext
 import org.apache.spark.sql.SaveMode
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.internal.SQLConf
-import org.opensearch.hadoop.cfg.ConfigurationOptions.ES_WRITE_OPERATION
+import org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_WRITE_OPERATION
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions.INTERNAL_TRANSPORT_POOLING_KEY
 import org.opensearch.spark.cfg.SparkSettingsManager
 import org.opensearch.spark.serialization.ScalaValueWriter
@@ -137,11 +137,11 @@ private[sql] class DefaultSource extends RelationProvider with SchemaRelationPro
 
     // For now we only support Update and Append style output modes
     if (outputMode == OutputMode.Update()) {
-      val writeOperation = jobSettings.getProperty(ES_WRITE_OPERATION);
+      val writeOperation = jobSettings.getProperty(OPENSEARCH_WRITE_OPERATION);
       if (writeOperation == null) {
-        jobSettings.setProperty(ES_WRITE_OPERATION, ConfigurationOptions.ES_OPERATION_UPSERT)
-      } else if (writeOperation != ConfigurationOptions.ES_OPERATION_UPSERT) {
-        throw new OpenSearchHadoopIllegalArgumentException("Output mode update is only supported if es.write.operation is unset or set to upsert")
+        jobSettings.setProperty(OPENSEARCH_WRITE_OPERATION, ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT)
+      } else if (writeOperation != ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT) {
+        throw new OpenSearchHadoopIllegalArgumentException("Output mode update is only supported if opensearch.write.operation is unset or set to upsert")
       }
     } else if (outputMode != OutputMode.Append()) {
       throw new OpenSearchHadoopIllegalArgumentException("Append and update are the only supported OutputModes for Elasticsearch. " +
@@ -257,7 +257,7 @@ private[sql] case class ElasticsearchRelation(parameters: Map[String, String], @
       val metadata = cfg.getReadMetadataField
       // if metadata is not selected, don't ask for it
       if (!requiredColumns.contains(metadata)) {
-        paramWithScan += (ConfigurationOptions.ES_READ_METADATA -> false.toString())
+        paramWithScan += (ConfigurationOptions.OPENSEARCH_READ_METADATA -> false.toString())
       }
       else {
         filteredColumns = requiredColumns.filter( _ != metadata)

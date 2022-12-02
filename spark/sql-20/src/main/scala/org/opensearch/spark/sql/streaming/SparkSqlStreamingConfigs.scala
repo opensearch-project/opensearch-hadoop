@@ -42,25 +42,25 @@ import org.opensearch.hadoop.util.unit.TimeValue
  */
 object SparkSqlStreamingConfigs {
 
-  val ES_SINK_LOG_ENABLE: String = "es.spark.sql.streaming.sink.log.enabled"
-  val ES_SINK_LOG_ENABLE_DEFAULT: Boolean = true
+  val OPENSEARCH_SINK_LOG_ENABLE: String = "opensearch.spark.sql.streaming.sink.log.enabled"
+  val OPENSEARCH_SINK_LOG_ENABLE_DEFAULT: Boolean = true
 
-  val ES_SINK_LOG_PATH: String = "es.spark.sql.streaming.sink.log.path"
+  val OPENSEARCH_SINK_LOG_PATH: String = "opensearch.spark.sql.streaming.sink.log.path"
 
-  val ES_INTERNAL_APP_NAME: String = "es.internal.spark.sql.streaming.appName"
-  val ES_INTERNAL_APP_ID: String = "es.internal.spark.sql.streaming.appID"
-  val ES_INTERNAL_QUERY_NAME: String = "es.internal.spark.sql.streaming.queryName"
-  val ES_INTERNAL_USER_CHECKPOINT_LOCATION: String = "es.internal.spark.sql.streaming.userCheckpointLocation"
-  val ES_INTERNAL_SESSION_CHECKPOINT_LOCATION: String = "es.internal.spark.sql.streaming.sessionCheckpointLocation"
+  val OPENSEARCH_INTERNAL_APP_NAME: String = "opensearch.internal.spark.sql.streaming.appName"
+  val OPENSEARCH_INTERNAL_APP_ID: String = "opensearch.internal.spark.sql.streaming.appID"
+  val OPENSEARCH_INTERNAL_QUERY_NAME: String = "opensearch.internal.spark.sql.streaming.queryName"
+  val OPENSEARCH_INTERNAL_USER_CHECKPOINT_LOCATION: String = "opensearch.internal.spark.sql.streaming.userCheckpointLocation"
+  val OPENSEARCH_INTERNAL_SESSION_CHECKPOINT_LOCATION: String = "opensearch.internal.spark.sql.streaming.sessionCheckpointLocation"
 
-  val ES_SINK_LOG_CLEANUP_DELAY: String = "es.spark.sql.streaming.sink.log.cleanupDelay"
-  val ES_SINK_LOG_CLEANUP_DELAY_DEFAULT: Long = TimeUnit.MINUTES.toMillis(10)
+  val OPENSEARCH_SINK_LOG_CLEANUP_DELAY: String = "opensearch.spark.sql.streaming.sink.log.cleanupDelay"
+  val OPENSEARCH_SINK_LOG_CLEANUP_DELAY_DEFAULT: Long = TimeUnit.MINUTES.toMillis(10)
 
-  val ES_SINK_LOG_DELETION: String = "es.spark.sql.streaming.sink.log.deletion"
-  val ES_SINK_LOG_DELETION_DEFAULT: Boolean = true
+  val OPENSEARCH_SINK_LOG_DELETION: String = "opensearch.spark.sql.streaming.sink.log.deletion"
+  val OPENSEARCH_SINK_LOG_DELETION_DEFAULT: Boolean = true
 
-  val ES_SINK_LOG_COMPACT_INTERVAL: String = "es.spark.sql.streaming.sink.log.compactInterval"
-  val ES_SINK_LOG_COMPACT_INTERVAL_DEFAULT: Int = 10
+  val OPENSEARCH_SINK_LOG_COMPACT_INTERVAL: String = "opensearch.spark.sql.streaming.sink.log.compactInterval"
+  val OPENSEARCH_SINK_LOG_COMPACT_INTERVAL_DEFAULT: Int = 10
 
   /**
    * Determines if we should use the commit log for writes, or if we should go without one.
@@ -68,8 +68,8 @@ object SparkSqlStreamingConfigs {
    * @return true if we should use the commit log, false if we should not
    */
   def getSinkLogEnabled(settings: Settings): Boolean = {
-    Option(settings.getProperty(ES_SINK_LOG_ENABLE)).map(_.toBoolean)
-      .getOrElse(ES_SINK_LOG_ENABLE_DEFAULT)
+    Option(settings.getProperty(OPENSEARCH_SINK_LOG_ENABLE)).map(_.toBoolean)
+      .getOrElse(OPENSEARCH_SINK_LOG_ENABLE_DEFAULT)
   }
 
   /**
@@ -88,7 +88,7 @@ object SparkSqlStreamingConfigs {
       // If a user gives an explicit log location with ES_SINK_LOG_PATH, then it's fine to store the commit
       // files in the root of that. That directory should be just for us.
       case (Some(explicitPath), _, _, _) => explicitPath
-      // Case 2) /{checkpointLocation}/sinks/es
+      // Case 2) /{checkpointLocation}/sinks/opensearch
       // Don't store commit files for the log in the root of the checkpoint location; There are other directories
       // inside that root like '/sources', '/metadata', '/state', '/offsets', etc.
       // Instead, nest it under '/sinks/opensearch'.
@@ -104,10 +104,10 @@ object SparkSqlStreamingConfigs {
       case (None, None, Some(sessionCheckpoint), Some(query)) => s"$sessionCheckpoint/$query/sinks/opensearch"
       // Case 5) throw because we don't know where to store things...
       case (None, None, None, _) => throw new OpenSearchHadoopIllegalArgumentException(
-        "Could not determine path for the Elasticsearch commit log. Specify the commit log location by setting the " +
-        "[checkpointLocation] option on your DataStreamWriter. If you do not want to persist the Elasticsearch " +
+        "Could not determine path for the OpenSearch commit log. Specify the commit log location by setting the " +
+        "[checkpointLocation] option on your DataStreamWriter. If you do not want to persist the OpenSearch " +
         "commit log in the regular checkpoint location for your streaming query then you can specify a location to " +
-        s"store the log with [$ES_SINK_LOG_PATH], or disable the commit log by setting [$ES_SINK_LOG_ENABLE] to false.")
+        s"store the log with [$OPENSEARCH_SINK_LOG_PATH], or disable the commit log by setting [$OPENSEARCH_SINK_LOG_ENABLE] to false.")
     }
   }
 
@@ -117,7 +117,7 @@ object SparkSqlStreamingConfigs {
    * @return either Some log path or None
    */
   def getLogPath(settings: Settings): Option[String] = {
-    Option(settings.getProperty(ES_SINK_LOG_PATH))
+    Option(settings.getProperty(OPENSEARCH_SINK_LOG_PATH))
   }
 
   /**
@@ -126,7 +126,7 @@ object SparkSqlStreamingConfigs {
    * @return Some name or None
    */
   def getAppName(settings: Settings): Option[String] = {
-    Option(settings.getProperty(ES_INTERNAL_APP_NAME))
+    Option(settings.getProperty(OPENSEARCH_INTERNAL_APP_NAME))
   }
 
   /**
@@ -135,7 +135,7 @@ object SparkSqlStreamingConfigs {
    * @return Some id or None
    */
   def getAppId(settings: Settings): Option[String] = {
-    Option(settings.getProperty(ES_INTERNAL_APP_ID))
+    Option(settings.getProperty(OPENSEARCH_INTERNAL_APP_ID))
   }
 
   /**
@@ -144,7 +144,7 @@ object SparkSqlStreamingConfigs {
    * @return Some query name or None
    */
   def getQueryName(settings: Settings): Option[String] = {
-    Option(settings.getProperty(ES_INTERNAL_QUERY_NAME))
+    Option(settings.getProperty(OPENSEARCH_INTERNAL_QUERY_NAME))
   }
 
   /**
@@ -153,7 +153,7 @@ object SparkSqlStreamingConfigs {
    * @return Some checkpoint location or None
    */
   def getUserSpecifiedCheckpointLocation(settings: Settings): Option[String] = {
-    Option(settings.getProperty(ES_INTERNAL_USER_CHECKPOINT_LOCATION))
+    Option(settings.getProperty(OPENSEARCH_INTERNAL_USER_CHECKPOINT_LOCATION))
   }
 
   /**
@@ -162,7 +162,7 @@ object SparkSqlStreamingConfigs {
    * @return Some checkpoint location or None
    */
   def getSessionCheckpointLocation(settings: Settings): Option[String] = {
-    Option(settings.getProperty(ES_INTERNAL_SESSION_CHECKPOINT_LOCATION))
+    Option(settings.getProperty(OPENSEARCH_INTERNAL_SESSION_CHECKPOINT_LOCATION))
   }
 
   /**
@@ -171,9 +171,9 @@ object SparkSqlStreamingConfigs {
    * @return time in millis if set, or the default delay
    */
   def getFileCleanupDelayMs(settings: Settings): Long =
-    Option(settings.getProperty(ES_SINK_LOG_CLEANUP_DELAY)).map(TimeValue.parseTimeValue(_).getMillis)
+    Option(settings.getProperty(OPENSEARCH_SINK_LOG_CLEANUP_DELAY)).map(TimeValue.parseTimeValue(_).getMillis)
       .orElse(SQLConf.FILE_SINK_LOG_CLEANUP_DELAY.defaultValue)
-      .getOrElse(ES_SINK_LOG_CLEANUP_DELAY_DEFAULT)
+      .getOrElse(OPENSEARCH_SINK_LOG_CLEANUP_DELAY_DEFAULT)
 
   /**
    *
@@ -181,9 +181,9 @@ object SparkSqlStreamingConfigs {
    * @return
    */
   def getIsDeletingExpiredLog(settings: Settings): Boolean =
-    Option(settings.getProperty(ES_SINK_LOG_DELETION)).map(_.toBoolean)
+    Option(settings.getProperty(OPENSEARCH_SINK_LOG_DELETION)).map(_.toBoolean)
       .orElse(SQLConf.FILE_SINK_LOG_DELETION.defaultValue)
-      .getOrElse(ES_SINK_LOG_DELETION_DEFAULT)
+      .getOrElse(OPENSEARCH_SINK_LOG_DELETION_DEFAULT)
 
   /**
    *
@@ -191,8 +191,8 @@ object SparkSqlStreamingConfigs {
    * @return
    */
   def getDefaultCompactInterval(settings: Settings): Int =
-    Option(settings.getProperty(ES_SINK_LOG_COMPACT_INTERVAL)).map(_.toInt)
+    Option(settings.getProperty(OPENSEARCH_SINK_LOG_COMPACT_INTERVAL)).map(_.toInt)
       .orElse(SQLConf.FILE_SINK_LOG_COMPACT_INTERVAL.defaultValue)
-      .getOrElse(ES_SINK_LOG_COMPACT_INTERVAL_DEFAULT)
+      .getOrElse(OPENSEARCH_SINK_LOG_COMPACT_INTERVAL_DEFAULT)
 
 }

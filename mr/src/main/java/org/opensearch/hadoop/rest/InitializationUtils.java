@@ -356,7 +356,7 @@ public abstract class InitializationUtils {
         try {
             mainInfo = bootstrap.mainInfo();
             if (log.isDebugEnabled()) {
-                log.debug(String.format("Discovered Elasticsearch cluster [%s/%s], version [%s]",
+                log.debug(String.format("Discovered OpenSearch cluster [%s/%s], version [%s]",
                         mainInfo.getClusterName().getName(),
                         mainInfo.getClusterName().getUUID(),
                         mainInfo.getMajorVersion()));
@@ -526,7 +526,7 @@ public abstract class InitializationUtils {
                 name = NoOpValueWriter.class.getName();
                 if (logger.isDebugEnabled()) {
                     logger.debug(String.format(
-                            "Elasticsearch input marked as JSON; bypassing serialization through [%s] instead of [%s]",
+                            "OpenSearch input marked as JSON; bypassing serialization through [%s] instead of [%s]",
                             name, clazz));
                 }
             }

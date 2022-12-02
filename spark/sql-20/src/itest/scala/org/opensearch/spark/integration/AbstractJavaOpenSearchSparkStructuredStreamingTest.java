@@ -77,7 +77,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
 
     private static final transient SparkConf conf = new SparkConf()
             .setMaster("local")
-            .setAppName("es-structured-streaming-test")
+            .setAppName("opensearch-structured-streaming-test")
             .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR);
 
     private static transient SparkSession spark = null;
@@ -112,7 +112,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
         this.prefix = prefix;
 
         // Set up the commit log directory that we'll use for the test:
-        File tempDir = File.createTempFile("es-spark-structured-streaming", "");
+        File tempDir = File.createTempFile("opensearch-spark-structured-streaming", "");
         tempDir.delete();
         tempDir.mkdir();
         File logDir = new File(tempDir, "logs");
@@ -196,7 +196,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
                         .option(OPENSEARCH_INDEX_AUTO_CREATE, "no")
-                        .format("es"),
+                        .format("opensearch"),
                 target
         );
 
@@ -229,7 +229,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
         test.run(
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
-                        .format("es"),
+                        .format("opensearch"),
                 target
         );
 
@@ -267,7 +267,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
                         .option("opensearch.mapping.id", "id")
-                        .format("es"),
+                        .format("opensearch"),
                 target
         );
 
@@ -306,7 +306,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
                         .option(OPENSEARCH_MAPPING_EXCLUDE, "name")
-                        .format("es"),
+                        .format("opensearch"),
                 target
         );
 
@@ -349,7 +349,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                         .option("checkpointLocation", checkpoint(target))
                         .option(OPENSEARCH_INGEST_PIPELINE, pipelineName)
                         .option(OPENSEARCH_NODES_INGEST_ONLY, "true")
-                        .format("es"),
+                        .format("opensearch"),
                 target
         );
 
@@ -378,7 +378,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
         test.run(
                 dataset.writeStream()
                         .option("checkpointLocation", checkpoint(target))
-                        .format("es"),
+                        .format("opensearch"),
                 target
         );
 
@@ -489,7 +489,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                     .options(updateProperties)
                     .option("opensearch.update.script.params", "new_address:address")
                     .option("opensearch.update.script", script1)
-                    .format("es"),
+                    .format("opensearch"),
                 target
             );
 
@@ -514,7 +514,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                     .options(updateProperties)
                     .option("opensearch.update.script.params", "new_note:note")
                     .option("opensearch.update.script", script2)
-                    .format("es"),
+                    .format("opensearch"),
                 target
             );
 

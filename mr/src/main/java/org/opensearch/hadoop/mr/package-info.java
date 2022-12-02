@@ -27,7 +27,7 @@
  * under the License.
  */
 /**
- * Package providing integration between Elasticsearch and
+ * Package providing integration between OpenSearch and
  * <a href="http://hadoop.apache.org/docs/stable/mapred_tutorial.html">Map/Reduce</a> package ('org.apache.hadoop.mapred' and 'org.apache.hadoop.mapreduce').
  *
  * <p/>

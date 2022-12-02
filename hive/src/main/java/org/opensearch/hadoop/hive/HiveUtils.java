@@ -208,7 +208,7 @@ abstract class HiveUtils {
     }
 
     static void fixHive13InvalidComments(Settings settings, Properties tbl) {
-        if (Booleans.parseBoolean(settings.getProperty("es.hive.disable.columns.comments.fix"))) {
+        if (Booleans.parseBoolean(settings.getProperty("opensearch.hive.disable.columns.comments.fix"))) {
             return;
         }
 

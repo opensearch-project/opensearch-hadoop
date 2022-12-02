@@ -346,7 +346,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 // could be running in a remote JVM that does not have the
                 // Kerberos credentials available.
                 if (!StringUtils.hasText(settings.getNetworkSpnegoAuthElasticsearchPrincipal())) {
-                    throw new OpenSearchHadoopIllegalArgumentException("Missing Elasticsearch Kerberos Principal name. " +
+                    throw new OpenSearchHadoopIllegalArgumentException("Missing OpenSearch Kerberos Principal name. " +
                             "Specify one with [" + ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL + "]");
                 }
 
@@ -521,7 +521,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
 
         // we actually have a socks proxy, let's start the setup
         if (StringUtils.hasText(proxyHost)) {
-            log.warn("Connecting to Elasticsearch through SOCKS proxy is deprecated in 6.6.0 and will be removed in a later release.");
+            log.warn("Connecting to OpenSearch through SOCKS proxy is deprecated in 6.6.0 and will be removed in a later release.");
             isSecure = false;
             isProxied = true;
             proxyInfo = proxyInfo.concat(String.format("[SOCKS proxy %s:%s]", proxyHost, proxyPort));
@@ -653,7 +653,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             if (log.isDebugEnabled()) {
                 log.debug("Performing request with runAs user set to ["+runAsUser+"]");
             }
-            http.addRequestHeader("es-security-runas-user", runAsUser);
+            http.addRequestHeader("opensearch-security-runas-user", runAsUser);
         } else if (userProvider != null && userProvider.getUser().getEsToken(clusterName) != null) {
             // If we are using token authentication, set the auth to be preemptive:
             if (log.isDebugEnabled()) {

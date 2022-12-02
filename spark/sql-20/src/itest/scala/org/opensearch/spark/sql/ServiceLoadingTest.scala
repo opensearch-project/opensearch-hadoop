@@ -41,8 +41,8 @@ class ServiceLoadingTest {
   @Test
   def serviceLoadingTest(): Unit = {
     val serviceLoader = ServiceLoader.load(classOf[DataSourceRegister], Thread.currentThread().getContextClassLoader)
-    if (serviceLoader.asScala.map(_.shortName()).exists(_.equals("es")) == false) {
-      Assert.fail("Cannot locate 'es' data source")
+    if (serviceLoader.asScala.map(_.shortName()).exists(_.equals("opensearch")) == false) {
+      Assert.fail("Cannot locate 'opensearch' data source")
     }
   }
 

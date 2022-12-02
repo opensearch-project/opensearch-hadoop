@@ -155,7 +155,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
 
         // Dataset<Row> dataset = JavaOpenSearchSparkSQL.esDF(sqc, target);
-        Dataset<Row> dataset = sqc.read().format("es").load(target);
+        Dataset<Row> dataset = sqc.read().format("opensearch").load(target);
         assertTrue(dataset.count() > 300);
         String schema = dataset.schema().treeString();
 		System.out.println(schema);
@@ -177,7 +177,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	public void testEsDatasetReadMetadata() throws Exception {
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
 
-		Dataset<Row> dataset = sqc.read().format("es").option("opensearch.read.metadata", "true").load(target).where("id = 1");
+		Dataset<Row> dataset = sqc.read().format("opensearch").option("opensearch.read.metadata", "true").load(target).where("id = 1");
 
 		// Since _metadata field isn't a part of _source,
 		// we want to check that it could be fetched in any position.

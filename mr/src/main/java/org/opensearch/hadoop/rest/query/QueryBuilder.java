@@ -34,7 +34,7 @@ import org.opensearch.hadoop.serialization.json.JacksonJsonGenerator;
 import org.opensearch.hadoop.util.FastByteArrayOutputStream;
 
 /**
- * QueryBuilder for Elasticsearch query DSL
+ * QueryBuilder for OpenSearch query DSL
  */
 public abstract class QueryBuilder {
     /**

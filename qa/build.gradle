@@ -37,7 +37,7 @@ subprojects {
         distributionTasks.setEnabled(false)
     }
 
-    // We're gonna need the es build tools as part of the build scripts here to take advantage of
+    // We're gonna need the opensearch build tools as part of the build scripts here to take advantage of
     // all the fixture tasks. Add a build script dependency for it. Be sensitive of pulling it from
     // a local repo if we're currently in the release manager (unlikely, but be future proof).
     buildscript {

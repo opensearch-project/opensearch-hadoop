@@ -130,7 +130,7 @@ public class EsTokenIdentifier extends AbstractDelegationTokenIdentifier {
             ClusterInfo info = new ClusterInfo(new ClusterName(esToken.getClusterName(), null), esToken.getMajorVersion());
             compositeSettings.setInternalClusterInfo(info);
 
-            // The RestClient gets the es token for authentication from the current subject, but the subject running this code
+            // The RestClient gets the opensearch token for authentication from the current subject, but the subject running this code
             // could be ANYONE. We don't want to just give anyone the token in their credentials, so we create a throw away
             // subject and set it on there. That way we auth with the API key, and once the auth is done, it will be cancelled.
             // We'll do this with the JDK user to avoid the whole Hadoop Library's weird obsession with a static global user subject.

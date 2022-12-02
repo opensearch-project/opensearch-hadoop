@@ -56,12 +56,12 @@ abstract class CompatUtils {
 
         // apply the warning when the class is loaded (to cover all access points)
 
-        // check whether the correct es-hadoop is used with the correct Spark version
+        // check whether the correct opensearch-hadoop is used with the correct Spark version
         checkSparkLibraryCompatibility(false);
     }
 
     static void checkSparkLibraryCompatibility(boolean throwOnIncompatible) {
-        // check whether the correct es-hadoop is used with the correct Spark version
+        // check whether the correct opensearch-hadoop is used with the correct Spark version
         boolean isSpark13Level = ObjectUtils.isClassPresent("org.apache.spark.sql.DataFrame", SparkConf.class.getClassLoader());
         boolean isSpark20Level = ObjectUtils.isClassPresent("org.apache.spark.sql.streaming.StreamingQuery", SparkConf.class.getClassLoader());
 
@@ -74,11 +74,11 @@ abstract class CompatUtils {
 
             if (!(isSpark13Level || isSpark20Level)) {
                 String sparkVersion = getSparkVersionOr("1.0-1.2");
-                errorMessage = String.format("Incorrect classpath detected; Elasticsearch Spark compiled for Spark %s but used with unsupported Spark version %s",
+                errorMessage = String.format("Incorrect classpath detected; OpenSearch Spark compiled for Spark %s but used with unsupported Spark version %s",
                         esSupportedSparkVersion, sparkVersion);
             } else if (isSpark20Level != isEshForSpark20) { // XOR can be applied as well but != increases readability
                 String sparkVersion = getSparkVersionOr(isSpark13Level ? "1.3-1.6" : "2.0+");
-                errorMessage = String.format("Incorrect classpath detected; Elasticsearch Spark compiled for Spark %s but used with Spark %s",
+                errorMessage = String.format("Incorrect classpath detected; OpenSearch Spark compiled for Spark %s but used with Spark %s",
                         esSupportedSparkVersion, sparkVersion);
             }
 

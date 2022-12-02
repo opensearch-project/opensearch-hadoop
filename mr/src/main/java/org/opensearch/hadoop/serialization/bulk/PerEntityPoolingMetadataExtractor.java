@@ -74,9 +74,9 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
     /**
      * A special field extractor meant to be used for metadata fields that are
      * supported in
-     * some versions of Elasticsearch, but not others. In the case that a metadata
+     * some versions of OpenSearch, but not others. In the case that a metadata
      * field is
-     * unsupported for the configured version of Elasticsearch, this extractor which
+     * unsupported for the configured version of OpenSearch, this extractor which
      * throws
      * exceptions for using unsupported metadata tags is returned instead of the
      * regular one.
@@ -127,7 +127,7 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
     }
 
     /**
-     * If a metadata tag is unsupported for this version of Elasticsearch then a
+     * If a metadata tag is unsupported for this version of OpenSearch then a
      */
     private FieldExtractor _createExtractorFor(Metadata metadata) {
         //TTL and Timestamp metadata on index and update requests is not supported.

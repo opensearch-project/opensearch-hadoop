@@ -58,12 +58,12 @@ public final class HeaderProcessor {
      */
     private enum ReservedHeaders {
         /**
-         * Content-Type HTTP Header should not be set by user as all requests made to Elasticsearch are done
+         * Content-Type HTTP Header should not be set by user as all requests made to OpenSearch are done
          * in JSON format, or the _bulk api compliant line delimited JSON.
          */
         CONTENT_TYPE("Content-Type", "application/json", "OpenSearch-Hadoop communicates in JSON format only"),
         /*
-         * Elasticsearch also supports line-delimited JSON for '_bulk' operations which isn't
+         * OpenSearch also supports line-delimited JSON for '_bulk' operations which isn't
          * official and has a few variations:
          *  * http://specs.okfnlabs.org/ndjson/
          *  * https://github.com/ndjson/ndjson-spec/blob/48ea03cea6796b614cfbff4d4eb921f0b1d35c26/specification.md
@@ -74,7 +74,7 @@ public final class HeaderProcessor {
          *  * "application/x-ndjson"
          */
         /**
-         * Accept HTTP Header should not be set by user as all responses from Elasticsearch are expected to be
+         * Accept HTTP Header should not be set by user as all responses from OpenSearch are expected to be
          * in JSON format.
          */
         ACCEPT("Accept", "application/json", "OpenSearch-Hadoop communicates in JSON format only");

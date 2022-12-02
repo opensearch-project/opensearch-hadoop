@@ -84,7 +84,7 @@ object OpenSearchSparkSQL {
       val esCfg = new PropertiesSettings().load(sparkCfg.save())
       esCfg.merge(cfg.asJava)
 
-      // Need to discover es version before checking index existence
+      // Need to discover opensearch version before checking index existence
       InitializationUtils.setUserProviderIfNotSet(esCfg, classOf[HadoopUserProvider], LOG)
       InitializationUtils.discoverClusterInfo(esCfg, LOG)
       InitializationUtils.checkIdForOperation(esCfg)

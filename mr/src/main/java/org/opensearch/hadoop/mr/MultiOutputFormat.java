@@ -202,7 +202,7 @@ public class MultiOutputFormat extends OutputFormat implements org.apache.hadoop
         }
     }
 
-    public static final String CFG_FIELD = "es.hadoop.multi.of";
+    public static final String CFG_FIELD = "opensearch.hadoop.multi.of";
     private transient List<OutputFormat> newApiFormat = null;
     private transient List<org.apache.hadoop.mapred.OutputFormat> oldApiFormat = null;
 

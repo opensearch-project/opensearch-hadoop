@@ -68,8 +68,8 @@ public class BulkEntryWriterTest {
         Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "thrower");
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLER+".thrower", ExceptionThrowingHandler.class.getName());
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLERS, "thrower");
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLER +".thrower", ExceptionThrowingHandler.class.getName());
 
         BulkEntryWriter bulkEntryWriter = new BulkEntryWriter(settings, command);
 
@@ -83,8 +83,8 @@ public class BulkEntryWriterTest {
         Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "thrower");
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLER+".thrower", AbortingExceptionThrowingHandler.class.getName());
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLERS, "thrower");
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLER +".thrower", AbortingExceptionThrowingHandler.class.getName());
 
         BulkEntryWriter bulkEntryWriter = new BulkEntryWriter(settings, command);
 
@@ -98,8 +98,8 @@ public class BulkEntryWriterTest {
         Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "evil");
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLER+".evil", NeverSurrenderHandler.class.getName());
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLERS, "evil");
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLER +".evil", NeverSurrenderHandler.class.getName());
 
         BulkEntryWriter bulkEntryWriter = new BulkEntryWriter(settings, command);
 
@@ -113,8 +113,8 @@ public class BulkEntryWriterTest {
         Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "skip");
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLER+".skip", NothingToSeeHereHandler.class.getName());
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLERS, "skip");
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLER +".skip", NothingToSeeHereHandler.class.getName());
 
         BulkEntryWriter bulkEntryWriter = new BulkEntryWriter(settings, command);
 
@@ -128,10 +128,10 @@ public class BulkEntryWriterTest {
         Mockito.when(command.write(1)).thenThrow(new OpenSearchHadoopIllegalStateException("Things broke"));
 
         Settings settings = new TestSettings();
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "marco,polo,skip");
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLER+".marco", MarcoHandler.class.getName());
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLER+".polo", PoloHandler.class.getName());
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLER+".skip", NothingToSeeHereHandler.class.getName());
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLERS, "marco,polo,skip");
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLER +".marco", MarcoHandler.class.getName());
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLER +".polo", PoloHandler.class.getName());
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLER +".skip", NothingToSeeHereHandler.class.getName());
 
         BulkEntryWriter bulkEntryWriter = new BulkEntryWriter(settings, command);
 
@@ -148,8 +148,8 @@ public class BulkEntryWriterTest {
         Mockito.when(command.write(10)).thenReturn(response);
 
         Settings settings = new TestSettings();
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLERS, "fix");
-        settings.setProperty(SerializationHandlerLoader.ES_WRITE_DATA_ERROR_HANDLER+".fix", CorrectingHandler.class.getName());
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLERS, "fix");
+        settings.setProperty(SerializationHandlerLoader.OPENSEARCH_WRITE_DATA_ERROR_HANDLER +".fix", CorrectingHandler.class.getName());
 
         BulkEntryWriter bulkEntryWriter = new BulkEntryWriter(settings, command);
 

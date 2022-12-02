@@ -164,9 +164,9 @@ public class HiveSuite {
         }
 
         if (!isLocal) {
-            String host = hadoopConfig.get("es.host");
+            String host = hadoopConfig.get("opensearch.host");
             if (StringUtils.hasText(host)) {
-                sb.append(",'es.host'='" + host + "'");
+                sb.append(",'opensearch.host'='" + host + "'");
             }
             String port = hadoopConfig.get("opensearch.port");
             sb.append(",'opensearch.port'='" + port + "'");

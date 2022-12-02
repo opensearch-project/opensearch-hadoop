@@ -68,7 +68,7 @@ private[sql] trait RowValueReader extends SettingsAware {
       if (pos >= 0 || !currentFieldIsGeo) {
         if (key.toString().contains(".")) {
           throw new OpenSearchHadoopIllegalStateException(
-            s"Found field '$sparkRowField'. Fields containing dots ('.') are not supported in es-hadoop")
+            s"Found field '$sparkRowField'. Fields containing dots ('.') are not supported in opensearch-hadoop")
         } else {
           throw new OpenSearchHadoopIllegalStateException(s"Position for '$sparkRowField' not found in row; typically this is caused by a mapping inconsistency")
         }

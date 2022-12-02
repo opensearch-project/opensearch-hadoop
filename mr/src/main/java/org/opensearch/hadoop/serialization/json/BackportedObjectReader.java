@@ -204,8 +204,8 @@ public class BackportedObjectReader implements ObjectReader {
             return deser;
         }
 
-        // es-hadoop: findType with 2 args have been removed since 1.9 so this code compiles on 1.8 (which has the fallback method)
-        // es-hadoop: on 1.5 only the 2 args method exists, since 1.9 only the one with 3 args hence the if
+        // opensearch-hadoop: findType with 2 args have been removed since 1.9 so this code compiles on 1.8 (which has the fallback method)
+        // opensearch-hadoop: on 1.5 only the 2 args method exists, since 1.9 only the one with 3 args hence the if
 
         // Nope: need to ask provider to resolve it
         deser = _provider.findTypedValueDeserializer(cfg, valueType);

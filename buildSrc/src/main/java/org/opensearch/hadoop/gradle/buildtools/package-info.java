@@ -28,7 +28,7 @@
  */
 
 /**
- * All classes in org.elasticsearch.hadoop.gradle.buildtools are originally
+ * All classes in org.opensearch.hadoop.gradle.buildtools are originally
  * copied from the elasticsearch build-tools project. These classes are
  * considered internal in build tools and will not be supported by the build tools
  * team and also not being published in upcoming build tool releases.

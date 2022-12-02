@@ -274,7 +274,7 @@ class DataFrameValueWriter(writeUnknownTypes: Boolean = false) extends Filtering
       case _             => {
         val className = schema.getClass().getName()
         if ("org.apache.spark.sql.types.DecimalType".equals(className) || "org.apache.spark.sql.catalyst.types.DecimalType".equals(className)) {
-          throw new OpenSearchHadoopSerializationException("Decimal types are not supported by Elasticsearch - consider using a different type (such as string)")
+          throw new OpenSearchHadoopSerializationException("Decimal types are not supported by OpenSearch - consider using a different type (such as string)")
         }
         return handleUnknown(value, generator)
       }

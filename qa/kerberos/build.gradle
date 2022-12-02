@@ -126,7 +126,7 @@ if (disableTests) {
     // Additionally, when using a local repo, the esCluster plugin is not applied, and thus, cannot be referenced in the
     // build script.
     
-    // Build uber storm jar for testing Storm remotely (es-hadoop + es-storm + qa tests)
+    // Build uber storm jar for testing Storm remotely (opensearch-hadoop + opensearch-storm + qa tests)
     Jar qaKerberosStormJar = project.tasks.create('kerberosStormJar', Jar)
     qaKerberosStormJar.dependsOn(project(':opensearch-storm').tasks.getByName('jar'))
     qaKerberosStormJar.dependsOn(project(':opensearch-storm').tasks.getByName('itestJar'))
@@ -494,7 +494,7 @@ if (disableTests) {
         jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.ReadFromES'
         jobSettings([
                 'opensearch.resource': 'qa_kerberos_mr_data',
-                'es.nodes': opensearchAddress,
+                'opensearch.nodes': opensearchAddress,
                 'opensearch.security.authentication': 'kerberos',
                 'opensearch.net.spnego.auth.opensearch.principal': "${opensearchPrincipal}${realm}",
                 'mapreduce.map.java.opts': "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}",

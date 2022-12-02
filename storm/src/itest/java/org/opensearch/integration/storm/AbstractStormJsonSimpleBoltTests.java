@@ -60,7 +60,7 @@ public class AbstractStormJsonSimpleBoltTests extends AbstractStormBoltTests {
         String target = index + "/json-simple-write";
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("test-spout-1", new TestSpout(ImmutableList.of(doc1, doc2), new Fields("json")));
-        builder.setBolt("es-bolt-1", new TestBolt(new OpenSearchBolt(target, conf))).shuffleGrouping("test-spout-1");
+        builder.setBolt("opensearch-bolt-1", new TestBolt(new OpenSearchBolt(target, conf))).shuffleGrouping("test-spout-1");
 
         assumeTrue(COMPONENT_HAS_COMPLETED.is(2));
 

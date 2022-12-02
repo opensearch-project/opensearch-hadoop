@@ -51,15 +51,15 @@ public class StormSettings extends Settings {
     }
 
     public boolean getStormTickTupleFlush() {
-        return Booleans.parseBoolean(getProperty(StormConfigurationOptions.ES_STORM_BOLT_TICK_TUPLE_FLUSH, StormConfigurationOptions.ES_STORM_BOLT_TICK_TUPLE_FLUSH_DEFAULT));
+        return Booleans.parseBoolean(getProperty(StormConfigurationOptions.OPENSEARCH_STORM_BOLT_TICK_TUPLE_FLUSH, StormConfigurationOptions.OPENSEARCH_STORM_BOLT_TICK_TUPLE_FLUSH_DEFAULT));
     }
 
     public boolean getStormBoltAck() {
-        return Booleans.parseBoolean(getProperty(StormConfigurationOptions.ES_STORM_BOLT_ACK, StormConfigurationOptions.ES_STORM_BOLT_ACK_DEFAULT));
+        return Booleans.parseBoolean(getProperty(StormConfigurationOptions.OPENSEARCH_STORM_BOLT_ACK, StormConfigurationOptions.OPENSEARCH_STORM_BOLT_ACK_DEFAULT));
     }
 
     public int getStormBulkSize() {
-        String value = getProperty(StormConfigurationOptions.ES_STORM_BOLT_FLUSH_ENTRIES_SIZE);
+        String value = getProperty(StormConfigurationOptions.OPENSEARCH_STORM_BOLT_FLUSH_ENTRIES_SIZE);
         if (StringUtils.hasText(value)) {
             return Integer.valueOf(value);
         }
@@ -67,23 +67,23 @@ public class StormSettings extends Settings {
     }
 
     public boolean getStormSpoutReliable() {
-        return Booleans.parseBoolean(getProperty(StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE, StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_DEFAULT));
+        return Booleans.parseBoolean(getProperty(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE, StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_DEFAULT));
     }
 
     public int getStormSpoutReliableQueueSize() {
-        return Integer.parseInt(getProperty(StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_QUEUE_SIZE, StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_QUEUE_SIZE_DEFAULT));
+        return Integer.parseInt(getProperty(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_QUEUE_SIZE, StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_QUEUE_SIZE_DEFAULT));
     }
 
     public int getStormSpoutReliableRetriesPerTuple() {
-        return Integer.parseInt(getProperty(StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE, StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE_DEFAULT));
+        return Integer.parseInt(getProperty(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE, StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE_DEFAULT));
     }
 
     public TupleFailureHandling getStormSpoutReliableTupleFailureHandling() {
-        return TupleFailureHandling.valueOf(getProperty(StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_TUPLE_FAILURE_HANDLE, StormConfigurationOptions.ES_STORM_SPOUT_RELIABLE_TUPLE_FAILURE_HANDLE_DEFAULT).toUpperCase(Locale.ENGLISH));
+        return TupleFailureHandling.valueOf(getProperty(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_TUPLE_FAILURE_HANDLE, StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_RELIABLE_TUPLE_FAILURE_HANDLE_DEFAULT).toUpperCase(Locale.ENGLISH));
     }
 
     public List<String> getStormSpoutFields() {
-        return StringUtils.tokenize(getProperty(StormConfigurationOptions.ES_STORM_SPOUT_FIELDS, StormConfigurationOptions.ES_STORM_SPOUT_FIELDS_DEFAULT));
+        return StringUtils.tokenize(getProperty(StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_FIELDS, StormConfigurationOptions.OPENSEARCH_STORM_SPOUT_FIELDS_DEFAULT));
     }
 
     public int getNimbusCredentialRenewersFrequencySeconds() {

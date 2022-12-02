@@ -59,7 +59,7 @@ public class AbstractStormIndexPatternBoltTests extends AbstractStormBoltTests {
         TopologyBuilder builder = new TopologyBuilder();
         builder.setSpout("test-spout-3", new TestSpout(ImmutableList.of(doc2, doc1), new Fields("key1", "val1", "key2",
                 "val2", "key3", "number")));
-        builder.setBolt("es-bolt-3", new TestBolt(new OpenSearchBolt(target, conf))).shuffleGrouping("test-spout-3");
+        builder.setBolt("opensearch-bolt-3", new TestBolt(new OpenSearchBolt(target, conf))).shuffleGrouping("test-spout-3");
 
         MultiIndexSpoutStormSuite.run(index + "write-pattern", builder.createTopology(), COMPONENT_HAS_COMPLETED);
 

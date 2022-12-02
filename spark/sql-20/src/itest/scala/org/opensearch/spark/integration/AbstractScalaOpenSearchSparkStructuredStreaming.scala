@@ -75,7 +75,7 @@ import scala.io.Source
 
 object AbstractScalaOpenSearchSparkStructuredStreaming {
 
-  @transient val appName: String = "es-spark-sql-streaming-test"
+  @transient val appName: String = "opensearch-spark-sql-streaming-test"
   @transient var spark: Option[SparkSession] = None
   @transient val commitLogDir: String = commitLogDirectory()
   @transient val sparkConf: SparkConf = new SparkConf()
@@ -98,7 +98,7 @@ object AbstractScalaOpenSearchSparkStructuredStreaming {
   }
 
   def commitLogDirectory(): String = {
-    val tempDir = File.createTempFile("es-spark-structured-streaming", "")
+    val tempDir = File.createTempFile("opensearch-spark-structured-streaming", "")
     tempDir.delete()
     tempDir.mkdir()
     val logDir = new File(tempDir, "logs")
@@ -219,7 +219,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
             .writeStream
             .outputMode(OutputMode.Complete())
             .option("checkpointLocation", checkpoint(target))
-            .format("es")
+            .format("opensearch")
             .start(target)
         }
 
@@ -237,7 +237,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .partitionBy("name")
           .option("checkpointLocation", checkpoint(target))
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -257,7 +257,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .option(SparkSqlStreamingConfigs.ES_SINK_LOG_ENABLE, "false")
           .option("checkpointLocation", checkpoint(target))
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -282,7 +282,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           test.stream
               .writeStream
               .option("checkpointLocation", checkpoint(target))
-              .format("es")
+              .format("opensearch")
               .start(target)
         }
 
@@ -311,7 +311,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           test.stream
             .writeStream
             .queryName("test-basic-write-session-commit")
-            .format("es")
+            .format("opensearch")
             .start(target)
         }
 
@@ -344,7 +344,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         .runTest {
           test.stream
             .writeStream
-            .format("es")
+            .format("opensearch")
             .start(target)
         }
 
@@ -376,7 +376,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .option("checkpointLocation", checkpoint(target))
           .option(OPENSEARCH_INDEX_AUTO_CREATE, "no")
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -398,7 +398,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .option("checkpointLocation", checkpoint(target))
           .option(OPENSEARCH_MAPPING_ID, "id")
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -425,7 +425,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .option("checkpointLocation", checkpoint(target))
           .option(OPENSEARCH_MAPPING_EXCLUDE, "id")
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -454,7 +454,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .option("checkpointLocation", checkpoint(target))
           .option(ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE, pipelineName)
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -485,7 +485,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         test.stream
           .writeStream
           .option("checkpointLocation", checkpointName)
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -508,7 +508,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .option("checkpointLocation", checkpoint(target))
           .option(OPENSEARCH_MAPPING_ID, "id")
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -531,7 +531,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .option("checkpointLocation", checkpoint(target))
           .option(OPENSEARCH_MAPPING_ID, "id")
           .option(OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES, "true")
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -563,7 +563,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .writeStream
           .option("checkpointLocation", checkpoint(target))
           .option(OPENSEARCH_MAPPING_ID, "id")
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
 
@@ -583,7 +583,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
         test.stream
           .writeStream
           .option("checkpointLocation", checkpoint(target))
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
   }
@@ -603,7 +603,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
           .outputMode("update")
           .option("checkpointLocation", checkpoint(target))
           .option(OPENSEARCH_MAPPING_ID, "id")
-          .format("es")
+          .format("opensearch")
           .start(target)
       }
     test.waitForPartialCompletion()

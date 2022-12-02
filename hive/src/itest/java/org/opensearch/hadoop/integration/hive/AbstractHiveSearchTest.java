@@ -388,7 +388,7 @@ public class AbstractHiveSearchTest {
 
     @Test
     public void basicUnion() throws Exception {
-        //table unionA and table uinonB should be from difference es index/type
+        //table unionA and table uinonB should be from difference opensearch index/type
         String unionA = "CREATE EXTERNAL TABLE uniona" + testInstance + " ("
                 + "id       BIGINT, "
                 + "name     STRING, "

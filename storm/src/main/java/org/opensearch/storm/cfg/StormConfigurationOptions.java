@@ -31,26 +31,26 @@ package org.opensearch.storm.cfg;
 
 public interface StormConfigurationOptions {
 
-    String ES_STORM_BOLT_TICK_TUPLE_FLUSH = "es.storm.bolt.tick.tuple.flush";
-    String ES_STORM_BOLT_TICK_TUPLE_FLUSH_DEFAULT = "true";
+    String OPENSEARCH_STORM_BOLT_TICK_TUPLE_FLUSH = "opensearch.storm.bolt.tick.tuple.flush";
+    String OPENSEARCH_STORM_BOLT_TICK_TUPLE_FLUSH_DEFAULT = "true";
 
-    String ES_STORM_BOLT_ACK = "es.storm.bolt.write.ack";
-    String ES_STORM_BOLT_ACK_DEFAULT = "false";
+    String OPENSEARCH_STORM_BOLT_ACK = "opensearch.storm.bolt.write.ack";
+    String OPENSEARCH_STORM_BOLT_ACK_DEFAULT = "false";
 
-    String ES_STORM_BOLT_FLUSH_ENTRIES_SIZE = "es.storm.bolt.flush.entries.size";
+    String OPENSEARCH_STORM_BOLT_FLUSH_ENTRIES_SIZE = "opensearch.storm.bolt.flush.entries.size";
 
-    String ES_STORM_SPOUT_RELIABLE = "es.storm.spout.reliable";
-    String ES_STORM_SPOUT_RELIABLE_DEFAULT = "false";
+    String OPENSEARCH_STORM_SPOUT_RELIABLE = "opensearch.storm.spout.reliable";
+    String OPENSEARCH_STORM_SPOUT_RELIABLE_DEFAULT = "false";
 
-    String ES_STORM_SPOUT_RELIABLE_QUEUE_SIZE = "es.storm.spout.reliable.queue.size";
-    String ES_STORM_SPOUT_RELIABLE_QUEUE_SIZE_DEFAULT = "0";
+    String OPENSEARCH_STORM_SPOUT_RELIABLE_QUEUE_SIZE = "opensearch.storm.spout.reliable.queue.size";
+    String OPENSEARCH_STORM_SPOUT_RELIABLE_QUEUE_SIZE_DEFAULT = "0";
 
-    String ES_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE = "es.storm.spout.reliable.retries.per.tuple";
-    String ES_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE_DEFAULT = "5";
+    String OPENSEARCH_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE = "opensearch.storm.spout.reliable.retries.per.tuple";
+    String OPENSEARCH_STORM_SPOUT_RELIABLE_RETRIES_PER_TUPLE_DEFAULT = "5";
 
-    String ES_STORM_SPOUT_RELIABLE_TUPLE_FAILURE_HANDLE = "es.storm.spout.reliable.handle.tuple.failure";
-    String ES_STORM_SPOUT_RELIABLE_TUPLE_FAILURE_HANDLE_DEFAULT = "abort";
+    String OPENSEARCH_STORM_SPOUT_RELIABLE_TUPLE_FAILURE_HANDLE = "opensearch.storm.spout.reliable.handle.tuple.failure";
+    String OPENSEARCH_STORM_SPOUT_RELIABLE_TUPLE_FAILURE_HANDLE_DEFAULT = "abort";
 
-    String ES_STORM_SPOUT_FIELDS = "es.storm.spout.fields";
-    String ES_STORM_SPOUT_FIELDS_DEFAULT = "";
+    String OPENSEARCH_STORM_SPOUT_FIELDS = "opensearch.storm.spout.fields";
+    String OPENSEARCH_STORM_SPOUT_FIELDS_DEFAULT = "";
 }

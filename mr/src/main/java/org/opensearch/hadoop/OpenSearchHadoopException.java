@@ -29,7 +29,7 @@
 package org.opensearch.hadoop;
 
 /**
- * Base class for Elasticsearch Hadoop exceptions.
+ * Base class for OpenSearch Hadoop exceptions.
  */
 public class OpenSearchHadoopException extends RuntimeException {
 

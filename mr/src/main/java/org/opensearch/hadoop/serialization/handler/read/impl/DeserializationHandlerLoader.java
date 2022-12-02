@@ -35,14 +35,14 @@ import org.opensearch.hadoop.handler.ErrorHandler;
 import org.opensearch.hadoop.handler.impl.AbortOnFailure;
 import org.opensearch.hadoop.handler.impl.AbstractHandlerLoader;
 import org.opensearch.hadoop.handler.impl.DropAndLog;
-import org.opensearch.hadoop.handler.impl.opensearch.ElasticsearchHandler;
+import org.opensearch.hadoop.handler.impl.opensearch.OpenSearchHandler;
 import org.opensearch.hadoop.serialization.handler.read.DeserializationFailure;
 import org.opensearch.hadoop.serialization.handler.read.IDeserializationErrorHandler;
 
 public class DeserializationHandlerLoader extends AbstractHandlerLoader<IDeserializationErrorHandler> {
 
-    public static final String ES_READ_DATA_ERROR_HANDLERS = "es.read.data.error.handlers";
-    public static final String ES_READ_DATA_ERROR_HANDLER = "es.read.data.error.handler";
+    public static final String OPENSEARCH_READ_DATA_ERROR_HANDLERS = "opensearch.read.data.error.handlers";
+    public static final String OPENSEARCH_READ_DATA_ERROR_HANDLER = "opensearch.read.data.error.handler";
 
     public DeserializationHandlerLoader() {
         super(IDeserializationErrorHandler.class);
@@ -50,12 +50,12 @@ public class DeserializationHandlerLoader extends AbstractHandlerLoader<IDeseria
 
     @Override
     protected String getHandlersPropertyName() {
-        return ES_READ_DATA_ERROR_HANDLERS;
+        return OPENSEARCH_READ_DATA_ERROR_HANDLERS;
     }
 
     @Override
     protected String getHandlerPropertyName() {
-        return ES_READ_DATA_ERROR_HANDLER;
+        return OPENSEARCH_READ_DATA_ERROR_HANDLER;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class DeserializationHandlerLoader extends AbstractHandlerLoader<IDeseria
                 genericHandler = DropAndLog.create(new DeserializationLogRenderer());
                 break;
             case OPENSEARCH:
-                genericHandler = ElasticsearchHandler.create(getSettings(), new DeserializationEventConverter());
+                genericHandler = OpenSearchHandler.create(getSettings(), new DeserializationEventConverter());
                 break;
             default:
                 throw new OpenSearchHadoopIllegalArgumentException(

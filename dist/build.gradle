@@ -187,7 +187,7 @@ task generateDependenciesReport(type: ConcatFilesTask) {
     dependsOn rootProject.allprojects.collect { it.tasks.withType(DependenciesInfoTask) }
     files = fileTree(dir: project.rootDir,  include: '**/dependencies.csv' )
     headerLine = "name,version,url,license"
-    target = new File(System.getProperty('csv')?: "${project.buildDir}/reports/dependencies/es-hadoop-dependencies.csv")
+    target = new File(System.getProperty('csv')?: "${project.buildDir}/reports/dependencies/opensearch-hadoop-dependencies.csv")
 }
 
 project.tasks.named('dependencyLicenses', DependencyLicensesTask) {

@@ -272,7 +272,7 @@ public class GlobalBuildInfoPlugin implements Plugin<Project> {
         if (versionedJavaHome == null) {
             final String exceptionMessage = String.format(
                 Locale.ROOT,
-                "$%s must be set to build Elasticsearch. "
+                "$%s must be set to build OpenSearch. "
                     + "Note that if the variable was just set you "
                     + "might have to run `./gradlew --stop` for "
                     + "it to be picked up. See https://github.com/elastic/elasticsearch/issues/31399 details.",

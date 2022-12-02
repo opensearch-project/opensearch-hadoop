@@ -63,7 +63,7 @@ import org.opensearch.hadoop.util.TrackingBytesArray;
 import org.opensearch.hadoop.util.unit.TimeValue;
 
 /**
- * Oversees the addition of bulk entries into an internal buffer, the flushing of documents to Elasticsearch,
+ * Oversees the addition of bulk entries into an internal buffer, the flushing of documents to OpenSearch,
  * and the handling of failures in bulk operations.
  */
 public class BulkProcessor implements Closeable, StatsAware {

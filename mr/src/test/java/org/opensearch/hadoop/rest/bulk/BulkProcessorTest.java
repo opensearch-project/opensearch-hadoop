@@ -352,8 +352,8 @@ public class BulkProcessorTest {
 
     @Test
     public void testBulk03_LogOneRejectionBasedFailure() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "log");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER+".log."+ DropAndLog.CONF_LOGGER_NAME, this.getClass().getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "log");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER +".log."+ DropAndLog.CONF_LOGGER_NAME, this.getClass().getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -394,8 +394,8 @@ public class BulkProcessorTest {
 
     @Test
     public void testBulk03_LogOneExplicitFailure() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "log");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER+".log."+ DropAndLog.CONF_LOGGER_NAME, this.getClass().getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "log");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER +".log."+ DropAndLog.CONF_LOGGER_NAME, this.getClass().getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -425,8 +425,8 @@ public class BulkProcessorTest {
 
     @Test
     public void testBulk03_LogRejectionAndExplicitFailure() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "log");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER+".log."+ DropAndLog.CONF_LOGGER_NAME, this.getClass().getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "log");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER +".log."+ DropAndLog.CONF_LOGGER_NAME, this.getClass().getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -509,8 +509,8 @@ public class BulkProcessorTest {
 
     @Test
     public void testBulk04_ComplicatedHandlerRetries() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "complicated");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".complicated", ComplicatedRetryHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "complicated");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".complicated", ComplicatedRetryHandler.class.getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -574,8 +574,8 @@ public class BulkProcessorTest {
 
     @Test
     public void testBulk05_StackedNewDocuments() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "incrementer");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".incrementer", IncrementingHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "incrementer");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".incrementer", IncrementingHandler.class.getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -623,8 +623,8 @@ public class BulkProcessorTest {
      */
     @Test
     public void testBulk06_RetriesMixedWithNewDocuments() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "incrementer");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".incrementer", IncrementingHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "incrementer");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".incrementer", IncrementingHandler.class.getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -683,8 +683,8 @@ public class BulkProcessorTest {
 
     @Test(expected = OpenSearchHadoopException.class)
     public void testBulk07_HandlerThrowsExceptions() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "exception");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".exception", ExceptionThrowingHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "exception");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".exception", ExceptionThrowingHandler.class.getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -715,8 +715,8 @@ public class BulkProcessorTest {
 
     @Test
     public void testBulk07_HandlerThrowsAbortExceptions() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "exception");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".exception", AbortingExceptionThrowingHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "exception");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".exception", AbortingExceptionThrowingHandler.class.getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -763,8 +763,8 @@ public class BulkProcessorTest {
 
     @Test(expected = OpenSearchHadoopException.class)
     public void testBulk08_HandlerLoopsForever() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "looper");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".looper", NeverSurrenderHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "looper");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".looper", NeverSurrenderHandler.class.getName());
         testSettings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_WRITE_RETRY_LIMIT, "6");
 
         BulkProcessor processor = getBulkProcessor(
@@ -833,8 +833,8 @@ public class BulkProcessorTest {
 
     @Test
     public void testBulk09_HandlerDropsNewline() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "drop");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".drop", NewlineDroppingHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "drop");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".drop", NewlineDroppingHandler.class.getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -867,8 +867,8 @@ public class BulkProcessorTest {
 
     @Test(expected = OpenSearchHadoopException.class)
     public void testBulk09_HandlerReturnsGarbage() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "garbage");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".garbage", GarbageHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "garbage");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".garbage", GarbageHandler.class.getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)
@@ -889,8 +889,8 @@ public class BulkProcessorTest {
 
     @Test(expected = OpenSearchHadoopException.class)
     public void testBulk09_HandlerStillReturnsGarbage() throws Exception {
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLERS, "garbage");
-        testSettings.setProperty(BulkWriteHandlerLoader.ES_WRITE_REST_ERROR_HANDLER + ".garbage", StillGarbageHandler.class.getName());
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLERS, "garbage");
+        testSettings.setProperty(BulkWriteHandlerLoader.OPENSEARCH_WRITE_REST_ERROR_HANDLER + ".garbage", StillGarbageHandler.class.getName());
 
         BulkProcessor processor = getBulkProcessor(
                 generator.setInfo(resource, 56)

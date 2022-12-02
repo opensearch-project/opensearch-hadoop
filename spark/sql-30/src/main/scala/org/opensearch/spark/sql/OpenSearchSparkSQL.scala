@@ -97,7 +97,7 @@ object OpenSearchSparkSQL {
     if (srdd != null) {
       if (srdd.isStreaming) {
         throw new OpenSearchHadoopIllegalArgumentException("Streaming Datasets should not be saved with 'saveToEs()'. Instead, use " +
-          "the 'writeStream().format(\"es\").save()' methods.")
+          "the 'writeStream().format(\"opensearch\").save()' methods.")
       }
       val sparkCtx = srdd.sqlContext.sparkContext
       val sparkCfg = new SparkSettingsManager().load(sparkCtx.getConf)

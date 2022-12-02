@@ -27,6 +27,6 @@
  * under the License.
  */
 /**
- * Base package providing common exceptions used by the Elasticsearch Hadoop library.
+ * Base package providing common exceptions used by the OpenSearch Hadoop library.
  */
 package org.opensearch.hadoop;

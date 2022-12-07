@@ -42,7 +42,7 @@ import org.opensearch.hadoop.util.StringUtils;
 
 
 @SuppressWarnings("rawtypes")
-public class EsPigInputFormat extends EsInputFormat<String, Object> {
+public class OpenSearchPigInputFormat extends EsInputFormat<String, Object> {
 
     protected static abstract class AbstractPigEsInputRecordReader<V> extends EsInputRecordReader<String, V> {
         public AbstractPigEsInputRecordReader() {

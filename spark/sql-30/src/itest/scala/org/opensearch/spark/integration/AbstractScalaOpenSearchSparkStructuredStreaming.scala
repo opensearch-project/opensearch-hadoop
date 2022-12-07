@@ -83,7 +83,7 @@ object AbstractScalaOpenSearchSparkStructuredStreaming {
     .setMaster("local")
     .setAppName(appName)
     .set("spark.executor.extraJavaOptions", "-XX:MaxPermSize=256m")
-    .setJars(SparkUtils.ES_SPARK_TESTING_JAR)
+    .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR)
 
   @transient @ClassRule val testData = new TestData()
 
@@ -256,7 +256,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
       .runTest {
         test.stream
           .writeStream
-          .option(SparkSqlStreamingConfigs.ES_SINK_LOG_ENABLE, "false")
+          .option(SparkSqlStreamingConfigs.OPENSEARCH_SINK_LOG_ENABLE, "false")
           .option("checkpointLocation", checkpoint(target))
           .format("opensearch")
           .start(target)

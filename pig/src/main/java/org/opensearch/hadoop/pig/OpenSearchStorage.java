@@ -294,7 +294,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
     @SuppressWarnings("rawtypes")
     @Override
     public InputFormat getInputFormat() throws IOException {
-        return new EsPigInputFormat();
+        return new OpenSearchPigInputFormat();
     }
 
     @SuppressWarnings({ "rawtypes", "unchecked" })

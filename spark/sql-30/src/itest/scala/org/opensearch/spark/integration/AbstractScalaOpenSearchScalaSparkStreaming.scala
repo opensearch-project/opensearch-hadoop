@@ -64,7 +64,7 @@ object AbstractScalaOpenSearchScalaSparkStreaming {
     .setMaster("local")
     .setAppName("opensearchtest")
     .set("spark.executor.extraJavaOptions", "-XX:MaxPermSize=256m")
-    .setJars(SparkUtils.ES_SPARK_TESTING_JAR)
+    .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR)
   @transient var sc: SparkContext = null
   @transient var ssc: StreamingContext = null
 

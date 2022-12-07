@@ -75,7 +75,7 @@ import org.opensearch.spark.sql.sqlContextFunctions
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.is
 import org.hamcrest.Matchers.not
-import org.junit.AfterClass
+import org.junit.{AfterClass, BeforeClass, ClassRule, FixMethodOrder, Ignore, Test}
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThat
@@ -83,9 +83,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Assume.assumeFalse
 import org.junit.Assume.assumeTrue
-import org.junit.BeforeClass
-import org.junit.FixMethodOrder
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.junit.runners.Parameterized
@@ -97,7 +94,6 @@ import org.apache.spark.rdd.RDD
 import javax.xml.bind.DatatypeConverter
 import org.apache.spark.sql.SparkSession
 import org.junit.Assert._
-import org.junit.ClassRule
 import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException, TestData}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.rest.{OpenSearchHadoopParsingException, RestUtils}
@@ -110,7 +106,7 @@ object AbstractScalaOpenSearchScalaSparkSQL {
   @transient val conf = new SparkConf()
     .setAll(propertiesAsScalaMap(TestSettings.TESTING_PROPS))
     .setAppName("opensearchtest")
-    .setJars(SparkUtils.ES_SPARK_TESTING_JAR)
+    .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR)
   @transient var cfg: SparkConf = null
   @transient var sc: SparkContext = null
   @transient var sqc: SQLContext = null
@@ -1072,6 +1068,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
+  @Ignore
+  // @AwaitsFix(bugUrl = "https://github.com/opensearch-project/opensearch-hadoop/issues/41")
   def testDataSourcePushDown09StartsWith() {
     val df = opensearchDataSource("pd_starts_with")
     var filter = df.filter(df("airport").startsWith("O"))
@@ -1092,6 +1090,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
+  @Ignore
+  // @AwaitsFix(bugUrl = "https://github.com/opensearch-project/opensearch-hadoop/issues/41")
   def testDataSourcePushDown10EndsWith() {
     val df = opensearchDataSource("pd_ends_with")
     var filter = df.filter(df("airport").endsWith("O"))

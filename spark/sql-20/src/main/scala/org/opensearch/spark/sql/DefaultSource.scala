@@ -423,7 +423,8 @@ private[sql] case class OpenSearchRelation(parameters: Map[String, String], @tra
           val x = f.productElement(1).toString()
           if (!strictPushDown) x.toLowerCase(Locale.ROOT) else x
         }
-        s"""{"wildcard":{"${f.productElement(0)}":"$arg*"}}"""
+        val strict = strictPushDown == false
+        s"""{"wildcard":{"${f.productElement(0)}":{"value":"$arg*","case_insensitive":$strict}}}"""
       }
 
       case f:Product if isClass(f, "org.apache.spark.sql.sources.StringEndsWith")   => {
@@ -431,7 +432,8 @@ private[sql] case class OpenSearchRelation(parameters: Map[String, String], @tra
           val x = f.productElement(1).toString()
           if (!strictPushDown) x.toLowerCase(Locale.ROOT) else x
         }
-        s"""{"wildcard":{"${f.productElement(0)}":"*$arg"}}"""
+        val strict = !strictPushDown
+        s"""{"wildcard":{"${f.productElement(0)}":{"value":"*$arg","case_insensitive":$strict}}}"""
       }
 
       case f:Product if isClass(f, "org.apache.spark.sql.sources.StringContains")   => {

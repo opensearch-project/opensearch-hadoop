@@ -150,6 +150,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
     .getOrElse(throw new OpenSearchHadoopIllegalStateException("Spark not started..."))
   val version: OpenSearchMajorVersion = TestUtils.getOpenSearchClusterInfo.getMajorVersion
 
+  import org.opensearch.spark.integration.Products._
   import spark.implicits._
 
   def wrapIndex(name: String): String = {
@@ -255,7 +256,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
       .runTest {
         test.stream
           .writeStream
-          .option(SparkSqlStreamingConfigs.ES_SINK_LOG_ENABLE, "false")
+          .option(SparkSqlStreamingConfigs.OPENSEARCH_SINK_LOG_ENABLE, "false")
           .option("checkpointLocation", checkpoint(target))
           .format("opensearch")
           .start(target)

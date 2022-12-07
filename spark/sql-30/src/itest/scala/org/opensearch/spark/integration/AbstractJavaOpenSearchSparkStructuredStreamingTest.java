@@ -78,7 +78,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
     private static final transient SparkConf conf = new SparkConf()
             .setMaster("local")
             .setAppName("opensearch-structured-streaming-test")
-            .setJars(SparkUtils.ES_SPARK_TESTING_JAR);
+            .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR);
 
     private static transient SparkSession spark = null;
 

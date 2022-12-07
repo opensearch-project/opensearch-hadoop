@@ -62,12 +62,9 @@ import org.opensearch.spark.sql.sqlContextFunctions
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.is
 import org.hamcrest.Matchers.not
-import org.junit.AfterClass
+import org.junit.{AfterClass, BeforeClass, ClassRule, FixMethodOrder, Ignore, Test}
 import org.junit.Assert._
 import org.junit.Assume._
-import org.junit.BeforeClass
-import org.junit.FixMethodOrder
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 import org.junit.runners.Parameterized.Parameters
@@ -78,7 +75,6 @@ import org.apache.spark.rdd.RDD
 
 import javax.xml.bind.DatatypeConverter
 import org.apache.spark.sql.types.DoubleType
-import org.junit.ClassRule
 import org.opensearch.hadoop.rest.RestUtils
 import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException, TestData}
 import org.opensearch.hadoop.util.{OpenSearchMajorVersion, StringUtils, TestSettings, TestUtils}
@@ -1014,6 +1010,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
+  @Ignore
+  // @AwaitsFix(bugUrl = "https://github.com/opensearch-project/opensearch-hadoop/issues/41")
   def testDataSourcePushDown09StartsWith() {
     val df = opensearchDataSource("pd_starts_with")
     var filter = df.filter(df("airport").startsWith("O"))
@@ -1034,6 +1032,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
+  @Ignore
+  // @AwaitsFix(bugUrl = "https://github.com/opensearch-project/opensearch-hadoop/issues/41")
   def testDataSourcePushDown10EndsWith() {
     val df = opensearchDataSource("pd_ends_with")
     var filter = df.filter(df("airport").endsWith("O"))

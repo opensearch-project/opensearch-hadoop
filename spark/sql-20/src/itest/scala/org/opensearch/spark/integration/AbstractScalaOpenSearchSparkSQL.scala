@@ -74,7 +74,7 @@ import org.opensearch.spark.sql.sqlContextFunctions
 import org.hamcrest.Matchers.containsString
 import org.hamcrest.Matchers.is
 import org.hamcrest.Matchers.not
-import org.junit.AfterClass
+import org.junit.{AfterClass, BeforeClass, ClassRule, FixMethodOrder, Ignore, Test}
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertThat
@@ -82,9 +82,6 @@ import org.junit.Assert.assertTrue
 import org.junit.Assert.fail
 import org.junit.Assume.assumeFalse
 import org.junit.Assume.assumeTrue
-import org.junit.BeforeClass
-import org.junit.FixMethodOrder
-import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.MethodSorters
 import org.junit.runners.Parameterized
@@ -96,7 +93,6 @@ import org.apache.spark.rdd.RDD
 import javax.xml.bind.DatatypeConverter
 import org.apache.spark.sql.SparkSession
 import org.junit.Assert._
-import org.junit.ClassRule
 import org.opensearch.hadoop.{OpenSearchAssume, OpenSearchHadoopIllegalArgumentException, OpenSearchHadoopIllegalStateException, TestData}
 import org.opensearch.hadoop.cfg.ConfigurationOptions
 import org.opensearch.hadoop.rest.RestUtils
@@ -915,7 +911,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     sc.makeRDD(Seq(trip1, trip2, trip3)).saveToEs(target)
   }
 
-  private def esDataSource(table: String) = {
+  private def opensearchDataSource(table: String) = {
     val index = wrapIndex("spark-test-scala-sql-varcols")
     val (target, _) = makeTargets(index, "data")
 
@@ -932,7 +928,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown01EqualTo() {
-    val df = esDataSource("pd_equalto")
+    val df = opensearchDataSource("pd_equalto")
     val filter = df.filter(df("airport").equalTo("OTP"))
 
     filter.show
@@ -954,7 +950,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown015NullSafeEqualTo() {
-    val df = esDataSource("pd_nullsafeequalto")
+    val df = opensearchDataSource("pd_nullsafeequalto")
     val filter = df.filter(df("airport").eqNullSafe("OTP"))
 
     filter.show
@@ -976,7 +972,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown02GT() {
-    val df = esDataSource("pd_gt")
+    val df = opensearchDataSource("pd_gt")
     val filter = df.filter(df("participants").gt(3))
     assertEquals(1, filter.count())
     assertEquals("feb", filter.select("tag").take(1)(0)(0))
@@ -984,7 +980,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown03GTE() {
-    val df = esDataSource("pd_gte")
+    val df = opensearchDataSource("pd_gte")
     val filter = df.filter(df("participants").geq(3))
     assertEquals(2, filter.count())
     assertEquals("long", filter.select("tag").sort("tag").take(2)(1)(0))
@@ -992,7 +988,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown04LT() {
-    val df = esDataSource("pd_lt")
+    val df = opensearchDataSource("pd_lt")
     df.printSchema()
     val filter = df.filter(df("participants").lt(5))
     assertEquals(1, filter.count())
@@ -1001,7 +997,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown05LTE() {
-    val df = esDataSource("pd_lte")
+    val df = opensearchDataSource("pd_lte")
     val filter = df.filter(df("participants").leq(5))
     assertEquals(2, filter.count())
     assertEquals("long", filter.select("tag").sort("tag").take(2)(1)(0))
@@ -1009,7 +1005,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown06IsNull() {
-    val df = esDataSource("pd_is_null")
+    val df = opensearchDataSource("pd_is_null")
     val filter = df.filter(df("participants").isNull)
     assertEquals(1, filter.count())
     assertEquals("jan", filter.select("tag").take(1)(0)(0))
@@ -1017,7 +1013,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown07IsNotNull() {
-    val df = esDataSource("pd_is_not_null")
+    val df = opensearchDataSource("pd_is_not_null")
     val filter = df.filter(df("reason").isNotNull)
     assertEquals(1, filter.count())
     assertEquals("jan", filter.select("tag").take(1)(0)(0))
@@ -1025,7 +1021,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown08In() {
-    val df = esDataSource("pd_in")
+    val df = opensearchDataSource("pd_in")
     var filter = df.filter("airport IN ('OTP', 'SFO', 'MUC')")
 
     if (strictPushDown) {
@@ -1040,7 +1036,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown08InWithNumbersAsStrings() {
-    val df = esDataSource("pd_in_numbers_strings")
+    val df = opensearchDataSource("pd_in_numbers_strings")
     var filter = df.filter("date IN ('2015-12-28', '2012-12-28')")
 
     if (strictPushDown) {
@@ -1054,7 +1050,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown08InWithNumber() {
-    val df = esDataSource("pd_in_number")
+    val df = opensearchDataSource("pd_in_number")
     var filter = df.filter("participants IN (1, 2, 3)")
 
     assertEquals(1, filter.count())
@@ -1063,15 +1059,17 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown08InWithNumberAndStrings() {
-    val df = esDataSource("pd_in_number")
+    val df = opensearchDataSource("pd_in_number")
     var filter = df.filter("participants IN (2, 'bar', 1, 'foo')")
 
     assertEquals(0, filter.count())
   }
 
   @Test
+  @Ignore
+  // @AwaitsFix(bugUrl = "https://github.com/opensearch-project/opensearch-hadoop/issues/41")
   def testDataSourcePushDown09StartsWith() {
-    val df = esDataSource("pd_starts_with")
+    val df = opensearchDataSource("pd_starts_with")
     var filter = df.filter(df("airport").startsWith("O"))
 
     if (!keepHandledFilters && !strictPushDown) {
@@ -1090,8 +1088,10 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
+  @Ignore
+  // @AwaitsFix(bugUrl = "https://github.com/opensearch-project/opensearch-hadoop/issues/41")
   def testDataSourcePushDown10EndsWith() {
-    val df = esDataSource("pd_ends_with")
+    val df = opensearchDataSource("pd_ends_with")
     var filter = df.filter(df("airport").endsWith("O"))
 
     if (!keepHandledFilters && !strictPushDown) {
@@ -1111,7 +1111,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown11Contains() {
-    val df = esDataSource("pd_contains")
+    val df = opensearchDataSource("pd_contains")
     val filter = df.filter(df("reason").contains("us"))
     assertEquals(1, filter.count())
     assertEquals("jan", filter.select("tag").take(1)(0)(0))
@@ -1119,7 +1119,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown12And() {
-    val df = esDataSource("pd_and")
+    val df = opensearchDataSource("pd_and")
     var filter = df.filter(df("reason").isNotNull.and(df("tag").equalTo("jan")))
 
     assertEquals(1, filter.count())
@@ -1128,7 +1128,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown13Not() {
-    val df = esDataSource("pd_not")
+    val df = opensearchDataSource("pd_not")
     val filter = df.filter(!df("reason").isNull)
 
     assertEquals(1, filter.count())
@@ -1137,7 +1137,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
   @Test
   def testDataSourcePushDown14OR() {
-    val df = esDataSource("pd_or")
+    val df = opensearchDataSource("pd_or")
     var filter = df.filter(df("reason").contains("us").or(df("airport").equalTo("OTP")))
 
     if (strictPushDown) {
@@ -1159,7 +1159,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   @Test
   def testEsSchemaFromDocsWithDifferentProperties() {
     val table = wrapIndex("sqlvarcol")
-    esDataSource(table)
+    opensearchDataSource(table)
 
     val index = wrapIndex("spark-test-scala-sql-varcols")
     val (target, _) = makeTargets(index, "data")

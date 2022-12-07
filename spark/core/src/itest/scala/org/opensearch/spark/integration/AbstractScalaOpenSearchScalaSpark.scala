@@ -488,21 +488,13 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
         |    }
         |}""".stripMargin)
 
-  //   // Upsert a value that should only modify the first document. Modification will add an address entry.
-  //   val lines = sc.makeRDD(List("""{"id":"1","address":{"zipcode":"12345","id":"1"}}"""))
-  //   val up_params = "new_address:address"
-  //   val up_script = {
-  //       "ctx._source.address.add(params.new_address)"
-  //   }
-  //   lines.saveToEs(target, props + ("opensearch.update.script.params" -> up_params) + ("opensearch.update.script" -> up_script))
-
-  //   // Upsert a value that should only modify the second document. Modification will update the "note" field.
-  //   val notes = sc.makeRDD(List("""{"id":"2","note":"Second"}"""))
-  //   val note_up_params = "new_note:note"
-  //   val note_up_script = {
-  //       "ctx._source.note = params.new_note"
-  //   }
-  //   notes.saveToEs(target, props + ("opensearch.update.script.params" -> note_up_params) + ("opensearch.update.script" -> note_up_script))
+    val index = wrapIndex("spark-test-stored")
+    val typename = "data"
+    val target = resource(index, typename, version)
+    val docPath = docEndpoint(index, typename, version)
+    RestUtils.touch(index)
+    RestUtils.putMapping(index, typename, mapping.getBytes())
+    RestUtils.put(s"$docPath/1", """{"id":"1", "counter":5}""".getBytes(StringUtils.UTF_8))
 
     val scriptName = "increment"
     val lang = "painless"

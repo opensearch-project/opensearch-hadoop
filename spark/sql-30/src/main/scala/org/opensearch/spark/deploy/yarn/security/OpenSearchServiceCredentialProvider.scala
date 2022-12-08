@@ -75,7 +75,7 @@ class OpenSearchServiceCredentialProvider extends HadoopDelegationTokenProvider 
    * spark.security.credentials.[serviceName].enabled
    * @return the service name this provider corresponds to
    */
-  override def serviceName: String = "elasticsearch"
+  override def serviceName: String = "opensearch"
 
   /**
    * Given a configuration, check to see if tokens would be required.

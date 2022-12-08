@@ -173,7 +173,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         rddQueue.add(batch);
         JavaInputDStream<Map<String, Object>> dstream = ssc.queueStream(rddQueue, true);
         // apply closure
-        JavaOpenSearchSparkStreaming.saveToEs(dstream, target, localConf);
+        JavaOpenSearchSparkStreaming.saveToOpenSearch(dstream, target, localConf);
         ssc.start();
         TimeUnit.SECONDS.sleep(2); // Let the processing happen
         ssc.stop(false, true);
@@ -205,7 +205,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<Map<String, Object>>> rddQueue = new LinkedList<>();
         rddQueue.add(batch);
         JavaDStream<Map<String, Object>> dstream = ssc.queueStream(rddQueue, true);
-        JavaOpenSearchSparkStreaming.saveToEs(dstream, target, cfg);
+        JavaOpenSearchSparkStreaming.saveToOpenSearch(dstream, target, cfg);
         ssc.start();
         TimeUnit.SECONDS.sleep(2); // Let the processing happen
         ssc.stop(false, true);
@@ -244,12 +244,12 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<Map<String, Object>>> rddQueue = new LinkedList<>();
         rddQueue.add(batch);
         JavaDStream<Map<String, Object>> dstream = ssc.queueStream(rddQueue);
-        JavaOpenSearchSparkStreaming.saveToEs(dstream, target, localConf);
+        JavaOpenSearchSparkStreaming.saveToOpenSearch(dstream, target, localConf);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);
 
-        assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
+        assertEquals(2, JavaOpenSearchSpark.opensearchRDD(sc, target).count());
         assertTrue(RestUtils.exists(docEndpoint + "/1"));
         assertTrue(RestUtils.exists(docEndpoint + "/2"));
 
@@ -285,12 +285,12 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
 
         JavaPairDStream<Integer, Map<String, Object>> metaDstream = dstream.mapToPair(new ExtractIDFunction());
 
-        JavaOpenSearchSparkStreaming.saveToEsWithMeta(metaDstream, target, cfg);
+        JavaOpenSearchSparkStreaming.saveToOpenSearchWithMeta(metaDstream, target, cfg);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);
 
-        assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
+        assertEquals(2, JavaOpenSearchSpark.opensearchRDD(sc, target).count());
         assertTrue(RestUtils.exists(docEndpoint + "/3"));
         assertTrue(RestUtils.exists(docEndpoint + "/4"));
 
@@ -336,12 +336,12 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
 
         JavaPairDStream<Map<Metadata, Object>, Map<String, Object>> metaDstream = dstream.mapToPair(new ExtractMetaMap());
 
-        JavaOpenSearchSparkStreaming.saveToEsWithMeta(metaDstream, target, cfg);
+        JavaOpenSearchSparkStreaming.saveToOpenSearchWithMeta(metaDstream, target, cfg);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);
 
-        assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
+        assertEquals(2, JavaOpenSearchSpark.opensearchRDD(sc, target).count());
         assertTrue(RestUtils.exists(docEndpoint + "/5"));
         assertTrue(RestUtils.exists(docEndpoint + "/6"));
 
@@ -383,7 +383,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<Map<String, Object>>> rddQueue = new LinkedList<>();
         rddQueue.add(batch);
         JavaDStream<Map<String, Object>> dstream = ssc.queueStream(rddQueue);
-        JavaOpenSearchSparkStreaming.saveToEs(dstream, target, localConf);
+        JavaOpenSearchSparkStreaming.saveToOpenSearch(dstream, target, localConf);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);
@@ -428,7 +428,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<Map<String, Object>>> rddQueue = new LinkedList<>();
         rddQueue.add(batch);
         JavaDStream<Map<String, Object>> dstream = ssc.queueStream(rddQueue);
-        JavaOpenSearchSparkStreaming.saveToEs(dstream, target, localConf);
+        JavaOpenSearchSparkStreaming.saveToOpenSearch(dstream, target, localConf);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);
@@ -457,7 +457,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<Map<String, Object>>> rddQueue = new LinkedList<>();
         rddQueue.add(batch);
         JavaDStream<Map<String, Object>> dstream = ssc.queueStream(rddQueue);
-        JavaOpenSearchSparkStreaming.saveToEs(dstream, target, cfg);
+        JavaOpenSearchSparkStreaming.saveToOpenSearch(dstream, target, cfg);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);

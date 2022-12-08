@@ -43,7 +43,7 @@ import java.util.Arrays;
 import static org.opensearch.hadoop.util.StringUtils.EMPTY_ARRAY;
 
 /**
- * Represents a logical split of an elasticsearch query.
+ * Represents a logical split of an opensearch query.
  */
 public class PartitionDefinition implements Serializable, Comparable<PartitionDefinition> {
     private final String index;

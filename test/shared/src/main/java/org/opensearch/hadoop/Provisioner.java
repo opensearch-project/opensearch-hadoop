@@ -49,7 +49,7 @@ public abstract class Provisioner {
     public static final String SYS_PROP_JOB_JAR = "opensearch.hadoop.job.jar";
 
     static {
-        // init ES-Hadoop JAR
+        // init OpenSearch-Hadoop JAR
         // expect the jar under build\libs
         try {
             String jobJarLocation = System.getProperty(SYS_PROP_JOB_JAR);

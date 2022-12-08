@@ -57,7 +57,7 @@ public class TestBolt implements IRichBolt {
 
     @Override
     public void execute(Tuple input) {
-        // cleanup first to make sure the connection to ES is closed before the test suite shuts down
+        // cleanup first to make sure the connection to OpenSearch is closed before the test suite shuts down
 
         if (done) {
             return;

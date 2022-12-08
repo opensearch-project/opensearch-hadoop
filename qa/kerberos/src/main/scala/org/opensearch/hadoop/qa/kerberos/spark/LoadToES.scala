@@ -53,8 +53,8 @@ class LoadToES(args: Array[String]) {
       .option("sep", "\t")
       .csv(args(0))
 
-    df.rdd.map(row => row.getValuesMap(row.schema.fieldNames)).saveToEs(s"${resource}_rdd")
-    df.saveToEs(s"${resource}_df")
+    df.rdd.map(row => row.getValuesMap(row.schema.fieldNames)).saveToOpenSearch(s"${resource}_rdd")
+    df.saveToOpenSearch(s"${resource}_df")
     df.write.format("opensearch").save(s"${resource}_ds")
   }
 }

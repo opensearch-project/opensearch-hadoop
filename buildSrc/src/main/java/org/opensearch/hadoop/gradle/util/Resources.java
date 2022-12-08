@@ -40,7 +40,7 @@ public class Resources {
 
     /**
      * Duplicated from org.opensearch.hadoop.gradle.buildtools.info.GlobalBuildInfoPlugin#getResourceContents(java.lang.String)
-     * Needed in BuildPlugin for reading ES-Hadoop specific minimum runtime and compile versions
+     * Needed in BuildPlugin for reading OpenSearch-Hadoop specific minimum runtime and compile versions
      * @param resourcePath the classpath resource to load
      * @return The contents of the resource file
      */

@@ -188,7 +188,7 @@ public class DependenciesInfoTask extends ConventionTask {
      * <li><em>UNKNOWN</em> if LICENSE file is not present for this dependency.</li>
      * <li><em>one SPDX identifier</em> if the LICENSE content matches with an SPDX license.</li>
      * <li><em>Custom;URL</em> if it's not an SPDX license,
-     * URL is the Github URL to the LICENSE file in elasticsearch repository.</li>
+     * URL is the Github URL to the LICENSE file in opensearch repository.</li>
      * </ul>
      *
      * @param group dependency group

@@ -87,16 +87,16 @@ object OpenSearchSparkSQL {
   // Write
   //
   
-  def saveToEs(srdd: Dataset[_], resource: String): Unit = {
-    saveToEs(srdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearch(srdd: Dataset[_], resource: String): Unit = {
+    saveToOpenSearch(srdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEs(srdd: Dataset[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(srdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearch(srdd: Dataset[_], resource: String, cfg: Map[String, String]): Unit = {
+    saveToOpenSearch(srdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEs(srdd: Dataset[_], cfg: Map[String, String]): Unit = {
+  def saveToOpenSearch(srdd: Dataset[_], cfg: Map[String, String]): Unit = {
     if (srdd != null) {
       if (srdd.isStreaming) {
-        throw new OpenSearchHadoopIllegalArgumentException("Streaming Datasets should not be saved with 'saveToEs()'. Instead, use " +
+        throw new OpenSearchHadoopIllegalArgumentException("Streaming Datasets should not be saved with 'saveToOpenSearch()'. Instead, use " +
           "the 'writeStream().format(\"opensearch\").save()' methods.")
       }
       val sparkCtx = srdd.sqlContext.sparkContext
@@ -104,7 +104,7 @@ object OpenSearchSparkSQL {
       val esCfg = new PropertiesSettings().load(sparkCfg.save())
       esCfg.merge(cfg.asJava)
 
-      // Need to discover ES Version before checking index existence
+      // Need to discover OpenSearch Version before checking index existence
       InitializationUtils.setUserProviderIfNotSet(esCfg, classOf[HadoopUserProvider], LOG)
       InitializationUtils.discoverClusterInfo(esCfg, LOG)
       InitializationUtils.checkIdForOperation(esCfg)

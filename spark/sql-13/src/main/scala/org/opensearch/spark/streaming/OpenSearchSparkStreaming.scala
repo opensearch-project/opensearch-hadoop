@@ -41,36 +41,36 @@ import scala.collection.Map
 object OpenSearchSparkStreaming {
 
   // Save methods
-  def saveToEs(ds: DStream[_], resource: String): Unit = {
-    saveToEs(ds, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearch(ds: DStream[_], resource: String): Unit = {
+    saveToOpenSearch(ds, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEs(ds: DStream[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearch(ds: DStream[_], resource: String, cfg: Map[String, String]): Unit = {
+    saveToOpenSearch(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEs(ds: DStream[_], cfg: Map[String, String]): Unit = {
+  def saveToOpenSearch(ds: DStream[_], cfg: Map[String, String]): Unit = {
     doSaveToEs(ds, cfg, hasMeta = false)
   }
 
   // Save with metadata
-  def saveToEsWithMeta[K,V](ds: DStream[(K,V)], resource: String): Unit = {
-    saveToEsWithMeta(ds, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearchWithMeta[K,V](ds: DStream[(K,V)], resource: String): Unit = {
+    saveToOpenSearchWithMeta(ds, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEsWithMeta[K,V](ds: DStream[(K,V)], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEsWithMeta(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearchWithMeta[K,V](ds: DStream[(K,V)], resource: String, cfg: Map[String, String]): Unit = {
+    saveToOpenSearchWithMeta(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEsWithMeta[K,V](ds: DStream[(K,V)], cfg: Map[String, String]): Unit = {
+  def saveToOpenSearchWithMeta[K,V](ds: DStream[(K,V)], cfg: Map[String, String]): Unit = {
     doSaveToEs(ds, cfg, hasMeta = true)
   }
 
   // Save as JSON
   def saveJsonToEs(ds: DStream[_], resource: String): Unit = {
-    saveToEs(ds, resource, Map(OPENSEARCH_INPUT_JSON -> true.toString))
+    saveToOpenSearch(ds, resource, Map(OPENSEARCH_INPUT_JSON -> true.toString))
   }
   def saveJsonToEs(ds: DStream[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(ds, resource, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
+    saveToOpenSearch(ds, resource, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
   def saveJsonToEs(ds: DStream[_], cfg: Map[String, String]): Unit = {
-    saveToEs(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
+    saveToOpenSearch(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
 
   // Implementation

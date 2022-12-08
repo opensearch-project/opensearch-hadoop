@@ -220,7 +220,7 @@ public class BulkProcessor implements Closeable, StatsAware {
                     // Log messages, and if wait time is set, perform the thread sleep.
                     initFlushOperation(bulkLoggingID, retryOperation, retries.size(), waitTime);
 
-                    // Exec bulk operation to ES, get response.
+                    // Exec bulk operation to OpenSearch, get response.
                     debugLog(bulkLoggingID, "Submitting request");
                     RestClient.BulkActionResponse bar = restClient.bulk(resource, data);
                     debugLog(bulkLoggingID, "Response received");

@@ -71,7 +71,7 @@ import java.util.stream.Stream;
 
 public class GlobalBuildInfoPlugin implements Plugin<Project> {
     private static final Logger LOGGER = Logging.getLogger(GlobalBuildInfoPlugin.class);
-    private static final String DEFAULT_VERSION_JAVA_FILE_PATH = "server/src/main/java/org/elasticsearch/Version.java";
+    private static final String DEFAULT_VERSION_JAVA_FILE_PATH = "server/src/main/java/org/opensearch/Version.java";
     private static Integer _defaultParallel = null;
 
     private final JavaInstallationRegistry javaInstallationRegistry;

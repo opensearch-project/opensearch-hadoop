@@ -26,7 +26,7 @@ beeline () {
   CLASS=org.opensearch.hadoop.qa.kerberos.hive.SecureBeeline;
   BEELINECLASS=org.apache.hive.beeline.BeeLine;
 
-  # add our test jar path for ES-Hadoop
+  # add our test jar path for OpenSearch-Hadoop
   testJarPath=`ls ${TEST_LIB}`
 
   # include only the beeline client jar and its dependencies

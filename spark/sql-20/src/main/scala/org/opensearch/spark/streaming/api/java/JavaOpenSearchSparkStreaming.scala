@@ -39,13 +39,13 @@ import org.opensearch.spark.streaming.OpenSearchSparkStreaming
 object JavaOpenSearchSparkStreaming {
 
   // specify the return types to make sure the bytecode is generated properly (w/o any scala.collections in it)
-  def saveToEs(ds: JavaDStream[_], resource: String): Unit = OpenSearchSparkStreaming.saveToEs(ds.dstream, resource)
-  def saveToEs(ds: JavaDStream[_], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToEs(ds.dstream, resource, cfg.asScala)
-  def saveToEs(ds: JavaDStream[_], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToEs(ds.dstream, cfg.asScala)
+  def saveToOpenSearch(ds: JavaDStream[_], resource: String): Unit = OpenSearchSparkStreaming.saveToOpenSearch(ds.dstream, resource)
+  def saveToOpenSearch(ds: JavaDStream[_], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToOpenSearch(ds.dstream, resource, cfg.asScala)
+  def saveToOpenSearch(ds: JavaDStream[_], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToOpenSearch(ds.dstream, cfg.asScala)
 
-  def saveToEsWithMeta[K, V](ds: JavaPairDStream[K, V], resource: String): Unit = OpenSearchSparkStreaming.saveToEsWithMeta(ds.dstream, resource)
-  def saveToEsWithMeta[K, V](ds: JavaPairDStream[K, V], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToEsWithMeta(ds.dstream, resource, cfg.asScala)
-  def saveToEsWithMeta[K, V](ds: JavaPairDStream[K, V], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToEsWithMeta(ds.dstream, cfg.asScala)
+  def saveToOpenSearchWithMeta[K, V](ds: JavaPairDStream[K, V], resource: String): Unit = OpenSearchSparkStreaming.saveToOpenSearchWithMeta(ds.dstream, resource)
+  def saveToOpenSearchWithMeta[K, V](ds: JavaPairDStream[K, V], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToOpenSearchWithMeta(ds.dstream, resource, cfg.asScala)
+  def saveToOpenSearchWithMeta[K, V](ds: JavaPairDStream[K, V], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToOpenSearchWithMeta(ds.dstream, cfg.asScala)
 
   def saveJsonToEs(ds: JavaDStream[String], resource: String): Unit = OpenSearchSparkStreaming.saveJsonToEs(ds.dstream, resource)
   def saveJsonToEs(ds: JavaDStream[String], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToEs(ds.dstream, resource, cfg.asScala)

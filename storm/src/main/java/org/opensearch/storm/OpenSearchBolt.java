@@ -191,7 +191,7 @@ public class OpenSearchBolt implements IRichBolt {
 
         for (int index = 0; index < inflightTuples.size(); index++) {
             Tuple tuple = inflightTuples.get(index);
-            // bit set means the entry hasn't been removed and thus wasn't written to ES
+            // bit set means the entry hasn't been removed and thus wasn't written to OpenSearch
             if (flush.get(index)) {
                 collector.fail(tuple);
             }

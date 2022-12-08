@@ -212,7 +212,7 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
 
             if (currentTime > expiration) {
                 // Token is already expired, just renew it.
-                LOG.debug("ES Token expired. Renewing token...");
+                LOG.debug("OpenSearch Token expired. Renewing token...");
                 populateCredentials(credentials, topologyConf, topologyOwnerPrincipal);
                 return;
             }
@@ -231,7 +231,7 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
 
             if (nextRenewal > expiration) {
                 // Token will expire by the next renewal window. Do the renewal
-                LOG.debug("ES Token will expire before next renewal window. Renewing token...");
+                LOG.debug("OpenSearch Token will expire before next renewal window. Renewing token...");
                 populateCredentials(credentials, topologyConf, topologyOwnerPrincipal);
                 return;
             }

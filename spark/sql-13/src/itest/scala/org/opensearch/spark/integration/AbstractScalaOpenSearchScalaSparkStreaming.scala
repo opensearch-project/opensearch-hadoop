@@ -127,7 +127,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val target = wrapIndex(resource("spark-test-nonexisting", "scala-basic-write", version))
 
     val batch = sc.makeRDD(Seq(doc1, doc2))
-    runStream(batch)(_.saveToEs(target, cfg + (OPENSEARCH_INDEX_AUTO_CREATE -> "no")))
+    runStream(batch)(_.saveToOpenSearch(target, cfg + (OPENSEARCH_INDEX_AUTO_CREATE -> "no")))
 
     assertTrue(!RestUtils.exists(target))
     expecting.assertExceptionFound()
@@ -142,7 +142,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
 
     val batch = sc.makeRDD(Seq(doc1, doc2))
 
-    runStream(batch)(_.saveToEs(target, cfg))
+    runStream(batch)(_.saveToOpenSearch(target, cfg))
 
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("OTP"))
@@ -158,7 +158,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
 
     val batch = sc.makeRDD(Seq(doc1, doc2))
 
-    runStream(batch)(_.saveToEs(target, cfg))
+    runStream(batch)(_.saveToOpenSearch(target, cfg))
 
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("OTP"))
@@ -170,7 +170,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   //   val expected = ExpectingToThrow(classOf[SparkException]).from(ssc)
   //   val doc = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A", "B", "C"), "unknown" -> new Garbage(5))
   //   val batch = sc.makeRDD(Seq(doc))
-  //   runStream(batch)(_.saveToEs(wrapIndex(resource("spark-streaming-test-nested-map", "data", version)), cfg))
+  //   runStream(batch)(_.saveToOpenSearch(wrapIndex(resource("spark-streaming-test-nested-map", "data", version)), cfg))
   //   expected.assertExceptionFound()
   // }
 
@@ -185,13 +185,13 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val target = wrapIndex(resource("spark-streaming-test-scala-basic-write-objects", "data", version))
 
     val batch = sc.makeRDD(Seq(javaBean, caseClass1))
-    runStreamRecoverably(batch)(_.saveToEs(target, cfg))
+    runStreamRecoverably(batch)(_.saveToOpenSearch(target, cfg))
 
     val batch2 = sc.makeRDD(Seq(javaBean, caseClass2))
-    runStream(batch2)(_.saveToEs(target, Map("opensearch.mapping.id"->"id")))
+    runStream(batch2)(_.saveToOpenSearch(target, Map("opensearch.mapping.id"->"id")))
 
     assertTrue(RestUtils.exists(target))
-    assertEquals(3, OpenSearchSpark.esRDD(sc, target).count())
+    assertEquals(3, OpenSearchSpark.opensearchRDD(sc, target).count())
     assertThat(RestUtils.get(target + "/_search?"), containsString(""))
   }
 
@@ -204,9 +204,9 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val docPath = wrapIndex(docEndpoint("spark-streaming-test-scala-id-write", "data", version))
 
     val batch = sc.makeRDD(Seq(doc1, doc2))
-    runStream(batch)(_.saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "number")))
+    runStream(batch)(_.saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "number")))
 
-    assertEquals(2, OpenSearchSpark.esRDD(sc, target).count())
+    assertEquals(2, OpenSearchSpark.opensearchRDD(sc, target).count())
     assertTrue(RestUtils.exists(docPath + "/1"))
     assertTrue(RestUtils.exists(docPath + "/2"))
 
@@ -222,11 +222,11 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val docPath = wrapIndex(docEndpoint("spark-streaming-test-scala-dyn-id-write", "data", version))
 
     val pairRDD = sc.makeRDD(Seq((3, doc1), (4, doc2)))
-    runStream(pairRDD)(_.saveToEsWithMeta(target, cfg))
+    runStream(pairRDD)(_.saveToOpenSearchWithMeta(target, cfg))
 
     println(RestUtils.get(target + "/_search?"))
 
-    assertEquals(2, OpenSearchSpark.esRDD(sc, target).count())
+    assertEquals(2, OpenSearchSpark.opensearchRDD(sc, target).count())
     assertTrue(RestUtils.exists(docPath + "/3"))
     assertTrue(RestUtils.exists(docPath + "/4"))
 
@@ -249,7 +249,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
 
     val pairRDD = sc.makeRDD(Seq((metadata1, doc1), (metadata2, doc2)))
 
-    runStream(pairRDD)(_.saveToEsWithMeta(target, cfg))
+    runStream(pairRDD)(_.saveToOpenSearchWithMeta(target, cfg))
 
     assertTrue(RestUtils.exists(docPath + "/5"))
     assertTrue(RestUtils.exists(docPath + "/6"))
@@ -265,7 +265,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val target = wrapIndex(resource("spark-streaming-test-scala-write-exclude", "data", version))
 
     val batch = sc.makeRDD(Seq(trip1, trip2))
-    runStream(batch)(_.saveToEs(target, Map(OPENSEARCH_MAPPING_EXCLUDE -> "airport")))
+    runStream(batch)(_.saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_EXCLUDE -> "airport")))
 
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("business"))
@@ -289,7 +289,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val ingestCfg = cfg + (ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE -> pipelineName) + (ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY -> "true")
 
     val batch = sc.makeRDD(Seq(doc1, doc2))
-    runStream(batch)(_.saveToEs(target, ingestCfg))
+    runStream(batch)(_.saveToOpenSearch(target, ingestCfg))
 
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("\"pipeTEST\":true"))
@@ -304,7 +304,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
 
     val target = wrapIndex(resource("spark-streaming-test-trip-{airport}", "data", version))
     val batch = sc.makeRDD(Seq(trip1, trip2))
-    runStream(batch)(_.saveToEs(target, cfg))
+    runStream(batch)(_.saveToOpenSearch(target, cfg))
 
     assertTrue(RestUtils.exists(wrapIndex(resource("spark-streaming-test-trip-otp", "data", version))))
     assertTrue(RestUtils.exists(wrapIndex(resource("spark-streaming-test-trip-sfo", "data", version))))
@@ -379,14 +379,14 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val up_script = {
       "ctx._source.address.add(params.new_address)"
     }
-    runStreamRecoverably(lines)(_.saveToEs(target, props + ("opensearch.update.script.params" -> up_params) + ("opensearch.update.script" -> up_script)))
+    runStreamRecoverably(lines)(_.saveToOpenSearch(target, props + ("opensearch.update.script.params" -> up_params) + ("opensearch.update.script" -> up_script)))
 
     // Upsert a value that should only modify the second document. Modification will update the "note" field.
     val notes = sc.makeRDD(List("""{"id":"2","note":"Second"}"""))
     val note_up_params = "new_note:note"
     val note_up_script = "ctx._source.note = params.new_note"
 
-    runStream(notes)(_.saveToEs(target, props + ("opensearch.update.script.params" -> note_up_params) + ("opensearch.update.script" -> note_up_script)))
+    runStream(notes)(_.saveToOpenSearch(target, props + ("opensearch.update.script.params" -> note_up_params) + ("opensearch.update.script" -> note_up_script)))
 
     assertTrue(RestUtils.exists(s"$docPath/1"))
     assertThat(RestUtils.get(s"$docPath/1"), both(containsString(""""zipcode":"12345"""")).and(containsString(""""note":"First"""")))
@@ -405,9 +405,9 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val target = wrapIndex(resource("spark-streaming-test-nullasempty", "data", version))
     val batch = sc.makeRDD(data)
 
-    runStream(batch)(_.saveToEs(target))
+    runStream(batch)(_.saveToOpenSearch(target))
 
-    assertEquals(3, OpenSearchSpark.esRDD(sc, target, cfg).count())
+    assertEquals(3, OpenSearchSpark.opensearchRDD(sc, target, cfg).count())
   }
 
   def wrapMapping(typeName: String, typelessMapping: String): String = {

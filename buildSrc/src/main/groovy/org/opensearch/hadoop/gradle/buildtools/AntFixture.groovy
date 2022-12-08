@@ -219,7 +219,7 @@ class AntFixture extends AntTask implements Fixture {
         logger.error("  failure marker exists: ${failureMarker.exists()}")
         logger.error("  pid file exists: ${pidFile.exists()}")
         logger.error("  ports file exists: ${portsFile.exists()}")
-        // also dump the log file for the startup script (which will include ES logging output to stdout)
+        // also dump the log file for the startup script (which will include OpenSearch logging output to stdout)
         if (runLog.exists()) {
             logger.error("\n  [log]")
             runLog.eachLine { line -> logger.error("    ${line}") }

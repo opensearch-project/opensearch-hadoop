@@ -86,7 +86,7 @@ public class Resource {
         String res = StringUtils.sanitizeResource(resource);
 
         // 3) Resource must contain an index, but may not necessarily contain a type.
-        // This is dependent on the version of ES we are talking with.
+        // This is dependent on the version of OpenSearch we are talking with.
         int slash = res.indexOf("/");
         boolean typeExists = slash >= 0;
 

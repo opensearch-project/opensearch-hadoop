@@ -54,8 +54,8 @@ package object sql {
 
   @deprecated(message="Support for Apache Spark 1 is deprecated. Use Spark 2 or 3.")
   class SparkDataFrameFunctions(df: DataFrame) extends Serializable {
-    def saveToEs(resource: String): Unit = { OpenSearchSparkSQL.saveToEs(df, resource) }
-    def saveToEs(resource: String, cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSparkSQL.saveToEs(df, resource, cfg) }
-    def saveToEs(cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSparkSQL.saveToEs(df, cfg)    }
+    def saveToOpenSearch(resource: String): Unit = { OpenSearchSparkSQL.saveToOpenSearch(df, resource) }
+    def saveToOpenSearch(resource: String, cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSparkSQL.saveToOpenSearch(df, resource, cfg) }
+    def saveToOpenSearch(cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSparkSQL.saveToOpenSearch(df, cfg)    }
   }
 }

@@ -52,15 +52,15 @@ object OpenSearchSpark {
   //
 
   def opensearchRDD(sc: SparkContext): RDD[(String, Map[String, AnyRef])] = new ScalaOpenSearchRDD[Map[String, AnyRef]](sc)
-  def esRDD(sc: SparkContext, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
+  def opensearchRDD(sc: SparkContext, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
     new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, cfg)
-  def esRDD(sc: SparkContext, resource: String): RDD[(String, Map[String, AnyRef])] =
+  def opensearchRDD(sc: SparkContext, resource: String): RDD[(String, Map[String, AnyRef])] =
     new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, Map(OPENSEARCH_RESOURCE_READ -> resource))
-  def esRDD(sc: SparkContext, resource: String, query: String): RDD[(String, Map[String, AnyRef])] =
+  def opensearchRDD(sc: SparkContext, resource: String, query: String): RDD[(String, Map[String, AnyRef])] =
     new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
-  def esRDD(sc: SparkContext, resource: String, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
+  def opensearchRDD(sc: SparkContext, resource: String, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
     new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource))
-  def esRDD(sc: SparkContext, resource: String, query: String, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
+  def opensearchRDD(sc: SparkContext, resource: String, query: String, cfg: Map[String, String]): RDD[(String, Map[String, AnyRef])] =
     new ScalaOpenSearchRDD[Map[String, AnyRef]](sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
 
 
@@ -81,20 +81,20 @@ object OpenSearchSpark {
   //
   // Save methods
   //
-  def saveToEs(rdd: RDD[_], resource: String): Unit = { saveToEs(rdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource)) }
-  def saveToEs(rdd: RDD[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearch(rdd: RDD[_], resource: String): Unit = { saveToOpenSearch(rdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource)) }
+  def saveToOpenSearch(rdd: RDD[_], resource: String, cfg: Map[String, String]): Unit = {
+    saveToOpenSearch(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEs(rdd: RDD[_], cfg: Map[String, String]): Unit =  {
+  def saveToOpenSearch(rdd: RDD[_], cfg: Map[String, String]): Unit =  {
     doSaveToEs(rdd, cfg, false)
   }
 
   // Save with metadata
-  def saveToEsWithMeta[K,V](rdd: RDD[(K,V)], resource: String): Unit = { saveToEsWithMeta(rdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource)) }
-  def saveToEsWithMeta[K,V](rdd: RDD[(K,V)], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEsWithMeta(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearchWithMeta[K,V](rdd: RDD[(K,V)], resource: String): Unit = { saveToOpenSearchWithMeta(rdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource)) }
+  def saveToOpenSearchWithMeta[K,V](rdd: RDD[(K,V)], resource: String, cfg: Map[String, String]): Unit = {
+    saveToOpenSearchWithMeta(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEsWithMeta[K,V](rdd: RDD[(K,V)], cfg: Map[String, String]): Unit = {
+  def saveToOpenSearchWithMeta[K,V](rdd: RDD[(K,V)], cfg: Map[String, String]): Unit = {
     doSaveToEs(rdd, cfg, true)
   }
 
@@ -119,11 +119,11 @@ object OpenSearchSpark {
   }
 
   // JSON variant
-  def saveJsonToEs(rdd: RDD[_], resource: String): Unit = { saveToEs(rdd, resource, Map(OPENSEARCH_INPUT_JSON -> true.toString)) }
+  def saveJsonToEs(rdd: RDD[_], resource: String): Unit = { saveToOpenSearch(rdd, resource, Map(OPENSEARCH_INPUT_JSON -> true.toString)) }
   def saveJsonToEs(rdd: RDD[_], resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(rdd, resource, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
+    saveToOpenSearch(rdd, resource, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
   def saveJsonToEs(rdd: RDD[_], cfg: Map[String, String]): Unit = {
-    saveToEs(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
+    saveToOpenSearch(rdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
 }

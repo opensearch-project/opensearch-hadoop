@@ -35,7 +35,7 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 
 /**
  * Factory for loading settings based on various configuration objects, such as Properties or Hadoop configuration.
- * The factory main role is to minimize the number of dependencies required at compilation time in the event that ES-Hadoop is running
+ * The factory main role is to minimize the number of dependencies required at compilation time in the event that OpenSearch-Hadoop is running
  * in a non-Hadoop oriented environment.
  */
 public class HadoopSettingsManager implements SettingsManager<Object> {

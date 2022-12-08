@@ -120,7 +120,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 		DataFrame dataFrame = artistsAsDataFrame();
 
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
-		JavaOpenSearchSparkSQL.saveToEs(dataFrame, target);
+		JavaOpenSearchSparkSQL.saveToOpenSearch(dataFrame, target);
 		assertTrue(RestUtils.exists(target));
 		assertThat(RestUtils.get(target + "/_search?"), containsString("345"));
 	}
@@ -132,7 +132,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 		String target = resource("sparksql-test-scala-basic-write-id-mapping", "data", version);
 		String docEndpoint = docEndpoint("sparksql-test-scala-basic-write-id-mapping", "data", version);
 
-		JavaOpenSearchSparkSQL.saveToEs(dataFrame, target,
+		JavaOpenSearchSparkSQL.saveToOpenSearch(dataFrame, target,
 				ImmutableMap.of(OPENSEARCH_MAPPING_ID, "id"));
 		assertTrue(RestUtils.exists(target));
 		assertThat(RestUtils.get(target + "/_search?"), containsString("345"));
@@ -144,7 +144,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
     	DataFrame dataFrame = artistsAsDataFrame();
 
         String target = resource("sparksql-test-scala-basic-write-exclude-mapping", "data", version);
-        JavaOpenSearchSparkSQL.saveToEs(dataFrame, target,ImmutableMap.of(OPENSEARCH_MAPPING_EXCLUDE, "url"));
+        JavaOpenSearchSparkSQL.saveToOpenSearch(dataFrame, target,ImmutableMap.of(OPENSEARCH_MAPPING_EXCLUDE, "url"));
         assertTrue(RestUtils.exists(target));
         assertThat(RestUtils.get(target + "/_search?"), not(containsString("url")));
     }
@@ -176,7 +176,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	public void testOpenSearchDataFrameReadMetadata() throws Exception {
 		DataFrame artists = artistsAsDataFrame();
 		String target = resource("sparksql-test-scala-dataframe-read-metadata", "data", version);
-		JavaOpenSearchSparkSQL.saveToEs(artists, target);
+		JavaOpenSearchSparkSQL.saveToOpenSearch(artists, target);
 
 		DataFrame dataframe = sqc.read().format("opensearch").option("opensearch.read.metadata", "true").load(target).where("id = 1");
 

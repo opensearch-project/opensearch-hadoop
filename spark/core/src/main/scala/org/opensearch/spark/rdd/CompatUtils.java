@@ -140,7 +140,7 @@ abstract class CompatUtils {
     static void warnSchemaRDD(Object rdd, Log log) {
         if (rdd != null && SCHEMA_RDD_LIKE_CLASS != null) {
             if (SCHEMA_RDD_LIKE_CLASS.isAssignableFrom(rdd.getClass())) {
-                log.warn("basic RDD saveToEs() called on a Spark SQL SchemaRDD; typically this is a mistake(as the SQL schema will be ignored). Use 'org.opensearch.spark.sql' package instead");
+                log.warn("basic RDD saveToOpenSearch() called on a Spark SQL SchemaRDD; typically this is a mistake(as the SQL schema will be ignored). Use 'org.opensearch.spark.sql' package instead");
             }
         }
     }

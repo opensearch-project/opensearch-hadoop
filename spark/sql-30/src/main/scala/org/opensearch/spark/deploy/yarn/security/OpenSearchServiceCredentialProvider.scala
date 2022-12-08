@@ -75,7 +75,7 @@ class OpenSearchServiceCredentialProvider extends HadoopDelegationTokenProvider 
    * spark.security.credentials.[serviceName].enabled
    * @return the service name this provider corresponds to
    */
-  override def serviceName: String = "elasticsearch"
+  override def serviceName: String = "opensearch"
 
   /**
    * Given a configuration, check to see if tokens would be required.
@@ -97,7 +97,7 @@ class OpenSearchServiceCredentialProvider extends HadoopDelegationTokenProvider 
     val esAuthMethod = settings.getSecurityAuthenticationMethod
     val required = isSecurityEnabled && AuthenticationMethod.KERBEROS.equals(esAuthMethod)
     LOG.info(s"Hadoop Security Enabled = [$isSecurityEnabled]")
-    LOG.info(s"ES Auth Method = [$esAuthMethod]")
+    LOG.info(s"OpenSearch Auth Method = [$esAuthMethod]")
     LOG.info(s"Are creds required = [$required]")
     required
   }

@@ -42,9 +42,9 @@ package object streaming {
   implicit def sparkDStreamFunctions(ds: DStream[_]): SparkDStreamFunctions = new SparkDStreamFunctions(ds)
 
   class SparkDStreamFunctions(ds: DStream[_]) extends Serializable {
-    def saveToEs(resource: String): Unit = { OpenSearchSparkStreaming.saveToEs(ds, resource) }
-    def saveToEs(resource: String, cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveToEs(ds, resource, cfg) }
-    def saveToEs(cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveToEs(ds, cfg) }
+    def saveToOpenSearch(resource: String): Unit = { OpenSearchSparkStreaming.saveToOpenSearch(ds, resource) }
+    def saveToOpenSearch(resource: String, cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveToOpenSearch(ds, resource, cfg) }
+    def saveToOpenSearch(cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveToOpenSearch(ds, cfg) }
   }
 
   implicit def sparkStringJsonDStreamFunctions(ds: DStream[String]): SparkJsonDStreamFunctions[String] = new SparkJsonDStreamFunctions[String](ds)
@@ -59,9 +59,9 @@ package object streaming {
   implicit def sparkPairDStreamFunctions[K : ClassTag, V : ClassTag](ds: DStream[(K,V)]): SparkPairDStreamFunctions[K,V] = new SparkPairDStreamFunctions[K,V](ds)
 
   class SparkPairDStreamFunctions[K : ClassTag, V : ClassTag](ds: DStream[(K, V)]) extends Serializable {
-    def saveToEsWithMeta(resource: String): Unit = { OpenSearchSparkStreaming.saveToEsWithMeta(ds, resource) }
-    def saveToEsWithMeta(resource: String, cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveToEsWithMeta(ds, resource, cfg) }
-    def saveToEsWithMeta(cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveToEsWithMeta(ds, cfg) }
+    def saveToOpenSearchWithMeta(resource: String): Unit = { OpenSearchSparkStreaming.saveToOpenSearchWithMeta(ds, resource) }
+    def saveToOpenSearchWithMeta(resource: String, cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveToOpenSearchWithMeta(ds, resource, cfg) }
+    def saveToOpenSearchWithMeta(cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveToOpenSearchWithMeta(ds, cfg) }
   }
 
 }

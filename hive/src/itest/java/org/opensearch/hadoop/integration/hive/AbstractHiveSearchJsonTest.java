@@ -56,7 +56,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
-import static org.opensearch.hadoop.integration.hive.HiveSuite.provisionEsLib;
+import static org.opensearch.hadoop.integration.hive.HiveSuite.provisionOpenSearchLib;
 import static org.opensearch.hadoop.integration.hive.HiveSuite.server;
 
 @RunWith(Parameterized.class)
@@ -83,7 +83,7 @@ public class AbstractHiveSearchJsonTest {
 
     @Before
     public void before() throws Exception {
-        provisionEsLib();
+        provisionOpenSearchLib();
         RestUtils.refresh("json-hive*");
         targetVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
         new QueryTestParams(tempFolder).provisionQueries(HdpBootstrap.hadoopConfig());

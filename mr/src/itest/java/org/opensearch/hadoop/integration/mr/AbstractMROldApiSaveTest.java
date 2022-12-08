@@ -55,7 +55,7 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.Stream;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.mr.EsOutputFormat;
+import org.opensearch.hadoop.mr.OpenSearchOutputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.mr.MultiOutputFormat;
@@ -134,7 +134,7 @@ public class AbstractMROldApiSaveTest {
         JobConf conf = HdpBootstrap.hadoopConfig();
 
         conf.setInputFormat(SplittableTextInputFormat.class);
-        conf.setOutputFormat(EsOutputFormat.class);
+        conf.setOutputFormat(OpenSearchOutputFormat.class);
         conf.setReducerClass(IdentityReducer.class);
         HadoopCfgUtils.setGenericOptions(conf);
         conf.setNumMapTasks(2);
@@ -175,7 +175,7 @@ public class AbstractMROldApiSaveTest {
         JobConf conf = createJobConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("oldapi-multi-save", "data", clusterInfo.getMajorVersion()));
 
-        MultiOutputFormat.addOutputFormat(conf, EsOutputFormat.class);
+        MultiOutputFormat.addOutputFormat(conf, OpenSearchOutputFormat.class);
         MultiOutputFormat.addOutputFormat(conf, PrintStreamOutputFormat.class);
         //MultiOutputFormat.addOutputFormat(conf, TextOutputFormat.class);
 

@@ -41,7 +41,7 @@ import org.apache.hadoop.mapred.JobConf;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.OpenSearchInputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
@@ -192,7 +192,7 @@ public class AbstractMROldApiSearchTest {
     private JobConf createJobConf() throws IOException {
         JobConf conf = HdpBootstrap.hadoopConfig();
 
-        conf.setInputFormat(EsInputFormat.class);
+        conf.setInputFormat(OpenSearchInputFormat.class);
         conf.setOutputFormat(PrintStreamOutputFormat.class);
         conf.setOutputKeyClass(Text.class);
         boolean type = random.nextBoolean();

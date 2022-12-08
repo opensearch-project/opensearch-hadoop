@@ -43,9 +43,9 @@ import org.opensearch.hadoop.rest.Response;
 import org.opensearch.hadoop.rest.ReusableInputStream;
 import org.opensearch.hadoop.rest.SimpleResponse;
 import org.opensearch.hadoop.rest.Transport;
-import org.opensearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
-import org.opensearch.hadoop.rest.commonshttp.auth.bearer.EsApiKeyAuthScheme;
-import org.opensearch.hadoop.rest.commonshttp.auth.bearer.EsApiKeyCredentials;
+import org.opensearch.hadoop.rest.commonshttp.auth.OpenSearchHadoopAuthPolicies;
+import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyAuthScheme;
+import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyCredentials;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoAuthScheme;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoCredentials;
 import org.opensearch.hadoop.rest.stats.Stats;
@@ -327,19 +327,19 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             if (log.isDebugEnabled()) {
                 log.debug("checking for token using cluster name [" + clusterName + "]");
             }
-            if (user.getEsToken(clusterName) != null) {
+            if (user.getOpenSearchToken(clusterName) != null) {
                 HttpState state = (authSettings[1] != null ? (HttpState) authSettings[1] : new HttpState());
                 authSettings[1] = state;
                 // TODO: Limit this by hosts and ports
-                AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, EsHadoopAuthPolicies.APIKEY);
-                Credentials tokenCredentials = new EsApiKeyCredentials(userProvider, clusterName);
+                AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, OpenSearchHadoopAuthPolicies.APIKEY);
+                Credentials tokenCredentials = new OpenSearchApiKeyCredentials(userProvider, clusterName);
                 state.setCredentials(scope, tokenCredentials);
                 if (log.isDebugEnabled()) {
                     log.debug("Using detected Token credentials...");
                 }
-                EsHadoopAuthPolicies.registerAuthSchemes();
-                authPrefs.add(EsHadoopAuthPolicies.APIKEY);
-            } else if (userProvider.isEsKerberosEnabled()) {
+                OpenSearchHadoopAuthPolicies.registerAuthSchemes();
+                authPrefs.add(OpenSearchHadoopAuthPolicies.APIKEY);
+            } else if (userProvider.isOpenSearchKerberosEnabled()) {
                 // Add SPNEGO auth if a kerberos principal exists on the user and the elastic principal is set
                 // Only do this if a token does not exist on the current user.
                 // The auth mode may say that it is Kerberos, but the client
@@ -385,12 +385,12 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 HttpState state = (authSettings[1] != null ? (HttpState) authSettings[1] : new HttpState());
                 authSettings[1] = state;
                 // TODO: Limit this by hosts and ports
-                AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, EsHadoopAuthPolicies.NEGOTIATE);
+                AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, OpenSearchHadoopAuthPolicies.NEGOTIATE);
                 // TODO: This should just pass in the user provider instead of getting the user principal at this point.
                 Credentials credential = new SpnegoCredentials(credentialUserProvider, settings.getNetworkSpnegoAuthElasticsearchPrincipal());
                 state.setCredentials(scope, credential);
-                EsHadoopAuthPolicies.registerAuthSchemes();
-                authPrefs.add(EsHadoopAuthPolicies.NEGOTIATE);
+                OpenSearchHadoopAuthPolicies.registerAuthSchemes();
+                authPrefs.add(OpenSearchHadoopAuthPolicies.NEGOTIATE);
             }
         } else {
             if (log.isDebugEnabled()) {
@@ -654,14 +654,14 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 log.debug("Performing request with runAs user set to ["+runAsUser+"]");
             }
             http.addRequestHeader("opensearch-security-runas-user", runAsUser);
-        } else if (userProvider != null && userProvider.getUser().getEsToken(clusterName) != null) {
+        } else if (userProvider != null && userProvider.getUser().getOpenSearchToken(clusterName) != null) {
             // If we are using token authentication, set the auth to be preemptive:
             if (log.isDebugEnabled()) {
                 log.debug("Performing preemptive authentication with API Token");
             }
             http.getHostAuthState().setPreemptive();
             http.getHostAuthState().setAuthAttempted(true);
-            http.getHostAuthState().setAuthScheme(new EsApiKeyAuthScheme());
+            http.getHostAuthState().setAuthScheme(new OpenSearchApiKeyAuthScheme());
             if (isProxied && !isSecure) {
                 http.getProxyAuthState().setPreemptive();
                 http.getProxyAuthState().setAuthAttempted(true);

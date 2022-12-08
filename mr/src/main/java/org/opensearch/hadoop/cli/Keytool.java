@@ -40,7 +40,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.opensearch.hadoop.security.EsHadoopSecurityException;
+import org.opensearch.hadoop.security.OpenSearchHadoopSecurityException;
 import org.opensearch.hadoop.security.KeystoreWrapper;
 
 public class Keytool {
@@ -255,7 +255,7 @@ public class Keytool {
                     prompt.println("ERROR: Unsupported command " + command.getText());
                     return 7;
             }
-        } catch (EsHadoopSecurityException ehse) {
+        } catch (OpenSearchHadoopSecurityException ehse) {
             prompt.println("ERRORCould not load keystore file: " + ehse.getMessage());
             return 8;
         } catch (FileNotFoundException fnfe) {

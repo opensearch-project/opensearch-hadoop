@@ -41,7 +41,7 @@ import org.apache.hadoop.mapreduce.Mapper;
 import org.apache.hadoop.mapreduce.lib.output.TextOutputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
-import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.OpenSearchInputFormat;
 import org.opensearch.hadoop.mr.OpenSearchMapReduceUtil;
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
@@ -68,7 +68,7 @@ public class ReadFromES extends Configured implements Tool {
 
         job.getConfiguration().set("opensearch.output.json", "true");
 
-        job.setInputFormatClass(EsInputFormat.class);
+        job.setInputFormatClass(OpenSearchInputFormat.class);
         job.setOutputFormatClass(TextOutputFormat.class);
 
         TextOutputFormat.setOutputPath(job, new Path(args[0]));

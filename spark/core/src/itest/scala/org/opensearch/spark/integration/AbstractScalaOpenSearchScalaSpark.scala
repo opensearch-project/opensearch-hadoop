@@ -165,7 +165,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test(expected=classOf[OpenSearchHadoopIllegalArgumentException])
-  def testEsRDDWriteIndexCreationDisabled() {
+  def testOpenSearchRDDWriteIndexCreationDisabled() {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."))
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran")
 
@@ -177,7 +177,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
     
   @Test
-  def testEsRDDWrite() {
+  def testOpenSearchRDDWrite() {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."))
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran")
 
@@ -195,7 +195,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   // }
 
   @Test
-  def testEsRDDWriteCaseClass() {
+  def testOpenSearchRDDWriteCaseClass() {
     val javaBean = new Bean("bar", 1, true)
     val caseClass1 = Trip("OTP", "SFO")
     val caseClass2 = AbstractScalaOpenSearchScalaSpark.ModuleCaseClass(1, "OTP", "MUC")
@@ -213,7 +213,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDWriteWithMappingId() {
+  def testOpenSearchRDDWriteWithMappingId() {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."), "number" -> 1)
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran", "number" -> 2)
 
@@ -230,7 +230,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
   
   @Test
-  def testEsRDDWriteWithDynamicMapping() {
+  def testOpenSearchRDDWriteWithDynamicMapping() {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."), "number" -> 1)
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran", "number" -> 2)
 
@@ -247,7 +247,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDWriteWithDynamicMapMapping() {
+  def testOpenSearchRDDWriteWithDynamicMapMapping() {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."), "number" -> 1)
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran", "number" -> 2)
 
@@ -297,7 +297,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDWriteWithMappingExclude() {
+  def testOpenSearchRDDWriteWithMappingExclude() {
     val trip1 = Map("reason" -> "business", "airport" -> "SFO")
     val trip2 = Map("participants" -> 5, "airport" -> "OTP")
 
@@ -426,7 +426,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
 
   @Test
-  def testEsMultiIndexRDDWrite() {
+  def testOpenSearchMultiIndexRDDWrite() {
     val trip1 = Map("reason" -> "business", "airport" -> "sfo")
     val trip2 = Map("participants" -> 5, "airport" -> "otp")
 
@@ -440,7 +440,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsWriteAsJsonMultiWrite() {
+  def testOpenSearchWriteAsJsonMultiWrite() {
     val json1 = "{\"reason\" : \"business\",\"airport\" : \"sfo\"}";
     val json2 = "{\"participants\" : 5,\"airport\" : \"otp\"}"
 
@@ -475,7 +475,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDWriteStoredScriptUpdate(): Unit = {
+  def testOpenSearchRDDWriteStoredScriptUpdate(): Unit = {
     val mapping = wrapMapping("data",
       s"""{
         |    "properties": {
@@ -515,7 +515,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDWriteWithUpsertScriptUsingBothObjectAndRegularString() {
+  def testOpenSearchRDDWriteWithUpsertScriptUsingBothObjectAndRegularString() {
     val mapping = wrapMapping("data", s"""{
                     |    "properties": {
                     |      "id": {
@@ -572,7 +572,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDRead() {
+  def testOpenSearchRDDRead() {
     val target = wrapIndex(resource("spark-test-scala-basic-read", "data", version))
     val docPath = wrapIndex(docEndpoint("spark-test-scala-basic-read", "data", version))
     RestUtils.touch(wrapIndex("spark-test-scala-basic-read"))
@@ -589,7 +589,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDReadQuery() {
+  def testOpenSearchRDDReadQuery() {
     val index = "spark-test-scala-basic-query-read"
     val typename = "data"
     val target = resource(index, typename, version)
@@ -617,7 +617,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDReadAsJson() {
+  def testOpenSearchRDDReadAsJson() {
     val index = wrapIndex("spark-test-scala-basic-json-read")
     val typename = "data"
     val target = resource(index, typename, version)
@@ -637,7 +637,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   }
 
   @Test
-  def testEsRDDReadWithSourceFilter() {
+  def testOpenSearchRDDReadWithSourceFilter() {
     val index = wrapIndex("spark-test-scala-source-filter-read")
     val typename = "data"
     val target = resource(index, typename, version)

@@ -52,7 +52,7 @@ public class SecureSettings {
             KeystoreWrapper.KeystoreBuilder builder = KeystoreWrapper.loadStore(keystoreLocation);
             try {
                 this.keystoreWrapper = builder.build();
-            } catch (EsHadoopSecurityException e) {
+            } catch (OpenSearchHadoopSecurityException e) {
                 throw new OpenSearchHadoopException("Could not load keystore", e);
             } catch (IOException e) {
                 throw new OpenSearchHadoopException("Could not load keystore", e);
@@ -72,7 +72,7 @@ public class SecureSettings {
         if (keystoreWrapper != null) {
             try {
                 value = keystoreWrapper.getSecureSetting(key);
-            } catch (EsHadoopSecurityException e) {
+            } catch (OpenSearchHadoopSecurityException e) {
                 throw new OpenSearchHadoopException("Could not read secure setting [" + key + "]", e);
             }
         }

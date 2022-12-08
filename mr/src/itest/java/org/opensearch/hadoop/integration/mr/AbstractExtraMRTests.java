@@ -51,8 +51,8 @@ import org.apache.hadoop.mapred.lib.IdentityReducer;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.integration.mr.AbstractMROldApiSaveTest.SplittableTextInputFormat;
-import org.opensearch.hadoop.mr.EsInputFormat;
-import org.opensearch.hadoop.mr.EsOutputFormat;
+import org.opensearch.hadoop.mr.OpenSearchInputFormat;
+import org.opensearch.hadoop.mr.OpenSearchOutputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
@@ -99,7 +99,7 @@ public class AbstractExtraMRTests {
         JobConf conf = HdpBootstrap.hadoopConfig();
 
         conf.setInputFormat(SplittableTextInputFormat.class);
-        conf.setOutputFormat(EsOutputFormat.class);
+        conf.setOutputFormat(OpenSearchOutputFormat.class);
         conf.setReducerClass(IdentityReducer.class);
         HadoopCfgUtils.setGenericOptions(conf);
         conf.setNumMapTasks(2);
@@ -207,7 +207,7 @@ public class AbstractExtraMRTests {
     private JobConf createReadJobConf() throws IOException {
         JobConf conf = HdpBootstrap.hadoopConfig();
 
-        conf.setInputFormat(EsInputFormat.class);
+        conf.setInputFormat(OpenSearchInputFormat.class);
         conf.setOutputFormat(PrintStreamOutputFormat.class);
         conf.setOutputKeyClass(Text.class);
         boolean type = random.nextBoolean();

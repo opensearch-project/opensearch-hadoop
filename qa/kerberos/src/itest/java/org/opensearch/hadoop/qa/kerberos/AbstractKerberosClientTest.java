@@ -49,7 +49,7 @@ import org.opensearch.hadoop.rest.Request;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.rest.SimpleRequest;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoNegotiator;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.security.JdkUserProvider;
 import org.opensearch.hadoop.security.LoginUtil;
 import org.opensearch.hadoop.security.User;
@@ -277,7 +277,7 @@ public class AbstractKerberosClientTest {
                 testSettings.setProperty(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL, "HTTP/build.ci.opensearch.org@BUILD.CI.OPENSEARCH.ORG");
 
                 UserProvider userProvider = UserProvider.create(testSettings);
-                assertTrue(userProvider.isEsKerberosEnabled());
+                assertTrue(userProvider.isOpenSearchKerberosEnabled());
 
                 LOG.info("Getting cluster info");
                 InitializationUtils.discoverClusterInfo(testSettings, LOG);
@@ -292,7 +292,7 @@ public class AbstractKerberosClientTest {
 
                 LOG.info("Getting an API Token");
                 RestClient client = new RestClient(testSettings);
-                EsToken proxyToken;
+                OpenSearchToken proxyToken;
                 try {
                     proxyToken = client.createNewApiToken("proxyToken");
                 } finally {
@@ -305,7 +305,7 @@ public class AbstractKerberosClientTest {
                     LOG.info("Checking authenticate to make sure it's still SPNEGO");
                     network.execute(new SimpleRequest(Request.Method.GET, "", "/_security/_authenticate", ""));
                     LOG.info("Adding token to user now");
-                    userProvider.getUser().addEsToken(proxyToken);
+                    userProvider.getUser().addOpenSearchToken(proxyToken);
                     LOG.info("Checking authenticate with same client again to make sure it's still SPNEGO");
                     network.execute(new SimpleRequest(Request.Method.GET, "", "/_security/_authenticate", ""));
                 } finally {
@@ -335,11 +335,11 @@ public class AbstractKerberosClientTest {
         RestClient restClient = null;
         try {
             restClient = new RestClient(testSettings);
-            EsToken token = restClient.createNewApiToken("test_key");
+            OpenSearchToken token = restClient.createNewApiToken("test_key");
             UserProvider provider = ObjectUtils.instantiate(testSettings.getSecurityUserProviderClass(), testSettings);
             User userInfo = provider.getUser();
             assertNotNull(userInfo);
-            userInfo.addEsToken(token);
+            userInfo.addOpenSearchToken(token);
             userInfo.doAs(new PrivilegedExceptionAction<Void>() {
                 @Override
                 public Void run() throws Exception {
@@ -396,11 +396,11 @@ public class AbstractKerberosClientTest {
                     // Discover cluster info and get token using SPNEGO
                     InitializationUtils.discoverClusterInfo(testSettings, LOG);
                     RestClient restClient = new RestClient(testSettings);
-                    EsToken token = restClient.createNewApiToken("test_key");
+                    OpenSearchToken token = restClient.createNewApiToken("test_key");
                     restClient.close();
 
                     // Add token to current user
-                    UserProvider.create(testSettings).getUser().addEsToken(token);
+                    UserProvider.create(testSettings).getUser().addOpenSearchToken(token);
 
                     // Remove kerberos information
                     testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION);

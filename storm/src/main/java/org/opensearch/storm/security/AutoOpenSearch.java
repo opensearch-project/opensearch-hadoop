@@ -58,7 +58,7 @@ import org.opensearch.hadoop.mr.security.TokenUtil;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.RestClient;
 import org.opensearch.hadoop.security.AuthenticationMethod;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.security.JdkUser;
 import org.opensearch.hadoop.security.JdkUserProvider;
 import org.opensearch.hadoop.security.LoginUtil;
@@ -150,11 +150,11 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
         if (LOG.isDebugEnabled()) {
             LOG.debug(String.format("Obtaining token for [%s]", userPrincipal));
         }
-        EsToken token;
+        OpenSearchToken token;
         try {
-            token = Subject.doAs(loginContext.getSubject(), new PrivilegedExceptionAction<EsToken>() {
+            token = Subject.doAs(loginContext.getSubject(), new PrivilegedExceptionAction<OpenSearchToken>() {
                 @Override
-                public EsToken run() throws Exception {
+                public OpenSearchToken run() throws Exception {
                     RestClient client = new RestClient(topologyAndClusterSettings);
                     try {
                         return client.createNewApiToken(TokenUtil.KEY_NAME_PREFIX + UUID.randomUUID().toString());
@@ -203,7 +203,7 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
     public void renew(Map<String, String> credentials, Map<String, Object> topologyConf, String topologyOwnerPrincipal) {
         // Just get new credentials from the initial populate credentials call since API keys are not renewable.
         LOG.debug("Checking for credential renewal");
-        EsToken token = getCred(OPENSEARCH_CREDENTIALS, credentials);
+        OpenSearchToken token = getCred(OPENSEARCH_CREDENTIALS, credentials);
         if (token != null) {
             LOG.debug("Checking token lifetime to see if refresh is required...");
             // Check the time to live on the token against when the next refresh is likely to occur
@@ -262,13 +262,13 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
         if (LOG.isDebugEnabled()) {
             LOG.debug("Loading credentials to subject on worker side");
         }
-        EsToken token = getCred(OPENSEARCH_CREDENTIALS, credentials);
+        OpenSearchToken token = getCred(OPENSEARCH_CREDENTIALS, credentials);
         if (token != null) {
             if (LOG.isDebugEnabled()) {
                 LOG.debug(String.format("Loaded token [%s]. Adding to subject...", token.getName()));
             }
             User user = new JdkUser(subject, clusterSettings);
-            user.addEsToken(token);
+            user.addOpenSearchToken(token);
         } else {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Found no credentials to load");
@@ -289,27 +289,27 @@ public class AutoOpenSearch implements IAutoCredentials, ICredentialsRenewer, IN
      * Utility methods
      */
 
-    private void putCred(String key, EsToken token, Map<String, String> credentials) {
+    private void putCred(String key, OpenSearchToken token, Map<String, String> credentials) {
         FastByteArrayOutputStream stream = new FastByteArrayOutputStream();
         DataOutput output = new DataOutputStream(stream);
         try {
             token.writeOut(output);
         } catch (IOException e) {
-            throw new OpenSearchHadoopException("Could not serialize EsToken", e);
+            throw new OpenSearchHadoopException("Could not serialize OpenSearchToken", e);
         }
         String credential = new String(Base64.encodeBase64(stream.bytes().bytes()), StringUtils.UTF_8);
         credentials.put(key, credential);
     }
 
-    private EsToken getCred(String key, Map<String, String> credentials) {
-        EsToken token = null;
+    private OpenSearchToken getCred(String key, Map<String, String> credentials) {
+        OpenSearchToken token = null;
         String serializedToken = credentials.get(key);
         if (serializedToken != null && !serializedToken.equals("placeholder")) {
             byte[] rawData = Base64.decodeBase64(serializedToken);
             try {
-                token = new EsToken(new DataInputStream(new FastByteArrayInputStream(rawData)));
+                token = new OpenSearchToken(new DataInputStream(new FastByteArrayInputStream(rawData)));
             } catch (IOException e) {
-                throw new OpenSearchHadoopException("Could not deserialize EsToken", e);
+                throw new OpenSearchHadoopException("Could not deserialize OpenSearchToken", e);
             }
         }
         return token;

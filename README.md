@@ -98,7 +98,7 @@ Configuration conf = new Configuration();
 conf.set("opensearch.resource", "radio/artists");
 conf.set("opensearch.query", "?q=me*");             // replace this with the relevant query
 Job job = new Job(conf)
-job.setInputFormatClass(EsInputFormat.class);
+job.setInputFormatClass(OpenSearchInputFormat.class);
 ...
 job.waitForCompletion(true);
 ```
@@ -107,13 +107,13 @@ job.waitForCompletion(true);
 Configuration conf = new Configuration();
 conf.set("opensearch.resource", "radio/artists"); // index or indices used for storing data
 Job job = new Job(conf)
-job.setOutputFormatClass(EsOutputFormat.class);
+job.setOutputFormatClass(OpenSearchOutputFormat.class);
 ...
 job.waitForCompletion(true);
 ```
 
 ## [Apache Hive][]
-ES-Hadoop provides a Hive storage handler for Elasticsearch, meaning one can define an [external table][] on top of ES.
+OpenSearch-Hadoop provides a Hive storage handler for OpenSearch, meaning one can define an [external table][] on top of ES.
 
 Add opensearch-hadoop-<version>.jar to `hive.aux.jars.path` or register it manually in your Hive script (recommended):
 ```
@@ -126,10 +126,10 @@ CREATE EXTERNAL TABLE artists (
     id      BIGINT,
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
-STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler'
+STORED BY 'org.opensearch.hive.hadoop.OpenSearchStorageHandler'
 TBLPROPERTIES('opensearch.resource' = 'radio/artists', 'opensearch.query' = '?q=me*');
 ```
-The fields defined in the table are mapped to the JSON when communicating with Elasticsearch. Notice the use of `TBLPROPERTIES` to define the location, that is the query used for reading from this table.
+The fields defined in the table are mapped to the JSON when communicating with OpenSearch. Notice the use of `TBLPROPERTIES` to define the location, that is the query used for reading from this table.
 
 Once defined, the table can be used just like any other:
 ```SQL
@@ -143,47 +143,47 @@ CREATE EXTERNAL TABLE artists (
     id      BIGINT,
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
-STORED BY 'org.opensearch.hive.hadoop.EsStorageHandler'
+STORED BY 'org.opensearch.hive.hadoop.OpenSearchStorageHandler'
 TBLPROPERTIES('opensearch.resource' = 'radio/artists');
 ```
 
-Any data passed to the table is then passed down to Elasticsearch; for example considering a table `s`, mapped to a TSV/CSV file, one can index it to Elasticsearch like this:
+Any data passed to the table is then passed down to OpenSearch; for example considering a table `s`, mapped to a TSV/CSV file, one can index it to OpenSearch like this:
 ```SQL
 INSERT OVERWRITE TABLE artists
     SELECT NULL, s.name, named_struct('url', s.url, 'picture', s.picture) FROM source s;
 ```
 
-As one can note, currently the reading and writing are treated separately but we're working on unifying the two and automatically translating [HiveQL][] to Elasticsearch queries.
+As one can note, currently the reading and writing are treated separately but we're working on unifying the two and automatically translating [HiveQL][] to OpenSearch queries.
 
 ## [Apache Pig][]
-ES-Hadoop provides both read and write functions for Pig so you can access Elasticsearch from Pig scripts.
+OpenSearch-Hadoop provides both read and write functions for Pig so you can access OpenSearch from Pig scripts.
 
-Register ES-Hadoop jar into your script or add it to your Pig classpath:
+Register OpenSearch-Hadoop jar into your script or add it to your Pig classpath:
 ```
 REGISTER /path_to_jar/opensearch-hadoop-<version>.jar;
 ```
 Additionally one can define an alias to save some chars:
 ```
-%define ESSTORAGE org.opensearch.pig.hadoop.EsStorage()
+%define ESSTORAGE org.opensearch.pig.hadoop.OpenSearchStorage()
 ```
 and use `$ESSTORAGE` for storage definition.
 
 ### Reading
 To read data from ES, use `OpenSearchStorage` and specify the query through the `LOAD` function:
 ```SQL
-A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage('opensearch.query=?q=me*');
+A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.OpenSearchStorage('opensearch.query=?q=me*');
 DUMP A;
 ```
 
 ### Writing
-Use the same `Storage` to write data to Elasticsearch:
+Use the same `Storage` to write data to OpenSearch:
 ```SQL
 A = LOAD 'src/artists.dat' USING PigStorage() AS (id:long, name, url:chararray, picture: chararray);
 B = FOREACH A GENERATE name, TOTUPLE(url, picture) AS links;
-STORE B INTO 'radio/artists' USING org.opensearch.pig.hadoop.EsStorage();
+STORE B INTO 'radio/artists' USING org.opensearch.pig.hadoop.OpenSearchStorage();
 ```
 ## [Apache Spark][]
-ES-Hadoop provides native (Java and Scala) integration with Spark: for reading a dedicated `RDD` and for writing, methods that work on any `RDD`. Spark SQL is also supported
+OpenSearch-Hadoop provides native (Java and Scala) integration with Spark: for reading a dedicated `RDD` and for writing, methods that work on any `RDD`. Spark SQL is also supported
 
 ### Scala
 
@@ -261,7 +261,7 @@ DataFrame playlist = df.filter(df.col("category").equalTo("pikes").and(df.col("y
 
 ### Writing
 
-Use `JavaOpenSearchSpark` to index any `RDD` to Elasticsearch:
+Use `JavaOpenSearchSpark` to index any `RDD` to OpenSearch:
 ```java
 import org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark;
 
@@ -285,10 +285,10 @@ JavaOpenSearchSparkSQL.saveToEs(df, "spark/docs")
 ```
 
 ## [Apache Storm][]
-ES-Hadoop provides native integration with Storm: for reading a dedicated `Spout` and for writing a specialized `Bolt`
+OpenSearch-Hadoop provides native integration with Storm: for reading a dedicated `Spout` and for writing a specialized `Bolt`
 
 ### Reading
-To read data from ES, use `EsSpout`:
+To read data from ES, use `OpenSearchSpout`:
 ```java
 import org.opensearch.storm.OpenSearchSpout;
 
@@ -298,19 +298,19 @@ builder.setBolt("bolt", new PrinterBolt()).shuffleGrouping("opensearch-spout");
 ```
 
 ### Writing
-To index data to ES, use `EsBolt`:
+To index data to ES, use `OpenSearchBolt`:
 
 ```java
 import org.opensearch.storm.OpenSearchBolt;
 
 TopologyBuilder builder = new TopologyBuilder();
 builder.setSpout("spout", new RandomSentenceSpout(), 10);
-builder.setBolt("opensearch-bolt", new EsBolt("storm/docs"), 5).shuffleGrouping("spout");
+builder.setBolt("opensearch-bolt", new OpenSearchBolt("storm/docs"), 5).shuffleGrouping("spout");
 ```
 
 ## Building the source
 
-Elasticsearch Hadoop uses [Gradle][] for its build system and it is not required to have it installed on your machine. By default (`gradlew`), it automatically builds the package and runs the unit tests. For integration testing, use the `integrationTests` task.
+OpenSearch Hadoop uses [Gradle][] for its build system and it is not required to have it installed on your machine. By default (`gradlew`), it automatically builds the package and runs the unit tests. For integration testing, use the `integrationTests` task.
 See `gradlew tasks` for more information.
 
 To create a distributable zip, run `gradlew distZip` from the command line; once completed you will find the jar in `build/libs`.

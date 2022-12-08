@@ -29,22 +29,22 @@
 
 package org.opensearch.hadoop.rest.commonshttp.auth.bearer;
 
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
 import org.opensearch.hadoop.util.Assert;
 
 /**
- * Credentials class that produces an EsToken if it is available on the currently logged in user.
+ * Credentials class that produces an OpenSearchToken if it is available on the currently logged in user.
  */
-public class EsApiKeyCredentials implements Credentials {
+public class OpenSearchApiKeyCredentials implements Credentials {
 
     private final UserProvider userProvider;
-    private final EsToken providedToken;
+    private final OpenSearchToken providedToken;
     private final String clusterName;
 
-    public EsApiKeyCredentials(UserProvider userProvider, String clusterName) {
+    public OpenSearchApiKeyCredentials(UserProvider userProvider, String clusterName) {
         Assert.notNull(userProvider, "userProvider must not be null");
         Assert.notNull(clusterName, "clusterName must not be null");
         this.userProvider = userProvider;
@@ -52,23 +52,23 @@ public class EsApiKeyCredentials implements Credentials {
         this.clusterName = clusterName;
     }
 
-    public EsApiKeyCredentials(EsToken providedToken) {
+    public OpenSearchApiKeyCredentials(OpenSearchToken providedToken) {
         Assert.notNull(providedToken, "providedToken must not be null");
         this.userProvider = null;
         this.providedToken = providedToken;
         this.clusterName = null;
     }
 
-    public EsToken getToken() {
-        EsToken esToken = null;
+    public OpenSearchToken getToken() {
+        OpenSearchToken opensearchToken = null;
         if (providedToken != null) {
-            esToken = providedToken;
+            opensearchToken = providedToken;
         } else {
             User user = userProvider.getUser();
             if (user != null) {
-                esToken = user.getEsToken(clusterName); // Token may be null.
+                opensearchToken = user.getOpenSearchToken(clusterName); // Token may be null.
             }
         }
-        return esToken;
+        return opensearchToken;
     }
 }

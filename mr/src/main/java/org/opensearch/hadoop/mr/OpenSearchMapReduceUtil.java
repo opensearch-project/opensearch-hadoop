@@ -50,8 +50,8 @@ import org.opensearch.hadoop.util.ClusterInfo;
 /**
  * Utility functions for setting up Map Reduce Jobs to read and write from OpenSearch.
  *
- * @see EsInputFormat For reading from OpenSearch
- * @see EsOutputFormat For writing to OpenSearch
+ * @see OpenSearchInputFormat For reading from OpenSearch
+ * @see OpenSearchOutputFormat For writing to OpenSearch
  */
 public final class OpenSearchMapReduceUtil {
 
@@ -70,7 +70,7 @@ public final class OpenSearchMapReduceUtil {
         InitializationUtils.setUserProviderIfNotSet(settings, HadoopUserProvider.class, LOG);
         UserProvider userProvider = UserProvider.create(settings);
 
-        if (userProvider.isEsKerberosEnabled()) {
+        if (userProvider.isOpenSearchKerberosEnabled()) {
             User user = userProvider.getUser();
             ClusterInfo clusterInfo = settings.getClusterInfoOrNull();
             RestClient bootstrap = new RestClient(settings);
@@ -105,7 +105,7 @@ public final class OpenSearchMapReduceUtil {
         InitializationUtils.setUserProviderIfNotSet(settings, HadoopUserProvider.class, LOG);
         UserProvider userProvider = UserProvider.create(settings);
 
-        if (userProvider.isEsKerberosEnabled()) {
+        if (userProvider.isOpenSearchKerberosEnabled()) {
             User user = userProvider.getUser();
             ClusterInfo clusterInfo = settings.getClusterInfoOrNull();
             RestClient bootstrap = new RestClient(settings);

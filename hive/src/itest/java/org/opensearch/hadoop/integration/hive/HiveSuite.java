@@ -69,7 +69,7 @@ public class HiveSuite {
     static String originalJsonResource;
     static String hdfsResource;
     static String hdfsJsonResource;
-    static String hdfsEsLib;
+    static String hdfsOpenSearchLib;
     static Configuration hadoopConfig;
 
 
@@ -128,7 +128,7 @@ public class HiveSuite {
             hadoopConfig = HdpBootstrap.hadoopConfig();
 
             HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_ES_HDP_LIB);
-            hdfsEsLib = HdfsUtils.qualify(Provisioner.HDFS_ES_HDP_LIB, hadoopConfig);
+            hdfsOpenSearchLib = HdfsUtils.qualify(Provisioner.HDFS_ES_HDP_LIB, hadoopConfig);
             // copy jar to DistributedCache
             try {
                 DistributedCache.addArchiveToClassPath(new Path(Provisioner.HDFS_ES_HDP_LIB), hadoopConfig);
@@ -177,7 +177,7 @@ public class HiveSuite {
     }
 
     public static void before() throws Exception {
-        provisionEsLib();
+        provisionOpenSearchLib();
     }
 
     public static void after() throws Exception {
@@ -186,7 +186,7 @@ public class HiveSuite {
         }
     }
 
-    public static void provisionEsLib() throws Exception {
+    public static void provisionOpenSearchLib() throws Exception {
         // provision on each test run since LOAD DATA _moves_ the file
         if (!isLocal) {
             hdfsResource = "/eshdp/hive/hive-compund.dat";
@@ -196,7 +196,7 @@ public class HiveSuite {
             HdfsUtils.copyFromLocal(originalJsonResource, hdfsJsonResource);
         }
 
-        String jar = "ADD JAR " + HiveSuite.hdfsEsLib;
+        String jar = "ADD JAR " + HiveSuite.hdfsOpenSearchLib;
 
         if (!isLocal) {
             System.out.println(server.execute(jar));

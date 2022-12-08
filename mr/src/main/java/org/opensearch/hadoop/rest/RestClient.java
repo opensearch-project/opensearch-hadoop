@@ -39,7 +39,7 @@ import org.opensearch.hadoop.rest.Request.Method;
 import org.opensearch.hadoop.rest.query.QueryBuilder;
 import org.opensearch.hadoop.rest.stats.Stats;
 import org.opensearch.hadoop.rest.stats.StatsAware;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.serialization.ParsingUtils;
 import org.opensearch.hadoop.serialization.dto.NodeInfo;
 import org.opensearch.hadoop.serialization.dto.mapping.FieldParser;
@@ -87,15 +87,6 @@ import static org.opensearch.hadoop.rest.Request.Method.PUT;
 public class RestClient implements Closeable, StatsAware {
 
     private static final Log LOG = LogFactory.getLog(RestClient.class);
-
-    // @todo open source my ass! remove this proprietary Elastic BS!!!
-    @Deprecated
-    static final String ELASTIC_PRODUCT_HEADER = "X-elastic-product";
-    static final String ELASTIC_PRODUCT_HEADER_VALUE = "Elasticsearch";
-    @Deprecated
-    static final String ELASTICSEARCH_BUILD_FLAVOR = "default";
-    @Deprecated
-    static final String ELASTICSEARCH_TAGLINE = "The OpenSearch Project: https://opensearch.org/";
 
     private NetworkClient network;
     private final ObjectMapper mapper;
@@ -632,7 +623,7 @@ public class RestClient implements Closeable, StatsAware {
         execute(PUT, index + "/_mapping", new BytesArray(bytes));
     }
 
-    public EsToken createNewApiToken(String tokenName) {
+    public OpenSearchToken createNewApiToken(String tokenName) {
         Assert.hasText(tokenName, "Cannot get new token with an empty token name");
         ClusterInfo remoteInfo = clusterInfo;
         if (ClusterName.UNNAMED_CLUSTER_NAME.equals(remoteInfo.getClusterName().getName())) {
@@ -659,7 +650,7 @@ public class RestClient implements Closeable, StatsAware {
         Number expiry = (Number) content.get("expiration");
         long expirationTime = expiry.longValue();
 
-        return new EsToken(
+        return new OpenSearchToken(
                 content.get("name").toString(),
                 content.get("id").toString(),
                 content.get("api_key").toString(),
@@ -668,7 +659,7 @@ public class RestClient implements Closeable, StatsAware {
                 remoteInfo.getMajorVersion());
     }
 
-    public boolean cancelToken(EsToken tokenToCancel) {
+    public boolean cancelToken(OpenSearchToken tokenToCancel) {
         ClusterInfo remoteInfo = clusterInfo;
         if (ClusterName.UNNAMED_CLUSTER_NAME.equals(remoteInfo.getClusterName().getName())) {
             remoteInfo = mainInfo();

@@ -145,7 +145,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDWriteIndexCreationDisabled() throws Exception {
+    public void testOpenSearchRDDWriteIndexCreationDisabled() throws Exception {
         ExpectingToThrow expecting = expectingToThrow(OpenSearchHadoopIllegalArgumentException.class).from(ssc);
 
         Map<String, Object> doc1 = new HashMap<>();
@@ -216,7 +216,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDWriteWIthMappingId() throws Exception {
+    public void testOpenSearchRDDWriteWIthMappingId() throws Exception {
         Map<String, Object> doc1 = new HashMap<>();
         doc1.put("number", 1);
         doc1.put("one", null);
@@ -257,7 +257,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDWriteWithDynamicMapping() throws Exception {
+    public void testOpenSearchRDDWriteWithDynamicMapping() throws Exception {
         Map<String, Object> doc1 = new HashMap<>();
         doc1.put("number", 3);
         doc1.put("one", null);
@@ -306,7 +306,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDWriteWithDynamicMapMapping() throws Exception {
+    public void testOpenSearchRDDWriteWithDynamicMapMapping() throws Exception {
         Map<String, Object> doc1 = new HashMap<>();
         doc1.put("id", 5);
         doc1.put("version", "3");
@@ -361,7 +361,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDWriteWithMappingExclude() throws Exception {
+    public void testOpenSearchRDDWriteWithMappingExclude() throws Exception {
         Map<String, Object> trip1 = new HashMap<>();
         trip1.put("reason", "business");
         trip1.put("airport", "SFO");
@@ -469,7 +469,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
     }
 
     @Test
-    public void testEsWriteAsJsonMultiWrite() throws Exception {
+    public void testOpenSearchWriteAsJsonMultiWrite() throws Exception {
         String json1 = "{\"reason\" : \"business\",\"airport\" : \"sfo\"}";
         String json2 = "{\"participants\" : 5,\"airport\" : \"otp\"}";
 

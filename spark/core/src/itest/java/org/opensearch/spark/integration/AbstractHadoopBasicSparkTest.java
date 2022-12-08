@@ -50,7 +50,7 @@ import org.apache.spark.serializer.KryoRegistrator;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.TestData;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.OpenSearchInputFormat;
 import org.opensearch.hadoop.rest.RestUtils;
 import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.WritableUtils;
@@ -144,8 +144,8 @@ public class AbstractHadoopBasicSparkTest implements Serializable {
         hdpConf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, target);
 
 
-        //JavaPairRDD data = sc.newAPIHadoopRDD(hdpConf, EsInputFormat.class, NullWritable.class, MapWritable.class);
-        JavaPairRDD data = sc.hadoopRDD(hdpConf, EsInputFormat.class, NullWritable.class, MapWritable.class);
+        //JavaPairRDD data = sc.newAPIHadoopRDD(hdpConf, OpenSearchInputFormat.class, NullWritable.class, MapWritable.class);
+        JavaPairRDD data = sc.hadoopRDD(hdpConf, OpenSearchInputFormat.class, NullWritable.class, MapWritable.class);
 
         long messages = data.filter(new Function<Tuple2<Text, MapWritable>, Boolean>() {
             @Override

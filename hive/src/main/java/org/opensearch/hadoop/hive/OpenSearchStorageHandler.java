@@ -48,7 +48,7 @@ import org.opensearch.hadoop.cfg.CompositeSettings;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.mr.EsOutputFormat;
+import org.opensearch.hadoop.mr.OpenSearchOutputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.mr.security.TokenUtil;
@@ -76,12 +76,12 @@ public class OpenSearchStorageHandler extends DefaultStorageHandler {
 
     @Override
     public Class<? extends InputFormat> getInputFormatClass() {
-        return EsHiveInputFormat.class;
+        return OpenSearchHiveInputFormat.class;
     }
 
     @Override
     public Class<? extends OutputFormat> getOutputFormatClass() {
-        return EsHiveOutputFormat.class;
+        return OpenSearchHiveOutputFormat.class;
     }
 
     @Override
@@ -128,7 +128,7 @@ public class OpenSearchStorageHandler extends DefaultStorageHandler {
         }
         else {
             // replace the default committer when using the old API
-            HadoopCfgUtils.setOutputCommitterClass(cfg, EsOutputFormat.EsOutputCommitter.class.getName());
+            HadoopCfgUtils.setOutputCommitterClass(cfg, OpenSearchOutputFormat.OpenSearchOutputCommitter.class.getName());
         }
 
         Assert.hasText(tableDesc.getProperties().getProperty(TABLE_LOCATION), String.format(
@@ -163,7 +163,7 @@ public class OpenSearchStorageHandler extends DefaultStorageHandler {
         ));
         InitializationUtils.setUserProviderIfNotSet(settings, HadoopUserProvider.class, log);
         UserProvider userProvider = UserProvider.create(settings);
-        if (userProvider.isEsKerberosEnabled()) {
+        if (userProvider.isOpenSearchKerberosEnabled()) {
             User user = userProvider.getUser();
             ClusterInfo clusterInfo = settings.getClusterInfoOrNull();
             RestClient bootstrap = new RestClient(settings);

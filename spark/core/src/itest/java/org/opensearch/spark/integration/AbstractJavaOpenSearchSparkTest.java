@@ -91,7 +91,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     // @Test
-    public void testEsRDDWrite() throws Exception {
+    public void testOpenSearchRDDWrite() throws Exception {
         Map<String, ?> doc1 = ImmutableMap.of("one", 1, "two", 2);
         Map<String, ?> doc2 = ImmutableMap.of("OTP", "Otopeni", "SFO", "San Fran");
 
@@ -108,7 +108,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     // @Test
-    public void testEsRDDWriteWithMappingId() throws Exception {
+    public void testOpenSearchRDDWriteWithMappingId() throws Exception {
         Map<String, ?> doc1 = ImmutableMap.of("one", 1, "two", 2, "number", 1);
         Map<String, ?> doc2 = ImmutableMap.of("OTP", "Otopeni", "SFO", "San Fran", "number", 2);
 
@@ -125,7 +125,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     // @Test
-    public void testEsRDDWriteWithDynamicMapping() throws Exception {
+    public void testOpenSearchRDDWriteWithDynamicMapping() throws Exception {
         Map<String, ?> doc1 = ImmutableMap.of("one", 1, "two", 2, "number", 1);
         Map<String, ?> doc2 = ImmutableMap.of("OTP", "Otopeni", "SFO", "San Fran", "number", 2);
 
@@ -144,7 +144,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     // @Test
-    public void testEsRDDWriteWithDynamicMappingBasedOnMaps() throws Exception {
+    public void testOpenSearchRDDWriteWithDynamicMappingBasedOnMaps() throws Exception {
         Map<String, ?> doc1 = ImmutableMap.of("one", 1, "two", 2, "number", 1);
         Map<String, ?> doc2 = ImmutableMap.of("OTP", "Otopeni", "SFO", "San Fran", "number", 2);
 
@@ -164,7 +164,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     // @Test
-    public void testEsRDDWriteWithMappingExclude() throws Exception {
+    public void testOpenSearchRDDWriteWithMappingExclude() throws Exception {
         Map<String, ?> doc1 = ImmutableMap.of("reason", "business", "airport", "SFO");
         Map<String, ?> doc2 = ImmutableMap.of("participants", 2, "airport", "OTP");
 
@@ -181,7 +181,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     // @Test
-    public void testEsMultiIndexRDDWrite() throws Exception {
+    public void testOpenSearchMultiIndexRDDWrite() throws Exception {
       Map<String, ?> doc1 = ImmutableMap.of("reason", "business", "airport", "SFO");
       Map<String, ?> doc2 = ImmutableMap.of("participants", 2, "airport", "OTP");
 
@@ -198,7 +198,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     // @Test
-    public void testEsRDDWriteAsJsonMultiWrite() throws Exception {
+    public void testOpenSearchRDDWriteAsJsonMultiWrite() throws Exception {
       String json1 = "{\"reason\" : \"business\",\"airport\" : \"SFO\"}";
       String json2 = "{\"participants\" : 5,\"airport\" : \"OTP\"}";
 
@@ -238,7 +238,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     // @Test
-    public void testEsRDDZRead() throws Exception {
+    public void testOpenSearchRDDZRead() throws Exception {
         String target = "spark-test-java-basic-read/data";
 
         RestUtils.touch("spark-test-java-basic-read");
@@ -277,7 +277,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
 
 
     // @Test
-    public void testEsRDDZReadJson() throws Exception {
+    public void testOpenSearchRDDZReadJson() throws Exception {
         String target = "spark-test-java-basic-json-read/data";
 
         RestUtils.touch("spark-test-java-basic-json-read");
@@ -303,7 +303,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
     }
 
     @Test
-    public void testEsRDDZReadWithGroupBy() throws Exception {
+    public void testOpenSearchRDDZReadWithGroupBy() throws Exception {
         String target = resource("spark-test-java-basic-group", "data", version);
         String docEndpoint = docEndpoint("spark-test-java-basic-group", "data", version);
 

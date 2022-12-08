@@ -118,7 +118,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   }
 
   @Test
-  def testEsRDDWriteIndexCreationDisabled(): Unit = {
+  def testOpenSearchRDDWriteIndexCreationDisabled(): Unit = {
     val expecting = ExpectingToThrow(classOf[OpenSearchHadoopIllegalArgumentException]).from(ssc)
 
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."))
@@ -175,7 +175,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   // }
 
   @Test
-  def testEsRDDWriteCaseClass(): Unit = {
+  def testOpenSearchRDDWriteCaseClass(): Unit = {
     val javaBean = new Bean("bar", 1, true)
     val caseClass1 = Trip("OTP", "SFO")
     val caseClass2 = ModuleCaseClass(1, "OTP", "MUC")
@@ -196,7 +196,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   }
 
   @Test
-  def testEsRDDWriteWithMappingId(): Unit = {
+  def testOpenSearchRDDWriteWithMappingId(): Unit = {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."), "number" -> 1)
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran", "number" -> 2)
 
@@ -214,7 +214,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   }
 
   @Test
-  def testEsRDDWriteWithDynamicMapping(): Unit = {
+  def testOpenSearchRDDWriteWithDynamicMapping(): Unit = {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."), "number" -> 1)
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran", "number" -> 2)
 
@@ -234,7 +234,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   }
 
   @Test
-  def testEsRDDWriteWithDynamicMapMapping(): Unit = {
+  def testOpenSearchRDDWriteWithDynamicMapMapping(): Unit = {
     val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."), "number" -> 1)
     val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran", "number" -> 2)
 
@@ -258,7 +258,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   }
 
   @Test
-  def testEsRDDWriteWithMappingExclude(): Unit = {
+  def testOpenSearchRDDWriteWithMappingExclude(): Unit = {
     val trip1 = Map("reason" -> "business", "airport" -> "SFO")
     val trip2 = Map("participants" -> 5, "airport" -> "OTP")
 
@@ -297,7 +297,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
 
 
   @Test
-  def testEsMultiIndexRDDWrite(): Unit = {
+  def testOpenSearchMultiIndexRDDWrite(): Unit = {
     // index names must be lowercase
     val trip1 = Map("reason" -> "business", "airport" -> "sfo")
     val trip2 = Map("participants" -> 5, "airport" -> "otp")
@@ -314,7 +314,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   }
 
   @Test
-  def testEsWriteAsJsonMultiWrite(): Unit = {
+  def testOpenSearchWriteAsJsonMultiWrite(): Unit = {
     val json1 = "{\"reason\" : \"business\",\"airport\" : \"sfo\"}"
     val json2 = "{\"participants\" : 5,\"airport\" : \"otp\"}"
 
@@ -338,7 +338,7 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
   }
 
   @Test
-  def testEsRDDWriteWithUpsertScriptUsingBothObjectAndRegularString(): Unit = {
+  def testOpenSearchRDDWriteWithUpsertScriptUsingBothObjectAndRegularString(): Unit = {
     val mapping = wrapMapping("data", s"""{
                     |    "properties": {
                     |      "id": {

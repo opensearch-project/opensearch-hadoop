@@ -116,7 +116,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	}
 
 	@Test
-	public void testEsdataFrame1Write() throws Exception {
+	public void testOpenSearchdataFrame1Write() throws Exception {
 		DataFrame dataFrame = artistsAsDataFrame();
 
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
@@ -126,7 +126,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	}
 
 	@Test
-	public void testEsdataFrame1WriteWithId() throws Exception {
+	public void testOpenSearchdataFrame1WriteWithId() throws Exception {
 		DataFrame dataFrame = artistsAsDataFrame();
 
 		String target = resource("sparksql-test-scala-basic-write-id-mapping", "data", version);
@@ -140,7 +140,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	}
 
     @Test
-    public void testEsSchemaRDD1WriteWithMappingExclude() throws Exception {
+    public void testOpenSearchSchemaRDD1WriteWithMappingExclude() throws Exception {
     	DataFrame dataFrame = artistsAsDataFrame();
 
         String target = resource("sparksql-test-scala-basic-write-exclude-mapping", "data", version);
@@ -150,7 +150,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
     }
     
 	@Test
-	public void testEsdataFrame2Read() throws Exception {
+	public void testOpenSearchdataFrame2Read() throws Exception {
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
 
         // DataFrame dataFrame = JavaOpenSearchSparkSQL.esDF(sqc, target);

@@ -84,7 +84,7 @@ public class AbstractHiveSearchTest {
 
     @Before
     public void before() throws Exception {
-        provisionEsLib();
+        provisionOpenSearchLib();
         RestUtils.refresh("hive*");
         targetVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
         new QueryTestParams(tempFolder).provisionQueries(HdpBootstrap.hadoopConfig());

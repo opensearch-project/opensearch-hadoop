@@ -37,7 +37,7 @@ import org.apache.hadoop.io.Text;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.security.token.Token;
 import org.opensearch.hadoop.OpenSearchHadoopException;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.util.ClusterName;
 import org.opensearch.hadoop.util.OpenSearchMajorVersion;
@@ -52,25 +52,25 @@ import static org.junit.Assert.assertThat;
 public class HadoopUserTest {
 
     @Test
-    public void getEsToken() throws IOException {
+    public void getOpenSearchToken() throws IOException {
         UserGroupInformation ugi = UserGroupInformation.getCurrentUser();
 
-        String testClusterName = "getEsTokenTest";
+        String testClusterName = "getOpenSearchTokenTest";
 
         User hadoopUser = new HadoopUser(ugi, new TestSettings());
-        assertThat(hadoopUser.getEsToken(null), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(""), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(testClusterName), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(testClusterName), is(nullValue()));
 
-        EsToken testToken = new EsToken("gmarx", "swordfish", "mary", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
-        EsToken unnamedToken = new EsToken("luggage", "12345", "12345", System.currentTimeMillis() + 100000L, ClusterName.UNNAMED_CLUSTER_NAME, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken testToken = new OpenSearchToken("gmarx", "swordfish", "mary", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken unnamedToken = new OpenSearchToken("luggage", "12345", "12345", System.currentTimeMillis() + 100000L, ClusterName.UNNAMED_CLUSTER_NAME, OpenSearchMajorVersion.LATEST);
 
-        EsTokenIdentifier identifier = new EsTokenIdentifier();
+        OpenSearchTokenIdentifier identifier = new OpenSearchTokenIdentifier();
         byte[] id = identifier.getBytes();
         Text kind = identifier.getKind();
 
-        for (EsToken token : new EsToken[]{testToken, unnamedToken}){
+        for (OpenSearchToken token : new OpenSearchToken[]{testToken, unnamedToken}){
             Text service = new Text(token.getClusterName());
             ByteArrayOutputStream buffer = new ByteArrayOutputStream();
 
@@ -81,43 +81,43 @@ public class HadoopUserTest {
             }
             byte[] pw = buffer.toByteArray();
 
-            ugi.addToken(new Token<EsTokenIdentifier>(id, pw, kind, service));
+            ugi.addToken(new Token<OpenSearchTokenIdentifier>(id, pw, kind, service));
         }
 
-        assertThat(hadoopUser.getEsToken(null), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(""), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(testClusterName), is(equalTo(testToken)));
+        assertThat(hadoopUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(testClusterName), is(equalTo(testToken)));
     }
 
     @Test
-    public void addEsToken() throws IOException {
-        String testClusterName = "addEsTokenTest";
+    public void addOpenSearchToken() throws IOException {
+        String testClusterName = "addOpenSearchTokenTest";
 
         User hadoopUser = new HadoopUser(UserGroupInformation.getCurrentUser(), new TestSettings());
-        assertThat(hadoopUser.getEsToken(null), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(""), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(testClusterName), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(testClusterName), is(nullValue()));
 
-        EsToken testToken = new EsToken("gmarx", "swordfish", "mary", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
-        EsToken testToken2 = new EsToken("zmarx", "pantomime", "pantomime", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
-        EsToken unnamedToken = new EsToken("luggage", "12345", "12345", System.currentTimeMillis() + 100000L, ClusterName.UNNAMED_CLUSTER_NAME, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken testToken = new OpenSearchToken("gmarx", "swordfish", "mary", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken testToken2 = new OpenSearchToken("zmarx", "pantomime", "pantomime", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken unnamedToken = new OpenSearchToken("luggage", "12345", "12345", System.currentTimeMillis() + 100000L, ClusterName.UNNAMED_CLUSTER_NAME, OpenSearchMajorVersion.LATEST);
 
-        hadoopUser.addEsToken(testToken);
-        hadoopUser.addEsToken(unnamedToken);
+        hadoopUser.addOpenSearchToken(testToken);
+        hadoopUser.addOpenSearchToken(unnamedToken);
 
-        assertThat(hadoopUser.getEsToken(null), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(""), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(testClusterName), is(equalTo(testToken)));
+        assertThat(hadoopUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(testClusterName), is(equalTo(testToken)));
 
-        hadoopUser.addEsToken(testToken2);
+        hadoopUser.addOpenSearchToken(testToken2);
 
-        assertThat(hadoopUser.getEsToken(null), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(""), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(hadoopUser.getEsToken(testClusterName), is(equalTo(testToken2)));
+        assertThat(hadoopUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(hadoopUser.getOpenSearchToken(testClusterName), is(equalTo(testToken2)));
     }
 
     @Test

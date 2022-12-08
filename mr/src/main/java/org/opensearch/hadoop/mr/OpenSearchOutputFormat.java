@@ -57,17 +57,17 @@ import org.opensearch.hadoop.util.Assert;
 import static org.opensearch.hadoop.cfg.ConfigurationOptions.OPENSEARCH_RESOURCE;
 
 /**
- * ElasticSearch {@link OutputFormat} (old and new API) for adding data to an index inside ElasticSearch.
+ * OpenSearch {@link OutputFormat} (old and new API) for adding data to an index inside OpenSearch.
  */
 @SuppressWarnings("rawtypes")
 // since this class implements two generic interfaces, to avoid dealing with 4 types in every declaration, we force raw types...
-public class EsOutputFormat extends OutputFormat implements org.apache.hadoop.mapred.OutputFormat {
+public class OpenSearchOutputFormat extends OutputFormat implements org.apache.hadoop.mapred.OutputFormat {
 
-    private static Log log = LogFactory.getLog(EsOutputFormat.class);
+    private static Log log = LogFactory.getLog(OpenSearchOutputFormat.class);
     private static final int NO_TASK_ID = -1;
 
     // don't use mapred.OutputCommitter as it performs mandatory casts to old API resulting in CCE
-    public static class EsOutputCommitter extends org.apache.hadoop.mapreduce.OutputCommitter {
+    public static class OpenSearchOutputCommitter extends org.apache.hadoop.mapreduce.OutputCommitter {
 
         @Override
         public void setupJob(JobContext jobContext) throws IOException {}
@@ -100,7 +100,7 @@ public class EsOutputFormat extends OutputFormat implements org.apache.hadoop.ma
 
     }
 
-    public static class EsOldAPIOutputCommitter extends org.apache.hadoop.mapred.OutputCommitter {
+    public static class OpenSearchOldAPIOutputCommitter extends org.apache.hadoop.mapred.OutputCommitter {
 
         @Override
         public void setupJob(org.apache.hadoop.mapred.JobContext jobContext) throws IOException {
@@ -136,7 +136,7 @@ public class EsOutputFormat extends OutputFormat implements org.apache.hadoop.ma
         }
     }
 
-    protected static class EsRecordWriter extends RecordWriter implements org.apache.hadoop.mapred.RecordWriter {
+    protected static class OpenSearchRecordWriter extends RecordWriter implements org.apache.hadoop.mapred.RecordWriter {
 
         protected final Configuration cfg;
         protected boolean initialized = false;
@@ -148,7 +148,7 @@ public class EsOutputFormat extends OutputFormat implements org.apache.hadoop.ma
         private HeartBeat beat;
         private final Progressable progressable;
 
-        public EsRecordWriter(Configuration cfg, Progressable progressable) {
+        public OpenSearchRecordWriter(Configuration cfg, Progressable progressable) {
             this.cfg = cfg;
             this.progressable = progressable;
         }
@@ -167,7 +167,7 @@ public class EsOutputFormat extends OutputFormat implements org.apache.hadoop.ma
             int currentInstance = detectCurrentInstance(cfg);
 
             if (log.isTraceEnabled()) {
-                log.trace(String.format("EsRecordWriter instance [%s] initiating discovery of target shard...",
+                log.trace(String.format("OpenSearchRecordWriter instance [%s] initiating discovery of target shard...",
                         currentInstance));
             }
 
@@ -247,7 +247,7 @@ public class EsOutputFormat extends OutputFormat implements org.apache.hadoop.ma
 
     @Override
     public org.apache.hadoop.mapreduce.OutputCommitter getOutputCommitter(TaskAttemptContext context) {
-        return new EsOutputCommitter();
+        return new OpenSearchOutputCommitter();
     }
 
     //
@@ -255,7 +255,7 @@ public class EsOutputFormat extends OutputFormat implements org.apache.hadoop.ma
     //
     @Override
     public org.apache.hadoop.mapred.RecordWriter getRecordWriter(FileSystem ignored, JobConf job, String name, Progressable progress) {
-        return new EsRecordWriter(job, progress);
+        return new OpenSearchRecordWriter(job, progress);
     }
 
     @Override

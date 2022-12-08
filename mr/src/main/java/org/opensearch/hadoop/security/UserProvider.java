@@ -60,7 +60,7 @@ public abstract class UserProvider implements SettingsAware {
         this.settings = settings;
     }
 
-    public boolean isEsKerberosEnabled() {
+    public boolean isOpenSearchKerberosEnabled() {
         return settings.getSecurityAuthenticationMethod().equals(AuthenticationMethod.KERBEROS);
     }
 

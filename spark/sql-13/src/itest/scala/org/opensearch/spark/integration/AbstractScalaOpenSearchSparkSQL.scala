@@ -1101,7 +1101,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testEsSchemaFromDocsWithDifferentProperties() {
+  def testOpenSearchSchemaFromDocsWithDifferentProperties() {
     val table = wrapIndex("sqlvarcol")
     opensearchDataSource(table)
 

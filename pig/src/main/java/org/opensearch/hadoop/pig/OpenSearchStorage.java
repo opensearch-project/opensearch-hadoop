@@ -65,7 +65,7 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.mr.EsOutputFormat;
+import org.opensearch.hadoop.mr.OpenSearchOutputFormat;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.mr.security.TokenUtil;
 import org.opensearch.hadoop.rest.InitializationUtils;
@@ -176,7 +176,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
         // We just need to live with this until Pig figures itself out.
         Configuration cfg = job.getConfiguration();
         Settings settings = HadoopSettingsManager.loadFrom(cfg);
-        addEsApiKeyToken(settings, job);
+        addOpenSearchApiKeyToken(settings, job);
     }
 
     private void init(String location, Job job, boolean read) {
@@ -199,7 +199,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
     @SuppressWarnings("unchecked")
     @Override
     public OutputFormat<Object, Map<Writable, Writable>> getOutputFormat() throws IOException {
-        return new EsOutputFormat();
+        return new OpenSearchOutputFormat();
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
@@ -275,7 +275,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
         Properties udfProperties = getUDFProperties();
         String delegationTokenSet = udfProperties.getProperty(CREDENTIALS_ADDED);
         if (delegationTokenSet == null) {
-            addEsApiKeyToken(settings, job);
+            addOpenSearchApiKeyToken(settings, job);
             udfProperties.setProperty(CREDENTIALS_ADDED, "true");
         }
 
@@ -402,13 +402,13 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
         this.signature = signature;
     }
 
-    private void addEsApiKeyToken(Settings esSettings, Job job) {
+    private void addOpenSearchApiKeyToken(Settings esSettings, Job job) {
         if (!UDFContext.getUDFContext().isFrontend()) {
             return;
         }
 
         UserProvider userProvider = UserProvider.create(esSettings);
-        if (userProvider.isEsKerberosEnabled()) {
+        if (userProvider.isOpenSearchKerberosEnabled()) {
             User user = userProvider.getUser();
             if (user.getKerberosPrincipal() != null) {
                 RestClient tokenBootstrap = new RestClient(esSettings);

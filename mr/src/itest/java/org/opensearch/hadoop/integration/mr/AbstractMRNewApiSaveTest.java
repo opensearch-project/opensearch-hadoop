@@ -47,7 +47,7 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.Stream;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.mr.EsOutputFormat;
+import org.opensearch.hadoop.mr.OpenSearchOutputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.mr.MultiOutputFormat;
@@ -108,7 +108,7 @@ public class AbstractMRNewApiSaveTest {
 
         Job job = new Job(conf);
         job.setInputFormatClass(TextInputFormat.class);
-        job.setOutputFormatClass(EsOutputFormat.class);
+        job.setOutputFormatClass(OpenSearchOutputFormat.class);
         job.setMapOutputValueClass(LinkedMapWritable.class);
         job.setMapperClass(TabMapper.class);
         job.setNumReduceTasks(0);
@@ -150,7 +150,7 @@ public class AbstractMRNewApiSaveTest {
         Configuration conf = createConf();
         conf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, resource("mrnewapi-multi-save", "data", clusterInfo.getMajorVersion()));
 
-        MultiOutputFormat.addOutputFormat(conf, EsOutputFormat.class);
+        MultiOutputFormat.addOutputFormat(conf, OpenSearchOutputFormat.class);
         MultiOutputFormat.addOutputFormat(conf, PrintStreamOutputFormat.class);
         //MultiOutputFormat.addOutputFormat(conf, TextOutputFormat.class);
 

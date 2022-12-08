@@ -79,7 +79,7 @@ public class AbstractHiveReadJsonTest {
 
     @Before
     public void before() throws Exception {
-        HiveSuite.provisionEsLib();
+        HiveSuite.provisionOpenSearchLib();
         RestUtils.refresh("json-hive*");
         targetVersion = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
         new QueryTestParams(tempFolder).provisionQueries(HdpBootstrap.hadoopConfig());

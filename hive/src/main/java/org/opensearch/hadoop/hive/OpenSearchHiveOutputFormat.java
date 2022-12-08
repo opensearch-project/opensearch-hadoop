@@ -43,7 +43,7 @@ import org.apache.hadoop.util.Progressable;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.mr.EsOutputFormat;
+import org.opensearch.hadoop.mr.OpenSearchOutputFormat;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.rest.InitializationUtils;
 
@@ -51,13 +51,13 @@ import org.opensearch.hadoop.rest.InitializationUtils;
  * Hive specific OutputFormat.
  */
 @SuppressWarnings("rawtypes")
-public class EsHiveOutputFormat extends EsOutputFormat implements HiveOutputFormat {
+public class OpenSearchHiveOutputFormat extends OpenSearchOutputFormat implements HiveOutputFormat {
 
-    static class EsHiveRecordWriter extends EsOutputFormat.EsRecordWriter implements RecordWriter {
+    static class OpenSearchHiveRecordWriter extends OpenSearchRecordWriter implements RecordWriter {
 
         private final Progressable progress;
 
-        public EsHiveRecordWriter(Configuration cfg, Progressable progress) {
+        public OpenSearchHiveRecordWriter(Configuration cfg, Progressable progress) {
             super(cfg, progress);
             this.progress = progress;
         }
@@ -86,7 +86,7 @@ public class EsHiveOutputFormat extends EsOutputFormat implements HiveOutputForm
         }
     }
 
-    public EsHiveRecordWriter getHiveRecordWriter(JobConf jc, Path finalOutPath, Class valueClass, boolean isCompressed, Properties tableProperties, Progressable progress) {
+    public OpenSearchHiveRecordWriter getHiveRecordWriter(JobConf jc, Path finalOutPath, Class valueClass, boolean isCompressed, Properties tableProperties, Progressable progress) {
         // force the table properties to be merged into the configuration
         // NB: the properties are also available in HiveConstants#OUTPUT_TBL_PROPERTIES
         Settings settings = HadoopSettingsManager.loadFrom(jc).merge(tableProperties);
@@ -105,6 +105,6 @@ public class EsHiveOutputFormat extends EsOutputFormat implements HiveOutputForm
 
         HiveUtils.init(settings, log);
 
-        return new EsHiveRecordWriter(jc, progress);
+        return new OpenSearchHiveRecordWriter(jc, progress);
     }
 }

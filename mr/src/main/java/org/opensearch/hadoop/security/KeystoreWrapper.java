@@ -61,7 +61,7 @@ public class KeystoreWrapper {
     private final KeyStore keyStore;
     private final KeyStore.PasswordProtection protection;
 
-    private KeystoreWrapper(InputStream inputStream, String type, String password) throws EsHadoopSecurityException, IOException {
+    private KeystoreWrapper(InputStream inputStream, String type, String password) throws OpenSearchHadoopSecurityException, IOException {
         Assert.notNull(password, "Password should not be null");
         try {
             char[] pwd = password.toCharArray();
@@ -69,33 +69,33 @@ public class KeystoreWrapper {
             keyStore = KeyStore.getInstance(type);
             keyStore.load(inputStream, pwd);
         } catch (CertificateException e) {
-            throw new EsHadoopSecurityException("Could not create keystore", e);
+            throw new OpenSearchHadoopSecurityException("Could not create keystore", e);
         } catch (NoSuchAlgorithmException e) {
-            throw new EsHadoopSecurityException("Could not create keystore", e);
+            throw new OpenSearchHadoopSecurityException("Could not create keystore", e);
         } catch (KeyStoreException e) {
-            throw new EsHadoopSecurityException("Could not create keystore", e);
+            throw new OpenSearchHadoopSecurityException("Could not create keystore", e);
         }
     }
 
-    public void setSecureSetting(String alias, String key) throws EsHadoopSecurityException {
+    public void setSecureSetting(String alias, String key) throws OpenSearchHadoopSecurityException {
         SecretKey spec = new SecretKeySpec(key.getBytes(), AES);
         KeyStore.SecretKeyEntry entry = new KeyStore.SecretKeyEntry(spec);
         try {
             keyStore.setEntry(alias, entry, protection);
         } catch (KeyStoreException e) {
-            throw new EsHadoopSecurityException(String.format("Could not store secret key (alias : [%s]) in keystore", alias), e);
+            throw new OpenSearchHadoopSecurityException(String.format("Could not store secret key (alias : [%s]) in keystore", alias), e);
         }
     }
 
-    public void removeSecureSetting(String alias) throws EsHadoopSecurityException {
+    public void removeSecureSetting(String alias) throws OpenSearchHadoopSecurityException {
         try {
             keyStore.deleteEntry(alias);
         } catch (KeyStoreException e) {
-            throw new EsHadoopSecurityException(String.format("Could not delete secret key (alias : [%s]) from keystore", alias), e);
+            throw new OpenSearchHadoopSecurityException(String.format("Could not delete secret key (alias : [%s]) from keystore", alias), e);
         }
     }
 
-    public String getSecureSetting(String alias) throws EsHadoopSecurityException {
+    public String getSecureSetting(String alias) throws OpenSearchHadoopSecurityException {
         try {
             if (!keyStore.containsAlias(alias)) {
                 return null;
@@ -104,23 +104,23 @@ public class KeystoreWrapper {
             KeyStore.SecretKeyEntry secretKeyEntry = ((KeyStore.SecretKeyEntry) entry);
             return new String(secretKeyEntry.getSecretKey().getEncoded());
         } catch (NoSuchAlgorithmException e) {
-            throw new EsHadoopSecurityException(String.format("Could not read alias [%s] from keystore", alias), e);
+            throw new OpenSearchHadoopSecurityException(String.format("Could not read alias [%s] from keystore", alias), e);
         } catch (UnrecoverableEntryException e) {
-            throw new EsHadoopSecurityException(String.format("Could not read alias [%s] from keystore", alias), e);
+            throw new OpenSearchHadoopSecurityException(String.format("Could not read alias [%s] from keystore", alias), e);
         } catch (KeyStoreException e) {
-            throw new EsHadoopSecurityException(String.format("Could not read alias [%s] from keystore", alias), e);
+            throw new OpenSearchHadoopSecurityException(String.format("Could not read alias [%s] from keystore", alias), e);
         }
     }
 
-    public boolean containsEntry(String alias) throws EsHadoopSecurityException {
+    public boolean containsEntry(String alias) throws OpenSearchHadoopSecurityException {
         try {
             return keyStore.containsAlias(alias);
         } catch (KeyStoreException e) {
-            throw new EsHadoopSecurityException(String.format("Could not read existence of alias [%s]", alias), e);
+            throw new OpenSearchHadoopSecurityException(String.format("Could not read existence of alias [%s]", alias), e);
         }
     }
 
-    public List<String> listEntries() throws EsHadoopSecurityException {
+    public List<String> listEntries() throws OpenSearchHadoopSecurityException {
         try {
             List<String> entries = new ArrayList<String>(keyStore.size());
             Enumeration<String> aliases = keyStore.aliases();
@@ -130,23 +130,23 @@ public class KeystoreWrapper {
             }
             return entries;
         } catch (KeyStoreException e) {
-            throw new EsHadoopSecurityException("Could not read aliases from keystore", e);
+            throw new OpenSearchHadoopSecurityException("Could not read aliases from keystore", e);
         }
     }
 
-    public void saveKeystore(OutputStream outputStream) throws EsHadoopSecurityException, IOException {
+    public void saveKeystore(OutputStream outputStream) throws OpenSearchHadoopSecurityException, IOException {
         try {
             keyStore.store(outputStream, protection.getPassword());
         } catch (KeyStoreException e) {
-            throw new EsHadoopSecurityException("Could not persist keystore", e);
+            throw new OpenSearchHadoopSecurityException("Could not persist keystore", e);
         } catch (NoSuchAlgorithmException e) {
-            throw new EsHadoopSecurityException("Could not persist keystore", e);
+            throw new OpenSearchHadoopSecurityException("Could not persist keystore", e);
         } catch (CertificateException e) {
-            throw new EsHadoopSecurityException("Could not persist keystore", e);
+            throw new OpenSearchHadoopSecurityException("Could not persist keystore", e);
         }
     }
 
-    public void saveKeystore(String path) throws EsHadoopSecurityException, IOException {
+    public void saveKeystore(String path) throws OpenSearchHadoopSecurityException, IOException {
         OutputStream stream = null;
         try {
             stream = new FileOutputStream(new File(path));
@@ -198,7 +198,7 @@ public class KeystoreWrapper {
             return this;
         }
 
-        public KeystoreWrapper build() throws EsHadoopSecurityException, IOException {
+        public KeystoreWrapper build() throws OpenSearchHadoopSecurityException, IOException {
             if (StringUtils.hasText(path)) {
                 try {
                     keystoreFile = IOUtils.open(path);

@@ -47,7 +47,7 @@ import org.apache.hadoop.mapreduce.lib.input.TextInputFormat;
 import org.apache.hadoop.util.Tool;
 import org.apache.hadoop.util.ToolRunner;
 import org.opensearch.hadoop.mr.OpenSearchMapReduceUtil;
-import org.opensearch.hadoop.mr.EsOutputFormat;
+import org.opensearch.hadoop.mr.OpenSearchOutputFormat;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
@@ -81,7 +81,7 @@ public class LoadToES extends Configured implements Tool {
         TextInputFormat.addInputPath(job, new Path(args[0]));
 
         job.setInputFormatClass(TextInputFormat.class);
-        job.setOutputFormatClass(EsOutputFormat.class);
+        job.setOutputFormatClass(OpenSearchOutputFormat.class);
 
         job.setMapperClass(MapperImpl.class);
         // Secure Hadoop CANNOT perform shuffle phases without native libraries

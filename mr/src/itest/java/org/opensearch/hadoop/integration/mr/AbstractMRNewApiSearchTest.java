@@ -39,7 +39,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.QueryTestParams;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.OpenSearchInputFormat;
 import org.opensearch.hadoop.mr.HadoopCfgUtils;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.mr.PrintStreamOutputFormat;
@@ -156,7 +156,7 @@ public class AbstractMRNewApiSearchTest {
         Configuration conf = HdpBootstrap.hadoopConfig();
         HadoopCfgUtils.setGenericOptions(conf);
         Job job = new Job(conf);
-        job.setInputFormatClass(EsInputFormat.class);
+        job.setInputFormatClass(OpenSearchInputFormat.class);
         job.setOutputFormatClass(PrintStreamOutputFormat.class);
         job.setOutputKeyClass(Text.class);
 

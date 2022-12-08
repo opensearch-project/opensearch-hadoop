@@ -27,25 +27,24 @@
  * under the License.
  */
 
-package org.opensearch.hadoop.rest.commonshttp.auth;
+package org.opensearch.hadoop.mr.security;
 
-import org.opensearch.hadoop.rest.commonshttp.auth.bearer.EsApiKeyAuthScheme;
-import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoAuthScheme;
-import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthPolicy;
+import java.util.ServiceLoader;
 
-public class EsHadoopAuthPolicies {
+import org.apache.hadoop.security.token.TokenRenewer;
+import org.junit.Assert;
+import org.junit.Test;
 
-    public static final String NEGOTIATE = "Negotiate";
-    public static final String APIKEY = "ApiKey";
+public class OpenSearchTokenIdentifierTest {
 
-    private static boolean REGISTERED = false;
-
-    public synchronized static void registerAuthSchemes() {
-        if (!REGISTERED) {
-            REGISTERED = true;
-            AuthPolicy.registerAuthScheme(NEGOTIATE, SpnegoAuthScheme.class);
-            AuthPolicy.registerAuthScheme(APIKEY, EsApiKeyAuthScheme.class);
+    @Test
+    public void testSPI() {
+        ServiceLoader<TokenRenewer> tokenRenewers = ServiceLoader.load(TokenRenewer.class);
+        for (TokenRenewer tokenRenewer : tokenRenewers) {
+            if (tokenRenewer.handleKind(OpenSearchTokenIdentifier.KIND_NAME)) {
+                return;
+            }
         }
+        Assert.fail("Could not find token renewer for " + OpenSearchTokenIdentifier.KIND_NAME);
     }
-
 }

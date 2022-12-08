@@ -43,7 +43,7 @@ import org.apache.hadoop.mapreduce.Job;
 import org.apache.hadoop.security.token.Token;
 import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.rest.RestClient;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.ClusterName;
@@ -56,7 +56,7 @@ public class TokenUtil {
 
     private static Log LOG = LogFactory.getLog(TokenUtil.class);
 
-    public static final String KEY_NAME_PREFIX = "ESHADOOP_";
+    public static final String KEY_NAME_PREFIX = "OPENSEARCHHADOOP_";
 
     /**
      * Generates a new unique name for an API Key
@@ -74,16 +74,16 @@ public class TokenUtil {
      * @param user the user object that contains credentials for obtaining an auth token
      * @return the authentication token in ES-Hadoop specific format.
      */
-    private static EsToken obtainEsToken(final RestClient client, User user) {
+    private static OpenSearchToken obtainOpenSearchToken(final RestClient client, User user) {
         // TODO: Should we extend this to basic authentication at some point?
         KerberosPrincipal principal = user.getKerberosPrincipal();
         if (user.isProxyUser()) {
             principal = user.getRealUserProvider().getUser().getKerberosPrincipal();
         }
         Assert.isTrue(principal != null, "Kerberos credentials are missing on current user");
-        return user.doAs(new PrivilegedExceptionAction<EsToken>() {
+        return user.doAs(new PrivilegedExceptionAction<OpenSearchToken>() {
             @Override
-            public EsToken run() {
+            public OpenSearchToken run() {
                 return client.createNewApiToken(newKeyName());
             }
         });
@@ -94,9 +94,9 @@ public class TokenUtil {
      * @param client The OpenSearch client
      * @return the authentication token instance in Hadoop Token format.
      */
-    public static Token<EsTokenIdentifier> obtainToken(RestClient client, User user) {
-        EsToken esToken = obtainEsToken(client, user);
-        return EsTokenIdentifier.createTokenFrom(esToken);
+    public static Token<OpenSearchTokenIdentifier> obtainToken(RestClient client, User user) {
+        OpenSearchToken opensearchToken = obtainOpenSearchToken(client, user);
+        return OpenSearchTokenIdentifier.createTokenFrom(opensearchToken);
     }
 
     /**
@@ -107,16 +107,16 @@ public class TokenUtil {
      * @throws IOException If making a remote call to the authentication service fails
      */
     public static void obtainAndCache(RestClient client, User user) throws IOException {
-        EsToken token = obtainEsToken(client, user);
+        OpenSearchToken token = obtainOpenSearchToken(client, user);
 
         if (token == null) {
             throw new IOException("No token returned for user " + user.getKerberosPrincipal().getName());
         }
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Obtained token " + EsTokenIdentifier.KIND_NAME + " for user " +
+            LOG.debug("Obtained token " + OpenSearchTokenIdentifier.KIND_NAME + " for user " +
                     user.getKerberosPrincipal().getName());
         }
-        user.addEsToken(token);
+        user.addOpenSearchToken(token);
     }
 
     /**
@@ -130,13 +130,13 @@ public class TokenUtil {
      * @param job The job instance in which the token should be stored
      */
     public static void obtainTokenForJob(final RestClient client, User user, Job job) {
-        Token<EsTokenIdentifier> token = obtainToken(client, user);
+        Token<OpenSearchTokenIdentifier> token = obtainToken(client, user);
         if (token == null) {
             throw new OpenSearchHadoopException("No token returned for user " + user.getKerberosPrincipal().getName());
         }
         Text clusterName = token.getService();
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Obtained token " + EsTokenIdentifier.KIND_NAME.toString() + " for user " +
+            LOG.debug("Obtained token " + OpenSearchTokenIdentifier.KIND_NAME.toString() + " for user " +
                     user.getKerberosPrincipal().getName() + " on cluster " + clusterName.toString());
         }
         job.getCredentials().addToken(clusterName, token);
@@ -153,13 +153,13 @@ public class TokenUtil {
      * @param jobConf The job configuration in which the token should be stored
      */
     public static void obtainTokenForJob(final RestClient client, User user, JobConf jobConf) {
-        Token<EsTokenIdentifier> token = obtainToken(client, user);
+        Token<OpenSearchTokenIdentifier> token = obtainToken(client, user);
         if (token == null) {
             throw new OpenSearchHadoopException("No token returned for user " + user.getKerberosPrincipal().getName());
         }
         Text clusterName = token.getService();
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Obtained token " + EsTokenIdentifier.KIND_NAME.toString() + " for user " +
+            LOG.debug("Obtained token " + OpenSearchTokenIdentifier.KIND_NAME.toString() + " for user " +
                     user.getKerberosPrincipal().getName() + " on cluster " + clusterName.toString());
         }
         jobConf.getCredentials().addToken(clusterName, token);
@@ -177,7 +177,7 @@ public class TokenUtil {
      * @throws InterruptedException If executing as the given user is interrupted
      */
     public static void addTokenForJob(final RestClient client, ClusterName clusterName, User user, Job job) {
-        Token<EsTokenIdentifier> token = getAuthToken(clusterName, user);
+        Token<OpenSearchTokenIdentifier> token = getAuthToken(clusterName, user);
         if (token == null) {
             token = obtainToken(client, user);
         }
@@ -196,7 +196,7 @@ public class TokenUtil {
      * @throws InterruptedException If executing as the given user is interrupted
      */
     public static void addTokenForJobConf(final RestClient client, ClusterName clusterName, User user, JobConf job) {
-        Token<EsTokenIdentifier> token = getAuthToken(clusterName, user);
+        Token<OpenSearchTokenIdentifier> token = getAuthToken(clusterName, user);
         if (token == null) {
             token = obtainToken(client, user);
         }
@@ -207,12 +207,12 @@ public class TokenUtil {
      * Get the authentication token of the user for the provided cluster name in its Hadoop Token form.
      * @return null if the user does not have the token, otherwise the auth token for the cluster.
      */
-    private static Token<EsTokenIdentifier> getAuthToken(ClusterName clusterName, User user) {
-        EsToken esToken = getEsAuthToken(clusterName, user);
-        if (esToken == null) {
+    private static Token<OpenSearchTokenIdentifier> getAuthToken(ClusterName clusterName, User user) {
+        OpenSearchToken opensearchToken = getOpenSearchAuthToken(clusterName, user);
+        if (opensearchToken == null) {
             return null;
         } else {
-            return EsTokenIdentifier.createTokenFrom(esToken);
+            return OpenSearchTokenIdentifier.createTokenFrom(opensearchToken);
         }
     }
 
@@ -220,7 +220,7 @@ public class TokenUtil {
      * Get the authentication token of the user for the provided cluster name in its ES-Hadoop specific form.
      * @return null if the user does not have the token, otherwise the auth token for the cluster.
      */
-    private static EsToken getEsAuthToken(ClusterName clusterName, User user) {
-        return user.getEsToken(clusterName.getName());
+    private static OpenSearchToken getOpenSearchAuthToken(ClusterName clusterName, User user) {
+        return user.getOpenSearchToken(clusterName.getName());
     }
 }

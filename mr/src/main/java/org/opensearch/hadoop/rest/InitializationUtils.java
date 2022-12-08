@@ -446,16 +446,6 @@ public abstract class InitializationUtils {
         }
     }
 
-    /**
-     * @deprecated Use
-     *             {@link InitializationUtils#discoverClusterInfo(Settings, Log)}
-     *             instead
-     */
-    @Deprecated
-    public static OpenSearchMajorVersion discoverEsVersion(Settings settings, Log log) {
-        return discoverClusterInfo(settings, log).getMajorVersion();
-    }
-
     public static void checkIndexExistence(RestRepository client) {
         if (!client.getSettings().getIndexAutoCreate()) {
             doCheckIndexExistence(client.getSettings(), client);

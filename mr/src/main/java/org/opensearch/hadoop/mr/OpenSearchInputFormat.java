@@ -71,16 +71,16 @@ import java.util.Map;
  *
  * <p/>This class implements both the "old" (<tt>org.apache.hadoop.mapred</tt>) and the "new" (<tt>org.apache.hadoop.mapreduce</tt>) API.
  */
-public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache.hadoop.mapred.InputFormat<K, V>{
+public class OpenSearchInputFormat<K, V> extends InputFormat<K, V> implements org.apache.hadoop.mapred.InputFormat<K, V>{
 
-    private static Log log = LogFactory.getLog(EsInputFormat.class);
+    private static Log log = LogFactory.getLog(OpenSearchInputFormat.class);
 
-    protected static class EsInputSplit extends InputSplit implements org.apache.hadoop.mapred.InputSplit {
+    protected static class OpenSearchInputSplit extends InputSplit implements org.apache.hadoop.mapred.InputSplit {
         private PartitionDefinition partition;
 
-        public EsInputSplit() {}
+        public OpenSearchInputSplit() {}
 
-        public EsInputSplit(PartitionDefinition partition) {
+        public OpenSearchInputSplit(PartitionDefinition partition) {
             this.partition = partition;
         }
 
@@ -111,16 +111,16 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
 
         @Override
         public String toString() {
-            return "EsInputSplit{" +
+            return "OpenSearchInputSplit{" +
                     (partition == null ? "NULL" : partition.toString()) +
                     "}";
         }
     }
 
-    protected static abstract class EsInputRecordReader<K,V> extends RecordReader<K, V> implements org.apache.hadoop.mapred.RecordReader<K, V> {
+    protected static abstract class OpenSearchInputRecordReader<K,V> extends RecordReader<K, V> implements org.apache.hadoop.mapred.RecordReader<K, V> {
 
         private int read = 0;
-        private EsInputSplit esSplit;
+        private OpenSearchInputSplit esSplit;
         private ScrollReader scrollReader;
 
         private RestRepository client;
@@ -137,13 +137,13 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
         private Progressable progressable;
 
         // default constructor used by the NEW api
-        public EsInputRecordReader() {
+        public OpenSearchInputRecordReader() {
         }
 
         // constructor used by the old API
-        public EsInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
+        public OpenSearchInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
             reporter.setStatus(split.toString());
-            init((EsInputSplit) split, job, reporter);
+            init((OpenSearchInputSplit) split, job, reporter);
         }
 
         // new API init call
@@ -151,10 +151,10 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
         public void initialize(InputSplit split, TaskAttemptContext context) throws IOException {
             org.opensearch.hadoop.mr.compat.TaskAttemptContext compatContext = CompatHandler.taskAttemptContext(context);
             compatContext.setStatus(split.toString());
-            init((EsInputSplit) split, compatContext.getConfiguration(), compatContext);
+            init((OpenSearchInputSplit) split, compatContext.getConfiguration(), compatContext);
         }
 
-        void init(EsInputSplit esSplit, Configuration cfg, Progressable progressable) {
+        void init(OpenSearchInputSplit esSplit, Configuration cfg, Progressable progressable) {
             // get a copy to override the host/port
             Settings settings = HadoopSettingsManager.loadFrom(cfg).copy().load(esSplit.getPartition().getSerializedSettings());
 
@@ -310,13 +310,13 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
         }
     }
 
-    protected static abstract class AbstractWritableEsInputRecordReader<V> extends EsInputRecordReader<Text, V> {
+    protected static abstract class AbstractWritableOpenSearchInputRecordReader<V> extends OpenSearchInputRecordReader<Text, V> {
 
-        public AbstractWritableEsInputRecordReader() {
+        public AbstractWritableOpenSearchInputRecordReader() {
             super();
         }
 
-        public AbstractWritableEsInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
+        public AbstractWritableOpenSearchInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
             super(split, job, reporter);
         }
 
@@ -334,21 +334,21 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
         }
     }
 
-    protected static class WritableEsInputRecordReader extends AbstractWritableEsInputRecordReader<Map<Writable, Writable>> {
+    protected static class WritableOpenSearchInputRecordReader extends AbstractWritableOpenSearchInputRecordReader<Map<Writable, Writable>> {
 
         private boolean useLinkedMapWritable = true;
 
-        public WritableEsInputRecordReader() {
+        public WritableOpenSearchInputRecordReader() {
             super();
         }
 
-        public WritableEsInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
+        public WritableOpenSearchInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
             super(split, job, reporter);
         }
 
 
         @Override
-        void init(EsInputSplit esSplit, Configuration cfg, Progressable progressable) {
+        void init(OpenSearchInputSplit esSplit, Configuration cfg, Progressable progressable) {
             useLinkedMapWritable = (!MapWritable.class.getName().equals(HadoopCfgUtils.getMapValueClass(cfg)));
             super.init(esSplit, cfg, progressable);
         }
@@ -370,14 +370,14 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
         }
     }
 
-    protected static class JsonWritableEsInputRecordReader extends AbstractWritableEsInputRecordReader<Text> {
+    protected static class JsonWritableOpenSearchInputRecordReader extends AbstractWritableOpenSearchInputRecordReader<Text> {
 
-        public JsonWritableEsInputRecordReader() {
+        public JsonWritableOpenSearchInputRecordReader() {
             super();
         }
 
-        public JsonWritableEsInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job,
-                                               Reporter reporter) {
+        public JsonWritableOpenSearchInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job,
+                                                       Reporter reporter) {
             super(split, job, reporter);
         }
 
@@ -407,8 +407,8 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
 
     @SuppressWarnings("unchecked")
     @Override
-    public EsInputRecordReader<K, V> createRecordReader(InputSplit split, TaskAttemptContext context) {
-        return (EsInputRecordReader<K, V>) (isOutputAsJson(CompatHandler.taskAttemptContext(context).getConfiguration()) ? new JsonWritableEsInputRecordReader() : new WritableEsInputRecordReader());
+    public OpenSearchInputRecordReader<K, V> createRecordReader(InputSplit split, TaskAttemptContext context) {
+        return (OpenSearchInputRecordReader<K, V>) (isOutputAsJson(CompatHandler.taskAttemptContext(context).getConfiguration()) ? new JsonWritableOpenSearchInputRecordReader() : new WritableOpenSearchInputRecordReader());
     }
 
 
@@ -423,11 +423,11 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
 
         Settings settings = HadoopSettingsManager.loadFrom(job);
         Collection<PartitionDefinition> partitions = RestService.findPartitions(settings, log);
-        EsInputSplit[] splits = new EsInputSplit[partitions.size()];
+        OpenSearchInputSplit[] splits = new OpenSearchInputSplit[partitions.size()];
 
         int index = 0;
         for (PartitionDefinition part : partitions) {
-            splits[index++] = new EsInputSplit(part);
+            splits[index++] = new OpenSearchInputSplit(part);
         }
         log.info(String.format("Created [%d] splits", splits.length));
         return splits;
@@ -436,8 +436,8 @@ public class EsInputFormat<K, V> extends InputFormat<K, V> implements org.apache
     @SuppressWarnings("unchecked")
     @Override
     @Deprecated // Hadoop 1 support is deprecated
-    public EsInputRecordReader<K, V> getRecordReader(org.apache.hadoop.mapred.InputSplit split, JobConf job, Reporter reporter) {
-        return (EsInputRecordReader<K, V>) (isOutputAsJson(job) ? new JsonWritableEsInputRecordReader(split, job, reporter) : new WritableEsInputRecordReader(split, job, reporter));
+    public OpenSearchInputRecordReader<K, V> getRecordReader(org.apache.hadoop.mapred.InputSplit split, JobConf job, Reporter reporter) {
+        return (OpenSearchInputRecordReader<K, V>) (isOutputAsJson(job) ? new JsonWritableOpenSearchInputRecordReader(split, job, reporter) : new WritableOpenSearchInputRecordReader(split, job, reporter));
     }
 
     protected boolean isOutputAsJson(Configuration cfg) {

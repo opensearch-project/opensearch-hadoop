@@ -116,7 +116,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	}
 
 	@Test
-    public void testEsDataset1Write() throws Exception {
+    public void testOpenSearchDataset1Write() throws Exception {
         Dataset<Row> dataset = artistsAsDataset();
 
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
@@ -126,7 +126,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	}
 
 	@Test
-    public void testEsDataset1WriteWithId() throws Exception {
+    public void testOpenSearchDataset1WriteWithId() throws Exception {
         Dataset<Row> dataset = artistsAsDataset();
 
 		String target = resource("sparksql-test-scala-basic-write-id-mapping", "data", version);
@@ -140,7 +140,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	}
 
     @Test
-    public void testEsSchemaRDD1WriteWithMappingExclude() throws Exception {
+    public void testOpenSearchSchemaRDD1WriteWithMappingExclude() throws Exception {
         Dataset<Row> dataset = artistsAsDataset();
 
         String target = resource("sparksql-test-scala-basic-write-exclude-mapping", "data", version);
@@ -151,7 +151,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
     }
     
 	@Test
-    public void testEsDataset2Read() throws Exception {
+    public void testOpenSearchDataset2Read() throws Exception {
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
 
         // Dataset<Row> dataset = JavaOpenSearchSparkSQL.esDF(sqc, target);
@@ -174,7 +174,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	}
 
 	@Test
-	public void testEsDatasetReadMetadata() throws Exception {
+	public void testOpenSearchDatasetReadMetadata() throws Exception {
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
 
 		Dataset<Row> dataset = sqc.read().format("opensearch").option("opensearch.read.metadata", "true").load(target).where("id = 1");

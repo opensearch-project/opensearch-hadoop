@@ -31,19 +31,19 @@ package org.opensearch.hadoop.security;
 
 import java.security.GeneralSecurityException;
 
-public class EsHadoopSecurityException extends GeneralSecurityException {
-    public EsHadoopSecurityException() {
+public class OpenSearchHadoopSecurityException extends GeneralSecurityException {
+    public OpenSearchHadoopSecurityException() {
     }
 
-    public EsHadoopSecurityException(String msg) {
+    public OpenSearchHadoopSecurityException(String msg) {
         super(msg);
     }
 
-    public EsHadoopSecurityException(String message, Throwable cause) {
+    public OpenSearchHadoopSecurityException(String message, Throwable cause) {
         super(message, cause);
     }
 
-    public EsHadoopSecurityException(Throwable cause) {
+    public OpenSearchHadoopSecurityException(Throwable cause) {
         super(cause);
     }
 }

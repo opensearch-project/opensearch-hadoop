@@ -77,8 +77,8 @@ class BaseBuildPlugin implements Plugin<Project> {
 
             // We snap the runtime to java 8 since Hadoop needs to see some significant
             // upgrades to support any runtime higher than that
-            JavaHome esHadoopRuntimeJava = BuildParams.javaVersions.find { it.version == 8 }
-            if (esHadoopRuntimeJava == null) {
+            JavaHome opensearchHadoopRuntimeJava = BuildParams.javaVersions.find { it.version == 8 }
+            if (opensearchHadoopRuntimeJava == null) {
                 throw new GradleException(
                         '$JAVA8_HOME must be set to build OpenSearch-Hadoop. ' +
                                 "Note that if the variable was just set you might have to run `./gradlew --stop` for " +
@@ -92,7 +92,7 @@ class BaseBuildPlugin implements Plugin<Project> {
             }
 
             // Set on build settings
-            project.rootProject.ext.runtimeJavaHome = esHadoopRuntimeJava.javaHome.get()
+            project.rootProject.ext.runtimeJavaHome = opensearchHadoopRuntimeJava.javaHome.get()
             project.rootProject.ext.minimumRuntimeVersion = minimumRuntimeVersion
 
             project.rootProject.ext.buildInfoConfigured = true
@@ -184,23 +184,23 @@ class BaseBuildPlugin implements Plugin<Project> {
 //        project.repositories.maven { url "https://artifacts.opensearch.org/snapshots/" } // default
 //        project.repositories.maven { url "https://aws.oss.sonatype.org/content/groups/public/" } // oss-only
 
-        // Add Ivy repos in order to pull Elasticsearch distributions that have bundled JDKs
+        // Add Ivy repos in order to pull OpenSearch distributions that have bundled JDKs
         for (String repo : ['snapshots', 'artifacts']) {
             project.repositories.ivy {
-                url "https://${repo}.elastic.co/downloads"
+                url "https://${repo}.opensearch.org/releases"
                 patternLayout {
-                    artifact "elasticsearch/[module]-[revision](-[classifier]).[ext]"
+                    artifact "/core/opensearch/[revision]/[module]-min-[revision](-[classifier]).[ext]"
                 }
             }
         }
 
-        // For Lucene Snapshots, Use the lucene version interpreted from elasticsearch-build-tools version file.
+        // For Lucene Snapshots, Use the lucene version interpreted from opensearch-build-tools version file.
         if (project.ext.luceneVersion.contains('-snapshot')) {
             // Extract the revision number of the snapshot via regex:
             String revision = (project.ext.luceneVersion =~ /\w+-snapshot-([a-z0-9]+)/)[0][1]
             project.repositories.maven {
                 name 'lucene-snapshots'
-                url "https://s3.amazonaws.com/download.elasticsearch.org/lucenesnapshots/${revision}"
+                url "https://d1nvenhzbhpy0q.cloudfront.net/snapshots/lucene/${revision}"
             }
         }
     }

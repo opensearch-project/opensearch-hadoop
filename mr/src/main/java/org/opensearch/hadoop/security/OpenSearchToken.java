@@ -38,7 +38,7 @@ import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 /**
  * Stores token authentication information for an OpenSearch user.
  */
-public class EsToken {
+public class OpenSearchToken {
 
     private final String name;
     private final String id;
@@ -47,7 +47,7 @@ public class EsToken {
     private final String clusterName;
     private final OpenSearchMajorVersion majorVersion;
 
-    public EsToken(String name, String id, String apiKey, long expirationTime, String clusterName, OpenSearchMajorVersion majorVersion) {
+    public OpenSearchToken(String name, String id, String apiKey, long expirationTime, String clusterName, OpenSearchMajorVersion majorVersion) {
         this.name = name;
         this.id = id;
         this.apiKey = apiKey;
@@ -56,7 +56,7 @@ public class EsToken {
         this.majorVersion = majorVersion;
     }
 
-    public EsToken(DataInput inputStream) throws IOException {
+    public OpenSearchToken(DataInput inputStream) throws IOException {
         this.name = inputStream.readUTF();
         this.id = inputStream.readUTF();
         this.apiKey = inputStream.readUTF();
@@ -103,14 +103,14 @@ public class EsToken {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        EsToken esToken = (EsToken) o;
+        OpenSearchToken opensearchToken = (OpenSearchToken) o;
 
-        if (expirationTime != esToken.expirationTime) return false;
-        if (name != null ? !name.equals(esToken.name) : esToken.name != null) return false;
-        if (id != null ? !id.equals(esToken.id) : esToken.id != null) return false;
-        if (apiKey != null ? !apiKey.equals(esToken.apiKey) : esToken.apiKey != null) return false;
-        if (clusterName != null ? !clusterName.equals(esToken.clusterName) : esToken.clusterName != null) return false;
-        return majorVersion != null ? majorVersion.equals(esToken.majorVersion) : esToken.majorVersion == null;
+        if (expirationTime != opensearchToken.expirationTime) return false;
+        if (name != null ? !name.equals(opensearchToken.name) : opensearchToken.name != null) return false;
+        if (id != null ? !id.equals(opensearchToken.id) : opensearchToken.id != null) return false;
+        if (apiKey != null ? !apiKey.equals(opensearchToken.apiKey) : opensearchToken.apiKey != null) return false;
+        if (clusterName != null ? !clusterName.equals(opensearchToken.clusterName) : opensearchToken.clusterName != null) return false;
+        return majorVersion != null ? majorVersion.equals(opensearchToken.majorVersion) : opensearchToken.majorVersion == null;
     }
 
     @Override
@@ -126,7 +126,7 @@ public class EsToken {
 
     @Override
     public String toString() {
-        return "EsToken{" +
+        return "OpenSearchToken{" +
                 "name='" + name + '\'' +
                 ", id='" + id + '\'' +
                 ", apiKey='" + apiKey + '\'' +

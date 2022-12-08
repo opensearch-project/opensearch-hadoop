@@ -42,7 +42,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 
-import static org.opensearch.hadoop.integration.hive.HiveSuite.provisionEsLib;
+import static org.opensearch.hadoop.integration.hive.HiveSuite.provisionOpenSearchLib;
 import static org.opensearch.hadoop.integration.hive.HiveSuite.server;
 
 import static org.hamcrest.Matchers.containsString;
@@ -52,7 +52,7 @@ public class AbstractHiveExtraTests {
 
     @Before
     public void before() throws Exception {
-        provisionEsLib();
+        provisionOpenSearchLib();
         HiveSuite.before();
     }
 

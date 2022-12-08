@@ -33,7 +33,7 @@ import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.security.SecurityUtil;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
-import org.opensearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
+import org.opensearch.hadoop.rest.commonshttp.auth.OpenSearchHadoopAuthPolicies;
 import org.opensearch.hadoop.security.UgiUtil;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
@@ -95,9 +95,9 @@ public class AbstractSpnegoAuthSchemeTest {
                 HttpParams params = new HttpClientParams();
 
                 // Order auth schemes
-                EsHadoopAuthPolicies.registerAuthSchemes();
+                OpenSearchHadoopAuthPolicies.registerAuthSchemes();
                 List<String> authPreferences = new ArrayList<String>();
-                authPreferences.add(EsHadoopAuthPolicies.NEGOTIATE);
+                authPreferences.add(OpenSearchHadoopAuthPolicies.NEGOTIATE);
                 params.setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPreferences);
 
                 AuthChallengeProcessor authChallengeProcessor = new AuthChallengeProcessor(params);
@@ -155,9 +155,9 @@ public class AbstractSpnegoAuthSchemeTest {
                 HttpParams params = new HttpClientParams();
 
                 // Order auth schemes
-                EsHadoopAuthPolicies.registerAuthSchemes();
+                OpenSearchHadoopAuthPolicies.registerAuthSchemes();
                 List<String> authPreferences = new ArrayList<String>();
-                authPreferences.add(EsHadoopAuthPolicies.NEGOTIATE);
+                authPreferences.add(OpenSearchHadoopAuthPolicies.NEGOTIATE);
                 params.setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPreferences);
 
                 AuthChallengeProcessor authChallengeProcessor = new AuthChallengeProcessor(params);
@@ -224,9 +224,9 @@ public class AbstractSpnegoAuthSchemeTest {
                 HttpParams params = new HttpClientParams();
 
                 // Order auth schemes
-                EsHadoopAuthPolicies.registerAuthSchemes();
+                OpenSearchHadoopAuthPolicies.registerAuthSchemes();
                 List<String> authPreferences = new ArrayList<String>();
-                authPreferences.add(EsHadoopAuthPolicies.NEGOTIATE);
+                authPreferences.add(OpenSearchHadoopAuthPolicies.NEGOTIATE);
                 params.setParameter(AuthPolicy.AUTH_SCHEME_PRIORITY, authPreferences);
 
                 AuthChallengeProcessor authChallengeProcessor = new AuthChallengeProcessor(params);

@@ -30,7 +30,7 @@
 package org.opensearch.hadoop.rest.commonshttp.auth.spnego;
 
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
-import org.opensearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
+import org.opensearch.hadoop.rest.commonshttp.auth.OpenSearchHadoopAuthPolicies;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
@@ -67,7 +67,7 @@ public class SpnegoAuthScheme implements AuthScheme, Closeable {
      */
     @Override
     public String getSchemeName() {
-        return EsHadoopAuthPolicies.NEGOTIATE;
+        return OpenSearchHadoopAuthPolicies.NEGOTIATE;
     }
 
     /**
@@ -83,7 +83,7 @@ public class SpnegoAuthScheme implements AuthScheme, Closeable {
         // Challenge is base64 string to be given to gss context
         if (StringUtils.hasText(challenge)) {
             // Remove leading auth scheme name and trim data
-            this.challenge = challenge.substring(EsHadoopAuthPolicies.NEGOTIATE.length()).trim();
+            this.challenge = challenge.substring(OpenSearchHadoopAuthPolicies.NEGOTIATE.length()).trim();
         }
     }
 
@@ -150,7 +150,7 @@ public class SpnegoAuthScheme implements AuthScheme, Closeable {
 
         // Prepend the authentication scheme to use
         if (authString != null) {
-            authString = EsHadoopAuthPolicies.NEGOTIATE + " " + authString;
+            authString = OpenSearchHadoopAuthPolicies.NEGOTIATE + " " + authString;
         }
         return authString;
     }

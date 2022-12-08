@@ -36,20 +36,20 @@ import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.mapred.Reporter;
 import org.apache.hadoop.mapreduce.InputSplit;
 import org.apache.hadoop.mapreduce.TaskAttemptContext;
-import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.OpenSearchInputFormat;
 import org.opensearch.hadoop.mr.compat.CompatHandler;
 import org.opensearch.hadoop.util.StringUtils;
 
 
 @SuppressWarnings("rawtypes")
-public class OpenSearchPigInputFormat extends EsInputFormat<String, Object> {
+public class OpenSearchPigInputFormat extends OpenSearchInputFormat<String, Object> {
 
-    protected static abstract class AbstractPigEsInputRecordReader<V> extends EsInputRecordReader<String, V> {
-        public AbstractPigEsInputRecordReader() {
+    protected static abstract class AbstractPigOpenSearchInputRecordReader<V> extends OpenSearchInputRecordReader<String, V> {
+        public AbstractPigOpenSearchInputRecordReader() {
             super();
         }
 
-        public AbstractPigEsInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
+        public AbstractPigOpenSearchInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
             super(split, job, reporter);
         }
 
@@ -66,13 +66,13 @@ public class OpenSearchPigInputFormat extends EsInputFormat<String, Object> {
         }
     }
 
-    protected static class PigEsInputRecordReader extends AbstractPigEsInputRecordReader<Map> {
+    protected static class PigOpenSearchInputRecordReader extends AbstractPigOpenSearchInputRecordReader<Map> {
 
-        public PigEsInputRecordReader() {
+        public PigOpenSearchInputRecordReader() {
             super();
         }
 
-        public PigEsInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
+        public PigOpenSearchInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
             super(split, job, reporter);
         }
 
@@ -93,13 +93,13 @@ public class OpenSearchPigInputFormat extends EsInputFormat<String, Object> {
         }
     }
 
-    protected static class PigJsonEsInputRecordReader extends AbstractPigEsInputRecordReader<String> {
+    protected static class PigJsonOpenSearchInputRecordReader extends AbstractPigOpenSearchInputRecordReader<String> {
 
-        public PigJsonEsInputRecordReader() {
+        public PigJsonOpenSearchInputRecordReader() {
             super();
         }
 
-        public PigJsonEsInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
+        public PigJsonOpenSearchInputRecordReader(org.apache.hadoop.mapred.InputSplit split, Configuration job, Reporter reporter) {
             super(split, job, reporter);
         }
 
@@ -117,13 +117,13 @@ public class OpenSearchPigInputFormat extends EsInputFormat<String, Object> {
 
     @SuppressWarnings("unchecked")
     @Override
-    public AbstractPigEsInputRecordReader createRecordReader(InputSplit split, TaskAttemptContext context) {
-        return isOutputAsJson(CompatHandler.taskAttemptContext(context).getConfiguration()) ? new PigJsonEsInputRecordReader() : new PigEsInputRecordReader();
+    public AbstractPigOpenSearchInputRecordReader createRecordReader(InputSplit split, TaskAttemptContext context) {
+        return isOutputAsJson(CompatHandler.taskAttemptContext(context).getConfiguration()) ? new PigJsonOpenSearchInputRecordReader() : new PigOpenSearchInputRecordReader();
     }
 
     @SuppressWarnings("unchecked")
     @Override
-    public AbstractPigEsInputRecordReader getRecordReader(org.apache.hadoop.mapred.InputSplit split, JobConf job, Reporter reporter) {
-        return isOutputAsJson(job) ? new PigJsonEsInputRecordReader(split, job, reporter) : new PigEsInputRecordReader(split, job, reporter);
+    public AbstractPigOpenSearchInputRecordReader getRecordReader(org.apache.hadoop.mapred.InputSplit split, JobConf job, Reporter reporter) {
+        return isOutputAsJson(job) ? new PigJsonOpenSearchInputRecordReader(split, job, reporter) : new PigOpenSearchInputRecordReader(split, job, reporter);
     }
 }

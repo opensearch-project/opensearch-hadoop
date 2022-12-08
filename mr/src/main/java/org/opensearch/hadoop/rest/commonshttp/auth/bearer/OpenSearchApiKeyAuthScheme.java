@@ -30,8 +30,8 @@
 package org.opensearch.hadoop.rest.commonshttp.auth.bearer;
 
 import org.apache.commons.codec.binary.Base64;
-import org.opensearch.hadoop.rest.commonshttp.auth.EsHadoopAuthPolicies;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.rest.commonshttp.auth.OpenSearchHadoopAuthPolicies;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Credentials;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthenticationException;
@@ -46,7 +46,7 @@ import org.opensearch.hadoop.util.StringUtils;
  * preemptive authentication that isn't a subclass of BasicScheme. This allows us to send
  * the auth token up front without waiting to be turned down with a 401 Unauthorized response.
  */
-public class EsApiKeyAuthScheme extends BasicScheme {
+public class OpenSearchApiKeyAuthScheme extends BasicScheme {
 
     private boolean complete = false;
 
@@ -63,7 +63,7 @@ public class EsApiKeyAuthScheme extends BasicScheme {
      */
     @Override
     public String getSchemeName() {
-        return EsHadoopAuthPolicies.APIKEY;
+        return OpenSearchHadoopAuthPolicies.APIKEY;
     }
 
     /**
@@ -81,20 +81,20 @@ public class EsApiKeyAuthScheme extends BasicScheme {
      * Implementation method for authentication
      */
     private String authenticate(Credentials credentials) throws AuthenticationException {
-        if (!(credentials instanceof EsApiKeyCredentials)) {
-            throw new AuthenticationException("Incorrect credentials type provided. Expected [" + EsApiKeyCredentials.class.getName()
+        if (!(credentials instanceof OpenSearchApiKeyCredentials)) {
+            throw new AuthenticationException("Incorrect credentials type provided. Expected [" + OpenSearchApiKeyCredentials.class.getName()
                     + "] but got [" + credentials.getClass().getName() + "]");
         }
 
-        EsApiKeyCredentials esApiKeyCredentials = ((EsApiKeyCredentials) credentials);
+        OpenSearchApiKeyCredentials opensearchApiKeyCredentials = ((OpenSearchApiKeyCredentials) credentials);
         String authString = null;
 
-        if (esApiKeyCredentials.getToken() != null && StringUtils.hasText(esApiKeyCredentials.getToken().getName())) {
-            EsToken token = esApiKeyCredentials.getToken();
+        if (opensearchApiKeyCredentials.getToken() != null && StringUtils.hasText(opensearchApiKeyCredentials.getToken().getName())) {
+            OpenSearchToken token = opensearchApiKeyCredentials.getToken();
             String keyComponents = token.getId() + ":" + token.getApiKey();
             byte[] base64Encoded = Base64.encodeBase64(keyComponents.getBytes(StringUtils.UTF_8));
             String tokenText = new String(base64Encoded, StringUtils.UTF_8);
-            authString = EsHadoopAuthPolicies.APIKEY + " " + tokenText;
+            authString = OpenSearchHadoopAuthPolicies.APIKEY + " " + tokenText;
         }
 
         return authString;

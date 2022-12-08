@@ -46,7 +46,7 @@ import org.apache.hadoop.security.token.Token;
 import org.apache.hadoop.security.token.TokenIdentifier;
 import org.opensearch.hadoop.OpenSearchHadoopException;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.security.User;
 import org.opensearch.hadoop.security.UserProvider;
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
@@ -84,15 +84,15 @@ public class HadoopUser implements User {
     }
 
     @Override
-    public EsToken getEsToken(String clusterName) {
+    public OpenSearchToken getOpenSearchToken(String clusterName) {
         // An unset cluster name - Wouldn't have a token for it.
         if (clusterName == null || clusterName.equals("") || clusterName.equals(ClusterName.UNNAMED_CLUSTER_NAME)) {
             return null;
         }
         for (Token<? extends TokenIdentifier> token : ugi.getTokens()) {
-            if (EsTokenIdentifier.KIND_NAME.equals(token.getKind()) && clusterName.equals(token.getService().toString())) {
+            if (OpenSearchTokenIdentifier.KIND_NAME.equals(token.getKind()) && clusterName.equals(token.getService().toString())) {
                 try {
-                    return new EsToken(new DataInputStream(new ByteArrayInputStream(token.getPassword())));
+                    return new OpenSearchToken(new DataInputStream(new ByteArrayInputStream(token.getPassword())));
                 } catch (IOException e) {
                     throw new OpenSearchHadoopSerializationException("Could not read token information from UGI", e);
                 }
@@ -102,12 +102,12 @@ public class HadoopUser implements User {
     }
 
     @Override
-    public Iterable<EsToken> getAllEsTokens() {
-        List<EsToken> tokens = new ArrayList<>();
+    public Iterable<OpenSearchToken> getAllOpenSearchTokens() {
+        List<OpenSearchToken> tokens = new ArrayList<>();
         for (Token<? extends TokenIdentifier> token : ugi.getTokens()) {
-            if (EsTokenIdentifier.KIND_NAME.equals(token.getKind())) {
+            if (OpenSearchTokenIdentifier.KIND_NAME.equals(token.getKind())) {
                 try {
-                    tokens.add(new EsToken(new DataInputStream(new ByteArrayInputStream(token.getPassword()))));
+                    tokens.add(new OpenSearchToken(new DataInputStream(new ByteArrayInputStream(token.getPassword()))));
                 } catch (IOException e) {
                     throw new OpenSearchHadoopSerializationException("Could not read token information from UGI", e);
                 }
@@ -117,8 +117,8 @@ public class HadoopUser implements User {
     }
 
     @Override
-    public void addEsToken(EsToken esToken) {
-        Token<EsTokenIdentifier> token = EsTokenIdentifier.createTokenFrom(esToken);
+    public void addOpenSearchToken(OpenSearchToken opensearchToken) {
+        Token<OpenSearchTokenIdentifier> token = OpenSearchTokenIdentifier.createTokenFrom(opensearchToken);
         ugi.addToken(token);
     }
 

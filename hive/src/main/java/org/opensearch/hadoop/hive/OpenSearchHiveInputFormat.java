@@ -45,7 +45,7 @@ import org.apache.hadoop.mapred.Reporter;
 import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.InternalConfigurationOptions;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.mr.EsInputFormat;
+import org.opensearch.hadoop.mr.OpenSearchInputFormat;
 import org.opensearch.hadoop.mr.security.HadoopUserProvider;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.util.StringUtils;
@@ -58,17 +58,17 @@ import org.opensearch.hadoop.util.StringUtils;
 // A quick example would be {@link org.apache.hadoop.hive.ql.io.HiveInputFormat.HiveInputSplit#getPath()} which, in case the actual InputSplit is not a
 // {@link org.apache.hadoop.mapred.FileSplit}, returns an invalid Path.
 
-public class EsHiveInputFormat extends EsInputFormat<Text, Writable> {
+public class OpenSearchHiveInputFormat extends OpenSearchInputFormat<Text, Writable> {
 
-    static class EsHiveSplit extends FileSplit {
+    static class OpenSearchHiveSplit extends FileSplit {
         InputSplit delegate;
         private Path path;
 
-        EsHiveSplit() {
-            this(new EsInputSplit(), null);
+        OpenSearchHiveSplit() {
+            this(new OpenSearchInputSplit(), null);
         }
 
-        EsHiveSplit(InputSplit delegate, Path path) {
+        OpenSearchHiveSplit(InputSplit delegate, Path path) {
             super(path, 0, 0, (String[]) null);
             this.delegate = delegate;
             this.path = path;
@@ -126,15 +126,15 @@ public class EsHiveInputFormat extends EsInputFormat<Text, Writable> {
         FileSplit[] wrappers = new FileSplit[shardSplits.length];
         Path path = new Path(job.get(HiveConstants.TABLE_LOCATION));
         for (int i = 0; i < wrappers.length; i++) {
-            wrappers[i] = new EsHiveSplit(shardSplits[i], path);
+            wrappers[i] = new OpenSearchHiveSplit(shardSplits[i], path);
         }
         return wrappers;
     }
 
     @SuppressWarnings({ "unchecked", "rawtypes" })
     @Override
-    public AbstractWritableEsInputRecordReader getRecordReader(InputSplit split, JobConf job, Reporter reporter) {
-        InputSplit delegate = ((EsHiveSplit) split).delegate;
-        return isOutputAsJson(job) ? new JsonWritableEsInputRecordReader(delegate, job, reporter) : new WritableEsInputRecordReader(delegate, job, reporter);
+    public AbstractWritableOpenSearchInputRecordReader getRecordReader(InputSplit split, JobConf job, Reporter reporter) {
+        InputSplit delegate = ((OpenSearchHiveSplit) split).delegate;
+        return isOutputAsJson(job) ? new JsonWritableOpenSearchInputRecordReader(delegate, job, reporter) : new WritableOpenSearchInputRecordReader(delegate, job, reporter);
     }
 }

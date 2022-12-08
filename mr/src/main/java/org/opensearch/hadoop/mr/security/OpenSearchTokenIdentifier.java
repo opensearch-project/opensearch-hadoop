@@ -51,14 +51,14 @@ import org.opensearch.hadoop.cfg.HadoopSettingsManager;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.InitializationUtils;
 import org.opensearch.hadoop.rest.RestClient;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.security.JdkUser;
 import org.opensearch.hadoop.security.JdkUserProvider;
 import org.opensearch.hadoop.util.ClusterInfo;
 import org.opensearch.hadoop.util.ClusterName;
 
 /**
- * The Hadoop Token Identifier for any generic token that contains an EsToken within it.
+ * The Hadoop Token Identifier for any generic token that contains an OpenSearchToken within it.
  * <p>
  * Hadoop tokens are generic byte holders that can hold any kind of auth information within them.
  * To identify what specific auth information is within them, they require an "Identifier" to be
@@ -73,23 +73,23 @@ import org.opensearch.hadoop.util.ClusterName;
  * and META-INF/services/org.apache.hadoop.security.token.TokenIdentifier
  * </p>
  */
-public class EsTokenIdentifier extends AbstractDelegationTokenIdentifier {
+public class OpenSearchTokenIdentifier extends AbstractDelegationTokenIdentifier {
 
-    public static final Text KIND_NAME = new Text("ELASTICSEARCH_AUTH_TOKEN");
+    public static final Text KIND_NAME = new Text("OPENSEARCH_AUTH_TOKEN");
 
-    public static Token<EsTokenIdentifier> createTokenFrom(EsToken esToken) {
-        EsTokenIdentifier identifier = new EsTokenIdentifier();
+    public static Token<OpenSearchTokenIdentifier> createTokenFrom(OpenSearchToken opensearchToken) {
+        OpenSearchTokenIdentifier identifier = new OpenSearchTokenIdentifier();
         ByteArrayOutputStream buffer = new ByteArrayOutputStream();
         try {
-            esToken.writeOut(new DataOutputStream(buffer));
+            opensearchToken.writeOut(new DataOutputStream(buffer));
         } catch (IOException e) {
             throw new OpenSearchHadoopException("Could not serialize token information", e);
         }
         byte[] id = identifier.getBytes();
         byte[] pw = buffer.toByteArray();
         Text kind = identifier.getKind();
-        Text service = new Text(esToken.getClusterName());
-        return new Token<EsTokenIdentifier>(id, pw, kind, service);
+        Text service = new Text(opensearchToken.getClusterName());
+        return new Token<OpenSearchTokenIdentifier>(id, pw, kind, service);
     }
 
     @Override
@@ -113,8 +113,8 @@ public class EsTokenIdentifier extends AbstractDelegationTokenIdentifier {
             if (!KIND_NAME.equals(token.getKind())) {
                 throw new IOException("Could not renew token of invalid type [" + token.getKind().toString() + "]");
             }
-            EsToken esToken = new EsToken(new DataInputStream(new ByteArrayInputStream(token.getPassword())));
-            return esToken.getExpirationTime();
+            OpenSearchToken opensearchToken = new OpenSearchToken(new DataInputStream(new ByteArrayInputStream(token.getPassword())));
+            return opensearchToken.getExpirationTime();
         }
 
         @Override
@@ -122,12 +122,12 @@ public class EsTokenIdentifier extends AbstractDelegationTokenIdentifier {
             if (!KIND_NAME.equals(token.getKind())) {
                 throw new IOException("Could not renew token of invalid type [" + token.getKind().toString() + "]");
             }
-            EsToken esToken = new EsToken(new DataInputStream(new ByteArrayInputStream(token.getPassword())));
+            OpenSearchToken opensearchToken = new OpenSearchToken(new DataInputStream(new ByteArrayInputStream(token.getPassword())));
             Settings settings = HadoopSettingsManager.loadFrom(conf);
             // Create a composite settings object so we can make some changes to the settings without affecting the underlying config
             CompositeSettings compositeSettings = new CompositeSettings(Collections.singletonList(settings));
-            // Extract the cluster name from the esToken so that the rest client can locate it for auth purposes
-            ClusterInfo info = new ClusterInfo(new ClusterName(esToken.getClusterName(), null), esToken.getMajorVersion());
+            // Extract the cluster name from the opensearchToken so that the rest client can locate it for auth purposes
+            ClusterInfo info = new ClusterInfo(new ClusterName(opensearchToken.getClusterName(), null), opensearchToken.getMajorVersion());
             compositeSettings.setInternalClusterInfo(info);
 
             // The RestClient gets the opensearch token for authentication from the current subject, but the subject running this code
@@ -137,7 +137,7 @@ public class EsTokenIdentifier extends AbstractDelegationTokenIdentifier {
             InitializationUtils.setUserProviderIfNotSet(compositeSettings, JdkUserProvider.class, new NoOpLog());
             Subject subject = new Subject();
             JdkUser user = new JdkUser(subject, settings);
-            user.addEsToken(esToken);
+            user.addOpenSearchToken(opensearchToken);
             user.doAs(new PrivilegedAction<Void>() {
                 @Override
                 public Void run() {
@@ -146,7 +146,7 @@ public class EsTokenIdentifier extends AbstractDelegationTokenIdentifier {
                         // TODO: Does not support multiple clusters yet
                         // the client will need to point to the cluster that this token is associated with in order to cancel it.
                         client = createClient(compositeSettings);
-                        client.cancelToken(esToken);
+                        client.cancelToken(opensearchToken);
                     } finally {
                         if (client != null) {
                             client.close();

@@ -41,9 +41,9 @@ import org.apache.spark.SparkConf
 import org.apache.spark.deploy.yarn.security.ServiceCredentialProvider
 import org.opensearch.spark.cfg.SparkSettingsManager
 import org.opensearch.hadoop.cfg.{CompositeSettings, HadoopSettingsManager}
-import org.opensearch.hadoop.mr.security.{EsTokenIdentifier, HadoopUserProvider, TokenUtil}
+import org.opensearch.hadoop.mr.security.{OpenSearchTokenIdentifier, HadoopUserProvider, TokenUtil}
 import org.opensearch.hadoop.rest.{InitializationUtils, RestClient}
-import org.opensearch.hadoop.security.{AuthenticationMethod, EsToken, UserProvider}
+import org.opensearch.hadoop.security.{AuthenticationMethod, OpenSearchToken, UserProvider}
 
 /**
  * A provider interface in Spark's Yarn library that obtains tokens for an application.
@@ -131,15 +131,15 @@ class OpenSearchServiceCredentialProvider extends ServiceCredentialProvider {
     val client = new RestClient(settings)
     try {
       val user = userProvider.getUser
-      val esToken = user.doAs(new PrivilegedExceptionAction[EsToken]() {
-        override def run: EsToken = client.createNewApiToken(TokenUtil.KEY_NAME_PREFIX + UUID.randomUUID().toString)
+      val opensearchToken = user.doAs(new PrivilegedExceptionAction[OpenSearchToken]() {
+        override def run: OpenSearchToken = client.createNewApiToken(TokenUtil.KEY_NAME_PREFIX + UUID.randomUUID().toString)
       })
       if (LOG.isInfoEnabled) {
-        LOG.info(s"getting token for: OpenSearch[tokenName=${esToken.getName}, " +
-          s"clusterName=${esToken.getClusterName}, user=${user}]")
+        LOG.info(s"getting token for: OpenSearch[tokenName=${opensearchToken.getName}, " +
+          s"clusterName=${opensearchToken.getClusterName}, user=${user}]")
       }
-      val expiration = esToken.getExpirationTime
-      val token = EsTokenIdentifier.createTokenFrom(esToken)
+      val expiration = opensearchToken.getExpirationTime
+      val token = OpenSearchTokenIdentifier.createTokenFrom(opensearchToken)
       creds.addToken(token.getService, token)
       Some(expiration)
     } finally {

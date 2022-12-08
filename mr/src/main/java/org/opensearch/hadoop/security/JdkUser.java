@@ -53,18 +53,18 @@ public class JdkUser implements User {
     /**
      * Simplify getting and setting of tokens on a Subject by letting us store and retrieve them by name
      */
-    static class EsTokenHolder {
-        private Map<String, EsToken> creds = new HashMap<String, EsToken>();
+    static class OpenSearchTokenHolder {
+        private Map<String, OpenSearchToken> creds = new HashMap<String, OpenSearchToken>();
 
-        EsToken getCred(String alias) {
+        OpenSearchToken getCred(String alias) {
             return creds.get(alias);
         }
 
-        Collection<EsToken> getCreds() {
+        Collection<OpenSearchToken> getCreds() {
             return creds.values();
         }
 
-        void setCred(String alias, EsToken cred) {
+        void setCred(String alias, OpenSearchToken cred) {
             creds.put(alias, cred);
         }
     }
@@ -96,44 +96,44 @@ public class JdkUser implements User {
     }
 
     @Override
-    public EsToken getEsToken(String clusterName) {
+    public OpenSearchToken getOpenSearchToken(String clusterName) {
         // An unset cluster name - Wouldn't have a token for it.
         if (clusterName == null || clusterName.equals("") || clusterName.equals(ClusterName.UNNAMED_CLUSTER_NAME)) {
             return null;
         }
-        Set<EsTokenHolder> credSet = subject.getPrivateCredentials(EsTokenHolder.class);
+        Set<OpenSearchTokenHolder> credSet = subject.getPrivateCredentials(OpenSearchTokenHolder.class);
         if (credSet.isEmpty()) {
             return null;
         } else {
-            EsTokenHolder holder = credSet.iterator().next();
+            OpenSearchTokenHolder holder = credSet.iterator().next();
             return holder.getCred(clusterName);
         }
     }
 
     @Override
-    public Iterable<EsToken> getAllEsTokens() {
-        Set<EsTokenHolder> credSet = subject.getPrivateCredentials(EsTokenHolder.class);
+    public Iterable<OpenSearchToken> getAllOpenSearchTokens() {
+        Set<OpenSearchTokenHolder> credSet = subject.getPrivateCredentials(OpenSearchTokenHolder.class);
         if (credSet.isEmpty()) {
             return Collections.emptyList();
         } else {
-            EsTokenHolder holder = credSet.iterator().next();
-            List<EsToken> tokens = new ArrayList<>();
+            OpenSearchTokenHolder holder = credSet.iterator().next();
+            List<OpenSearchToken> tokens = new ArrayList<>();
             tokens.addAll(holder.getCreds());
             return Collections.unmodifiableList(tokens);
         }
     }
 
     @Override
-    public void addEsToken(EsToken esToken) {
-        Iterator<EsTokenHolder> credSet = subject.getPrivateCredentials(EsTokenHolder.class).iterator();
-        EsTokenHolder creds = null;
+    public void addOpenSearchToken(OpenSearchToken opensearchToken) {
+        Iterator<OpenSearchTokenHolder> credSet = subject.getPrivateCredentials(OpenSearchTokenHolder.class).iterator();
+        OpenSearchTokenHolder creds = null;
         if (credSet.hasNext()) {
             creds = credSet.next();
         } else {
-            creds = new EsTokenHolder();
+            creds = new OpenSearchTokenHolder();
             subject.getPrivateCredentials().add(creds);
         }
-        creds.setCred(esToken.getClusterName(), esToken);
+        creds.setCred(opensearchToken.getClusterName(), opensearchToken);
     }
 
     @Override

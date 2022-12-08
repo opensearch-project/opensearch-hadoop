@@ -34,7 +34,7 @@ import java.util.Iterator;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.cfg.Settings;
-import org.opensearch.hadoop.security.EsToken;
+import org.opensearch.hadoop.security.OpenSearchToken;
 import org.opensearch.hadoop.security.UserProvider;
 import org.opensearch.hadoop.util.ClusterInfo;
 import org.opensearch.hadoop.util.ClusterName;
@@ -57,21 +57,21 @@ public class OpenSearchClusterInfoSelector {
     private static final Log LOG = LogFactory.getLog(OpenSearchClusterInfoSelector.class);
 
     public static void populate(Settings settings) {
-        Iterable<EsToken> esTokens = UserProvider.create(settings).getUser().getAllEsTokens();
+        Iterable<OpenSearchToken> opensearchTokens = UserProvider.create(settings).getUser().getAllOpenSearchTokens();
         // There should only be one token here at any given time since the auto creds
         // only get one token from one cluster for one user per topology, and that token
         // is keyed by the cluster name, making it so that there shouldn't be any other
         // tokens for that cluster on the subject
         if (LOG.isDebugEnabled()) {
-            LOG.debug("Found list of tokens on worker: " + esTokens);
+            LOG.debug("Found list of tokens on worker: " + opensearchTokens);
         }
-        Iterator<EsToken> iterator = esTokens.iterator();
+        Iterator<OpenSearchToken> iterator = opensearchTokens.iterator();
         if (iterator.hasNext()) {
-            EsToken esToken = iterator.next();
+            OpenSearchToken opensearchToken = iterator.next();
             if (LOG.isDebugEnabled()) {
-                LOG.debug("Using token: " + esToken);
+                LOG.debug("Using token: " + opensearchToken);
             }
-            ClusterInfo clusterInfo = new ClusterInfo(new ClusterName(esToken.getClusterName(), null), esToken.getMajorVersion());
+            ClusterInfo clusterInfo = new ClusterInfo(new ClusterName(opensearchToken.getClusterName(), null), opensearchToken.getMajorVersion());
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Using clusterInfo : " + clusterInfo);
             }

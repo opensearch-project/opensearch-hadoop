@@ -45,34 +45,34 @@ import static org.junit.Assert.assertThat;
 public class JdkUserTest {
 
     @Test
-    public void getEsToken() {
+    public void getOpenSearchToken() {
         Subject subject = new Subject();
 
         String testClusterName = "testClusterName";
 
         User jdkUser = new JdkUser(subject, new TestSettings());
-        assertThat(jdkUser.getEsToken(null), is(nullValue()));
-        assertThat(jdkUser.getEsToken(""), is(nullValue()));
-        assertThat(jdkUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(jdkUser.getEsToken(testClusterName), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(testClusterName), is(nullValue()));
 
-        EsToken testToken = new EsToken("gmarx", "swordfish", "mary", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
-        EsToken unnamedToken = new EsToken("luggage", "12345", "12345", System.currentTimeMillis() + 100000L, ClusterName.UNNAMED_CLUSTER_NAME, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken testToken = new OpenSearchToken("gmarx", "swordfish", "mary", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken unnamedToken = new OpenSearchToken("luggage", "12345", "12345", System.currentTimeMillis() + 100000L, ClusterName.UNNAMED_CLUSTER_NAME, OpenSearchMajorVersion.LATEST);
 
-        JdkUser.EsTokenHolder holder = new JdkUser.EsTokenHolder();
+        JdkUser.OpenSearchTokenHolder holder = new JdkUser.OpenSearchTokenHolder();
         holder.setCred(testClusterName, testToken);
         holder.setCred(ClusterName.UNNAMED_CLUSTER_NAME, unnamedToken);
         subject.getPrivateCredentials().add(holder);
 
-        assertThat(jdkUser.getEsToken(null), is(nullValue()));
-        assertThat(jdkUser.getEsToken(""), is(nullValue()));
-        assertThat(jdkUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(jdkUser.getEsToken(testClusterName), is(equalTo(testToken)));
+        assertThat(jdkUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(testClusterName), is(equalTo(testToken)));
 
         // Using getPrivateCredentials() always returns the creds in FIFO order, but using getPrivateCredentials(Class<T>) returns in
         // random order. Cannot guarantee which creds are actually first added, and probably shouldn't try to determine it at runtime.
 //        // Add erroneous overlapping secret holder
-//        JdkUser.EsTokenHolder holder2 = new JdkUser.EsTokenHolder();
+//        JdkUser.OpenSearchTokenHolder holder2 = new JdkUser.OpenSearchTokenHolder();
 //        holder2.setCred(testClusterName, unnamedToken);
 //        subject.getPrivateCredentials().add(holder2);
 //
@@ -84,33 +84,33 @@ public class JdkUserTest {
     }
 
     @Test
-    public void addEsToken() {
+    public void addOpenSearchToken() {
         String testClusterName = "testClusterName";
 
         User jdkUser = new JdkUser(new Subject(), new TestSettings());
-        assertThat(jdkUser.getEsToken(null), is(nullValue()));
-        assertThat(jdkUser.getEsToken(""), is(nullValue()));
-        assertThat(jdkUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(jdkUser.getEsToken(testClusterName), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(testClusterName), is(nullValue()));
 
-        EsToken testToken = new EsToken("gmarx", "swordfish", "mary", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
-        EsToken testToken2 = new EsToken("zmarx", "pantomime", "pantomime", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
-        EsToken unnamedToken = new EsToken("luggage", "12345", "12345", System.currentTimeMillis() + 100000L, ClusterName.UNNAMED_CLUSTER_NAME, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken testToken = new OpenSearchToken("gmarx", "swordfish", "mary", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken testToken2 = new OpenSearchToken("zmarx", "pantomime", "pantomime", System.currentTimeMillis() + 100000L, testClusterName, OpenSearchMajorVersion.LATEST);
+        OpenSearchToken unnamedToken = new OpenSearchToken("luggage", "12345", "12345", System.currentTimeMillis() + 100000L, ClusterName.UNNAMED_CLUSTER_NAME, OpenSearchMajorVersion.LATEST);
 
-        jdkUser.addEsToken(testToken);
-        jdkUser.addEsToken(unnamedToken);
+        jdkUser.addOpenSearchToken(testToken);
+        jdkUser.addOpenSearchToken(unnamedToken);
 
-        assertThat(jdkUser.getEsToken(null), is(nullValue()));
-        assertThat(jdkUser.getEsToken(""), is(nullValue()));
-        assertThat(jdkUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(jdkUser.getEsToken(testClusterName), is(equalTo(testToken)));
+        assertThat(jdkUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(testClusterName), is(equalTo(testToken)));
 
-        jdkUser.addEsToken(testToken2);
+        jdkUser.addOpenSearchToken(testToken2);
 
-        assertThat(jdkUser.getEsToken(null), is(nullValue()));
-        assertThat(jdkUser.getEsToken(""), is(nullValue()));
-        assertThat(jdkUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-        assertThat(jdkUser.getEsToken(testClusterName), is(equalTo(testToken2)));
+        assertThat(jdkUser.getOpenSearchToken(null), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(""), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
+        assertThat(jdkUser.getOpenSearchToken(testClusterName), is(equalTo(testToken2)));
     }
 
     @Test

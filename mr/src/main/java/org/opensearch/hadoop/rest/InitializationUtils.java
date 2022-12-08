@@ -352,7 +352,7 @@ public abstract class InitializationUtils {
     public static ClusterInfo discoverAndValidateClusterInfo(Settings settings, Log log) {
         ClusterInfo mainInfo;
         RestClient bootstrap = new RestClient(settings);
-        // first get ES main action info
+        // first get OpenSearch main action info
         try {
             mainInfo = bootstrap.mainInfo();
             if (log.isDebugEnabled()) {

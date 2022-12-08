@@ -406,7 +406,7 @@ public class AbstractKerberosClientTest {
                     testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_SECURITY_AUTHENTICATION);
                     testSettings.asProperties().remove(ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL);
 
-                    // Use token to contact ES
+                    // Use token to contact OpenSearch
                     restClient = new RestClient(testSettings);
                     List<NodeInfo> httpDataNodes = restClient.getHttpDataNodes();
                     assertThat(httpDataNodes.size(), is(greaterThan(0)));

@@ -72,7 +72,7 @@ public class TokenUtil {
      * context for the life of the operation.
      * @param client The OpenSearch client
      * @param user the user object that contains credentials for obtaining an auth token
-     * @return the authentication token in ES-Hadoop specific format.
+     * @return the authentication token in OpenSearch-Hadoop specific format.
      */
     private static OpenSearchToken obtainOpenSearchToken(final RestClient client, User user) {
         // TODO: Should we extend this to basic authentication at some point?
@@ -217,7 +217,7 @@ public class TokenUtil {
     }
 
     /**
-     * Get the authentication token of the user for the provided cluster name in its ES-Hadoop specific form.
+     * Get the authentication token of the user for the provided cluster name in its OpenSearch-Hadoop specific form.
      * @return null if the user does not have the token, otherwise the auth token for the cluster.
      */
     private static OpenSearchToken getOpenSearchAuthToken(ClusterName clusterName, User user) {

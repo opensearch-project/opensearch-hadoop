@@ -138,7 +138,7 @@ class ScalaValueWriter(writeUnknownTypes: Boolean = false) extends JdkValueWrite
       case _ => {
         // check if it's called by accident on a DataFrame/SchemaRDD (happens)
         if (value.getClass().getName().startsWith("org.apache.spark.sql.")) {
-          throw new OpenSearchHadoopIllegalArgumentException("Spark SQL types are not handled through basic RDD saveToEs() calls; typically this is a mistake(as the SQL schema will be ignored). Use 'org.opensearch.spark.sql' package instead")
+          throw new OpenSearchHadoopIllegalArgumentException("Spark SQL types are not handled through basic RDD saveToOpenSearch() calls; typically this is a mistake(as the SQL schema will be ignored). Use 'org.opensearch.spark.sql' package instead")
         }
 
         val result = super.doWrite(value, generator, parentField)

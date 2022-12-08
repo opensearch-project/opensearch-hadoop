@@ -81,7 +81,7 @@ public class FastByteArrayOutputStream extends OutputStream {
      * Creates a new byte array output stream. The buffer capacity is
      * initially 1024 bytes, though its size increases if necessary.
      * <p/>
-     * ES: We use 1024 bytes since we mainly use this to build json/smile
+     * OpenSearch: We use 1024 bytes since we mainly use this to build json/smile
      * content in memory, and rarely does the 32 byte default in ByteArrayOutputStream fits...
      */
     public FastByteArrayOutputStream() {

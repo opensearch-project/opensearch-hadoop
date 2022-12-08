@@ -43,7 +43,7 @@ public class SimpleHttpRetryPolicy implements HttpRetryPolicy, SettingsAware {
             }
 
             switch (httpStatus) {
-            // ES is busy, allow retries
+            // OpenSearch is busy, allow retries
             case HttpStatus.TOO_MANY_REQUESTS:
             case HttpStatus.SERVICE_UNAVAILABLE:
                 return true;

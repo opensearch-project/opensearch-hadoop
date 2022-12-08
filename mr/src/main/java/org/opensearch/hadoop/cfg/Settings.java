@@ -72,7 +72,7 @@ public abstract class Settings {
      * @return The {@link OpenSearchMajorVersion} extracted from the properties or {@link OpenSearchMajorVersion#LATEST} if not present
      * @deprecated This is kind of a dangerous method to use, because it assumes that you care about which version you are working with,
      *             but the version you receive from this call may not be accurate, and thus, cannot be trusted to let you make accurate
-     *             decisions about the version of ES you are speaking with. Prefer to use the {@link Settings#getInternalVersionOrThrow()}
+     *             decisions about the version of OpenSearch you are speaking with. Prefer to use the {@link Settings#getInternalVersionOrThrow()}
      *             instead.
      */
     @Deprecated

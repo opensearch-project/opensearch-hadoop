@@ -89,7 +89,7 @@ public final class FieldParser {
         Map<String, Object> mappingEntries = (Map<String, Object>) mappingsObject.get("mappings");
 
         // Iterate over the mappings to collect their names and contents
-        // In versions of ES that have a single type system, there will either
+        // In versions of OpenSearch that have a single type system, there will either
         // be a single named mapping or a single unnamed mapping returned.
         if (includeTypeName) {
             // Every entry within mappingEntries is a type name mapped to the actual mappings

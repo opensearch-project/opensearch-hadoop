@@ -61,7 +61,7 @@ import static org.opensearch.hadoop.cfg.ConfigurationOptions.*;
 import static org.opensearch.spark.rdd.Metadata.*;
 
 import static org.hamcrest.Matchers.*;
-import static org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark.saveToEs;
+import static org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark.saveToOpenSearch;
 
 import scala.Tuple2;
 
@@ -98,10 +98,10 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         String target = "spark-test-java-basic-write/data";
         JavaRDD<Map<String, ?>> javaRDD = sc.parallelize(ImmutableList.of(doc1, doc2));
         // eliminate with static import
-        JavaOpenSearchSpark.saveToEs(javaRDD, target);
-        JavaOpenSearchSpark.saveToEs(javaRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, target + "1"));
+        JavaOpenSearchSpark.saveToOpenSearch(javaRDD, target);
+        JavaOpenSearchSpark.saveToOpenSearch(javaRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, target + "1"));
 
-        assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
+        assertEquals(2, JavaOpenSearchSpark.opensearchRDD(sc, target).count());
         assertTrue(RestUtils.exists(target));
         String results = RestUtils.get(target + "/_search?");
         assertThat(results, containsString("SFO"));
@@ -115,9 +115,9 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         String target = "spark-test-java-id-write/data";
         JavaRDD<Map<String, ?>> javaRDD = sc.parallelize(ImmutableList.of(doc1, doc2));
         // eliminate with static import
-        JavaOpenSearchSpark.saveToEs(javaRDD, target, ImmutableMap.of(OPENSEARCH_MAPPING_ID, "number"));
+        JavaOpenSearchSpark.saveToOpenSearch(javaRDD, target, ImmutableMap.of(OPENSEARCH_MAPPING_ID, "number"));
 
-        assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
+        assertEquals(2, JavaOpenSearchSpark.opensearchRDD(sc, target).count());
         assertTrue(RestUtils.exists(target + "/1"));
         assertTrue(RestUtils.exists(target + "/2"));
         String results = RestUtils.get(target + "/_search?");
@@ -134,9 +134,9 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
                 new Tuple2<Object, Object>(2, doc2)));
         //JavaPairRDD pairRDD = JavaPairRDD.fromJavaRDD(tupleRdd);
         // eliminate with static import
-        JavaOpenSearchSpark.saveToEsWithMeta(pairRdd, target);
+        JavaOpenSearchSpark.saveToOpenSearchWithMeta(pairRdd, target);
 
-        assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
+        assertEquals(2, JavaOpenSearchSpark.opensearchRDD(sc, target).count());
         assertTrue(RestUtils.exists(target + "/1"));
         assertTrue(RestUtils.exists(target + "/2"));
         String results = RestUtils.get(target + "/_search?");
@@ -154,9 +154,9 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         JavaRDD<Tuple2<Object, Object>> tupleRdd = sc.parallelize(ImmutableList.<Tuple2<Object, Object>> of(new Tuple2(header1, doc1), new Tuple2(header2, doc2)));
         JavaPairRDD pairRDD = JavaPairRDD.fromJavaRDD(tupleRdd);
         // eliminate with static import
-        JavaOpenSearchSpark.saveToEsWithMeta(pairRDD, target);
+        JavaOpenSearchSpark.saveToOpenSearchWithMeta(pairRDD, target);
 
-        assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
+        assertEquals(2, JavaOpenSearchSpark.opensearchRDD(sc, target).count());
         assertTrue(RestUtils.exists(target + "/1"));
         assertTrue(RestUtils.exists(target + "/2"));
         String results = RestUtils.get(target + "/_search?");
@@ -171,9 +171,9 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         String target = "spark-test-java-exclude-write/data";
 
         JavaRDD<Map<String, ?>> javaRDD = sc.parallelize(ImmutableList.of(doc1, doc2));
-        JavaOpenSearchSpark.saveToEs(javaRDD, target, ImmutableMap.of(OPENSEARCH_MAPPING_EXCLUDE, "airport"));
+        JavaOpenSearchSpark.saveToOpenSearch(javaRDD, target, ImmutableMap.of(OPENSEARCH_MAPPING_EXCLUDE, "airport"));
 
-        assertEquals(2, JavaOpenSearchSpark.esRDD(sc, target).count());
+        assertEquals(2, JavaOpenSearchSpark.opensearchRDD(sc, target).count());
         assertTrue(RestUtils.exists(target));
         assertThat(RestUtils.get(target + "/_search?"), containsString("business"));
         assertThat(RestUtils.get(target + "/_search?"), containsString("participants"));
@@ -188,7 +188,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
       String target = "spark-test-java-trip-{airport}/data";
 
       JavaRDD<Map<String, ?>> javaRDD = sc.parallelize(ImmutableList.of(doc1, doc2));
-      JavaOpenSearchSpark.saveToEs(javaRDD, target);
+      JavaOpenSearchSpark.saveToOpenSearch(javaRDD, target);
 
       assertTrue(RestUtils.exists("spark-test-java-trip-OTP/data"));
       assertTrue(RestUtils.exists("spark-test-java-trip-SFO/data"));
@@ -246,8 +246,8 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         RestUtils.postData(target, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes());
         RestUtils.refresh("spark-test*");
 
-//        JavaRDD<scala.collection.Map<String, Object>> esRDD = JavaOpenSearchSpark.esRDD(sc, target);
-//        JavaRDD messages = esRDD.filter(new Function<scala.collection.Map<String, Object>, Boolean>() {
+//        JavaRDD<scala.collection.Map<String, Object>> opensearchRDD = JavaOpenSearchSpark.opensearchRDD(sc, target);
+//        JavaRDD messages = opensearchRDD.filter(new Function<scala.collection.Map<String, Object>, Boolean>() {
 //            public Boolean call(scala.collection.Map<String, Object> map) {
 //                for (Entry<String, Object> entry: JavaConversions.asJavaMap(map).entrySet()) {
 //                    if (entry.getValue().toString().contains("message")) {
@@ -258,9 +258,9 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
 //            }
 //        });
 
-        JavaRDD<Map<String, Object>> esRDD = JavaOpenSearchSpark.esRDD(sc, target).values();
-        System.out.println(esRDD.collect());
-        JavaRDD<Map<String, Object>> messages = esRDD.filter(new Function<Map<String, Object>, Boolean>() {
+        JavaRDD<Map<String, Object>> opensearchRDD = JavaOpenSearchSpark.opensearchRDD(sc, target).values();
+        System.out.println(opensearchRDD.collect());
+        JavaRDD<Map<String, Object>> messages = opensearchRDD.filter(new Function<Map<String, Object>, Boolean>() {
             @Override
             public Boolean call(Map<String, Object> map) throws Exception {
                 return map.containsKey("message");
@@ -268,7 +268,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         });
 
         // jdk8
-        //esRDD.filter(m -> m.stream().filter(v -> v.contains("message")));
+        //opensearchRDD.filter(m -> m.stream().filter(v -> v.contains("message")));
 
         assertThat((int) messages.count(), is(2));
         System.out.println(messages.take(10));
@@ -285,9 +285,9 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         RestUtils.postData(target, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes());
         RestUtils.refresh("spark-test*");
 
-        JavaRDD<String> esRDD = JavaOpenSearchSpark.esJsonRDD(sc, target).values();
-        System.out.println(esRDD.collect());
-        JavaRDD<String> messages = esRDD.filter(new Function<String, Boolean>() {
+        JavaRDD<String> opensearchRDD = JavaOpenSearchSpark.esJsonRDD(sc, target).values();
+        System.out.println(opensearchRDD.collect());
+        JavaRDD<String> messages = opensearchRDD.filter(new Function<String, Boolean>() {
             @Override
             public Boolean call(String string) throws Exception {
                 return string.contains("message");
@@ -295,7 +295,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         });
 
         // jdk8
-        //esRDD.filter(m -> m.contains("message")));
+        //opensearchRDD.filter(m -> m.contains("message")));
 
         assertThat((int) messages.count(), is(2));
         System.out.println(messages.take(10));
@@ -319,7 +319,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
 
     // @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testNoResourceSpecified() throws Exception {
-        JavaRDD<Map<String, Object>> rdd = JavaOpenSearchSpark.esRDD(sc).values();
+        JavaRDD<Map<String, Object>> rdd = JavaOpenSearchSpark.opensearchRDD(sc).values();
         rdd.count();
     }
 

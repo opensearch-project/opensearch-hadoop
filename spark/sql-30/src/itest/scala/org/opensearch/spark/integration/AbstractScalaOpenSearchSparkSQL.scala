@@ -287,7 +287,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   def testEmptyDataFrame() {
     val index = wrapIndex("spark-test-empty-dataframe")
     val (target, _) = makeTargets(index, "data")
-    val idx = sqc.emptyDataFrame.saveToEs(target)
+    val idx = sqc.emptyDataFrame.saveToOpenSearch(target)
   }
 
   @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
@@ -295,7 +295,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INDEX_AUTO_CREATE -> "no")
     val index = wrapIndex("spark-test-non-existing-empty-dataframe")
     val (target, _) = makeTargets(index, "data")
-    val idx = sqc.emptyDataFrame.saveToEs(target, newCfg)
+    val idx = sqc.emptyDataFrame.saveToOpenSearch(target, newCfg)
   }
 
   @Test
@@ -463,7 +463,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val trip1 = Map("%s" -> "special")
 
-    sc.makeRDD(Seq(trip1)).saveToEs(target)
+    sc.makeRDD(Seq(trip1)).saveToOpenSearch(target)
   }
   
   @Test
@@ -479,7 +479,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
-    dataFrame.saveToEs(target, cfg)
+    dataFrame.saveToOpenSearch(target, cfg)
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("345"))
   }
@@ -501,7 +501,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val (target, docPath) = makeTargets(index, "data")
     val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_EXCLUDE -> "url")
 
-    dataFrame.saveToEs(target, newCfg)
+    dataFrame.saveToOpenSearch(target, newCfg)
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("345"))
     assertThat(RestUtils.exists(docPath + "/1"), is(true))
@@ -521,7 +521,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val conf = Map(OPENSEARCH_MAPPING_ID -> "id")
     val rdd = sc.makeRDD(docs)
     val jsonDF = sqc.read.json(rdd).toDF.select("id", "name")
-    jsonDF.saveToEs(target, conf)
+    jsonDF.saveToOpenSearch(target, conf)
     RestUtils.refresh(index)
     val hit1 = RestUtils.get(s"$docPath/1")
     val hit2 = RestUtils.get(s"$docPath/2")
@@ -543,7 +543,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val conf = Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_SPARK_DATAFRAME_WRITE_NULL_VALUES -> "true")
     val rdd = sc.makeRDD(docs)
     val jsonDF = sqc.read.json(rdd).toDF.select("id", "name")
-    jsonDF.saveToEs(target, conf)
+    jsonDF.saveToOpenSearch(target, conf)
     RestUtils.refresh(index)
     val hit1 = RestUtils.get(s"$docPath/1")
     val hit2 = RestUtils.get(s"$docPath/2")
@@ -572,7 +572,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val conf = Map("opensearch.mapping.id" -> "id")
     val rdd = sc.makeRDD(data)
     val df = sqc.createDataFrame(rdd, schema)
-    df.saveToEs(target, conf)
+    df.saveToOpenSearch(target, conf)
     RestUtils.refresh(index)
     val hit1 = RestUtils.get(s"$docPath/1")
     val hit2 = RestUtils.get(s"$docPath/2")
@@ -599,7 +599,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val conf = Map("opensearch.mapping.id" -> "id", "opensearch.spark.dataframe.write.null" -> "true")
     val rdd = sc.makeRDD(data)
     val df = sqc.createDataFrame(rdd, schema)
-    df.saveToEs(target, conf)
+    df.saveToOpenSearch(target, conf)
     RestUtils.refresh(index)
     val hit1 = RestUtils.get(s"$docPath/1")
     val hit2 = RestUtils.get(s"$docPath/2")
@@ -742,7 +742,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val index = wrapIndex("sparksql-test-scala-basic-write-rich-mapping-id-mapping")
     val (target, docPath) = makeTargets(index, "data")
-    dataFrame.saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id"))
+    dataFrame.saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "id"))
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("345"))
     assertThat(RestUtils.exists(docPath + "/1"), is(true))
@@ -757,7 +757,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val index = wrapIndex("sparksql-test-decimal-exception")
     val (target, _) = makeTargets(index, "data")
-    dataFrame.saveToEs(target)
+    dataFrame.saveToOpenSearch(target)
   }
 
   @Test
@@ -785,8 +785,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
       "opensearch.write.rest.error.handler.opensearch.tags" -> "tagValue"
     )
 
-    dataFrame2.saveToEs(dataTarget, conf)
-    dataFrame1.saveToEs(dataTarget, conf)
+    dataFrame2.saveToOpenSearch(dataTarget, conf)
+    dataFrame1.saveToOpenSearch(dataTarget, conf)
 
     val errorDataSearch = RestUtils.get(errorTarget + "/_search")
     val errorDoc = JsonUtils.query("hits").get("hits").get(0).apply(JsonUtils.asMap(errorDataSearch))
@@ -871,7 +871,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val data = artistsAsDataFrame
     val single = data.where(data("id").equalTo(1))
     assertEquals(1L, single.count())
-    single.saveToEs(target)
+    single.saveToOpenSearch(target)
 
     // Make sure that the scroll limit works with both a shard that has data and a shard that has nothing
     val count = sqc.read.format("opensearch").option("opensearch.scroll.limit", "10").load(target).count()
@@ -910,7 +910,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val trip2 = Map("participants" -> 5, "airport" -> "OTP", "tag" -> "feb", "date" -> "2013-12-28T20:03:10Z")
     val trip3 = Map("participants" -> 3, "airport" -> "MUC OTP SFO JFK", "tag" -> "long", "date" -> "2012-12-28T20:03:10Z")
 
-    sc.makeRDD(Seq(trip1, trip2, trip3)).saveToEs(target)
+    sc.makeRDD(Seq(trip1, trip2, trip3)).saveToOpenSearch(target)
   }
 
   private def opensearchDataSource(table: String) = {
@@ -1193,11 +1193,11 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val index = wrapIndex("spark-test-json-file")
     val (target, docPath) = makeTargets(index, "data")
-    input.saveToEs(target, cfg)
+    input.saveToOpenSearch(target, cfg)
 
     val basic = sqc.read.json(readAsRDD(this.getClass.getResource("/basic.json").toURI()))
     println(basic.schema.simpleString)
-    basic.saveToEs(target, cfg)
+    basic.saveToOpenSearch(target, cfg)
   }
 
   @Test
@@ -1211,7 +1211,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val index = wrapIndex("spark-test-json-file-schema")
     val (target, docPath) = makeTargets(index, "data")
-    input.saveToEs(target, cfg)
+    input.saveToOpenSearch(target, cfg)
 
     val dsCfg = collection.mutable.Map(cfg.toSeq: _*) += ("path" -> target)
     val dfLoad = sqc.read.format("org.opensearch.spark.sql").options(dsCfg.toMap).load
@@ -1286,7 +1286,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val index = wrapIndex("sparksql-test-scala-sql-overwrite")
     val (target, _) = makeTargets(index, "data")
-    srcFrame.saveToEs(target, cfg)
+    srcFrame.saveToOpenSearch(target, cfg)
 
     val table = wrapIndex("table_overwrite")
 
@@ -1381,7 +1381,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val (target, _) = makeTargets(index, "data")
 
     val dstFrame = artistsAsDataFrame
-    dstFrame.saveToEs(target, cfg)
+    dstFrame.saveToOpenSearch(target, cfg)
 
     val srcTable = wrapIndex("table_overwrite_src")
     val dstTable = wrapIndex("table_overwrite_dst")
@@ -1634,8 +1634,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
         RestUtils.putMapping(index, typename, "data/join/mapping/typed.json")
       }
 
-      sc.makeRDD(parents).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
-      sc.makeRDD(children).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(parents).saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(children).saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
 
       assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString("kimchy"))
       assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString(""""_routing":"1""""))
@@ -1669,7 +1669,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
         RestUtils.putMapping(index, typename, "data/join/mapping/typed.json")
       }
 
-      sc.makeRDD(docs).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(docs).saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
 
       assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString("kimchy"))
       assertThat(RestUtils.get(docPath + "/10?routing=1"), containsString(""""_routing":"1""""))

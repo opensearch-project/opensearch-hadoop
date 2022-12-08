@@ -483,7 +483,7 @@ public class RestClient implements Closeable, StatsAware {
         try {
             BytesArray body = new BytesArray("{\"scroll_id\":\"" + scrollId + "\"}");
             // use post instead of get to avoid some weird encoding issues (caused by the long URL)
-            // do not retry the request on another node, because that can lead to ES returning a error or
+            // do not retry the request on another node, because that can lead to OpenSearch returning a error or
             // less data being returned than requested.  See: https://github.com/elastic/elasticsearch-hadoop/issues/1302
             InputStream is = execute(POST, "_search/scroll?scroll=" + scrollKeepAlive.toString(), body, true, false).body();
             stats.scrollTotal++;

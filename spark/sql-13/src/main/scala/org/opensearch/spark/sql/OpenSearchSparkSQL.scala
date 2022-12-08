@@ -71,13 +71,13 @@ object OpenSearchSparkSQL {
   }
 
 
-  def saveToEs(srdd: DataFrame, resource: String): Unit = {
-    saveToEs(srdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearch(srdd: DataFrame, resource: String): Unit = {
+    saveToOpenSearch(srdd, Map(OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEs(srdd: DataFrame, resource: String, cfg: Map[String, String]): Unit = {
-    saveToEs(srdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
+  def saveToOpenSearch(srdd: DataFrame, resource: String, cfg: Map[String, String]): Unit = {
+    saveToOpenSearch(srdd, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
-  def saveToEs(srdd: DataFrame, cfg: Map[String, String]): Unit = {
+  def saveToOpenSearch(srdd: DataFrame, cfg: Map[String, String]): Unit = {
     if (srdd != null) {
       val sparkCtx = srdd.sqlContext.sparkContext
       val sparkCfg = new SparkSettingsManager().load(sparkCtx.getConf)

@@ -161,7 +161,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   @Test
   def testRDDEmptyRead() {
     val target = wrapIndex(resource("spark-test-empty-rdd", "data", version))
-    sc.emptyRDD.saveToEs(target, cfg)
+    sc.emptyRDD.saveToOpenSearch(target, cfg)
   }
 
   @Test(expected=classOf[OpenSearchHadoopIllegalArgumentException])
@@ -171,7 +171,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val target = wrapIndex(resource("spark-test-nonexisting-scala-basic-write", "data", version))
 
-    sc.makeRDD(Seq(doc1, doc2)).saveToEs(target, collection.mutable.Map(cfg.toSeq: _*) += (
+    sc.makeRDD(Seq(doc1, doc2)).saveToOpenSearch(target, collection.mutable.Map(cfg.toSeq: _*) += (
       OPENSEARCH_INDEX_AUTO_CREATE -> "no"))
     assertTrue(!RestUtils.exists(target))
   }
@@ -183,7 +183,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val target = wrapIndex(resource("spark-test-scala-basic-write", "data", version))
 
-    sc.makeRDD(Seq(doc1, doc2)).saveToEs(target, cfg)
+    sc.makeRDD(Seq(doc1, doc2)).saveToOpenSearch(target, cfg)
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString(""))
   }
@@ -191,7 +191,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   // @Test(expected = classOf[SparkException])
   // def testNestedUnknownCharacter() {
   //   val doc = Map("itemId" -> "1", "map" -> Map("lat" -> 1.23, "lon" -> -70.12), "list" -> ("A", "B", "C"), "unknown" -> new Garbage(0))
-  //   sc.makeRDD(Seq(doc)).saveToEs(wrapIndex(resource("spark-test-nested-map", "data", version)), cfg)
+  //   sc.makeRDD(Seq(doc)).saveToOpenSearch(wrapIndex(resource("spark-test-nested-map", "data", version)), cfg)
   // }
 
   @Test
@@ -204,11 +204,11 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
      val target = wrapIndex(resource("spark-test-scala-basic-write-objects", "data", version))
 
-    sc.makeRDD(Seq(javaBean, caseClass1)).saveToEs(target, cfg)
-    sc.makeRDD(Seq(javaBean, caseClass2)).saveToEs(target, Map("opensearch.mapping.id"->"id"))
+    sc.makeRDD(Seq(javaBean, caseClass1)).saveToOpenSearch(target, cfg)
+    sc.makeRDD(Seq(javaBean, caseClass2)).saveToOpenSearch(target, Map("opensearch.mapping.id"->"id"))
 
     assertTrue(RestUtils.exists(target))
-    assertEquals(3, OpenSearchSpark.esRDD(sc, target).count())
+    assertEquals(3, OpenSearchSpark.opensearchRDD(sc, target).count())
     assertThat(RestUtils.get(target + "/_search?"), containsString(""))
   }
 
@@ -220,9 +220,9 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val target = resource("spark-test-scala-id-write", "data", version)
     val docPath = docEndpoint("spark-test-scala-id-write", "data", version)
 
-    sc.makeRDD(Seq(doc1, doc2)).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "number"))
+    sc.makeRDD(Seq(doc1, doc2)).saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "number"))
 
-    assertEquals(2, OpenSearchSpark.esRDD(sc, target).count())
+    assertEquals(2, OpenSearchSpark.opensearchRDD(sc, target).count())
     assertTrue(RestUtils.exists(docPath + "/1"))
     assertTrue(RestUtils.exists(docPath + "/2"))
 
@@ -237,9 +237,9 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val target = wrapIndex(resource("spark-test-scala-dyn-id-write", "data", version))
     val docPath = wrapIndex(docEndpoint("spark-test-scala-dyn-id-write", "data", version))
 
-    val pairRDD = sc.makeRDD(Seq((3, doc1), (4, doc2))).saveToEsWithMeta(target, cfg)
+    val pairRDD = sc.makeRDD(Seq((3, doc1), (4, doc2))).saveToOpenSearchWithMeta(target, cfg)
 
-    assertEquals(2, OpenSearchSpark.esRDD(sc, target).count())
+    assertEquals(2, OpenSearchSpark.opensearchRDD(sc, target).count())
     assertTrue(RestUtils.exists(docPath + "/3"))
     assertTrue(RestUtils.exists(docPath + "/4"))
 
@@ -262,7 +262,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val pairRDD = sc.makeRDD(Seq((metadata1, doc1), (metadata2, doc2)))
 
-    pairRDD.saveToEsWithMeta(target, cfg)
+    pairRDD.saveToOpenSearchWithMeta(target, cfg)
 
     assertTrue(RestUtils.exists(docPath + "/5"))
     assertTrue(RestUtils.exists(docPath + "/6"))
@@ -287,7 +287,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val pairRDD = sc.makeRDD(Seq((metadata1, doc1), (metadata2, doc2)))
 
     try {
-      pairRDD.saveToEsWithMeta(target, cfg)
+      pairRDD.saveToOpenSearchWithMeta(target, cfg)
     } catch {
       case s: SparkException => throw s.getCause
       case t: Throwable => throw t
@@ -303,7 +303,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val target = wrapIndex(resource("spark-test-scala-write-exclude", "data", version))
 
-    sc.makeRDD(Seq(trip1, trip2)).saveToEs(target, Map(OPENSEARCH_MAPPING_EXCLUDE -> "airport"))
+    sc.makeRDD(Seq(trip1, trip2)).saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_EXCLUDE -> "airport"))
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString("business"))
     assertThat(RestUtils.get(target +  "/_search?"), containsString("participants"))
@@ -339,13 +339,13 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
         RestUtils.putMapping(index, typename, "data/join/mapping/typed.json")
       }
 
-      sc.makeRDD(parents).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
-      sc.makeRDD(children).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(parents).saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(children).saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
 
       assertThat(RestUtils.get(getEndpoint + "/10?routing=1"), containsString("kimchy"))
       assertThat(RestUtils.get(getEndpoint + "/10?routing=1"), containsString(""""_routing":"1""""))
 
-      val data = sc.esRDD(target).collectAsMap()
+      val data = sc.opensearchRDD(target).collectAsMap()
 
       {
         assertTrue(data.contains("1"))
@@ -377,12 +377,12 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
         RestUtils.putMapping(index, typename, "data/join/mapping/typed.json")
       }
 
-      sc.makeRDD(docs).saveToEs(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
+      sc.makeRDD(docs).saveToOpenSearch(target, Map(OPENSEARCH_MAPPING_ID -> "id", OPENSEARCH_MAPPING_JOIN -> "joiner"))
 
       assertThat(RestUtils.get(getEndpoint + "/10?routing=1"), containsString("kimchy"))
       assertThat(RestUtils.get(getEndpoint + "/10?routing=1"), containsString(""""_routing":"1""""))
 
-      val data = sc.esRDD(target).collectAsMap()
+      val data = sc.opensearchRDD(target).collectAsMap()
 
       {
         assertTrue(data.contains("1"))
@@ -418,7 +418,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val ingestCfg = cfg + (ConfigurationOptions.OPENSEARCH_INGEST_PIPELINE -> "spark-pipeline") + (ConfigurationOptions.OPENSEARCH_NODES_INGEST_ONLY -> "true")
 
-    sc.makeRDD(Seq(doc1, doc2)).saveToEs(target, ingestCfg)
+    sc.makeRDD(Seq(doc1, doc2)).saveToOpenSearch(target, ingestCfg)
     assertTrue(RestUtils.exists(target))
     assertThat(RestUtils.get(target + "/_search?"), containsString(""))
     assertThat(RestUtils.get(target + "/_search?"), containsString("\"pipeTEST\":true"))
@@ -431,7 +431,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val trip2 = Map("participants" -> 5, "airport" -> "otp")
 
     val target = wrapIndex(resource("spark-test-trip-{airport}", "data", version))
-    sc.makeRDD(Seq(trip1, trip2)).saveToEs(target, cfg)
+    sc.makeRDD(Seq(trip1, trip2)).saveToOpenSearch(target, cfg)
     assertTrue(RestUtils.exists(wrapIndex(resource("spark-test-trip-otp", "data", version))))
     assertTrue(RestUtils.exists(wrapIndex(resource("spark-test-trip-sfo", "data", version))))
 
@@ -466,7 +466,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val props = Map("opensearch.write.operation" -> "upsert", "opensearch.update.script.file" -> "break")
     val lines = sc.makeRDD(List(Map("id" -> "1")))
     try {
-      lines.saveToEs("should-break", props)
+      lines.saveToOpenSearch("should-break", props)
     } catch {
       case s: SparkException => throw s.getCause
       case t: Throwable => throw t
@@ -508,7 +508,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val props = Map("opensearch.write.operation" -> "update", "opensearch.mapping.id" -> "id", "opensearch.update.script.stored" -> scriptName)
     val lines = sc.makeRDD(List(Map("id"->"1")))
-    lines.saveToEs(target, props)
+    lines.saveToOpenSearch(target, props)
 
     val docs = RestUtils.get(s"$target/_search")
     Assert.assertThat(docs, containsString(""""counter":6"""))
@@ -556,13 +556,13 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val lines = sc.makeRDD(List("""{"id":"1","address":{"zipcode":"12345","id":"1"}}"""))
     val up_params = "new_address:address"
     val up_script = { "ctx._source.address.add(params.new_address)" }
-    lines.saveToEs(target, props + ("opensearch.update.script.params" -> up_params) + ("opensearch.update.script" -> up_script))
+    lines.saveToOpenSearch(target, props + ("opensearch.update.script.params" -> up_params) + ("opensearch.update.script" -> up_script))
 
     // Upsert a value that should only modify the second document. Modification will update the "note" field.
     val notes = sc.makeRDD(List("""{"id":"2","note":"Second"}"""))
     val note_up_params = "new_note:note"
     val note_up_script = { "ctx._source.note = params.new_note" }
-    notes.saveToEs(target, props + ("opensearch.update.script.params" -> note_up_params) + ("opensearch.update.script" -> note_up_script))
+    notes.saveToOpenSearch(target, props + ("opensearch.update.script.params" -> note_up_params) + ("opensearch.update.script" -> note_up_script))
 
     assertTrue(RestUtils.exists(s"$docPath/1"))
     assertThat(RestUtils.get(s"$docPath/1"), both(containsString(""""zipcode":"12345"""")).and(containsString(""""note":"First"""")))
@@ -580,7 +580,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     RestUtils.postData(docPath, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
     RestUtils.refresh(wrapIndex("spark-test-scala-basic-read"))
 
-    val esData = OpenSearchSpark.esRDD(sc, target, cfg)
+    val esData = OpenSearchSpark.opensearchRDD(sc, target, cfg)
     val messages = esData.filter(doc => doc._2.find(_.toString.contains("message")).nonEmpty)
 
     assertTrue(messages.count() == 2)
@@ -601,8 +601,8 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     RestUtils.refresh(index)
 
     val queryTarget = resource("*-scala-basic-query-read", typename, version)
-    val esData = OpenSearchSpark.esRDD(sc, queryTarget, "?q=message:Hello World", cfg)
-    val newData = OpenSearchSpark.esRDD(sc, collection.mutable.Map(cfg.toSeq: _*) += (
+    val esData = OpenSearchSpark.opensearchRDD(sc, queryTarget, "?q=message:Hello World", cfg)
+    val newData = OpenSearchSpark.opensearchRDD(sc, collection.mutable.Map(cfg.toSeq: _*) += (
       OPENSEARCH_RESOURCE -> queryTarget,
       OPENSEARCH_INPUT_JSON -> "true",
       OPENSEARCH_QUERY -> "?q=message:Hello World"))
@@ -650,7 +650,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val testCfg = cfg + (ConfigurationOptions.OPENSEARCH_READ_SOURCE_FILTER -> "message_date")
 
-    val esData = OpenSearchSpark.esRDD(sc, target, testCfg)
+    val esData = OpenSearchSpark.opensearchRDD(sc, target, testCfg)
     val messages = esData.filter(doc => doc._2.contains("message_date"))
 
     assertTrue(messages.count() == 2)
@@ -700,9 +700,9 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val typename = "data"
     val target = resource(index, typename, version)
 
-    sc.makeRDD(data).saveToEs(target)
+    sc.makeRDD(data).saveToOpenSearch(target)
 
-    assertEquals(3, OpenSearchSpark.esRDD(sc, target, cfg).count())
+    assertEquals(3, OpenSearchSpark.opensearchRDD(sc, target, cfg).count())
   }
 
   @Test
@@ -734,8 +734,8 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val rdd = readAsRDD(AbstractScalaOpenSearchScalaSpark.testData.sampleArtistsJsonUri())
     OpenSearchSpark.saveJsonToEs(rdd, target)
-    val esRDD = OpenSearchSpark.esRDD(sc, target, cfg)
-    println(esRDD.count)
+    val opensearchRDD = OpenSearchSpark.opensearchRDD(sc, target, cfg)
+    println(opensearchRDD.count)
     println(RestUtils.getMappings(index).getResolvedView)
 
     val erc = new ExtendedRestClient()
@@ -752,13 +752,13 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val rawCore = List( Map("colint" -> 1, "colstr" -> "s"),
                          Map("colint" -> null, "colstr" -> null) )
-    sc.parallelize(rawCore, 1).saveToEs(target)
+    sc.parallelize(rawCore, 1).saveToOpenSearch(target)
     val qjson =
       """{"query":{"range":{"colint":{"from":null,"to":"9","include_lower":true,"include_upper":true}}}}"""
 
-    val esRDD = OpenSearchSpark.esRDD(sc, target, qjson)
-    val scRDD = sc.esRDD(target, qjson)
-    assertEquals(esRDD.collect().size, scRDD.collect().size)
+    val opensearchRDD = OpenSearchSpark.opensearchRDD(sc, target, qjson)
+    val scRDD = sc.opensearchRDD(target, qjson)
+    assertEquals(opensearchRDD.collect().size, scRDD.collect().size)
   }
 
 

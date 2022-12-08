@@ -457,7 +457,7 @@ if (disableTests) {
     // Map Reduce Jobs
     // =============================================================================
     
-    // Run the MR job to load data to ES. Ensure Kerberos settings are available.
+    // Run the MR job to load data to OpenSearch. Ensure Kerberos settings are available.
     HadoopMRJob mrLoadData = config.createClusterTask('mrLoadData', HadoopMRJob.class) {
         clusterConfiguration = config
         useCluster(testClusters.integTest)
@@ -484,7 +484,7 @@ if (disableTests) {
     }
     integrationTest.dependsOn(mrLoadData)
     
-    // Run the MR job to read data out of ES. Ensure Kerberos settings are available.
+    // Run the MR job to read data out of OpenSearch. Ensure Kerberos settings are available.
     HadoopMRJob mrReadData = config.createClusterTask('mrReadData', HadoopMRJob.class) {
         clusterConfiguration = config
         useCluster(testClusters.integTest)
@@ -514,7 +514,7 @@ if (disableTests) {
     // Spark Jobs
     // =============================================================================
 
-    // Run the Spark job to load data to ES. Ensure Kerberos settings are available.
+    // Run the Spark job to load data to OpenSearch. Ensure Kerberos settings are available.
     SparkApp sparkLoadData = config.createClusterTask('sparkLoadData', SparkApp.class) {
         clusterConfiguration = config
         useCluster(testClusters.integTest)
@@ -546,7 +546,7 @@ if (disableTests) {
     }
     integrationTest.dependsOn(sparkLoadData)
     
-    // Run the Spark job to load data to ES. Ensure Kerberos settings are available.
+    // Run the Spark job to load data to OpenSearch. Ensure Kerberos settings are available.
     SparkApp sparkReadData = config.createClusterTask('sparkReadData', SparkApp.class) {
         clusterConfiguration = config
         useCluster(testClusters.integTest)

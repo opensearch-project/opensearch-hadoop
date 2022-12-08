@@ -53,7 +53,7 @@ The properties are read mainly from the Hadoop configuration but the user can sp
 
 ### Required
 ```
-opensearch.resource=<ES resource location, relative to the host/port specified above>
+opensearch.resource=<OpenSearch resource location, relative to the host/port specified above>
 ```
 ### Essential
 ```
@@ -113,14 +113,14 @@ job.waitForCompletion(true);
 ```
 
 ## [Apache Hive][]
-OpenSearch-Hadoop provides a Hive storage handler for OpenSearch, meaning one can define an [external table][] on top of ES.
+OpenSearch-Hadoop provides a Hive storage handler for OpenSearch, meaning one can define an [external table][] on top of OpenSearch.
 
 Add opensearch-hadoop-<version>.jar to `hive.aux.jars.path` or register it manually in your Hive script (recommended):
 ```
 ADD JAR /path_to_jar/opensearch-hadoop-<version>.jar;
 ```
 ### Reading
-To read data from ES, define a table backed by the desired index:
+To read data from OpenSearch, define a table backed by the desired index:
 ```SQL
 CREATE EXTERNAL TABLE artists (
     id      BIGINT,
@@ -169,7 +169,7 @@ Additionally one can define an alias to save some chars:
 and use `$ESSTORAGE` for storage definition.
 
 ### Reading
-To read data from ES, use `OpenSearchStorage` and specify the query through the `LOAD` function:
+To read data from OpenSearch, use `OpenSearchStorage` and specify the query through the `LOAD` function:
 ```SQL
 A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.OpenSearchStorage('opensearch.query=?q=me*');
 DUMP A;
@@ -196,7 +196,7 @@ import org.opensearch.spark._
 ..
 val conf = ...
 val sc = new SparkContext(conf)
-sc.esRDD("radio/artists", "?q=me*")
+sc.opensearchRDD("radio/artists", "?q=me*")
 ```
 
 #### Spark SQL
@@ -222,7 +222,7 @@ val sc = new SparkContext(conf)
 val numbers = Map("one" -> 1, "two" -> 2, "three" -> 3)
 val airports = Map("OTP" -> "Otopeni", "SFO" -> "San Fran")
 
-sc.makeRDD(Seq(numbers, airports)).saveToEs("spark/docs")
+sc.makeRDD(Seq(numbers, airports)).saveToOpenSearch("spark/docs")
 ```
 
 #### Spark SQL
@@ -231,7 +231,7 @@ sc.makeRDD(Seq(numbers, airports)).saveToEs("spark/docs")
 import org.opensearch.spark.sql._
 
 val df = sqlContext.read.json("examples/people.json")
-df.saveToEs("spark/people")
+df.saveToOpenSearch("spark/people")
 ```
 
 ### Java
@@ -239,7 +239,7 @@ df.saveToEs("spark/people")
 In a Java environment, use the `org.opensearch.spark.rdd.java.api` package, in particular the `JavaOpenSearchSpark` class.
 
 ### Reading
-To read data from ES, create a dedicated `RDD` and specify the query as an argument.
+To read data from OpenSearch, create a dedicated `RDD` and specify the query as an argument.
 
 ```java
 import org.apache.spark.api.java.JavaSparkContext;
@@ -248,7 +248,7 @@ import org.opensearch.spark.rdd.api.java.JavaOpenSearchSpark;
 SparkConf conf = ...
 JavaSparkContext jsc = new JavaSparkContext(conf);
 
-JavaPairRDD<String, Map<String, Object>> esRDD = JavaOpenSearchSpark.esRDD(jsc, "radio/artists");
+JavaPairRDD<String, Map<String, Object>> opensearchRDD = JavaOpenSearchSpark.opensearchRDD(jsc, "radio/artists");
 ```
 
 #### Spark SQL
@@ -272,7 +272,7 @@ Map<String, ?> numbers = ImmutableMap.of("one", 1, "two", 2);
 Map<String, ?> airports = ImmutableMap.of("OTP", "Otopeni", "SFO", "San Fran");
 
 JavaRDD<Map<String, ?>> javaRDD = jsc.parallelize(ImmutableList.of(numbers, airports));
-JavaOpenSearchSpark.saveToEs(javaRDD, "spark/docs");
+JavaOpenSearchSpark.saveToOpenSearch(javaRDD, "spark/docs");
 ```
 
 #### Spark SQL
@@ -281,14 +281,14 @@ JavaOpenSearchSpark.saveToEs(javaRDD, "spark/docs");
 import org.opensearch.spark.sql.api.java.JavaOpenSearchSparkSQL;
 
 DataFrame df = sqlContext.read.json("examples/people.json")
-JavaOpenSearchSparkSQL.saveToEs(df, "spark/docs")
+JavaOpenSearchSparkSQL.saveToOpenSearch(df, "spark/docs")
 ```
 
 ## [Apache Storm][]
 OpenSearch-Hadoop provides native integration with Storm: for reading a dedicated `Spout` and for writing a specialized `Bolt`
 
 ### Reading
-To read data from ES, use `OpenSearchSpout`:
+To read data from OpenSearch, use `OpenSearchSpout`:
 ```java
 import org.opensearch.storm.OpenSearchSpout;
 
@@ -298,7 +298,7 @@ builder.setBolt("bolt", new PrinterBolt()).shuffleGrouping("opensearch-spout");
 ```
 
 ### Writing
-To index data to ES, use `OpenSearchBolt`:
+To index data to OpenSearch, use `OpenSearchBolt`:
 
 ```java
 import org.opensearch.storm.OpenSearchBolt;

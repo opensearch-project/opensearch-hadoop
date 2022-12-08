@@ -118,7 +118,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
         Dataset<Row> dataset = artistsAsDataset();
 
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
-		JavaOpenSearchSparkSQL.saveToEs(dataset, target);
+		JavaOpenSearchSparkSQL.saveToOpenSearch(dataset, target);
 		assertTrue(RestUtils.exists(target));
 		assertThat(RestUtils.get(target + "/_search?"), containsString("345"));
 	}
@@ -130,7 +130,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 		String target = resource("sparksql-test-scala-basic-write-id-mapping", "data", version);
 		String docEndpoint = docEndpoint("sparksql-test-scala-basic-write-id-mapping", "data", version);
 
-		JavaOpenSearchSparkSQL.saveToEs(dataset, target,
+		JavaOpenSearchSparkSQL.saveToOpenSearch(dataset, target,
 				ImmutableMap.of(OPENSEARCH_MAPPING_ID, "id"));
 		assertTrue(RestUtils.exists(target));
 		assertThat(RestUtils.get(target + "/_search?"), containsString("345"));
@@ -142,7 +142,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
         Dataset<Row> dataset = artistsAsDataset();
 
         String target = resource("sparksql-test-scala-basic-write-exclude-mapping", "data", version);
-		JavaOpenSearchSparkSQL.saveToEs(dataset, target,
+		JavaOpenSearchSparkSQL.saveToOpenSearch(dataset, target,
                 ImmutableMap.of(OPENSEARCH_MAPPING_EXCLUDE, "url"));
         assertTrue(RestUtils.exists(target));
         assertThat(RestUtils.get(target + "/_search?"), not(containsString("url")));

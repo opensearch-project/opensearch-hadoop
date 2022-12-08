@@ -562,7 +562,7 @@ private[sql] case class OpenSearchRelation(parameters: Map[String, String], @tra
       }
       rr.close()
     }
-    OpenSearchSparkSQL.saveToEs(data, parameters)
+    OpenSearchSparkSQL.saveToOpenSearch(data, parameters)
   }
 
   def isEmpty(): Boolean = {

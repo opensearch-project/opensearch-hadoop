@@ -62,7 +62,7 @@ import org.opensearch.hadoop.util.IOUtils;
 import org.opensearch.hadoop.util.StringUtils;
 
 /**
- * Class handling the conversion of data from ES to target objects. It performs tree navigation tied to a potential ES mapping (if available).
+ * Class handling the conversion of data from OpenSearch to target objects. It performs tree navigation tied to a potential OpenSearch mapping (if available).
  * Expected to read a _search response.
  */
 public class ScrollReader implements Closeable {

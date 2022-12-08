@@ -108,7 +108,7 @@ class OpenSearchServiceCredentialProvider extends ServiceCredentialProvider {
     val esAuthMethod = settings.getSecurityAuthenticationMethod
     val required = isSecurityEnabled && AuthenticationMethod.KERBEROS.equals(esAuthMethod)
     LOG.info(s"Hadoop Security Enabled = [$isSecurityEnabled]")
-    LOG.info(s"ES Auth Method = [$esAuthMethod]")
+    LOG.info(s"OpenSearch Auth Method = [$esAuthMethod]")
     LOG.info(s"Are creds required = [$required]")
     required
   }

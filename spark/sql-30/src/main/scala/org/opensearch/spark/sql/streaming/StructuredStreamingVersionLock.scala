@@ -58,7 +58,7 @@ object StructuredStreamingVersionLock {
         case _ =>
           throw new OpenSearchHadoopIllegalArgumentException(s"Spark version mismatch. Expected at least Spark version [2.2.0] " +
             s"but found [${session.version}]. Spark Structured Streaming is a feature that is only supported on Spark " +
-            s"[2.2.0] and up for this version of ES-Hadoop/Spark.")
+            s"[2.2.0] and up for this version of OpenSearch-Hadoop/Spark.")
       }
     } catch {
       case e: OpenSearchHadoopException =>

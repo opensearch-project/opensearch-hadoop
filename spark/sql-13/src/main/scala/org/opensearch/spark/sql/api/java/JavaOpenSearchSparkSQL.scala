@@ -51,7 +51,7 @@ object JavaOpenSearchSparkSQL {
   def esDF(sc: SQLContext, resource: String, query: String, cfg: JMap[String, String]): DataFrame = OpenSearchSparkSQL.esDF(sc, resource, query, cfg.asScala)
 
   
-  def saveToEs(df: DataFrame, resource: String) = OpenSearchSparkSQL.saveToEs(df , resource)
-  def saveToEs(df: DataFrame, resource: String, cfg: JMap[String, String]) = OpenSearchSparkSQL.saveToEs(df, resource, cfg.asScala)
-  def saveToEs(df: DataFrame, cfg: JMap[String, String]) = OpenSearchSparkSQL.saveToEs(df, cfg.asScala)
+  def saveToOpenSearch(df: DataFrame, resource: String) = OpenSearchSparkSQL.saveToOpenSearch(df , resource)
+  def saveToOpenSearch(df: DataFrame, resource: String, cfg: JMap[String, String]) = OpenSearchSparkSQL.saveToOpenSearch(df, resource, cfg.asScala)
+  def saveToOpenSearch(df: DataFrame, cfg: JMap[String, String]) = OpenSearchSparkSQL.saveToOpenSearch(df, cfg.asScala)
 }

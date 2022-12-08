@@ -86,10 +86,10 @@ abstract class HiveUtils {
     }
 
     /**
-     * Renders the full collection of field names needed from ES by combining the names of
+     * Renders the full collection of field names needed from OpenSearch by combining the names of
      * the hive table fields with the user provided name mappings.
      * @param settings Settings to pull hive column names and user name mappings from.
-     * @return A collection of ES field names
+     * @return A collection of OpenSearch field names
      */
     static Collection<String> columnToAlias(Settings settings) {
         FieldAlias fa = alias(settings);
@@ -115,7 +115,7 @@ abstract class HiveUtils {
      * Reads the current aliases, and then the set of hive column names. Remaps the raw hive column names (_col1, _col2)
      * to the names used in the hive table, or, if the mappings exist, the names in the mappings instead.
      * @param settings Settings to pull user name mappings and hive column names from
-     * @return FieldAlias mapping object to go from hive column name to ES field name
+     * @return FieldAlias mapping object to go from hive column name to OpenSearch field name
      */
     static FieldAlias alias(Settings settings) {
         Map<String, String> aliasMap = SettingsUtils.aliases(settings.getProperty(HiveConstants.MAPPING_NAMES), true);

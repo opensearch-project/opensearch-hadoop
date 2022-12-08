@@ -45,12 +45,12 @@ import org.opensearch.spark.rdd.JavaOpenSearchRDD
 object JavaOpenSearchSpark {
 
   // specify the return types to make sure the bytecode is generated properly (w/o any scala.collections in it)
-  def esRDD(jsc: JavaSparkContext): JavaPairRDD[String, JMap[String, Object]] = fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc))
-  def esRDD(jsc: JavaSparkContext, resource: String): JavaPairRDD[String, JMap[String, Object]] =
+  def opensearchRDD(jsc: JavaSparkContext): JavaPairRDD[String, JMap[String, Object]] = fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc))
+  def opensearchRDD(jsc: JavaSparkContext, resource: String): JavaPairRDD[String, JMap[String, Object]] =
     fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc, Map(OPENSEARCH_RESOURCE_READ -> resource)))
-  def esRDD(jsc: JavaSparkContext, resource: String, query: String): JavaPairRDD[String, JMap[String, Object]] =
+  def opensearchRDD(jsc: JavaSparkContext, resource: String, query: String): JavaPairRDD[String, JMap[String, Object]] =
     fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query)))
-  def esRDD(jsc: JavaSparkContext, cfg: JMap[String, String]): JavaPairRDD[String, JMap[String, Object]] =
+  def opensearchRDD(jsc: JavaSparkContext, cfg: JMap[String, String]): JavaPairRDD[String, JMap[String, Object]] =
     fromRDD(new JavaOpenSearchRDD[JMap[String, Object]](jsc.sc, cfg.asScala))
 
   def esJsonRDD(jsc: JavaSparkContext): JavaPairRDD[String, String] = fromRDD(new JavaOpenSearchRDD[String](jsc.sc, Map(OPENSEARCH_OUTPUT_JSON -> true.toString)))
@@ -61,13 +61,13 @@ object JavaOpenSearchSpark {
   def esJsonRDD(jsc: JavaSparkContext, cfg: JMap[String, String]): JavaPairRDD[String, String] =
     fromRDD(new JavaOpenSearchRDD[String](jsc.sc, cfg.asScala += (OPENSEARCH_OUTPUT_JSON -> true.toString)))
 
-  def saveToEs(jrdd: JavaRDD[_], resource: String) = OpenSearchSpark.saveToEs(jrdd.rdd, resource)
-  def saveToEs(jrdd: JavaRDD[_], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveToEs(jrdd.rdd, resource, cfg.asScala)
-  def saveToEs(jrdd: JavaRDD[_], cfg: JMap[String, String]) = OpenSearchSpark.saveToEs(jrdd.rdd, cfg.asScala)
+  def saveToOpenSearch(jrdd: JavaRDD[_], resource: String) = OpenSearchSpark.saveToOpenSearch(jrdd.rdd, resource)
+  def saveToOpenSearch(jrdd: JavaRDD[_], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveToOpenSearch(jrdd.rdd, resource, cfg.asScala)
+  def saveToOpenSearch(jrdd: JavaRDD[_], cfg: JMap[String, String]) = OpenSearchSpark.saveToOpenSearch(jrdd.rdd, cfg.asScala)
 
-  def saveToEsWithMeta[K, V](jrdd: JavaPairRDD[K, V], resource: String) = OpenSearchSpark.saveToEsWithMeta(jrdd.rdd, resource)
-  def saveToEsWithMeta[K, V](jrdd: JavaPairRDD[K, V], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveToEsWithMeta(jrdd.rdd, resource, cfg.asScala)
-  def saveToEsWithMeta[K, V](jrdd: JavaPairRDD[K, V], cfg: JMap[String, String]) = OpenSearchSpark.saveToEsWithMeta(jrdd.rdd, cfg.asScala)
+  def saveToOpenSearchWithMeta[K, V](jrdd: JavaPairRDD[K, V], resource: String) = OpenSearchSpark.saveToOpenSearchWithMeta(jrdd.rdd, resource)
+  def saveToOpenSearchWithMeta[K, V](jrdd: JavaPairRDD[K, V], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveToOpenSearchWithMeta(jrdd.rdd, resource, cfg.asScala)
+  def saveToOpenSearchWithMeta[K, V](jrdd: JavaPairRDD[K, V], cfg: JMap[String, String]) = OpenSearchSpark.saveToOpenSearchWithMeta(jrdd.rdd, cfg.asScala)
 
   def saveJsonToEs(jrdd: JavaRDD[String], resource: String) = OpenSearchSpark.saveJsonToEs(jrdd.rdd, resource)
   def saveJsonToEs(jrdd: JavaRDD[String], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveJsonToEs(jrdd.rdd, resource, cfg.asScala)

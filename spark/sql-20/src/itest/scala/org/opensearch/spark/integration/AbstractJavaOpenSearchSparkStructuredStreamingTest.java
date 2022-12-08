@@ -271,7 +271,7 @@ public class AbstractJavaOpenSearchSparkStructuredStreamingTest {
                 target
         );
 
-        assertEquals(3, JavaOpenSearchSpark.esRDD(new JavaSparkContext(spark.sparkContext()), target).count());
+        assertEquals(3, JavaOpenSearchSpark.opensearchRDD(new JavaSparkContext(spark.sparkContext()), target).count());
         assertTrue(RestUtils.exists(docPath + "/1"));
         assertTrue(RestUtils.exists(docPath + "/2"));
         assertTrue(RestUtils.exists(docPath + "/3"));

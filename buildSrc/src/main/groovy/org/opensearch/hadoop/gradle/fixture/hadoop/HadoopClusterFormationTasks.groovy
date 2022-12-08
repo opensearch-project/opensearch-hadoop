@@ -316,7 +316,7 @@ class HadoopClusterFormationTasks {
 
     static Task configureCheckPreviousTask(String name, Project project, Task setup, InstanceInfo node) {
         // TODO - This is a later item for CI stability
-        // This is here for the moment to keep parity with the ES fixture
+        // This is here for the moment to keep parity with the OpenSearch fixture
         return setup
     }
 
@@ -358,7 +358,7 @@ class HadoopClusterFormationTasks {
     static Task configureExtraConfigFilesTask(String name, Project project, Task setup, InstanceInfo node) {
         // TODO: Extra Config Files
         // We don't really need them at the moment, but might in the future.
-        // This is just here to keep parity with the ES fixture
+        // This is just here to keep parity with the OpenSearch fixture
         return setup
     }
 
@@ -549,7 +549,7 @@ class HadoopClusterFormationTasks {
         // the waitfor failed, so dump any output we got (if info logging this goes directly to stdout)
         logger.error("|\n|  [ant output]")
         instance.buffer.toString('UTF-8').eachLine { line -> logger.error("|    ${line}") }
-        // also dump the log file for the startup script (which will include ES logging output to stdout)
+        // also dump the log file for the startup script (which will include OpenSearch logging output to stdout)
         if (instance.startLog.exists()) {
             logger.error("|\n|  [log]")
             instance.startLog.eachLine { line -> logger.error("|    ${line}") }

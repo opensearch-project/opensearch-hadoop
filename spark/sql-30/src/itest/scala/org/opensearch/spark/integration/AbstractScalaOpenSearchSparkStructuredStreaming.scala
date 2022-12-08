@@ -203,9 +203,9 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
     val target = wrapIndex(resource("failed-on-save-call", "data", version))
     val test = new StreamingQueryTestHarness[Record](spark)
 
-    test.stream.saveToEs(target)
+    test.stream.saveToOpenSearch(target)
 
-    Assert.fail("Should not launch job with saveToEs() method")
+    Assert.fail("Should not launch job with saveToOpenSearch() method")
   }
 
   @Test(expected = classOf[OpenSearchHadoopIllegalArgumentException])
@@ -358,7 +358,7 @@ class AbstractScalaOpenSearchSparkStructuredStreaming(prefix: String, something:
       Source.fromFile(s"${checkpointDir(target)}/0").getLines().foreach(println)
 
       assertThat(Files.exists(new File(check).toPath), is(true))
-      assertThat(Files.list(new File(check).toPath).count(), is(2L)) // A UUID for general checkpoint, and one for ES.
+      assertThat(Files.list(new File(check).toPath).count(), is(2L)) // A UUID for general checkpoint, and one for OpenSearch.
     } finally {
       spark.conf.unset(SQLConf.CHECKPOINT_LOCATION.key)
     }

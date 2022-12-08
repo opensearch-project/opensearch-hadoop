@@ -75,7 +75,7 @@ public final class OpenSearchMapReduceUtil {
             ClusterInfo clusterInfo = settings.getClusterInfoOrNull();
             RestClient bootstrap = new RestClient(settings);
             try {
-                // first get ES main action info if it's missing
+                // first get OpenSearch main action info if it's missing
                 if (clusterInfo == null) {
                     clusterInfo = bootstrap.mainInfo();
                 }
@@ -110,7 +110,7 @@ public final class OpenSearchMapReduceUtil {
             ClusterInfo clusterInfo = settings.getClusterInfoOrNull();
             RestClient bootstrap = new RestClient(settings);
             try {
-                // first get ES main action info if it's missing
+                // first get OpenSearch main action info if it's missing
                 if (clusterInfo == null) {
                     clusterInfo = bootstrap.mainInfo();
                 }

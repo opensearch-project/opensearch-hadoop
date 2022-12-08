@@ -37,7 +37,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 /**
- * Operates by retrieving the currently set subject in a way that ES-Hadoop understands, or
+ * Operates by retrieving the currently set subject in a way that OpenSearch-Hadoop understands, or
  * a blank subject if there isn't currently one available.
  */
 public class JdkUserProvider extends UserProvider {

@@ -55,9 +55,9 @@ package object sql {
   implicit def sparkDataFrameFunctions(df: DataFrame) = new SparkDataFrameFunctions(df)
 
   class SparkDataFrameFunctions(df: DataFrame) extends Serializable {
-    def saveToEs(resource: String): Unit = { OpenSearchSparkSQL.saveToEs(df, resource) }
-    def saveToEs(resource: String, cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSparkSQL.saveToEs(df, resource, cfg) }
-    def saveToEs(cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSparkSQL.saveToEs(df, cfg)    }
+    def saveToOpenSearch(resource: String): Unit = { OpenSearchSparkSQL.saveToOpenSearch(df, resource) }
+    def saveToOpenSearch(resource: String, cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSparkSQL.saveToOpenSearch(df, resource, cfg) }
+    def saveToOpenSearch(cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSparkSQL.saveToOpenSearch(df, cfg)    }
   }
   
   implicit def sparkSessionFunctions(ss: SparkSession)= new SparkSessionFunctions(ss)
@@ -74,8 +74,8 @@ package object sql {
   implicit def sparkDatasetFunctions[T : ClassTag](ds: Dataset[T]) = new SparkDatasetFunctions(ds)
   
   class SparkDatasetFunctions[T : ClassTag](ds: Dataset[T]) extends Serializable {
-    def saveToEs(resource: String): Unit =  { OpenSearchSparkSQL.saveToEs(ds, resource) }
-    def saveToEs(resource: String, cfg: scala.collection.Map[String, String]): Unit =  { OpenSearchSparkSQL.saveToEs(ds, resource, cfg) }
-    def saveToEs(cfg: scala.collection.Map[String, String]): Unit =  { OpenSearchSparkSQL.saveToEs(ds, cfg)    }
+    def saveToOpenSearch(resource: String): Unit =  { OpenSearchSparkSQL.saveToOpenSearch(ds, resource) }
+    def saveToOpenSearch(resource: String, cfg: scala.collection.Map[String, String]): Unit =  { OpenSearchSparkSQL.saveToOpenSearch(ds, resource, cfg) }
+    def saveToOpenSearch(cfg: scala.collection.Map[String, String]): Unit =  { OpenSearchSparkSQL.saveToOpenSearch(ds, cfg)    }
   }
 }

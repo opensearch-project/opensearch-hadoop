@@ -72,7 +72,7 @@ Note that os-hadoop supports both the so-called 'old' and the 'new' API through 
 ### 'Old' (`org.apache.hadoop.mapred`) API
 
 ### Reading
-To read data from Os, configure the `OpenSearchInputFormat` on your job configuration along with the relevant [properties](#configuration-properties):
+To read data from OpenSearch, configure the `OpenSearchInputFormat` on your job configuration along with the relevant [properties](#configuration-properties):
 ```java
 JobConf conf = new JobConf();
 conf.setInputFormat(OpenSearchInputFormat.class);
@@ -164,9 +164,9 @@ REGISTER /path_to_jar/opensearch-hadoop-<version>.jar;
 ```
 Additionally one can define an alias to save some chars:
 ```
-%define ESSTORAGE org.opensearch.pig.hadoop.OpenSearchStorage()
+%define OPENSEARCHSTORAGE org.opensearch.pig.hadoop.OpenSearchStorage()
 ```
-and use `$ESSTORAGE` for storage definition.
+and use `$OPENSEARCHSTORAGE` for storage definition.
 
 ### Reading
 To read data from OpenSearch, use `OpenSearchStorage` and specify the query through the `LOAD` function:

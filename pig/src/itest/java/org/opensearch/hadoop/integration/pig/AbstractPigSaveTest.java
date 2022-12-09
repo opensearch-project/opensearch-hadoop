@@ -263,8 +263,8 @@ public class AbstractPigSaveTest extends AbstractPigTests {
                         + "DUMP A;"
                         + "DUMP CHILDREN;"
 //                        + "STORE CHILDREN INTO 'pig-join/join' USING org.opensearch.hadoop.pig.OpenSearchStorage('"
-//                        + ConfigurationOptions.ES_MAPPING_JOIN + "=joiner','"
-//                        + ConfigurationOptions.ES_INDEX_AUTO_CREATE + "=no');"
+//                        + ConfigurationOptions.OPENSEARCH_MAPPING_JOIN + "=joiner','"
+//                        + ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE + "=no');"
                 ;
         pig.executeScript(script);
     }

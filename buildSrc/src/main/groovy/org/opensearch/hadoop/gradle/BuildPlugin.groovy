@@ -700,8 +700,8 @@ class BuildPlugin implements Plugin<Project>  {
         pom.description = descriptionProvider
         pom.url = 'http://github.com/opensearch-project/opensearch-hadoop'
         pom.organization {
-            name = 'Elastic'
-            url = 'https://www.elastic.co/'
+            name = 'OpenSearch'
+            url = 'https://www.opensearch.org/'
         }
         pom.licenses {
             license {
@@ -717,8 +717,8 @@ class BuildPlugin implements Plugin<Project>  {
         }
         pom.developers {
             developer {
-                name = 'Elastic'
-                url = 'https://www.elastic.co'
+                name = 'OpenSearch'
+                url = 'https://www.opensearch.org'
             }
         }
 

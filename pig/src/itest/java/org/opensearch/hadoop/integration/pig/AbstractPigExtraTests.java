@@ -94,10 +94,10 @@ public class AbstractPigExtraTests extends AbstractPigTests {
                 "STORE PARENT into '"+ resource("pig-test-parent", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage();" +
                 "STORE CHILD into '"+resource("pig-test-child", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage();";
        String script2 =
-                "ES_PARENT = LOAD '"+resource("pig-test-parent", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage() as (parent_name: chararray, parent_value: chararray);" +
-                "ES_CHILD = LOAD '"+resource("pig-test-child", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage() as (child_name: chararray, parent_name: chararray, child_value: long);" +
-                "CO_GROUP = COGROUP ES_PARENT by parent_name, ES_CHILD by parent_name;" +
-                "PARENT_CHILD = JOIN ES_PARENT by parent_name, ES_CHILD by parent_name;" +
+                "OPENSEARCH_PARENT = LOAD '"+resource("pig-test-parent", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage() as (parent_name: chararray, parent_value: chararray);" +
+                "OPENSEARCH_CHILD = LOAD '"+resource("pig-test-child", "data", VERSION)+"' using org.opensearch.hadoop.pig.OpenSearchStorage() as (child_name: chararray, parent_name: chararray, child_value: long);" +
+                "CO_GROUP = COGROUP OPENSEARCH_PARENT by parent_name, OPENSEARCH_CHILD by parent_name;" +
+                "PARENT_CHILD = JOIN OPENSEARCH_PARENT by parent_name, OPENSEARCH_CHILD by parent_name;" +
                 "STORE PARENT_CHILD INTO '" + tmpPig() + "/testjoin-join';" +
                 "STORE CO_GROUP INTO '" + tmpPig() + "/testjoin-cogroup';";
         pig.executeScript(script);

@@ -85,7 +85,7 @@ object SparkSqlStreamingConfigs {
 
     (logPath, userCheckpointLocation, sessionCheckpointLocation, queryName) match {
       // Case 1) /{log.path}/{batchFiles}
-      // If a user gives an explicit log location with ES_SINK_LOG_PATH, then it's fine to store the commit
+      // If a user gives an explicit log location with OPENSEARCH_SINK_LOG_PATH, then it's fine to store the commit
       // files in the root of that. That directory should be just for us.
       case (Some(explicitPath), _, _, _) => explicitPath
       // Case 2) /{checkpointLocation}/sinks/opensearch

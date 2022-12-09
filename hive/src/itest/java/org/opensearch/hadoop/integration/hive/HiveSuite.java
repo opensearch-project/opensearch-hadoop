@@ -99,8 +99,8 @@ public class HiveSuite {
             server.start();
 
             if (isLocal) {
-                HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_ES_HDP_LIB);
-                String jar = "ADD JAR " + HdfsUtils.qualify(Provisioner.HDFS_ES_HDP_LIB, HdpBootstrap.hadoopConfig());
+                HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_OPENSEARCH_HDP_LIB);
+                String jar = "ADD JAR " + HdfsUtils.qualify(Provisioner.HDFS_OPENSEARCH_HDP_LIB, HdpBootstrap.hadoopConfig());
                 server.execute(jar);
             }
             server.execute(cleanDdl);
@@ -127,11 +127,11 @@ public class HiveSuite {
         if (!isLocal) {
             hadoopConfig = HdpBootstrap.hadoopConfig();
 
-            HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_ES_HDP_LIB);
-            hdfsOpenSearchLib = HdfsUtils.qualify(Provisioner.HDFS_ES_HDP_LIB, hadoopConfig);
+            HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_OPENSEARCH_HDP_LIB);
+            hdfsOpenSearchLib = HdfsUtils.qualify(Provisioner.HDFS_OPENSEARCH_HDP_LIB, hadoopConfig);
             // copy jar to DistributedCache
             try {
-                DistributedCache.addArchiveToClassPath(new Path(Provisioner.HDFS_ES_HDP_LIB), hadoopConfig);
+                DistributedCache.addArchiveToClassPath(new Path(Provisioner.HDFS_OPENSEARCH_HDP_LIB), hadoopConfig);
             } catch (IOException ex) {
                 throw new RuntimeException("Cannot provision Hive", ex);
             }

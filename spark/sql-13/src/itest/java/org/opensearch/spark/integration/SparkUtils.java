@@ -37,7 +37,7 @@ import java.lang.reflect.Constructor;
 
 public abstract class SparkUtils {
 
-    public static final String[] ES_SPARK_TESTING_JAR = new String[] {Provisioner.OPENSEARCHHADOOP_TESTING_JAR};
+    public static final String[] OPENSEARCH_SPARK_TESTING_JAR = new String[] {Provisioner.OPENSEARCHHADOOP_TESTING_JAR};
 
     public static Kryo sparkSerializer(SparkConf conf) throws Exception {
         // reflection galore

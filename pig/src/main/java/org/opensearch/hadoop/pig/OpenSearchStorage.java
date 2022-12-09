@@ -482,8 +482,8 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
 //            if (log.isDebugEnabled()) {
 //                log.debug(String.format("Found field projection [%s] in store %s", fields, store));
 //            }
-//            cfg.set(InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS, fields);
-//            getUDFProperties().setProperty(InternalConfigurationOptions.INTERNAL_ES_TARGET_FIELDS, fields);
+//            cfg.set(InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS, fields);
+//            getUDFProperties().setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_TARGET_FIELDS, fields);
 //        }
     }
 }

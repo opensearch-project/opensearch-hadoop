@@ -36,7 +36,6 @@ import java.util.List;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.mapred.JobConf;
 import org.apache.hadoop.util.GenericOptionsParser;
-import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.util.Assert;
 
 /**
@@ -45,7 +44,7 @@ import org.opensearch.hadoop.util.Assert;
 public abstract class Provisioner {
 
     public static final String OPENSEARCHHADOOP_TESTING_JAR;
-    public static final String HDFS_ES_HDP_LIB = "/eshdp/libs/opensearch-hadoop.jar";
+    public static final String HDFS_OPENSEARCH_HDP_LIB = "/opensearchhdp/libs/opensearch-hadoop.jar";
     public static final String SYS_PROP_JOB_JAR = "opensearch.hadoop.job.jar";
 
     static {

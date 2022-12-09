@@ -60,7 +60,7 @@ public class PigSchemaSaveTest {
 
     @Test
     public void testProjection() throws Exception {
-        String schemaString = "ES_PARENT: {(parent_name: chararray,parent_value: chararray)}";
+        String schemaString = "OPENSEARCH_PARENT: {(parent_name: chararray,parent_value: chararray)}";
         Schema schema = Utils.getSchemaFromString(schemaString);
         System.out.println(PigUtils.asProjection(schema, new Properties()));
     }

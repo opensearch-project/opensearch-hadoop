@@ -65,7 +65,7 @@ public class PigSuite {
 
     @BeforeClass
     public static void setup() {
-        HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_ES_HDP_LIB);
+        HdfsUtils.copyFromLocal(Provisioner.OPENSEARCHHADOOP_TESTING_JAR, Provisioner.HDFS_OPENSEARCH_HDP_LIB);
         HdfsUtils.rmr(new Configuration(), "tmp-pig");
     }
 }

@@ -59,7 +59,7 @@ public class MiniKdcFixture {
     private static final String PORT_FILE_NAME = "ports";
     private static final String PID_FILE_NAME = "pid";
 
-    private static final String SYS_ES_FIXTURE_KDC = "opensearch.fixture.kdc.";
+    private static final String SYS_OPENSEARCH_FIXTURE_KDC = "opensearch.fixture.kdc.";
 
     private static final String SYS_USER_CONF = "user.";
     private static final String SYS_PWD_SUFFIX = ".pwd";
@@ -102,8 +102,8 @@ public class MiniKdcFixture {
         Enumeration<Object> sysProps = System.getProperties().keys();
         while (sysProps.hasMoreElements()) {
             String key = sysProps.nextElement().toString();
-            if (key.startsWith(SYS_ES_FIXTURE_KDC)) {
-                String subKey = key.substring(SYS_ES_FIXTURE_KDC.length());
+            if (key.startsWith(SYS_OPENSEARCH_FIXTURE_KDC)) {
+                String subKey = key.substring(SYS_OPENSEARCH_FIXTURE_KDC.length());
                 if (subKey.startsWith(SYS_USER_CONF)) {
                     String userConf = subKey.substring(SYS_USER_CONF.length());
 

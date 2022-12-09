@@ -96,7 +96,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
             .setMaster("local")
             .setAppName("opensearchtest")
             .set("spark.io.compression.codec", "lz4")
-            .setJars(SparkUtils.ES_SPARK_TESTING_JAR);
+            .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR);
 
     private static transient JavaSparkContext sc = null;
 

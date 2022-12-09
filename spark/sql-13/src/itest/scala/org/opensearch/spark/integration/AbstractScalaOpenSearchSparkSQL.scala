@@ -85,7 +85,7 @@ object AbstractScalaOpenSearchScalaSparkSQL {
   @transient val conf = new SparkConf().set("spark.serializer", "org.apache.spark.serializer.KryoSerializer")
     .setMaster("local").setAppName("opensearchtest").set("spark.executor.extraJavaOptions", "-XX:MaxPermSize=256m")
     .set("spark.io.compression.codec", "lz4")
-    .setJars(SparkUtils.ES_SPARK_TESTING_JAR)
+    .setJars(SparkUtils.OPENSEARCH_SPARK_TESTING_JAR)
   @transient var cfg: SparkConf = null
   @transient var sc: SparkContext = null
   @transient var sqc: SQLContext = null

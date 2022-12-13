@@ -243,12 +243,18 @@ public abstract class LicenseHeadersTask extends DefaultTask {
     }
 
     private static List<String> unapprovedFiles(File xmlReportFile) {
-        try {
-            NodeList resourcesNodes = DocumentBuilderFactory.newInstance()
-                .newDocumentBuilder()
+        try {   
+            DocumentBuilderFactory resourcesNodes = DocumentBuilderFactory.newInstance();
+            resourcesNodes.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
+            resourcesNodes.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
+            resourcesNodes.setFeature("http://xml.org/sax/features/external-general-entities", false);
+            resourcesNodes.setXIncludeAware(false);
+            resourcesNodes.setExpandEntityReferences(false);
+            NodeList resourcesNodesBuilder = resourcesNodes.newDocumentBuilder()
                 .parse(xmlReportFile)
                 .getElementsByTagName("resource");
-            return elementList(resourcesNodes).stream()
+            return elementList(
+                    resourcesNodesBuilder).stream()
                 .filter(
                     resource -> elementList(resource.getChildNodes()).stream()
                         .anyMatch(n -> n.getTagName().equals("license-approval") && n.getAttribute("name").equals("false"))

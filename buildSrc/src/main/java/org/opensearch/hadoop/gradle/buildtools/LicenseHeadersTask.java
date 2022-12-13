@@ -244,7 +244,7 @@ public abstract class LicenseHeadersTask extends DefaultTask {
 
     private static List<String> unapprovedFiles(File xmlReportFile) {
         try {   
-            NodeList resourcesNodes = DocumentBuilderFactory.newInstance();
+            DocumentBuilderFactory resourcesNodes = DocumentBuilderFactory.newInstance();
             resourcesNodes.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
             resourcesNodes.setFeature("http://xml.org/sax/features/external-parameter-entities", false);
             resourcesNodes.setFeature("http://xml.org/sax/features/external-general-entities", false);

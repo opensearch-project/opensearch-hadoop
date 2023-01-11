@@ -816,4 +816,16 @@ public abstract class Settings {
         setProperty(OPENSEARCH_NET_HTTP_HEADER_USER_AGENT, cleanOpaqueId(userAgent));
         return this;
     }
+
+    public Boolean getAwsSigV4Enabled() {
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_AWS_SIGV4_ENABLED, OPENSEARCH_AWS_SIGV4_ENABLED_DEFAULT));
+    }
+
+    public String getAwsSigV4Region() {
+        return getProperty(OPENSEARCH_AWS_SIGV4_REGION, OPENSEARCH_AWS_SIGV4_REGION_DEFAULT);
+    }
+
+    public String getAwsSigV4ServiceName() {
+        return getProperty(OPENSEARCH_AWS_SIGV4_SERVICE_NAME, OPENSEARCH_AWS_SIGV4_SERVICE_NAME_DEFAULT);
+    }
 }

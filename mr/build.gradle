@@ -80,6 +80,13 @@ dependencies {
         exclude group: "org.apache.directory.api", module: "api-ldap-schema-data"
         exclude group: 'com.fasterxml.jackson.core'
     }
+
+    // AWS SDK for SigV4 signing
+    implementation("software.amazon.awssdk:sdk-core:2.19.13")
+    implementation("software.amazon.awssdk:auth:2.19.13")
+    implementation("software.amazon.awssdk:utils:2.19.13")
+
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 String generatedResources = "$buildDir/generated-resources/main"

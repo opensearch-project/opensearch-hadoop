@@ -44,6 +44,7 @@ import org.opensearch.hadoop.rest.ReusableInputStream;
 import org.opensearch.hadoop.rest.SimpleResponse;
 import org.opensearch.hadoop.rest.Transport;
 import org.opensearch.hadoop.rest.commonshttp.auth.OpenSearchHadoopAuthPolicies;
+import org.opensearch.hadoop.rest.commonshttp.auth.aws.AwsSigV4Signer;
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyAuthScheme;
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyCredentials;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoAuthScheme;
@@ -93,14 +94,32 @@ import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.Socket;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.security.PrivilegedExceptionAction;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import org.opensearch.hadoop.thirdparty.google.common.base.Optional;
+import org.opensearch.hadoop.thirdparty.google.common.base.Splitter;
+import org.opensearch.hadoop.thirdparty.google.common.base.Strings;
+import org.opensearch.hadoop.thirdparty.google.common.base.Supplier;
+import org.opensearch.hadoop.thirdparty.google.common.collect.ImmutableListMultimap;
+import org.opensearch.hadoop.thirdparty.google.common.collect.ImmutableMap;
+import java.io.ByteArrayOutputStream;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Collections;
 
 /**
  * Transport implemented on top of Commons Http. Provides transport retries.
@@ -635,6 +654,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
 
         ByteSequence ba = request.body();
+        byte[] bodyBytes = null;
         if (ba != null && ba.length() > 0) {
             if (!(http instanceof EntityEnclosingMethod)) {
                 throw new IllegalStateException(String.format("Method %s cannot contain body - implementation bug", request.method().name()));
@@ -642,6 +662,11 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             EntityEnclosingMethod entityMethod = (EntityEnclosingMethod) http;
             entityMethod.setRequestEntity(new BytesArrayRequestEntity(ba));
             entityMethod.setContentChunked(false);
+
+            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
+            ba.writeTo(outStream);
+            bodyBytes = outStream.toByteArray();
+            outStream.close();
         }
 
         headers.applyTo(http);
@@ -686,6 +711,10 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             log.trace(String.format("Tx %s[%s]@[%s][%s]?[%s] w/ payload [%s]", proxyInfo, request.method().name(), httpInfo, request.path(), request.params(), request.body()));
         }
 
+        if (settings.getAwsSigV4Enabled()) {
+            awsSigV4SignRequest(request, http, bodyBytes);
+        }
+
         if (executingProvider != null) {
             final HttpMethod method = http;
             executingProvider.getUser().doAs(new PrivilegedExceptionAction<Object>() {
@@ -714,6 +743,56 @@ public class CommonsHttpTransport implements Transport, StatsAware {
 
         // the request URI is not set (since it is retried across hosts), so use the http info instead for source
         return new SimpleResponse(http.getStatusCode(), new ResponseInputStream(http), httpInfo, headers);
+    }
+
+    private void awsSigV4SignRequest(Request request, HttpMethod http, byte[] bodyBytes)
+            throws UnsupportedEncodingException {
+        final Supplier<LocalDateTime> clock = () -> LocalDateTime.now(ZoneOffset.UTC);
+        String awsRegion = settings.getAwsSigV4Region();
+        String awsServiceName = settings.getAwsSigV4ServiceName();
+        log.info(String.format("AWS IAM Signature V4 Enabled, region: %s, provider: DefaultAWSCredentialsProviderChain, serviceName: %s",
+                awsRegion, awsServiceName));
+        AwsSigV4Signer signer = new AwsSigV4Signer(
+                awsRegion,
+                awsServiceName,
+                clock);
+
+        final ImmutableMap.Builder<String, String> signerHeaders = ImmutableMap.builder();
+
+        for (Header header : http.getRequestHeaders()) {
+            signerHeaders.put(header.getName(), header.getValue());
+        }
+        signerHeaders.put("host", httpInfo);
+
+        Splitter queryStringSplitter = Splitter.on('&').trimResults().omitEmptyStrings();
+        final Iterable<String> rawParams = request.params() != null ? queryStringSplitter.split(request.params())
+                : Collections.emptyList();
+        final ImmutableListMultimap.Builder<String, String> queryParams = ImmutableListMultimap.builder();
+
+        for (String rawParam : rawParams) {
+            if (!Strings.isNullOrEmpty(rawParam)) {
+                final String pair = URLDecoder.decode(rawParam, StandardCharsets.UTF_8.name());
+                final int index = pair.indexOf('=');
+                if (index > 0) {
+                    final String key = pair.substring(0, index);
+                    final String value = pair.substring(index + 1);
+                    queryParams.put(key, value);
+                } else {
+                    queryParams.put(pair, "");
+                }
+            }
+        }
+
+        Map<String, String> signedHeaders = signer.getSignedHeaders(
+                http.getPath(),
+                request.method().toString(),
+                queryParams.build(),
+                signerHeaders.build(),
+                Optional.fromNullable(bodyBytes));
+
+        for (Map.Entry<String, String> entry : signedHeaders.entrySet()) {
+            http.setRequestHeader(entry.getKey(), entry.getValue());
+        }
     }
 
     /**

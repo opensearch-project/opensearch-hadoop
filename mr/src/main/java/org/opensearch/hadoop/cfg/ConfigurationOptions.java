@@ -335,4 +335,14 @@ public interface ConfigurationOptions {
     /** Security options **/
     String OPENSEARCH_SECURITY_AUTHENTICATION = "opensearch.security.authentication";
     String OPENSEARCH_SECURITY_USER_PROVIDER_CLASS = "opensearch.security.user.provider.class";
+
+    /** AWS SigV4 options **/
+    String OPENSEARCH_AWS_SIGV4_ENABLED = "opensearch.aws.sigv4.enabled";
+    String OPENSEARCH_AWS_SIGV4_ENABLED_DEFAULT = "false";
+
+    String OPENSEARCH_AWS_SIGV4_REGION = "opensearch.aws.sigv4.region";
+    String OPENSEARCH_AWS_SIGV4_REGION_DEFAULT = "us-east-1";
+
+    String OPENSEARCH_AWS_SIGV4_SERVICE_NAME = "opensearch.aws.sigv4.service.name";
+    String OPENSEARCH_AWS_SIGV4_SERVICE_NAME_DEFAULT = "es";
 }

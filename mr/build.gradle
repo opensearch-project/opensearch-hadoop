@@ -81,12 +81,12 @@ dependencies {
         exclude group: 'com.fasterxml.jackson.core'
     }
 
-    // AWS SDK for SigV4 signing
-    implementation("software.amazon.awssdk:sdk-core:2.19.13")
-    implementation("software.amazon.awssdk:auth:2.19.13")
-    implementation("software.amazon.awssdk:utils:2.19.13")
-
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    // implementation platform('software.amazon.awssdk:bom:2.19.15') 
+    // implementation 'software.amazon.awssdk:aws-core'
+    // implementation 'software.amazon.awssdk:auth'
+    // implementation 'software.amazon.awssdk:utils'
+    implementation("com.amazonaws:aws-java-sdk-core:${project.ext.awsSdkCodeVersion}")
+    // implementation fileTree(dir: 'libs', include: ['*.jar'])
 }
 
 String generatedResources = "$buildDir/generated-resources/main"

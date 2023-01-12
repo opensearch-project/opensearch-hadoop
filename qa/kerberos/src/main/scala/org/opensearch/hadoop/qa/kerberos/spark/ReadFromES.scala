@@ -51,12 +51,12 @@ class ReadFromES(args: Array[String]) {
     val dfOutputDir = s"${args(0)}DF"
     val dsOutputDir = s"${args(0)}DS"
 
-    spark.sparkContext.esJsonRDD(s"${resource}_rdd").saveAsTextFile(rddOutputDir)
+    // spark.sparkContext.esJsonRDD(s"${resource}_rdd").saveAsTextFile(rddOutputDir)
 
-    spark.sqlContext.esDF(s"${resource}_df")
-      .rdd
-      .map(row => row.toString())
-      .saveAsTextFile(dfOutputDir)
+    // spark.sqlContext.esDF(s"${resource}_df")
+    //   .rdd
+    //   .map(row => row.toString())
+    //   .saveAsTextFile(dfOutputDir)
 
     spark.sqlContext.read.format("opensearch").load(s"${resource}_ds")
       .rdd

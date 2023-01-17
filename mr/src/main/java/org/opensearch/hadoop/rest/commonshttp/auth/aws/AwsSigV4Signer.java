@@ -35,11 +35,11 @@ import org.opensearch.hadoop.thirdparty.google.common.collect.ImmutableList;
 import org.opensearch.hadoop.thirdparty.google.common.collect.ImmutableMap;
 import org.opensearch.hadoop.thirdparty.google.common.collect.Multimap;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.AWSSessionCredentials;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
-import com.amazonaws.util.SdkHttpUtils;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.AwsSessionCredentials;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.utils.http.SdkHttpUtils;
 
 public class AwsSigV4Signer {
     private final static char[] BASE16MAP = new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b',
@@ -79,7 +79,7 @@ public class AwsSigV4Signer {
     private static final String DATE = "date";
     private static final String POST = "POST";
 
-    private final AWSCredentialsProvider credentialsProvider;
+    private final AwsCredentialsProvider credentialsProvider;
     private final String region;
     private final String service;
     private final Supplier<LocalDateTime> clock;
@@ -96,16 +96,12 @@ public class AwsSigV4Signer {
 
     public AwsSigV4Signer(String region,
                      String service,
-                     Supplier<LocalDateTime> clock,
-                     AWSCredentialsProvider credentialsProvider) {
-        this.credentialsProvider = credentialsProvider;
+                     Supplier<LocalDateTime> clock
+    ) {
         this.region = region;
         this.service = service;
         this.clock = clock;
-    }
-    
-    public AwsSigV4Signer(String region, String service, Supplier<LocalDateTime> clock) {
-        this(region, service, clock, DefaultAWSCredentialsProviderChain.getInstance());
+        this.credentialsProvider = DefaultCredentialsProvider.create();
     }
 
 
@@ -115,7 +111,7 @@ public class AwsSigV4Signer {
             Map<String, String> headers,
             Optional<byte[]> payload) {
         final LocalDateTime now = clock.get();
-        final AWSCredentials credentials = credentialsProvider.getCredentials();
+        final AwsCredentials credentials = credentialsProvider.resolveCredentials();
         final Map<String, String> result = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);
         result.putAll(headers);
         final Optional<String> possibleHost = Optional.fromNullable(result.get(HOST))
@@ -127,8 +123,8 @@ public class AwsSigV4Signer {
         if (!result.containsKey(DATE)) {
             result.put(X_AMZ_DATE, now.format(BASIC_TIME_FORMAT));
         }
-        if (AWSSessionCredentials.class.isAssignableFrom(credentials.getClass())) {
-            result.put(SESSION_TOKEN, ((AWSSessionCredentials) credentials).getSessionToken());
+        if (AwsSessionCredentials.class.isAssignableFrom(credentials.getClass())) {
+            result.put(SESSION_TOKEN, ((AwsSessionCredentials) credentials).sessionToken());
         }
 
         final StringBuilder headersString = new StringBuilder();
@@ -144,14 +140,14 @@ public class AwsSigV4Signer {
 
         final String signedHeaderKeys = JOINER.join(signedHeaders.build());
         final String canonicalRequest = method + RETURN +
-                SdkHttpUtils.urlEncode(uri, true) + RETURN +
+                SdkHttpUtils.urlEncodeIgnoreSlashes(uri) + RETURN +
                 queryParamsString(queryParams) + RETURN +
                 headersString.toString() + RETURN +
                 signedHeaderKeys + RETURN +
                 toBase16(hash(payload.or(EMPTY.getBytes(Charsets.UTF_8))));
         final String stringToSign = createStringToSign(canonicalRequest, now);
         final String signature = sign(stringToSign, now, credentials);
-        final String autorizationHeader = AWS4_HMAC_SHA256_CREDENTIAL + credentials.getAWSAccessKeyId() + SLASH
+        final String autorizationHeader = AWS4_HMAC_SHA256_CREDENTIAL + credentials.accessKeyId() + SLASH
                 + getCredentialScope(now) +
                 SIGNED_HEADERS + signedHeaderKeys +
                 SIGNATURE + signature;
@@ -164,7 +160,7 @@ public class AwsSigV4Signer {
         final ImmutableList.Builder<String> result = ImmutableList.builder();
         for (Map.Entry<String, Collection<String>> param : new TreeMap<>(queryParams.asMap()).entrySet()) {
             for (String value : param.getValue()) {
-                result.add(SdkHttpUtils.urlEncode(param.getKey(), false) + '=' + SdkHttpUtils.urlEncode(value, false));
+                result.add(SdkHttpUtils.urlEncode(param.getKey()) + '=' + SdkHttpUtils.urlEncode(value));
             }
         }
 
@@ -186,7 +182,7 @@ public class AwsSigV4Signer {
         return Optional.of(header.getKey().toLowerCase() + ':' + header.getValue());
     }
 
-    private String sign(String stringToSign, LocalDateTime now, AWSCredentials credentials) {
+    private String sign(String stringToSign, LocalDateTime now, AwsCredentials credentials) {
         return Hex.encodeHexString(hmacSHA256(stringToSign, getSignatureKey(now, credentials)));
     }
 
@@ -220,8 +216,8 @@ public class AwsSigV4Signer {
         return hexBuffer.toString();
     }
 
-    private byte[] getSignatureKey(LocalDateTime now, AWSCredentials credentials) {
-        final byte[] kSecret = (AWS4 + credentials.getAWSSecretKey()).getBytes(Charsets.UTF_8);
+    private byte[] getSignatureKey(LocalDateTime now, AwsCredentials credentials) {
+        final byte[] kSecret = (AWS4 + credentials.secretAccessKey()).getBytes(Charsets.UTF_8);
         final byte[] kDate = hmacSHA256(now.format(BASIC_ISO_DATE), kSecret);
         final byte[] kRegion = hmacSHA256(region, kDate);
         final byte[] kService = hmacSHA256(service, kRegion);

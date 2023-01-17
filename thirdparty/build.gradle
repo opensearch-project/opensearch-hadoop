@@ -24,12 +24,6 @@ dependencies {
     shaded("org.codehaus.jackson:jackson-mapper-asl:${project.ext.jacksonVersion}")
     shaded("org.codehaus.jackson:jackson-core-asl:${project.ext.jacksonVersion}")
     shaded("com.google.guava:guava:${project.ext.googleGuavaVersion}")
-    // shaded("software.amazon.awssdk:sdk-core:${project.ext.awsSdkVersion}")
-    // shaded("software.amazon.awssdk:auth:${project.ext.awsSdkVersion}")
-    // shaded("software.amazon.awssdk:utils:${project.ext.awsSdkVersion}")
-    // shaded("software.amazon.awssdk:profiles:${project.ext.awsSdkVersion}")
-    // shaded("software.amazon.awssdk:regions:${project.ext.awsSdkVersion}")
-    // shaded("software.amazon.awssdk:aws-json-protocol:${project.ext.awsSdkVersion}")
 }
 
 shadowJar {
@@ -37,5 +31,4 @@ shadowJar {
     relocate 'org.apache.commons.httpclient', 'org.opensearch.hadoop.thirdparty.apache.commons.httpclient'
     relocate 'org.codehaus.jackson', 'org.opensearch.hadoop.thirdparty.codehaus.jackson'
     relocate 'com.google.common', 'org.opensearch.hadoop.thirdparty.google.common'
-    // relocate 'software.amazon.awssdk', 'org.opensearch.hadoop.thirdparty.amazon.awssdk'
 }

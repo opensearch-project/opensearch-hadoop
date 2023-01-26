@@ -11,13 +11,6 @@ allprojects {
     tasks.withType(AbstractCopyTask) {
       duplicatesStrategy = DuplicatesStrategy.EXCLUDE
     }
-
-    repositories {
-        //All sub-projects will now refer to the same 'libs' directory
-        flatDir {
-            dirs "$rootProject.projectDir/build/libs"
-        }
-    }
 }
 
 // Simple utility task to help with downloading artifacts and jars

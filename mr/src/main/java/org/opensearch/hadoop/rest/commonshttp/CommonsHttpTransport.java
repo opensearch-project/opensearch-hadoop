@@ -662,8 +662,6 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             http.setQueryString(params.toString());
         }
 
-        ByteSequence ba = request.body();
-        byte[] bodyBytes = null;
         if (ba != null && ba.length() > 0) {
             if (!(http instanceof EntityEnclosingMethod)) {
                 throw new IllegalStateException(String.format("Method %s cannot contain body - implementation bug", request.method().name()));
@@ -671,11 +669,6 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             EntityEnclosingMethod entityMethod = (EntityEnclosingMethod) http;
             entityMethod.setRequestEntity(new BytesArrayRequestEntity(ba));
             entityMethod.setContentChunked(false);
-
-            ByteArrayOutputStream outStream = new ByteArrayOutputStream();
-            ba.writeTo(outStream);
-            bodyBytes = outStream.toByteArray();
-            outStream.close();
         }
 
         headers.applyTo(http);
@@ -721,7 +714,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
 
         if (settings.getAwsSigV4Enabled()) {
-            awsSigV4SignRequest(request, http, bodyBytes);
+            awsSigV4SignRequest(request, http);
         }
 
         if (executingProvider != null) {
@@ -754,7 +747,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         return new SimpleResponse(http.getStatusCode(), new ResponseInputStream(http), httpInfo, headers);
     }
 
-    private void awsSigV4SignRequest(Request request, HttpMethod http, byte[] bodyBytes)
+    private void awsSigV4SignRequest(Request request, HttpMethod http)
             throws UnsupportedEncodingException {
         String awsRegion = settings.getAwsSigV4Region();
         String awsServiceName = settings.getAwsSigV4ServiceName();

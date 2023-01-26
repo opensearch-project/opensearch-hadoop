@@ -44,7 +44,6 @@ import org.opensearch.hadoop.rest.ReusableInputStream;
 import org.opensearch.hadoop.rest.SimpleResponse;
 import org.opensearch.hadoop.rest.Transport;
 import org.opensearch.hadoop.rest.commonshttp.auth.OpenSearchHadoopAuthPolicies;
-import org.opensearch.hadoop.rest.commonshttp.auth.aws.AwsSigV4Signer;
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyAuthScheme;
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyCredentials;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoAuthScheme;
@@ -88,6 +87,16 @@ import org.opensearch.hadoop.util.ByteSequence;
 import org.opensearch.hadoop.util.ReflectionUtils;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.encoding.HttpEncodingTools;
+
+import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import software.amazon.awssdk.auth.signer.Aws4Signer;
+import software.amazon.awssdk.auth.signer.params.Aws4SignerParams;
+import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.http.SdkHttpFullRequest;
+import software.amazon.awssdk.http.SdkHttpClient;
+import software.amazon.awssdk.http.SdkHttpMethod;
+import software.amazon.awssdk.http.SdkHttpResponse;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 import java.io.ByteArrayInputStream;
@@ -747,16 +756,27 @@ public class CommonsHttpTransport implements Transport, StatsAware {
 
     private void awsSigV4SignRequest(Request request, HttpMethod http, byte[] bodyBytes)
             throws UnsupportedEncodingException {
-        final Supplier<LocalDateTime> clock = () -> LocalDateTime.now(ZoneOffset.UTC);
         String awsRegion = settings.getAwsSigV4Region();
         String awsServiceName = settings.getAwsSigV4ServiceName();
         log.info(String.format("AWS IAM Signature V4 Enabled, region: %s, provider: DefaultAWSCredentialsProviderChain, serviceName: %s",
                 awsRegion, awsServiceName));
-        AwsSigV4Signer signer = new AwsSigV4Signer(
-                awsRegion,
-                awsServiceName,
-                clock);
 
+        Region siginingRegion = Region.of(awsRegion);
+
+        final AwsCredentialsProvider credentials = DefaultCredentialsProvider.create();
+
+        Aws4SignerParams signerParams = Aws4SignerParams.builder()
+                .awsCredentials(credentials.resolveCredentials())
+                .signingName(awsServiceName)
+                .signingRegion(siginingRegion)
+                .build();
+
+        SdkHttpFullRequest.Builder req = SdkHttpFullRequest.builder()
+                .method(SdkHttpMethod.fromValue(request.method().name()));
+
+        SdkHttpFullRequest signedRequest = 
+                Aws4Signer.create().sign(req.build(), signerParams);
+        
         final ImmutableMap.Builder<String, String> signerHeaders = ImmutableMap.builder();
 
         for (Header header : http.getRequestHeaders()) {
@@ -782,16 +802,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 }
             }
         }
-
-        Map<String, String> signedHeaders = signer.getSignedHeaders(
-                http.getPath(),
-                request.method().toString(),
-                queryParams.build(),
-                signerHeaders.build(),
-                Optional.fromNullable(bodyBytes));
-
-        for (Map.Entry<String, String> entry : signedHeaders.entrySet()) {
-            http.setRequestHeader(entry.getKey(), entry.getValue());
+        for (Map.Entry<String, List<String>> entry : signedRequest.headers().entrySet()) {
+            http.setRequestHeader(entry.getKey(), entry.getValue().get(0));
         }
     }
 

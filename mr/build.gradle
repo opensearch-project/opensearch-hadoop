@@ -84,6 +84,8 @@ dependencies {
     implementation("software.amazon.awssdk:aws-core:${project.ext.awsSdkVersion}")
     implementation("software.amazon.awssdk:auth:${project.ext.awsSdkVersion}")
     implementation("software.amazon.awssdk:utils:${project.ext.awsSdkVersion}")
+    implementation("software.amazon.awssdk:http-client-spi:${project.ext.awsSdkVersion}")
+    implementation("software.amazon.awssdk:regions:${project.ext.awsSdkVersion}")
 }
 
 String generatedResources = "$buildDir/generated-resources/main"

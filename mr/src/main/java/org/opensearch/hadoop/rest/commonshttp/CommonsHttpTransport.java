@@ -662,6 +662,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             http.setQueryString(params.toString());
         }
 
+        ByteSequence ba = request.body();
         if (ba != null && ba.length() > 0) {
             if (!(http instanceof EntityEnclosingMethod)) {
                 throw new IllegalStateException(String.format("Method %s cannot contain body - implementation bug", request.method().name()));

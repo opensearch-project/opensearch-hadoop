@@ -29,6 +29,10 @@ dependencies {
     shaded("software.amazon.awssdk:utils:${project.ext.awsSdkVersion}")
     shaded("software.amazon.awssdk:http-client-spi:${project.ext.awsSdkVersion}")
     shaded("software.amazon.awssdk:regions:${project.ext.awsSdkVersion}")
+    shaded("software.amazon.awssdk:profiles:${project.ext.awsSdkVersion}")
+    shaded("software.amazon.awssdk:aws-json-protocol:${project.ext.awsSdkVersion}")
+    shaded("software.amazon.awssdk:json-utils:${project.ext.awsSdkVersion}")
+    shaded("software.amazon.awssdk:third-party-jackson-core:${project.ext.awsSdkVersion}")
 }
 
 shadowJar {

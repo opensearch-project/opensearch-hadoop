@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -145,7 +145,6 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         ReflectionUtils.makeAccessible(GET_SOCKET);
     }
 
-
     private final HttpClient client;
     private final HeaderProcessor headers;
     protected Stats stats = new Stats();
@@ -164,7 +163,10 @@ public class CommonsHttpTransport implements Transport, StatsAware {
     /** If the HTTP Connection is made through a proxy */
     private boolean isProxied = false;
 
-    /** If the Socket Factory used for HTTP Connections extends SecureProtocolSocketFactory */
+    /**
+     * If the Socket Factory used for HTTP Connections extends
+     * SecureProtocolSocketFactory
+     */
     private boolean isSecure = false;
 
     private static class ResponseInputStream extends DelegatingInputStream implements ReusableInputStream {
@@ -242,7 +244,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
         this.settings = settings;
         this.secureSettings = secureSettings;
-        this.clusterName = settings.getClusterInfoOrUnnamedLatest().getClusterName().getName(); // May be a bootstrap client.
+        this.clusterName = settings.getClusterInfoOrUnnamedLatest().getClusterName().getName(); // May be a bootstrap
+                                                                                                // client.
         if (StringUtils.hasText(settings.getSecurityUserProviderClass())) {
             this.userProvider = UserProvider.create(settings);
         } else {
@@ -252,7 +255,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         sslEnabled = settings.getNetworkSSLEnabled();
 
         String pathPref = settings.getNodesPathPrefix();
-        pathPrefix = (StringUtils.hasText(pathPref) ? addLeadingSlashIfNeeded(StringUtils.trimWhitespace(pathPref)) : StringUtils.trimWhitespace(pathPref));
+        pathPrefix = (StringUtils.hasText(pathPref) ? addLeadingSlashIfNeeded(StringUtils.trimWhitespace(pathPref))
+                : StringUtils.trimWhitespace(pathPref));
 
         HttpClientParams params = new HttpClientParams();
         params.setParameter(HttpMethodParams.RETRY_HANDLER, new DefaultHttpMethodRetryHandler(
@@ -307,7 +311,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
     }
 
-    private HostConfiguration setupSSLIfNeeded(Settings settings, SecureSettings secureSettings, HostConfiguration hostConfig) {
+    private HostConfiguration setupSSLIfNeeded(Settings settings, SecureSettings secureSettings,
+            HostConfiguration hostConfig) {
         if (!sslEnabled) {
             return hostConfig;
         }
@@ -338,7 +343,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             HttpState state = (authSettings[1] != null ? (HttpState) authSettings[1] : new HttpState());
             authSettings[1] = state;
             // TODO: Limit this by hosts and ports
-            AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, AuthPolicy.BASIC);
+            AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM,
+                    AuthPolicy.BASIC);
             Credentials usernamePassword = new UsernamePasswordCredentials(settings.getNetworkHttpAuthUser(),
                     secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_HTTP_AUTH_PASS));
             state.setCredentials(scope, usernamePassword);
@@ -359,7 +365,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 HttpState state = (authSettings[1] != null ? (HttpState) authSettings[1] : new HttpState());
                 authSettings[1] = state;
                 // TODO: Limit this by hosts and ports
-                AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, OpenSearchHadoopAuthPolicies.APIKEY);
+                AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM,
+                        OpenSearchHadoopAuthPolicies.APIKEY);
                 Credentials tokenCredentials = new OpenSearchApiKeyCredentials(userProvider, clusterName);
                 state.setCredentials(scope, tokenCredentials);
                 if (log.isDebugEnabled()) {
@@ -368,14 +375,16 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 OpenSearchHadoopAuthPolicies.registerAuthSchemes();
                 authPrefs.add(OpenSearchHadoopAuthPolicies.APIKEY);
             } else if (userProvider.isOpenSearchKerberosEnabled()) {
-                // Add SPNEGO auth if a kerberos principal exists on the user and the elastic principal is set
+                // Add SPNEGO auth if a kerberos principal exists on the user and the elastic
+                // principal is set
                 // Only do this if a token does not exist on the current user.
                 // The auth mode may say that it is Kerberos, but the client
                 // could be running in a remote JVM that does not have the
                 // Kerberos credentials available.
                 if (!StringUtils.hasText(settings.getNetworkSpnegoAuthElasticsearchPrincipal())) {
                     throw new OpenSearchHadoopIllegalArgumentException("Missing OpenSearch Kerberos Principal name. " +
-                            "Specify one with [" + ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL + "]");
+                            "Specify one with [" + ConfigurationOptions.OPENSEARCH_NET_SPNEGO_AUTH_OPENSEARCH_PRINCIPAL
+                            + "]");
                 }
 
                 // Pick the appropriate user provider to get credentials from for SPNEGO auth
@@ -390,12 +399,14 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                     User realUser = proxyUserProvider.getUser();
                     KerberosPrincipal realPrincipal = realUser.getKerberosPrincipal();
                     if (realPrincipal == null) {
-                        throw new OpenSearchHadoopIllegalArgumentException("Could not locate Kerberos Principal on real user [" +
-                                realUser.getUserName() + "] underneath proxy user [" + runAsUser + "]");
+                        throw new OpenSearchHadoopIllegalArgumentException(
+                                "Could not locate Kerberos Principal on real user [" +
+                                        realUser.getUserName() + "] underneath proxy user [" + runAsUser + "]");
                     }
 
                     if (log.isDebugEnabled()) {
-                        log.debug("Using detected SPNEGO credentials for real user [" + realUser.getUserName() + "] to proxy as [" +
+                        log.debug("Using detected SPNEGO credentials for real user [" + realUser.getUserName()
+                                + "] to proxy as [" +
                                 runAsUser + "]...");
                     }
                     credentialUserProvider = proxyUserProvider;
@@ -406,16 +417,20 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                     }
                     credentialUserProvider = userProvider;
                 } else {
-                    throw new OpenSearchHadoopIllegalArgumentException("Could not locate Kerberos Principal on currently logged in user.");
+                    throw new OpenSearchHadoopIllegalArgumentException(
+                            "Could not locate Kerberos Principal on currently logged in user.");
                 }
 
                 // Add the user provider to credentials
                 HttpState state = (authSettings[1] != null ? (HttpState) authSettings[1] : new HttpState());
                 authSettings[1] = state;
                 // TODO: Limit this by hosts and ports
-                AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM, OpenSearchHadoopAuthPolicies.NEGOTIATE);
-                // TODO: This should just pass in the user provider instead of getting the user principal at this point.
-                Credentials credential = new SpnegoCredentials(credentialUserProvider, settings.getNetworkSpnegoAuthElasticsearchPrincipal());
+                AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM,
+                        OpenSearchHadoopAuthPolicies.NEGOTIATE);
+                // TODO: This should just pass in the user provider instead of getting the user
+                // principal at this point.
+                Credentials credential = new SpnegoCredentials(credentialUserProvider,
+                        settings.getNetworkSpnegoAuthElasticsearchPrincipal());
                 state.setCredentials(scope, credential);
                 OpenSearchHadoopAuthPolicies.registerAuthSchemes();
                 authPrefs.add(OpenSearchHadoopAuthPolicies.NEGOTIATE);
@@ -437,7 +452,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
     }
 
-    private Object[] setupHttpOrHttpsProxy(Settings settings, SecureSettings secureSettings, HostConfiguration hostConfig) {
+    private Object[] setupHttpOrHttpsProxy(Settings settings, SecureSettings secureSettings,
+            HostConfiguration hostConfig) {
         // return HostConfiguration + HttpState
         Object[] results = new Object[2];
         results[0] = hostConfig;
@@ -456,8 +472,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             if (settings.getNetworkProxyHttpsPort() > 0) {
                 proxyPort = settings.getNetworkProxyHttpsPort();
             }
-        }
-        else {
+        } else {
             if (settings.getNetworkHttpUseSystemProperties()) {
                 proxyHost = System.getProperty("http.proxyHost");
                 proxyPort = Integer.getInteger("http.proxyPort", -1);
@@ -473,45 +488,53 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         if (StringUtils.hasText(proxyHost)) {
             hostConfig.setProxy(proxyHost, proxyPort);
             isProxied = true;
-            proxyInfo = proxyInfo.concat(String.format(Locale.ROOT, "[%s proxy %s:%s]", (sslEnabled ? "HTTPS" : "HTTP"), proxyHost, proxyPort));
+            proxyInfo = proxyInfo.concat(String.format(Locale.ROOT, "[%s proxy %s:%s]", (sslEnabled ? "HTTPS" : "HTTP"),
+                    proxyHost, proxyPort));
 
             // client is not yet initialized so postpone state
             if (sslEnabled) {
                 if (StringUtils.hasText(settings.getNetworkProxyHttpsUser())) {
-                    if (!StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS))) {
-                        log.warn(String.format("HTTPS proxy user specified but no/empty password defined - double check the [%s] property", ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS));
+                    if (!StringUtils.hasText(
+                            secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS))) {
+                        log.warn(String.format(
+                                "HTTPS proxy user specified but no/empty password defined - double check the [%s] property",
+                                ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS));
                     }
                     HttpState state = new HttpState();
-                    state.setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(settings.getNetworkProxyHttpsUser(), secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS)));
+                    state.setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(
+                            settings.getNetworkProxyHttpsUser(),
+                            secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTPS_PASS)));
                     // client is not yet initialized so simply save the object for later
                     results[1] = state;
                 }
-    
+
                 if (log.isDebugEnabled()) {
                     if (StringUtils.hasText(settings.getNetworkProxyHttpsUser())) {
                         log.debug(String.format("Using authenticated HTTPS proxy [%s:%s]", proxyHost, proxyPort));
-                    }
-                    else {
+                    } else {
                         log.debug(String.format("Using HTTPS proxy [%s:%s]", proxyHost, proxyPort));
                     }
                 }
-            }
-            else {
+            } else {
                 if (StringUtils.hasText(settings.getNetworkProxyHttpUser())) {
-                    if (!StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS))) {
-                        log.warn(String.format("HTTP proxy user specified but no/empty password defined - double check the [%s] property", ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS));
+                    if (!StringUtils.hasText(
+                            secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS))) {
+                        log.warn(String.format(
+                                "HTTP proxy user specified but no/empty password defined - double check the [%s] property",
+                                ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS));
                     }
                     HttpState state = new HttpState();
-                    state.setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(settings.getNetworkProxyHttpUser(), secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS)));
+                    state.setProxyCredentials(AuthScope.ANY, new UsernamePasswordCredentials(
+                            settings.getNetworkProxyHttpUser(),
+                            secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_HTTP_PASS)));
                     // client is not yet initialized so simply save the object for later
                     results[1] = state;
                 }
-    
+
                 if (log.isDebugEnabled()) {
                     if (StringUtils.hasText(settings.getNetworkProxyHttpUser())) {
                         log.debug(String.format("Using authenticated HTTP proxy [%s:%s]", proxyHost, proxyPort));
-                    }
-                    else {
+                    } else {
                         log.debug(String.format("Using HTTP proxy [%s:%s]", proxyHost, proxyPort));
                     }
                 }
@@ -521,7 +544,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         return results;
     }
 
-    private HostConfiguration setupSocksProxy(Settings settings, SecureSettings secureSettings, HostConfiguration hostConfig) {
+    private HostConfiguration setupSocksProxy(Settings settings, SecureSettings secureSettings,
+            HostConfiguration hostConfig) {
         // set proxy settings
         String proxyHost = null;
         int proxyPort = -1;
@@ -543,13 +567,15 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         if (StringUtils.hasText(settings.getNetworkProxySocksUser())) {
             proxyUser = settings.getNetworkProxySocksUser();
         }
-        if (StringUtils.hasText(secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_SOCKS_PASS))) {
+        if (StringUtils
+                .hasText(secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_SOCKS_PASS))) {
             proxyPass = secureSettings.getSecureProperty(ConfigurationOptions.OPENSEARCH_NET_PROXY_SOCKS_PASS);
         }
 
         // we actually have a socks proxy, let's start the setup
         if (StringUtils.hasText(proxyHost)) {
-            log.warn("Connecting to OpenSearch through SOCKS proxy is deprecated in 6.6.0 and will be removed in a later release.");
+            log.warn(
+                    "Connecting to OpenSearch through SOCKS proxy is deprecated in 6.6.0 and will be removed in a later release.");
             isSecure = false;
             isProxied = true;
             proxyInfo = proxyInfo.concat(String.format("[SOCKS proxy %s:%s]", proxyHost, proxyPort));
@@ -563,8 +589,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             if (log.isDebugEnabled()) {
                 if (StringUtils.hasText(proxyUser)) {
                     log.debug(String.format("Using authenticated SOCKS proxy [%s:%s]", proxyHost, proxyPort));
-                }
-                else {
+                } else {
                     log.debug(String.format("Using SOCKS proxy [%s:%s]", proxyHost, proxyPort));
                 }
             }
@@ -591,12 +616,14 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         Protocol directHttp = Protocol.getProtocol(schema);
         if (directHttp instanceof DelegatedProtocol) {
             // unwrap the original
-            directHttp = ((DelegatedProtocol)directHttp).getOriginal();
+            directHttp = ((DelegatedProtocol) directHttp).getOriginal();
             assert directHttp instanceof DelegatedProtocol == false;
         }
         Protocol proxiedHttp = new DelegatedProtocol(socketFactory, directHttp, schema, defaultPort);
-        // NB: register the new protocol since when using absolute URIs, HttpClient#executeMethod will override the configuration (#387)
-        // NB: hence why the original/direct http protocol is saved - as otherwise the connection is not closed since it is considered different
+        // NB: register the new protocol since when using absolute URIs,
+        // HttpClient#executeMethod will override the configuration (#387)
+        // NB: hence why the original/direct http protocol is saved - as otherwise the
+        // connection is not closed since it is considered different
         // NB: (as the protocol identities don't match)
 
         // this is not really needed since it's being replaced later on
@@ -611,24 +638,24 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         HttpMethod http = null;
 
         switch (request.method()) {
-        case DELETE:
-            http = new DeleteMethodWithBody();
-            break;
-        case HEAD:
-            http = new HeadMethod();
-            break;
-        case GET:
-            http = (request.body() == null ? new GetMethod() : new GetMethodWithBody());
-            break;
-        case POST:
-            http = new PostMethod();
-            break;
-        case PUT:
-            http = new PutMethod();
-            break;
+            case DELETE:
+                http = new DeleteMethodWithBody();
+                break;
+            case HEAD:
+                http = new HeadMethod();
+                break;
+            case GET:
+                http = (request.body() == null ? new GetMethod() : new GetMethodWithBody());
+                break;
+            case POST:
+                http = new PostMethod();
+                break;
+            case PUT:
+                http = new PutMethod();
+                break;
 
-        default:
-            throw new OpenSearchHadoopTransportException("Unknown request method " + request.method());
+            default:
+                throw new OpenSearchHadoopTransportException("Unknown request method " + request.method());
         }
 
         CharSequence uri = request.uri();
@@ -665,7 +692,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         ByteSequence ba = request.body();
         if (ba != null && ba.length() > 0) {
             if (!(http instanceof EntityEnclosingMethod)) {
-                throw new IllegalStateException(String.format("Method %s cannot contain body - implementation bug", request.method().name()));
+                throw new IllegalStateException(
+                        String.format("Method %s cannot contain body - implementation bug", request.method().name()));
             }
             EntityEnclosingMethod entityMethod = (EntityEnclosingMethod) http;
             entityMethod.setRequestEntity(new BytesArrayRequestEntity(ba));
@@ -679,7 +707,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         // make these conditions mutually exclusive.
         if (runAsUser != null) {
             if (log.isDebugEnabled()) {
-                log.debug("Performing request with runAs user set to ["+runAsUser+"]");
+                log.debug("Performing request with runAs user set to [" + runAsUser + "]");
             }
             http.addRequestHeader("opensearch-security-runas-user", runAsUser);
         } else if (userProvider != null && userProvider.getUser().getOpenSearchToken(clusterName) != null) {
@@ -711,7 +739,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
 
         // when tracing, log everything
         if (log.isTraceEnabled()) {
-            log.trace(String.format("Tx %s[%s]@[%s][%s]?[%s] w/ payload [%s]", proxyInfo, request.method().name(), httpInfo, request.path(), request.params(), request.body()));
+            log.trace(String.format("Tx %s[%s]@[%s][%s]?[%s] w/ payload [%s]", proxyInfo, request.method().name(),
+                    httpInfo, request.path(), request.params(), request.body()));
         }
 
         if (settings.getAwsSigV4Enabled()) {
@@ -734,7 +763,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         if (log.isTraceEnabled()) {
             Socket sk = ReflectionUtils.invoke(GET_SOCKET, conn, (Object[]) null);
             String addr = sk.getLocalAddress().getHostAddress();
-            log.trace(String.format("Rx %s@[%s] [%s-%s] [%s]", proxyInfo, addr, http.getStatusCode(), HttpStatus.getStatusText(http.getStatusCode()), http.getResponseBodyAsString()));
+            log.trace(String.format("Rx %s@[%s] [%s-%s] [%s]", proxyInfo, addr, http.getStatusCode(),
+                    HttpStatus.getStatusText(http.getStatusCode()), http.getResponseBodyAsString()));
         }
 
         // Parse headers
@@ -744,7 +774,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             headerValues.add(responseHeader.getValue());
         }
 
-        // the request URI is not set (since it is retried across hosts), so use the http info instead for source
+        // the request URI is not set (since it is retried across hosts), so use the
+        // http info instead for source
         return new SimpleResponse(http.getStatusCode(), new ResponseInputStream(http), httpInfo, headers);
     }
 
@@ -752,7 +783,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             throws UnsupportedEncodingException {
         String awsRegion = settings.getAwsSigV4Region();
         String awsServiceName = settings.getAwsSigV4ServiceName();
-        log.info(String.format("AWS IAM Signature V4 Enabled, region: %s, provider: DefaultAWSCredentialsProviderChain, serviceName: %s",
+        log.info(String.format(
+                "AWS IAM Signature V4 Enabled, region: %s, provider: DefaultAWSCredentialsProviderChain, serviceName: %s",
                 awsRegion, awsServiceName));
 
         Region siginingRegion = Region.of(awsRegion);
@@ -768,9 +800,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         SdkHttpFullRequest.Builder req = SdkHttpFullRequest.builder()
                 .method(SdkHttpMethod.fromValue(request.method().name()));
 
-        SdkHttpFullRequest signedRequest = 
-                Aws4Signer.create().sign(req.build(), signerParams);
-        
+        SdkHttpFullRequest signedRequest = Aws4Signer.create().sign(req.build(), signerParams);
+
         final ImmutableMap.Builder<String, String> signerHeaders = ImmutableMap.builder();
 
         for (Header header : http.getRequestHeaders()) {
@@ -796,6 +827,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 }
             }
         }
+
         for (Map.Entry<String, List<String>> entry : signedRequest.headers().entrySet()) {
             http.setRequestHeader(entry.getKey(), entry.getValue().get(0));
         }
@@ -803,6 +835,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
 
     /**
      * Actually perform the request
+     * 
      * @param method the HTTP method to perform
      * @throws IOException If there is an issue during the method execution
      */
@@ -818,7 +851,9 @@ public class CommonsHttpTransport implements Transport, StatsAware {
     }
 
     /**
-     * Close any authentication resources that we may still have open and perform any after-response duties that we need to perform.
+     * Close any authentication resources that we may still have open and perform
+     * any after-response duties that we need to perform.
+     * 
      * @param method The method that has been executed
      * @throws IOException If any issues arise during post processing
      */
@@ -843,6 +878,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
 
     /**
      * Close the underlying authscheme if it is a Closeable object.
+     * 
      * @param method Executing method
      * @throws IOException If the scheme could not be closed
      */

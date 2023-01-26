@@ -88,15 +88,15 @@ import org.opensearch.hadoop.util.ReflectionUtils;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.encoding.HttpEncodingTools;
 
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
-import software.amazon.awssdk.auth.signer.Aws4Signer;
-import software.amazon.awssdk.auth.signer.params.Aws4SignerParams;
-import software.amazon.awssdk.regions.Region;
-import software.amazon.awssdk.http.SdkHttpFullRequest;
-import software.amazon.awssdk.http.SdkHttpClient;
-import software.amazon.awssdk.http.SdkHttpMethod;
-import software.amazon.awssdk.http.SdkHttpResponse;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.auth.signer.Aws4Signer;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.auth.signer.params.Aws4SignerParams;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.regions.Region;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpFullRequest;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpClient;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpMethod;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpResponse;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 import java.io.ByteArrayInputStream;

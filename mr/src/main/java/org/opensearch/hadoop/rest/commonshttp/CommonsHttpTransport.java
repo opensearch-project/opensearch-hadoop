@@ -129,6 +129,7 @@ import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
+import java.net.URISyntaxException;
 
 /**
  * Transport implemented on top of Commons Http. Provides transport retries.
@@ -642,7 +643,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 http = new DeleteMethodWithBody();
                 break;
             case HEAD:
-                http = new HeadMethod();
+                http = new GetMethod();
                 break;
             case GET:
                 http = (request.body() == null ? new GetMethod() : new GetMethodWithBody());
@@ -787,46 +788,43 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 "AWS IAM Signature V4 Enabled, region: %s, provider: DefaultAWSCredentialsProviderChain, serviceName: %s",
                 awsRegion, awsServiceName));
 
-        Region siginingRegion = Region.of(awsRegion);
+        Region signingRegion = Region.of(awsRegion);
 
         final AwsCredentialsProvider credentials = DefaultCredentialsProvider.create();
 
         Aws4SignerParams signerParams = Aws4SignerParams.builder()
                 .awsCredentials(credentials.resolveCredentials())
                 .signingName(awsServiceName)
-                .signingRegion(siginingRegion)
+                .signingRegion(signingRegion)
                 .build();
 
         SdkHttpFullRequest.Builder req = SdkHttpFullRequest.builder()
                 .method(SdkHttpMethod.fromValue(request.method().name()));
 
+
+        try {
+            req.uri(new java.net.URI(httpInfo.replace(":443", "")));
+
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException("Invalid request URI: " + request.uri().toString());
+        }
+
+        for (Header header : http.getRequestHeaders()) {
+            req.putHeader(header.getName(), header.getValue());
+        }
+
+        // req.putHeader("x-amz-content-sha256", "required");
+
+        log.info(String.format("Request before headers %s", req.headers().toString()));
+
         SdkHttpFullRequest signedRequest = Aws4Signer.create().sign(req.build(), signerParams);
 
         final ImmutableMap.Builder<String, String> signerHeaders = ImmutableMap.builder();
 
-        for (Header header : http.getRequestHeaders()) {
-            signerHeaders.put(header.getName(), header.getValue());
-        }
-        signerHeaders.put("host", httpInfo);
+        log.info(String.format("Signed Request signing %s", signedRequest.toString()));
 
-        Splitter queryStringSplitter = Splitter.on('&').trimResults().omitEmptyStrings();
-        final Iterable<String> rawParams = request.params() != null ? queryStringSplitter.split(request.params())
-                : Collections.emptyList();
-        final ImmutableListMultimap.Builder<String, String> queryParams = ImmutableListMultimap.builder();
-
-        for (String rawParam : rawParams) {
-            if (!Strings.isNullOrEmpty(rawParam)) {
-                final String pair = URLDecoder.decode(rawParam, StandardCharsets.UTF_8.name());
-                final int index = pair.indexOf('=');
-                if (index > 0) {
-                    final String key = pair.substring(0, index);
-                    final String value = pair.substring(index + 1);
-                    queryParams.put(key, value);
-                } else {
-                    queryParams.put(pair, "");
-                }
-            }
-        }
+        log.info(String.format("Signed Request headers %s", signedRequest.headers().toString()));
+        
 
         for (Map.Entry<String, List<String>> entry : signedRequest.headers().entrySet()) {
             http.setRequestHeader(entry.getKey(), entry.getValue().get(0));

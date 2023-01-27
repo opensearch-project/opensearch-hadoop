@@ -520,7 +520,7 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     private boolean exists(String indexOrType) {
-        Request req = new SimpleRequest(HEAD, null, indexOrType);
+        Request req = new SimpleRequest(GET, null, indexOrType);
         Response res = executeNotFoundAllowed(req);
 
         return (res.status() == HttpStatus.OK ? true : false);

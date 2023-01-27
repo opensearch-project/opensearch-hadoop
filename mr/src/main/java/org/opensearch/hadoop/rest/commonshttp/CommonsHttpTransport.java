@@ -30,6 +30,7 @@ package org.opensearch.hadoop.rest.commonshttp;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.apache.hadoop.io.OutputBuffer;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
@@ -97,12 +98,14 @@ import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpFullRequest;
 import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpClient;
 import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpMethod;
 import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpResponse;
+import org.opensearch.hadoop.thirdparty.amazon.awssdk.utils.http.SdkHttpUtils;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 import java.io.ByteArrayInputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringBufferInputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Method;
 import java.net.Socket;
@@ -122,7 +125,10 @@ import org.opensearch.hadoop.thirdparty.google.common.base.Splitter;
 import org.opensearch.hadoop.thirdparty.google.common.base.Strings;
 import org.opensearch.hadoop.thirdparty.google.common.base.Supplier;
 import org.opensearch.hadoop.thirdparty.google.common.collect.ImmutableListMultimap;
+import org.opensearch.hadoop.thirdparty.google.common.collect.Multimap;
 import org.opensearch.hadoop.thirdparty.google.common.collect.ImmutableMap;
+import org.opensearch.hadoop.thirdparty.google.common.collect.ImmutableList;
+import org.opensearch.hadoop.thirdparty.google.common.base.Joiner;
 import java.io.ByteArrayOutputStream;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -130,6 +136,9 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.util.Collections;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
+import java.util.TreeMap;
+import java.util.Collection;
 
 /**
  * Transport implemented on top of Commons Http. Provides transport retries.
@@ -160,6 +169,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
     private final UserProvider userProvider;
     private UserProvider proxyUserProvider = null;
     private String runAsUser = null;
+
+    private static final Joiner AMPERSAND_JOINER = Joiner.on('&');
 
     /** If the HTTP Connection is made through a proxy */
     private boolean isProxied = false;
@@ -691,6 +702,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
 
         ByteSequence ba = request.body();
+        byte[] bodyBytes = null;
         if (ba != null && ba.length() > 0) {
             if (!(http instanceof EntityEnclosingMethod)) {
                 throw new IllegalStateException(
@@ -699,6 +711,12 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             EntityEnclosingMethod entityMethod = (EntityEnclosingMethod) http;
             entityMethod.setRequestEntity(new BytesArrayRequestEntity(ba));
             entityMethod.setContentChunked(false);
+
+            try (ByteArrayOutputStream outStream = new ByteArrayOutputStream()) {
+                ba.writeTo(outStream);
+                bodyBytes = outStream.toByteArray();
+                outStream.close();
+            }
         }
 
         headers.applyTo(http);
@@ -745,7 +763,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
 
         if (settings.getAwsSigV4Enabled()) {
-            awsSigV4SignRequest(request, http);
+            awsSigV4SignRequest(request, http, bodyBytes);
         }
 
         if (executingProvider != null) {
@@ -780,13 +798,21 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         return new SimpleResponse(http.getStatusCode(), new ResponseInputStream(http), httpInfo, headers);
     }
 
-    private void awsSigV4SignRequest(Request request, HttpMethod http)
+    private String queryParamsString(Multimap<String, String> queryParams) {
+        final ImmutableList.Builder<String> result = ImmutableList.builder();
+        for (Map.Entry<String, Collection<String>> param : new TreeMap<>(queryParams.asMap()).entrySet()) {
+            for (String value : param.getValue()) {
+                result.add(SdkHttpUtils.urlEncode(param.getKey()) + '=' + SdkHttpUtils.urlEncode(value));
+            }
+        }
+
+        return '?' + AMPERSAND_JOINER.join(result.build());
+    }
+
+    private void awsSigV4SignRequest(Request request, HttpMethod http, byte[] bodyBytes)
             throws UnsupportedEncodingException {
         String awsRegion = settings.getAwsSigV4Region();
         String awsServiceName = settings.getAwsSigV4ServiceName();
-        log.info(String.format(
-                "AWS IAM Signature V4 Enabled, region: %s, provider: DefaultAWSCredentialsProviderChain, serviceName: %s",
-                awsRegion, awsServiceName));
 
         Region signingRegion = Region.of(awsRegion);
 
@@ -801,30 +827,52 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         SdkHttpFullRequest.Builder req = SdkHttpFullRequest.builder()
                 .method(SdkHttpMethod.fromValue(request.method().name()));
 
+        StringBuilder url = new StringBuilder();
+        url.append(httpInfo);
+        String path = request.path().toString();
+        if (!path.startsWith("/")) {
+            url.append('/');
+        }
+        url.append(path);
+
+        Splitter queryStringSplitter = Splitter.on('&').trimResults().omitEmptyStrings();
+        final Iterable<String> rawParams = request.params() != null ? queryStringSplitter.split(request.params())
+                : Collections.emptyList();
+
+        final ImmutableListMultimap.Builder<String, String> queryParams = ImmutableListMultimap.builder();
+
+        for (String rawParam : rawParams) {
+            if (!Strings.isNullOrEmpty(rawParam)) {
+                final String pair = URLDecoder.decode(rawParam, StandardCharsets.UTF_8.name());
+                final int index = pair.indexOf('=');
+                if (index > 0) {
+                    final String key = pair.substring(0, index);
+                    final String value = pair.substring(index + 1);
+                    queryParams.put(key, value);
+                } else {
+                    queryParams.put(pair, "");
+                }
+            }
+        }
+
+        String params = queryParamsString(queryParams.build());
+
+        url.append(params);
 
         try {
-            req.uri(new java.net.URI(httpInfo.replace(":443", "")));
-
+            req.uri(new java.net.URI(url.toString()));
         } catch (URISyntaxException e) {
             throw new IllegalArgumentException("Invalid request URI: " + request.uri().toString());
         }
 
-        for (Header header : http.getRequestHeaders()) {
-            req.putHeader(header.getName(), header.getValue());
+        if (request.body() != null) {
+            req.contentStreamProvider(() -> new ByteArrayInputStream(bodyBytes));
         }
-
-        // req.putHeader("x-amz-content-sha256", "required");
-
-        log.info(String.format("Request before headers %s", req.headers().toString()));
+        req.putHeader("x-amz-content-sha256", "required");
 
         SdkHttpFullRequest signedRequest = Aws4Signer.create().sign(req.build(), signerParams);
 
         final ImmutableMap.Builder<String, String> signerHeaders = ImmutableMap.builder();
-
-        log.info(String.format("Signed Request signing %s", signedRequest.toString()));
-
-        log.info(String.format("Signed Request headers %s", signedRequest.headers().toString()));
-        
 
         for (Map.Entry<String, List<String>> entry : signedRequest.headers().entrySet()) {
             http.setRequestHeader(entry.getKey(), entry.getValue().get(0));

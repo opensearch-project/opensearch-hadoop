@@ -190,3 +190,5 @@ sparkVariants {
         }
     }
 }
+
+sourceCompatibility = JavaVersion.VERSION_14

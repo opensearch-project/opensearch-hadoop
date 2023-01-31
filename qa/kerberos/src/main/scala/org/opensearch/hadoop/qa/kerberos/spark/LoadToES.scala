@@ -34,7 +34,7 @@ import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin
-import org.opensearch.spark._ 
+import org.opensearch.spark._
 import org.opensearch.spark.sql._
 
 class LoadToES(args: Array[String]) {
@@ -55,8 +55,8 @@ class LoadToES(args: Array[String]) {
       .option("sep", "\t")
       .csv(args(0))
 
-    // df.rdd.map(row => row.getValuesMap(row.schema.fieldNames)).saveToOpenSearch(s"${resource}_rdd")
-    // df.saveToOpenSearch(s"${resource}_df")
+    df.rdd.map(row => row.getValuesMap(row.schema.fieldNames)).saveToOpenSearch(s"${resource}_rdd")
+    df.saveToOpenSearch(s"${resource}_df")
     df.write.format("opensearch").save(s"${resource}_ds")
   }
 }

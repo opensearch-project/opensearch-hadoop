@@ -34,9 +34,8 @@ import java.security.PrivilegedExceptionAction
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin
-import org.opensearch.spark._ 
+import org.opensearch.spark._
 import org.opensearch.spark.sql._
-
 
 class ReadFromES(args: Array[String]) {
 
@@ -51,12 +50,12 @@ class ReadFromES(args: Array[String]) {
     val dfOutputDir = s"${args(0)}DF"
     val dsOutputDir = s"${args(0)}DS"
 
-    // spark.sparkContext.esJsonRDD(s"${resource}_rdd").saveAsTextFile(rddOutputDir)
+    spark.sparkContext.esJsonRDD(s"${resource}_rdd").saveAsTextFile(rddOutputDir)
 
-    // spark.sqlContext.esDF(s"${resource}_df")
-    //   .rdd
-    //   .map(row => row.toString())
-    //   .saveAsTextFile(dfOutputDir)
+    spark.sqlContext.esDF(s"${resource}_df")
+      .rdd
+      .map(row => row.toString())
+      .saveAsTextFile(dfOutputDir)
 
     spark.sqlContext.read.format("opensearch").load(s"${resource}_ds")
       .rdd

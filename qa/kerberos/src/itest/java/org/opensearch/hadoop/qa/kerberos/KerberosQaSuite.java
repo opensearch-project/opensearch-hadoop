@@ -29,7 +29,7 @@
 
 package org.opensearch.hadoop.qa.kerberos;
 
-import org.opensearch.hadoop.fixtures.LocalEs;
+import org.opensearch.hadoop.fixtures.LocalOpenSearch;
 import org.junit.ClassRule;
 import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
@@ -40,7 +40,7 @@ import org.junit.runners.Suite;
 //@Suite.SuiteClasses({ AbstractKerberosClientTest.class })
 public class KerberosQaSuite {
     @ClassRule
-    public static ExternalResource resource = new LocalEs();
+    public static ExternalResource resource = new LocalOpenSearch();
 
     @ClassRule
     public static ExternalResource kdcResource = new LocalKdc();

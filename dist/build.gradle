@@ -106,6 +106,7 @@ dependencies {
     implementation("org.apache.hadoop:hadoop-mapreduce-client-core:${project.ext.hadoopVersion}")
     implementation("joda-time:joda-time:$jodaVersion")
     compileOnly("org.apache.spark:spark-catalyst_${project.ext.scala211MajorVersion}:$spark20Version")
+    implementation 'com.amazonaws:aws-java-sdk-bundle:1.12.397'
 }
 
 // Configure uber jar

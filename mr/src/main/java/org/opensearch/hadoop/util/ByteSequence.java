@@ -29,6 +29,7 @@
 package org.opensearch.hadoop.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 public interface ByteSequence {
@@ -36,4 +37,8 @@ public interface ByteSequence {
     int length();
 
     void writeTo(OutputStream out) throws IOException;
+
+    default InputStream toInputStream() {
+        throw new UnsupportedOperationException();
+    }
 }

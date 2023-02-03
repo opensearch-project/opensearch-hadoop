@@ -38,7 +38,7 @@ public class AwsSigV4SignerTest {
         settings.setProperty(ConfigurationOptions.OPENSEARCH_AWS_SIGV4_ENABLED, "true");
 
         AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo);
-        awsV4Signer.sign(simpleRequest, httpMethod, null);
+        awsV4Signer.sign(simpleRequest, httpMethod);
 
         Header xAmzDateHeader = httpMethod.getRequestHeader("X-Amz-Date");
         Header authorization = httpMethod.getRequestHeader("Authorization");
@@ -61,7 +61,7 @@ public class AwsSigV4SignerTest {
         settings.setProperty(ConfigurationOptions.OPENSEARCH_AWS_SIGV4_SERVICE_NAME, "aoss");
         
         AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo);
-        awsV4Signer.sign(simpleRequest, httpMethod, null);
+        awsV4Signer.sign(simpleRequest, httpMethod);
 
         Header xAmzDateHeader = httpMethod.getRequestHeader("X-Amz-Date");
         Header authorization = httpMethod.getRequestHeader("Authorization");

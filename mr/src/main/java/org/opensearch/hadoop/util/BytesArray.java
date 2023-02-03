@@ -217,6 +217,11 @@ public class BytesArray implements ByteSequence {
     }
 
     @Override
+    public InputStream toInputStream() {
+        return new ByteArrayInputStream(bytes, 0, size);
+    }
+    
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;

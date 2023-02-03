@@ -667,7 +667,6 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
 
         ByteSequence ba = request.body();
-        byte[] bodyBytes = null;
         if (ba != null && ba.length() > 0) {
             if (!(http instanceof EntityEnclosingMethod)) {
                 throw new IllegalStateException(
@@ -676,12 +675,6 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             EntityEnclosingMethod entityMethod = (EntityEnclosingMethod) http;
             entityMethod.setRequestEntity(new BytesArrayRequestEntity(ba));
             entityMethod.setContentChunked(false);
-
-            try (ByteArrayOutputStream outStream = new ByteArrayOutputStream()) {
-                ba.writeTo(outStream);
-                bodyBytes = outStream.toByteArray();
-                outStream.close();
-            }
         }
 
         headers.applyTo(http);
@@ -729,7 +722,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
 
         if (settings.getAwsSigV4Enabled()) {
             AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo);
-            awsV4Signer.sign(request, http, bodyBytes);
+            awsV4Signer.sign(request, http);
         }
 
         if (executingProvider != null) {

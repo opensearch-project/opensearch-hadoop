@@ -74,7 +74,7 @@ public class AwsV4Signer {
         return AMPERSAND_JOINER.join(result.build());
     }
 
-    public void sign(Request request, HttpMethod http, byte[] bodyBytes)
+    public void sign(Request request, HttpMethod http)
             throws UnsupportedEncodingException {
         String awsRegion = settings.getAwsSigV4Region();
         String awsServiceName = settings.getAwsSigV4ServiceName();
@@ -123,7 +123,7 @@ public class AwsV4Signer {
         }
 
         if (request.body() != null) {
-            req.setContent(new ByteArrayInputStream(bodyBytes));
+            req.setContent(request.body().toInputStream());
         }
 
         req.addHeader("x-amz-content-sha256", "required");

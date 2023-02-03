@@ -21,3 +21,4 @@ metastore_db
 out/
 localRepo/
 .vscode/
+*.jar

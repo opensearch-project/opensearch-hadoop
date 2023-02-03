@@ -10,18 +10,10 @@
 
 package org.opensearch.hadoop.rest.commonshttp.auth.aws;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Request;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.auth.signer.Aws4Signer;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.auth.signer.params.Aws4SignerParams;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.regions.Region;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpFullRequest;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpClient;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpMethod;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.http.SdkHttpResponse;
-// import org.opensearch.hadoop.thirdparty.amazon.awssdk.utils.http.SdkHttpUtils;
 import org.opensearch.hadoop.thirdparty.google.common.base.Optional;
 import org.opensearch.hadoop.thirdparty.google.common.base.Splitter;
 import org.opensearch.hadoop.thirdparty.google.common.base.Strings;
@@ -44,24 +36,23 @@ import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.TreeMap;
-
+import org.opensearch.hadoop.util.ByteSequence;
 import java.util.List;
 import java.util.Map;
-import java.util.Collections;
 import java.io.ByteArrayInputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
-import java.net.URLDecoder;
+import java.io.ByteArrayOutputStream;
 import java.net.URLEncoder;
-import java.nio.charset.StandardCharsets;
-import java.util.TreeMap;
-import java.util.Collection;
-
 
 public class AwsV4Signer {
+
+    private static Log log = LogFactory.getLog(AwsV4Signer.class);
+
     private final Settings settings;
     private final String httpInfo;
 
@@ -80,7 +71,7 @@ public class AwsV4Signer {
             }
         }
 
-        return '?' + AMPERSAND_JOINER.join(result.build());
+        return AMPERSAND_JOINER.join(result.build());
     }
 
     public void sign(Request request, HttpMethod http, byte[] bodyBytes)
@@ -99,18 +90,15 @@ public class AwsV4Signer {
 
         StringBuilder url = new StringBuilder();
         url.append(httpInfo);
+
         String path = request.path().toString();
-        // if (!path.startsWith("/")) {
-        //     url.append('/');
-        // }
-        // url.append(path);
         req.setResourcePath(path);
 
         Splitter queryStringSplitter = Splitter.on('&').trimResults().omitEmptyStrings();
         final Iterable<String> rawParams = request.params() != null ? queryStringSplitter.split(request.params())
                 : Collections.emptyList();
 
-        final ImmutableListMultimap.Builder<String, String> queryParams = ImmutableListMultimap.builder();
+        Map<String, List<String>> queryParams = new HashMap<>();
 
         for (String rawParam : rawParams) {
             if (!Strings.isNullOrEmpty(rawParam)) {
@@ -119,16 +107,14 @@ public class AwsV4Signer {
                 if (index > 0) {
                     final String key = pair.substring(0, index);
                     final String value = pair.substring(index + 1);
-                    queryParams.put(key, value);
+                    queryParams.put(key, Arrays.asList(value));
                 } else {
-                    queryParams.put(pair, "");
+                    queryParams.put(pair, Arrays.asList(""));
                 }
             }
         }
 
-        String params = queryParamsString(queryParams.build());
-
-        url.append(params);
+        req.setParameters(queryParams);
 
         try {
             req.setEndpoint(new java.net.URI(url.toString()));
@@ -137,15 +123,12 @@ public class AwsV4Signer {
         }
 
         if (request.body() != null) {
-            req.setContent(request.body().toInputStream());
+            req.setContent(new ByteArrayInputStream(bodyBytes));
         }
 
         req.addHeader("x-amz-content-sha256", "required");
 
         aws4Signer.sign(req, credentials.getCredentials());
-
-        // final ImmutableMap.Builder<String, String> signerHeaders =
-         ImmutableMap.builder();
 
         for (Map.Entry<String, String> entry : req.getHeaders().entrySet()) {
             http.setRequestHeader(entry.getKey(), entry.getValue());

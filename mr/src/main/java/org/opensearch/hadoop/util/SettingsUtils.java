@@ -69,7 +69,7 @@ public abstract class SettingsUtils {
             }
         }
 
-        return node + ":" + defaultPort;
+        return node;
     }
 
     private static String resolveHostToIpIfNecessary(String host) {

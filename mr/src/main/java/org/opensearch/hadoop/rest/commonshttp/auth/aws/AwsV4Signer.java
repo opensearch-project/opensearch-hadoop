@@ -27,7 +27,9 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
 
 import com.amazonaws.DefaultRequest;
 import com.amazonaws.auth.AWS4Signer;
+import com.amazonaws.auth.AWSCredentials;
 import com.amazonaws.auth.AWSCredentialsProvider;
+import com.amazonaws.auth.AWSCredentialsProviderChain;
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 import com.amazonaws.http.HttpMethodName;
 import com.amazonaws.regions.Regions;
@@ -55,12 +57,18 @@ public class AwsV4Signer {
 
     private final Settings settings;
     private final String httpInfo;
+    private final AWSCredentials credentials;
 
     private static final Joiner AMPERSAND_JOINER = Joiner.on('&');
 
     public AwsV4Signer(Settings settings, String httpInfo) {
+        this(settings, httpInfo, null);
+    }
+
+    public AwsV4Signer(Settings settings, String httpInfo, AWSCredentials credentials) {
         this.settings = settings;
         this.httpInfo = httpInfo;
+        this.credentials = credentials;
     }
 
     private String queryParamsString(Multimap<String, String> queryParams) {
@@ -82,8 +90,6 @@ public class AwsV4Signer {
         AWS4Signer aws4Signer = new AWS4Signer();
         aws4Signer.setRegionName(awsRegion);
         aws4Signer.setServiceName(awsServiceName);
-
-        final AWSCredentialsProvider credentials = DefaultAWSCredentialsProviderChain.getInstance();
 
         DefaultRequest<Void> req = new DefaultRequest<>(awsServiceName);
         req.setHttpMethod(HttpMethodName.valueOf(request.method().name()));
@@ -128,7 +134,7 @@ public class AwsV4Signer {
 
         req.addHeader("x-amz-content-sha256", "required");
 
-        aws4Signer.sign(req, credentials.getCredentials());
+        aws4Signer.sign(req, credentials);
 
         for (Map.Entry<String, String> entry : req.getHeaders().entrySet()) {
             http.setRequestHeader(entry.getKey(), entry.getValue());

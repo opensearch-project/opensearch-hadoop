@@ -90,6 +90,8 @@ import org.opensearch.hadoop.util.ReflectionUtils;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.encoding.HttpEncodingTools;
 
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 import java.io.ByteArrayInputStream;
@@ -135,7 +137,6 @@ public class CommonsHttpTransport implements Transport, StatsAware {
     private final UserProvider userProvider;
     private UserProvider proxyUserProvider = null;
     private String runAsUser = null;
-
 
     /** If the HTTP Connection is made through a proxy */
     private boolean isProxied = false;
@@ -721,7 +722,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
 
         if (settings.getAwsSigV4Enabled()) {
-            AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo);
+            final AWSCredentials credentials = DefaultAWSCredentialsProviderChain.getInstance().getCredentials();
+            AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo, credentials);
             awsV4Signer.sign(request, http);
         }
 
@@ -756,8 +758,6 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         // http info instead for source
         return new SimpleResponse(http.getStatusCode(), new ResponseInputStream(http), httpInfo, headers);
     }
-
-
 
     /**
      * Actually perform the request

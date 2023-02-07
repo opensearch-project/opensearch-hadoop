@@ -18,6 +18,11 @@ import org.opensearch.hadoop.rest.SimpleRequest;
 import org.opensearch.hadoop.rest.Request.Method;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.methods.GetMethod;
 import org.opensearch.hadoop.util.TestSettings;
+
+import com.amazonaws.auth.AWSCredentials;
+import com.amazonaws.auth.AWSCredentialsProviderChain;
+import com.amazonaws.auth.BasicAWSCredentials;
+
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
 
@@ -37,7 +42,11 @@ public class AwsSigV4SignerTest {
         Settings settings = new TestSettings("rest/awsSigV4Signer");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_AWS_SIGV4_ENABLED, "true");
 
-        AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo);
+        final String awsAccessKeyId = "foo";
+        final String awsSecretAccessKey = "bar";
+        final AWSCredentials reqCredentials = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
+
+        AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo, reqCredentials);
         awsV4Signer.sign(simpleRequest, httpMethod);
 
         Header xAmzDateHeader = httpMethod.getRequestHeader("X-Amz-Date");
@@ -60,7 +69,11 @@ public class AwsSigV4SignerTest {
         settings.setProperty(ConfigurationOptions.OPENSEARCH_AWS_SIGV4_REGION, "us-west-2");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_AWS_SIGV4_SERVICE_NAME, "aoss");
         
-        AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo);
+        final String awsAccessKeyId = "foo";
+        final String awsSecretAccessKey = "bar";
+        final AWSCredentials reqCredentials = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
+
+        AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo, reqCredentials);
         awsV4Signer.sign(simpleRequest, httpMethod);
 
         Header xAmzDateHeader = httpMethod.getRequestHeader("X-Amz-Date");

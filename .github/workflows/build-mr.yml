@@ -45,7 +45,3 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew opensearch-hadoop-mr:build
-
-      - name: Cat logs
-        if: always()
-        run: cat /home/runner/work/opensearch-hadoop/opensearch-hadoop/mr/build/test-results/integrationTest/TEST-org.opensearch.hadoop.rest.commonshttp.auth.aws.AwsSigV4SignerTest.xml

@@ -46,7 +46,7 @@ public class AwsSigV4SignerTest {
         final String awsSecretAccessKey = "bar";
         final AWSCredentials reqCredentials = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
 
-        AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo, reqCredentials);
+        AwsV4SignerSupport awsV4Signer = new AwsV4SignerSupport(settings, httpInfo, reqCredentials);
         awsV4Signer.sign(simpleRequest, httpMethod);
 
         Header xAmzDateHeader = httpMethod.getRequestHeader("X-Amz-Date");
@@ -73,7 +73,7 @@ public class AwsSigV4SignerTest {
         final String awsSecretAccessKey = "bar";
         final AWSCredentials reqCredentials = new BasicAWSCredentials(awsAccessKeyId, awsSecretAccessKey);
 
-        AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo, reqCredentials);
+        AwsV4SignerSupport awsV4Signer = new AwsV4SignerSupport(settings, httpInfo, reqCredentials);
         awsV4Signer.sign(simpleRequest, httpMethod);
 
         Header xAmzDateHeader = httpMethod.getRequestHeader("X-Amz-Date");

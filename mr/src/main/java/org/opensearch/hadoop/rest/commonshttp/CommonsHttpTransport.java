@@ -45,7 +45,7 @@ import org.opensearch.hadoop.rest.ReusableInputStream;
 import org.opensearch.hadoop.rest.SimpleResponse;
 import org.opensearch.hadoop.rest.Transport;
 import org.opensearch.hadoop.rest.commonshttp.auth.OpenSearchHadoopAuthPolicies;
-import org.opensearch.hadoop.rest.commonshttp.auth.aws.AwsV4Signer;
+import org.opensearch.hadoop.rest.commonshttp.auth.aws.AwsV4SignerSupport;
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyAuthScheme;
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyCredentials;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoAuthScheme;
@@ -723,7 +723,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
 
         if (settings.getAwsSigV4Enabled()) {
             final AWSCredentials credentials = DefaultAWSCredentialsProviderChain.getInstance().getCredentials();
-            AwsV4Signer awsV4Signer = new AwsV4Signer(settings, httpInfo, credentials);
+            AwsV4SignerSupport awsV4Signer = new AwsV4SignerSupport(settings, httpInfo, credentials);
             awsV4Signer.sign(request, http);
         }
 

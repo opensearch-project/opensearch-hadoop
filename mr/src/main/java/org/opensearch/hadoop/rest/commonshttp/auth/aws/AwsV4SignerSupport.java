@@ -51,9 +51,9 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.net.URLEncoder;
 
-public class AwsV4Signer {
+public class AwsV4SignerSupport {
 
-    private static Log log = LogFactory.getLog(AwsV4Signer.class);
+    private static Log log = LogFactory.getLog(AwsV4SignerSupport.class);
 
     private final Settings settings;
     private final String httpInfo;
@@ -61,11 +61,11 @@ public class AwsV4Signer {
 
     private static final Joiner AMPERSAND_JOINER = Joiner.on('&');
 
-    public AwsV4Signer(Settings settings, String httpInfo) {
+    public AwsV4SignerSupport(Settings settings, String httpInfo) {
         this(settings, httpInfo, null);
     }
 
-    public AwsV4Signer(Settings settings, String httpInfo, AWSCredentials credentials) {
+    public AwsV4SignerSupport(Settings settings, String httpInfo, AWSCredentials credentials) {
         this.settings = settings;
         this.httpInfo = httpInfo;
         this.credentials = credentials;

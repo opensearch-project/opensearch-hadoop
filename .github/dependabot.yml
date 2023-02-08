@@ -1,0 +1,114 @@
+updates:
+  - directory: /
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /buildSrc/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /dist/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /hive/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /mr/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /pig/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /qa/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /spark/core/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /spark/sql-13/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /spark/sql-20/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /spark/sql-30/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /storm/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /test/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+  - directory: /thirdparty/
+    open-pull-requests-limit: 1
+    package-ecosystem: gradle
+    schedule:
+      interval: weekly
+    labels:
+      - "dependabot"
+      - "dependencies"
+version: 2

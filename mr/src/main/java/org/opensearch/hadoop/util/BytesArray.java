@@ -28,6 +28,8 @@
  */
 package org.opensearch.hadoop.util;
 
+import java.io.ByteArrayInputStream;
+
 /*
  * This file is derived from org.elasticsearch.common.bytes.BytesArray.
  * All copyrights apply.
@@ -64,6 +66,7 @@ package org.opensearch.hadoop.util;
  */
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 
 /**
@@ -213,6 +216,11 @@ public class BytesArray implements ByteSequence {
         out.flush();
     }
 
+    @Override
+    public InputStream toInputStream() {
+        return new ByteArrayInputStream(bytes, 0, size);
+    }
+    
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

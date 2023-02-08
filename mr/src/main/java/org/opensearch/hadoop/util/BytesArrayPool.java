@@ -29,6 +29,7 @@
 package org.opensearch.hadoop.util;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +53,11 @@ public class BytesArrayPool implements ByteSequence {
 
     @Override
     public void writeTo(OutputStream out) throws IOException {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public InputStream toInputStream() {
         throw new UnsupportedOperationException();
     }
 

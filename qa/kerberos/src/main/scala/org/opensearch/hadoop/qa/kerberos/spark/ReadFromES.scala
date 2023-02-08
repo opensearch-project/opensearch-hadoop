@@ -34,9 +34,8 @@ import java.security.PrivilegedExceptionAction
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin
-import org.opensearch.spark._ 
+import org.opensearch.spark._
 import org.opensearch.spark.sql._
-
 
 class ReadFromES(args: Array[String]) {
 

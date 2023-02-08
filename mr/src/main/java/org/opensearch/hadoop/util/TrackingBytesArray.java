@@ -28,7 +28,9 @@
  */
 package org.opensearch.hadoop.util;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.BitSet;
 import java.util.LinkedList;
@@ -152,6 +154,16 @@ public class TrackingBytesArray implements ByteSequence {
             out.write(data.bytes, entry.offset, entry.length);
         }
         out.flush();
+    }
+
+
+    @Override
+    public InputStream toInputStream() {
+        if (size == 0) {
+            return new ByteArrayInputStream(new byte[0]);
+        } else {
+            return data.toInputStream();
+        }
     }
 
     public void reset() {

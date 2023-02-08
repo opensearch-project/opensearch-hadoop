@@ -36,7 +36,7 @@ dependencies {
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.7.8")
     testImplementation("org.apache.pig:pig:$pigVersion:$pigClassifier")
     testImplementation("joda-time:joda-time:$jodaVersion")
-    testImplementation("com.google.guava:guava:11.0")
+    testImplementation("com.google.guava:guava:23.0")
     testImplementation("jline:jline:0.9.94")
 
     itestEmbedded(project(":test:shared"))

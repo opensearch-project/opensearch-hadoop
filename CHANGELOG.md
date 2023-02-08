@@ -12,6 +12,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Dependencies
 - Bumps `com.google.guava:guava` from 11.0 to 23.0
 - Bumps `commons-codec:commons-codec` from 1.4 to 1.15
+- Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.7.8 to 2.14.2
 
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

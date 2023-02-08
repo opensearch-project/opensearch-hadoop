@@ -70,7 +70,7 @@ dependencies {
 
     // Required for dependency licenses task
     implementation 'org.apache.rat:apache-rat:0.13'
-    implementation 'commons-codec:commons-codec:1.12'
+    implementation 'commons-codec:commons-codec:1.15'
 
     if (localRepo) {
         implementation name: "build-tools-${buildToolsVersion}"

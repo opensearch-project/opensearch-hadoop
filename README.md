@@ -17,9 +17,11 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Pig](#ap
     - ['New' (`org.apache.hadoop.mapreduce`) API](#new-orgapachehadoopmapreduce-api)
     - [Reading](#reading-1)
     - [Writing](#writing-1)
+    - [Signing requests for IAM authentication](#signing-requests-for-iam-authentication)
   - [Apache Hive](#apache-hive)
     - [Reading](#reading-2)
     - [Writing](#writing-2)
+    - [Signing requests for IAM authentication](#signing-requests-for-iam-authentication-1)
   - [Apache Pig](#apache-pig)
     - [Reading](#reading-3)
     - [Writing](#writing-3)
@@ -34,6 +36,7 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Pig](#ap
       - [Spark SQL](#spark-sql-2)
     - [Writing](#writing-5)
       - [Spark SQL](#spark-sql-3)
+    - [Signing requests for IAM authentication](#signing-requests-for-iam-authentication-2)
   - [Apache Storm](#apache-storm)
     - [Reading](#reading-6)
     - [Writing](#writing-6)
@@ -42,7 +45,7 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Pig](#ap
 
 ## Requirements
 OpenSearch (__3.x__ or higher) cluster accessible through [REST][]. That's it!
-Significant effort has been invested to create a small, dependency-free, self-contained jar that can be downloaded and put to use without any dependencies. Simply make it available to your job classpath and you're set.
+If using SigV4 IAM auth features, you would need to include the [aws-sdk-bundle](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle) in your job classpath.
 
 ## Usage
 
@@ -112,6 +115,26 @@ job.setOutputFormatClass(OpenSearchOutputFormat.class);
 job.waitForCompletion(true);
 ```
 
+### Signing requests for IAM authentication
+
+Signing requests would require the [aws-sdk-bundle](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle) in your job classpath.
+
+```java
+Configuration conf = new Configuration();
+conf.set("opensearch.resource", "radio/artists");
+conf.set("opensearch.query", "?q=me*");             // replace this with the relevant query
+conf.set("opensearch.nodes", "https://search-xxx.us-east-1.es.amazonaws.com");
+conf.set("opensearch.port", "443");
+conf.set("opensearch.net.ssl", "true");
+conf.set("opensearch.nodes.wan.only", "true");
+conf.set("opensearch.aws.sigv4.enabled", "true");
+conf.set("opensearch.aws.sigv4.region", "us-east-1");
+Job job = new Job(conf)
+job.setInputFormatClass(OpenSearchInputFormat.class);
+...
+job.waitForCompletion(true);
+```
+
 ## [Apache Hive][]
 OpenSearch-Hadoop provides a Hive storage handler for OpenSearch, meaning one can define an [external table][] on top of OpenSearch.
 
@@ -154,6 +177,27 @@ INSERT OVERWRITE TABLE artists
 ```
 
 As one can note, currently the reading and writing are treated separately but we're working on unifying the two and automatically translating [HiveQL][] to OpenSearch queries.
+
+### Signing requests for IAM authentication
+
+Signing requests would require the [aws-sdk-bundle](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle) in your job classpath.
+
+```SQL
+CREATE EXTERNAL TABLE artists (
+    id      BIGINT,
+    name    STRING,
+    links   STRUCT<url:STRING, picture:STRING>)
+STORED BY 'org.opensearch.hadoop.hive.OpenSearchStorageHandler'
+TBLPROPERTIES(
+    'opensearch.nodes' = 'https://search-xxx.us-east-1.es.amazonaws.com',
+    'opensearch.port' = '443',
+    'opensearch.net.ssl' = 'true',
+    'opensearch.resource' = 'artists',
+    'opensearch.nodes.wan.only' = 'true',
+    'opensearch.aws.sigv4.enabled' = 'true',
+    'opensearch.aws.sigv4.region' = 'us-east-1'
+    );
+```
 
 ## [Apache Pig][]
 OpenSearch-Hadoop provides both read and write functions for Pig so you can access OpenSearch from Pig scripts.
@@ -282,6 +326,29 @@ import org.opensearch.spark.sql.api.java.JavaOpenSearchSparkSQL;
 
 DataFrame df = sqlContext.read.json("examples/people.json")
 JavaOpenSearchSparkSQL.saveToOpenSearch(df, "spark/docs")
+```
+
+### Signing requests for IAM authentication
+
+Signing requests would require the [aws-sdk-bundle](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle) in your job classpath.
+
+```scala
+import org.apache.spark.sql.SQLContext
+import org.apache.spark.sql.SQLContext._
+import org.opensearch.spark.sql._
+
+val sql = new SQLContext(sc)
+
+val accountsRead = sql.read.json("/Users/user/release/maximus/data/accounts.json")
+
+val options = Map("pushdown" -> "true",     
+"opensearch.nodes" -> "https://aos-2.3-domain", 
+"opensearch.aws.sigv4.enabled" -> "true",
+"opensearch.aws.sigv4.region" -> "us-west-2",
+"opensearch.nodes.resolve.hostname" -> "false",
+"opensearch.nodes.wan.only" -> "true",
+"opensearch.net.ssl" -> "true")   
+accountsRead.saveToOpenSearch("accounts-00001", options)
 ```
 
 ## [Apache Storm][]

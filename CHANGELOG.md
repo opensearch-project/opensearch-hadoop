@@ -1,9 +1,10 @@
 # CHANGELOG
 Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [Unreleased]
+## [Unreleased 1.x]
 ### Added
 - Added CHANGELOG and verifier workflow ([65](https://github.com/opensearch-project/opensearch-hadoop/pull/65))
+- Added support for OpenSearch 1.x ([78](https://github.com/opensearch-project/opensearch-hadoop/pull/78))
 ### Changed
 ### Deprecated
 ### Removed
@@ -14,4 +15,4 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `commons-codec:commons-codec` from 1.4 to 1.15
 
 
-[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD
+[Unreleased 1.x]: https://github.com/opensearch-project/opensearch-hadoop/compare/1.0.0...HEAD

@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -67,7 +67,9 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     private boolean readMetadata;
     private OpenSearchMajorVersion testVersion;
     private static Configuration testConfiguration = HdpBootstrap.hadoopConfig();
-    private static String workingDir = HadoopCfgUtils.isLocal(testConfiguration) ? Paths.get("").toAbsolutePath().toString() : "/";
+    private static String workingDir = HadoopCfgUtils.isLocal(testConfiguration)
+            ? Paths.get("").toAbsolutePath().toString()
+            : "/";
 
     @ClassRule
     public static LazyTempFolder tempFolder = new LazyTempFolder();
@@ -92,7 +94,6 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
 
     private String scriptHead;
 
-
     @BeforeClass
     public static void beforeClass() throws Exception {
         // we do this just here since the configuration doesn't get used in Pig scripts.
@@ -103,16 +104,16 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     public void before() throws Exception {
         RestUtils.refresh("json-pig*");
 
-        this.scriptHead =
-                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.index.read.missing.as.empty=true','opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"','opensearch.output.json=true');";
+        this.scriptHead = "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.index.read.missing.as.empty=true','opensearch.query="
+                + query + "','opensearch.read.metadata=" + readMetadata + "','opensearch.output.json=true');";
     }
 
     @Test
     public void testTuple() throws Exception {
         String script = scriptHead +
-                "A = LOAD '"+resource("json-pig-tupleartists", "data", testVersion)+"' USING OpenSearchStorage();" +
+                "A = LOAD '" + resource("json-pig-tupleartists", "data", testVersion) + "' USING OpenSearchStorage();" +
                 "X = LIMIT A 3;" +
-                //"DESCRIBE A;";
+                // "DESCRIBE A;";
                 "STORE A INTO '" + tmpPig() + "/testtuple';";
         pig.executeScript(script);
 
@@ -124,37 +125,28 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         }
 
         List<String> doc1 = Lists.newArrayList(
-                "{\"number\":\"12\",\"name\":\"Behemoth\",\"url\":\"http://www.last.fm/music/Behemoth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/54196161.jpg\",\"@timestamp\":\"2001-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"12\",\"name\":\"Behemoth\",\"url\":\"http://www.last.fm/music/Behemoth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/54196161.jpg\",\"@timestamp\":\"2001-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc1.add("\"_type\":\""+metaType+"\"");
-            }
+            doc1.add("\"_type\":\"" + metaType + "\"");
             doc1.add("\"_id\":\"");
             doc1.add("\"_score\":");
         }
 
         List<String> doc2 = Lists.newArrayList(
-                "{\"number\":\"918\",\"name\":\"Megadeth\",\"url\":\"http://www.last.fm/music/Megadeth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/8129787.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"918\",\"name\":\"Megadeth\",\"url\":\"http://www.last.fm/music/Megadeth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/8129787.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc2.add("\"_type\":\""+metaType+"\"");
-            }
+            doc2.add("\"_type\":\"" + metaType + "\"");
             doc2.add("\"_id\":\"");
             doc2.add("\"_score\":");
         }
 
         List<String> doc3 = Lists.newArrayList(
-                "{\"number\":\"982\",\"name\":\"Foo Fighters\",\"url\":\"http://www.last.fm/music/Foo+Fighters\",\"picture\":\"http://userserve-ak.last.fm/serve/252/59495563.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"982\",\"name\":\"Foo Fighters\",\"url\":\"http://www.last.fm/music/Foo+Fighters\",\"picture\":\"http://userserve-ak.last.fm/serve/252/59495563.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc3.add("\"_type\":\""+metaType+"\"");
-            }
+            doc3.add("\"_type\":\"" + metaType + "\"");
             doc3.add("\"_id\":\"");
             doc3.add("\"_score\":");
         }
@@ -167,7 +159,8 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     @Test
     public void testTupleWithSchema() throws Exception {
         String script = scriptHead +
-                "A = LOAD '"+resource("json-pig-tupleartists", "data", testVersion)+"' USING OpenSearchStorage() AS (name:chararray);" +
+                "A = LOAD '" + resource("json-pig-tupleartists", "data", testVersion)
+                + "' USING OpenSearchStorage() AS (name:chararray);" +
                 "B = ORDER A BY name DESC;" +
                 "X = LIMIT B 3;" +
                 "STORE B INTO '" + tmpPig() + "/testtupleschema';";
@@ -181,37 +174,28 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         }
 
         List<String> doc1 = Lists.newArrayList(
-                "{\"number\":\"999\",\"name\":\"Thompson Twins\",\"url\":\"http://www.last.fm/music/Thompson+Twins\",\"picture\":\"http://userserve-ak.last.fm/serve/252/6943589.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"999\",\"name\":\"Thompson Twins\",\"url\":\"http://www.last.fm/music/Thompson+Twins\",\"picture\":\"http://userserve-ak.last.fm/serve/252/6943589.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc1.add("\"_type\":\""+metaType+"\"");
-            }
+            doc1.add("\"_type\":\"" + metaType + "\"");
             doc1.add("\"_id\":\"");
             doc1.add("\"_score\":");
         }
 
         List<String> doc2 = Lists.newArrayList(
-                "{\"number\":\"12\",\"name\":\"Behemoth\",\"url\":\"http://www.last.fm/music/Behemoth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/54196161.jpg\",\"@timestamp\":\"2001-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"12\",\"name\":\"Behemoth\",\"url\":\"http://www.last.fm/music/Behemoth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/54196161.jpg\",\"@timestamp\":\"2001-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc2.add("\"_type\":\""+metaType+"\"");
-            }
+            doc2.add("\"_type\":\"" + metaType + "\"");
             doc2.add("\"_id\":\"");
             doc2.add("\"_score\":");
         }
 
         List<String> doc3 = Lists.newArrayList(
-                "{\"number\":\"230\",\"name\":\"Green Day\",\"url\":\"http://www.last.fm/music/Green+Day\",\"picture\":\"http://userserve-ak.last.fm/serve/252/15291249.jpg\",\"@timestamp\":\"2005-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"230\",\"name\":\"Green Day\",\"url\":\"http://www.last.fm/music/Green+Day\",\"picture\":\"http://userserve-ak.last.fm/serve/252/15291249.jpg\",\"@timestamp\":\"2005-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-tupleartists\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc3.add("\"_type\":\""+metaType+"\"");
-            }
+            doc3.add("\"_type\":\"" + metaType + "\"");
             doc3.add("\"_id\":\"");
             doc3.add("\"_score\":");
         }
@@ -224,9 +208,9 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     @Test
     public void testFieldAlias() throws Exception {
         String script = scriptHead
-                      + "A = LOAD '"+resource("json-pig-fieldalias", "data", testVersion)+"' USING OpenSearchStorage();"
-                      + "X = LIMIT A 3;"
-                      + "STORE A INTO '" + tmpPig() + "/testfieldalias';";
+                + "A = LOAD '" + resource("json-pig-fieldalias", "data", testVersion) + "' USING OpenSearchStorage();"
+                + "X = LIMIT A 3;"
+                + "STORE A INTO '" + tmpPig() + "/testfieldalias';";
         pig.executeScript(script);
 
         String results = getResults("" + tmpPig() + "/testfieldalias");
@@ -237,37 +221,28 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
         }
 
         List<String> doc1 = Lists.newArrayList(
-                "{\"number\":\"12\",\"name\":\"Behemoth\",\"url\":\"http://www.last.fm/music/Behemoth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/54196161.jpg\",\"@timestamp\":\"2001-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"12\",\"name\":\"Behemoth\",\"url\":\"http://www.last.fm/music/Behemoth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/54196161.jpg\",\"@timestamp\":\"2001-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc1.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc1.add("\"_type\":\""+metaType+"\"");
-            }
+            doc1.add("\"_type\":\"" + metaType + "\"");
             doc1.add("\"_id\":\"");
             doc1.add("\"_score\":");
         }
 
         List<String> doc2 = Lists.newArrayList(
-                "{\"number\":\"918\",\"name\":\"Megadeth\",\"url\":\"http://www.last.fm/music/Megadeth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/8129787.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"918\",\"name\":\"Megadeth\",\"url\":\"http://www.last.fm/music/Megadeth\",\"picture\":\"http://userserve-ak.last.fm/serve/252/8129787.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc2.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc2.add("\"_type\":\""+metaType+"\"");
-            }
+            doc2.add("\"_type\":\"" + metaType + "\"");
             doc2.add("\"_id\":\"");
             doc2.add("\"_score\":");
         }
 
         List<String> doc3 = Lists.newArrayList(
-                "{\"number\":\"982\",\"name\":\"Foo Fighters\",\"url\":\"http://www.last.fm/music/Foo+Fighters\",\"picture\":\"http://userserve-ak.last.fm/serve/252/59495563.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]"
-        );
+                "{\"number\":\"982\",\"name\":\"Foo Fighters\",\"url\":\"http://www.last.fm/music/Foo+Fighters\",\"picture\":\"http://userserve-ak.last.fm/serve/252/59495563.jpg\",\"@timestamp\":\"2017-10-06T19:20:25.000Z\",\"list\":[\"quick\", \"brown\", \"fox\"]");
         if (readMetadata) {
             doc3.add("\"_metadata\":{\"_index\":\"json-pig-fieldalias\"");
-            if (testVersion.before(OpenSearchMajorVersion.V_3_X)) {
-                doc3.add("\"_type\":\""+metaType+"\"");
-            }
+            doc3.add("\"_type\":\"" + metaType + "\"");
             doc3.add("\"_id\":\"");
             doc3.add("\"_score\":");
         }
@@ -280,9 +255,9 @@ public class AbstractPigReadAsJsonTest extends AbstractPigTests {
     @Test
     public void testMissingIndex() throws Exception {
         String script = scriptHead
-                      + "A = LOAD '"+resource("foo", "bar", testVersion)+"' USING OpenSearchStorage();"
-                      + "X = LIMIT A 3;"
-                      + "STORE A INTO '" + tmpPig() + "/testmissingindex';";
+                + "A = LOAD '" + resource("foo", "bar", testVersion) + "' USING OpenSearchStorage();"
+                + "X = LIMIT A 3;"
+                + "STORE A INTO '" + tmpPig() + "/testmissingindex';";
         pig.executeScript(script);
 
         String results = getResults("" + tmpPig() + "/testmissingindex");

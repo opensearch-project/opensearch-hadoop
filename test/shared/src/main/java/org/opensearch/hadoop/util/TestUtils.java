@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -82,7 +82,7 @@ public class TestUtils {
 
     public static boolean isTypelessVersion(OpenSearchMajorVersion version) {
         // Types have been removed in 2.0.0
-        return version.onOrAfter(OpenSearchMajorVersion.V_2_X);
+        return version.after(OpenSearchMajorVersion.V_1_X);
     }
 
     public static boolean isWindows() {

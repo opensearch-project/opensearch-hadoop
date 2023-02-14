@@ -500,11 +500,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val lang = "painless"
     val script = "ctx._source.counter = ctx._source.getOrDefault('counter', 0) + 1"
 
-    if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
-      RestUtils.put(s"_scripts/$scriptName", s"""{"script":{"lang":"$lang", "source": "$script"}}""".getBytes(StringUtils.UTF_8))
-    } else {
       RestUtils.put(s"_scripts/$scriptName", s"""{"script":{"lang":"$lang", "code": "$script"}}""".getBytes(StringUtils.UTF_8))
-    }
 
     val props = Map("opensearch.write.operation" -> "update", "opensearch.mapping.id" -> "id", "opensearch.update.script.stored" -> scriptName)
     val lines = sc.makeRDD(List(Map("id"->"1")))
@@ -721,13 +717,6 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
         |    "number_of_shards" : 1,
         |    "number_of_replicas" : 0
         |},
-        |"mappings" : ${wrapMapping("alias", s"""{
-        |    "properties" : {
-        |      "name" : { "type" : "${keyword}" },
-        |      "number" : { "type" : "long" },
-        |      "@ImportDate" : { "type" : "date" }
-        |     }
-        |   }}""".stripMargin)},
         |"aliases" : { "spark-temp-index" : {} }
         |}""".stripMargin
     RestUtils.put("_template/" + wrapIndex("test_template"), template.getBytes)
@@ -763,46 +752,9 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
 
   @Test
-  def testaaaaaMultiIndexNonExisting() {
-
-    val multipleMissingIndicesWithSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump", Map(OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
-    assertEquals(0, multipleMissingIndicesWithSetting.count)
-    val multipleMissingIndicesWithoutSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump")
-    try {
-      val count = multipleMissingIndicesWithoutSetting.count
-      fail("Should have thrown an exception instead of returning " + count)
-    } catch {
-      case e: OpenSearchHadoopIllegalArgumentException => //Expected
-    }
-
-    val index1 = prefix + "spark-test-read-missing-as-empty-1"
-    val typename = "data"
-    val target1 = resource(index1, typename, version)
-    val docPath1 = docEndpoint(index1, typename, version)
-
-    RestUtils.touch(target1)
-    RestUtils.postData(docPath1, "{\"message\" : \"Hello World\",\"message_date\" : \"2014-05-25\"}".getBytes())
-    RestUtils.postData(docPath1, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
-    RestUtils.refresh(index1)
-
-    val index2 = prefix + "spark-test-read-missing-as-empty-2"
-    val target2 = resource(index2, typename, version)
-    val docPath2 = docEndpoint(index2, typename, version)
-
-    RestUtils.touch(target2)
-    RestUtils.postData(docPath2, "{\"message\" : \"Hello World\",\"message_date\" : \"2014-05-25\"}".getBytes())
-    RestUtils.postData(docPath2, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
-    RestUtils.refresh(index2)
-
-    val mixedWithSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump," + index1 + "," + index2, Map(OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
-    assertEquals(4, mixedWithSetting.count)
-    val mixedWithoutSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump," + index1)
-    try {
-      val count = mixedWithoutSetting.count
-      fail("Should have thrown an exception instead of returning " + count)
-    } catch {
-      case e: OpenSearchHadoopIllegalArgumentException => //Expected
-    }
+  def testMultiIndexNonExisting() {
+    val rdd = OpenSearchSpark.opensearchRDD(sc, "bumpA,Stump", Map(OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
+    assertEquals(0, rdd.count)
   }
 
   def wrapIndex(index: String) = {

@@ -91,12 +91,12 @@ public class Resource {
         boolean typeExists = slash >= 0;
 
         // Types can no longer the specified at all! Index names only!
-        if (typeExists) {
-            throw new OpenSearchHadoopIllegalArgumentException(String.format(
-                    "Detected type name in resource [%s]. Remove type name to continue.",
-                    resource
-            ));
-        }
+        // if (typeExists) {
+        //     throw new OpenSearchHadoopIllegalArgumentException(String.format(
+        //             "Detected type name in resource [%s]. Remove type name to continue.",
+        //             resource
+        //     ));
+        // }
 
         // Parse out the type if it exists and is valid.
         if (typeExists) {

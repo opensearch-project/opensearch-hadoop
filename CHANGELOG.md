@@ -13,6 +13,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.google.guava:guava` from 11.0 to 23.0
 - Bumps `commons-codec:commons-codec` from 1.4 to 1.15
 - Bumps `com.google.code.findbugs:jsr305` from 2.0.1 to 3.0.2
+- Bumps `commons-httpclient:commons-httpclient` from 3.0.1 to 3.1
 
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

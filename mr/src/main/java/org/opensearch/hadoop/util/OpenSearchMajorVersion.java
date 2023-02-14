@@ -40,6 +40,9 @@ public class OpenSearchMajorVersion implements Serializable {
     private static final long serialVersionUID = 1L;
 
     public static final OpenSearchMajorVersion V_1_X = new OpenSearchMajorVersion((byte) 1, "1.x");
+    
+    // this is a workaround to support elasticsearch version 7.10 for some customers
+    public static final OpenSearchMajorVersion V_7_X = new OpenSearchMajorVersion((byte) 7, "7.x");
     public static final OpenSearchMajorVersion LATEST = V_1_X;
 
     public final byte major;
@@ -77,6 +80,9 @@ public class OpenSearchMajorVersion implements Serializable {
     public static OpenSearchMajorVersion parse(String version) {
         if (version.startsWith("1.")) {
             return new OpenSearchMajorVersion((byte) 1, version);
+        }
+        else if (version.startsWith("7.")) {
+            return new OpenSearchMajorVersion((byte) 7, version);
         }
         throw new OpenSearchHadoopIllegalArgumentException("Unsupported/Unknown OpenSearch version [" + version + "]." +
                 "Highest supported version is [" + LATEST.version + "]. You may need to upgrade OpenSearch-Hadoop.");

@@ -67,6 +67,9 @@ public class OpenSearchMajorVersionTest {
         versions.add("1.3.6");
         versions.add("1.3.7");
         versions.add("1.3.8");
+
+        // this is a workaround to support elasticsearch version 7.10 for some customers
+        versions.add("7.10.0");
         TEST_VERSIONS = Collections.unmodifiableList(versions);
     }
 

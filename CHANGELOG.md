@@ -17,6 +17,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.7.8 to 2.14.2
 - Bumps `commons-httpclient:commons-httpclient` from 3.0.1 to 3.1
 - Bumps `org.apache.rat:apache-rat` from 0.13 to 0.15
+- Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
 
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

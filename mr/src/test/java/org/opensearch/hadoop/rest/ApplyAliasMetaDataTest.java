@@ -54,7 +54,7 @@ public class ApplyAliasMetaDataTest {
 
     private static final OpenSearchMajorVersion[] OPENSEARCH_VERSIONS =
             new OpenSearchMajorVersion[]{
-                    OpenSearchMajorVersion.V_3_X
+                    OpenSearchMajorVersion.V_1_X
             };
 
     @Test

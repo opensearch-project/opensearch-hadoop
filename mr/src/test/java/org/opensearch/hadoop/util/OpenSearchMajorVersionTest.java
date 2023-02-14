@@ -66,22 +66,7 @@ public class OpenSearchMajorVersionTest {
         versions.add("1.3.5");
         versions.add("1.3.6");
         versions.add("1.3.7");
-        versions.add("2.0.0-alpha1");
-        versions.add("2.0.0-beta2");
-        versions.add("2.0.0-rc3");
-        versions.add("2.0.0");
-        versions.add("2.1.0");
-        versions.add("2.1.1");
-        versions.add("2.2.0");
-        versions.add("2.2.1");
-        versions.add("2.2.2");
-        versions.add("2.3.0");
-        versions.add("2.3.1");
-        versions.add("2.4.0");
-        versions.add("3.0.0-alpha1");
-        versions.add("3.0.0-beta2");
-        versions.add("3.0.0-rc3");
-        versions.add("3.0.0");
+        versions.add("1.3.8");
         TEST_VERSIONS = Collections.unmodifiableList(versions);
     }
 
@@ -119,24 +104,24 @@ public class OpenSearchMajorVersionTest {
             assertThat(minorVersion, greaterThanOrEqualTo(0));
         }
         try {
-            OpenSearchMajorVersion.V_3_X.parseMinorVersion("6.0.0");
+            OpenSearchMajorVersion.V_1_X.parseMinorVersion("2.0.0");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Invalid version string for major version; Received [6.0.0] for major version [3.x]",
+            assertEquals("Invalid version string for major version; Received [2.0.0] for major version [1.x]",
                     e.getMessage());
         }
         try {
-            OpenSearchMajorVersion.V_3_X.parseMinorVersion("3.");
+            OpenSearchMajorVersion.V_1_X.parseMinorVersion("1.");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Could not parse OpenSearch minor version [3.]. Invalid version format.",
+            assertEquals("Could not parse OpenSearch minor version [1.]. Invalid version format.",
                     e.getMessage());
         }
         try {
-            OpenSearchMajorVersion.V_3_X.parseMinorVersion("3.4-abcd.4");
+            OpenSearchMajorVersion.V_1_X.parseMinorVersion("1.4-abcd.4");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Could not parse OpenSearch minor version [3.4-abcd.4]. Non-numeric minor version [4-abcd].",
+            assertEquals("Could not parse OpenSearch minor version [1.4-abcd.4]. Non-numeric minor version [4-abcd].",
                     e.getMessage());
         }
     }

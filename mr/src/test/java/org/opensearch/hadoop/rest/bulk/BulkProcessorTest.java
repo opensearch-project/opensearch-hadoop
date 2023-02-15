@@ -86,7 +86,7 @@ public class BulkProcessorTest {
     public static Collection<Object[]> data() {
         List<Object[]> params = new ArrayList<Object[]>();
 
-        params.add(new Object[]{OpenSearchMajorVersion.V_3_X, new BulkOutputGeneratorV3()});
+        params.add(new Object[]{OpenSearchMajorVersion.V_1_X, new BulkOutputGeneratorV3()});
 
         return params;
     }

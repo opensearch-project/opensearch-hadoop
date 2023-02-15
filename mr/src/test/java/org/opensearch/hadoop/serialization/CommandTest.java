@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -69,25 +69,25 @@ public class CommandTest {
     public static Collection<Object[]> data() {
 
         // make sure all versions are tested. Throw if a new one is seen:
-        if (OpenSearchMajorVersion.LATEST != OpenSearchMajorVersion.V_3_X) {
+        if (OpenSearchMajorVersion.LATEST != OpenSearchMajorVersion.V_1_X) {
             throw new IllegalStateException("CommandTest needs new version updates.");
         }
 
         Collection<Object[]> result = new ArrayList<>();
 
-        String[] operations = new String[]{ConfigurationOptions.OPENSEARCH_OPERATION_INDEX,
+        String[] operations = new String[] { ConfigurationOptions.OPENSEARCH_OPERATION_INDEX,
                 ConfigurationOptions.OPENSEARCH_OPERATION_CREATE,
                 ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE,
                 ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT,
-                ConfigurationOptions.OPENSEARCH_OPERATION_DELETE};
-        boolean[] asJsons = new boolean[]{false, true};
-        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[]{OpenSearchMajorVersion.V_2_X,
-                OpenSearchMajorVersion.V_3_X};
+                ConfigurationOptions.OPENSEARCH_OPERATION_DELETE };
+        boolean[] asJsons = new boolean[] { false, true };
+        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[] { OpenSearchMajorVersion.V_1_X,
+        };
 
         for (OpenSearchMajorVersion version : versions) {
             for (boolean asJson : asJsons) {
                 for (String operation : operations) {
-                    result.add(new Object[]{operation, asJson, version});
+                    result.add(new Object[] { operation, asJson, version });
                 }
             }
         }
@@ -141,7 +141,7 @@ public class CommandTest {
 
     @Test
     public void testParent() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -154,7 +154,7 @@ public class CommandTest {
 
     @Test
     public void testVersion() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -188,10 +188,9 @@ public class CommandTest {
         assertEquals(result, ba.toString());
     }
 
-
     @Test
     public void testRouting() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -204,7 +203,7 @@ public class CommandTest {
 
     @Test
     public void testAllX() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -222,19 +221,11 @@ public class CommandTest {
         assumeFalse(isDeleteOP() && jsonInput);
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         Settings settings = settings();
-        if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-            settings.setResourceWrite("{n}");
-        } else {
-            settings.setResourceWrite("foo/{n}");
-        }
+        settings.setResourceWrite("foo/{n}");
 
         create(settings).write(data).copyTo(ba);
         String header;
-        if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-            header = "{\"_index\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
-        } else {
-            header = "{\"_index\":\"foo\",\"_type\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
-        }
+        header = "{\"_index\":\"foo\",\"_type\":\"1\"" + (isUpdateOp() ? ",\"_id\":2" : "") + "}";
         String result = "{\"" + operation + "\":" + header + "}" + map();
         assertEquals(result, ba.toString());
     }
@@ -250,7 +241,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyInlineScript() throws Exception {
         assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
@@ -259,16 +250,15 @@ public class CommandTest {
         set.setProperty(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "groovy");
 
         create(set).write(data).copyTo(ba);
-        String result =
-                "{\"" + operation + "\":{\"_id\":2,\"retry_on_conflict\":3}}\n" +
-                        "{\"script\":{\"source\":\"counter = 3\",\"lang\":\"groovy\"}}\n";
+        String result = "{\"" + operation + "\":{\"_id\":2,\"retry_on_conflict\":3}}\n" +
+                "{\"script\":{\"source\":\"counter = 3\",\"lang\":\"groovy\"}}\n";
         assertEquals(result, ba.toString());
     }
 
     @Test
     public void testUpdateOnlyFileScript() throws Exception {
         assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
@@ -277,9 +267,8 @@ public class CommandTest {
         set.setProperty(ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_LANG, "groovy");
 
         create(set).write(data).copyTo(ba);
-        String result =
-                "{\"" + operation + "\":{\"_id\":2,\"retry_on_conflict\":3}}\n" +
-                        "{\"script\":{\"file\":\"set_count\",\"lang\":\"groovy\"}}\n";
+        String result = "{\"" + operation + "\":{\"_id\":2,\"retry_on_conflict\":3}}\n" +
+                "{\"script\":{\"file\":\"set_count\",\"lang\":\"groovy\"}}\n";
         assertEquals(result, ba.toString());
     }
 
@@ -301,11 +290,7 @@ public class CommandTest {
         InitializationUtils.setUserProviderIfNotSet(set, HadoopUserProvider.class, null);
 
         set.setProperty(ConfigurationOptions.OPENSEARCH_WRITE_OPERATION, operation);
-        if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
-            set.setResourceWrite("foo");
-        } else {
-            set.setResourceWrite("foo");
-        }
+        set.setResourceWrite("foo");
         if (isUpdateOp()) {
             set.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "<2>");
         }

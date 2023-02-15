@@ -24,7 +24,7 @@ dependencies {
 
     implementation("commons-logging:commons-logging:1.1.1")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
-    implementation("commons-codec:commons-codec:1.4")
+    implementation("commons-codec:commons-codec:1.15")
 
     testImplementation(project(":test:shared"))
 

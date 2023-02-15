@@ -97,19 +97,19 @@ public class AbstractHiveExtraTests {
     public void testDate() throws Exception {
         String resource = "hive-date-as-long";
         RestUtils.touch("hive-date-as-long");
-        RestUtils.putMapping("hive-date-as-long", "data", "org/opensearch/hadoop/hive/hive-date-typeless-mapping.json");
+        RestUtils.putMapping(resource, "data", "org/opensearch/hadoop/hive/hive-date-typeless-mapping.json");
 
         String docEndpoint = docEndpoint(resource, "data", TestUtils.getOpenSearchClusterInfo().getMajorVersion());
 
         RestUtils.postData(docEndpoint + "/1", "{\"type\" : 1, \"&t\" : 1407239910771}".getBytes());
 
-        RestUtils.refresh("hive-date-as-long");
+        RestUtils.refresh(resource);
 
         String drop = "DROP TABLE IF EXISTS nixtime";
         String create = "CREATE EXTERNAL TABLE nixtime ("
                 + "type     BIGINT,"
                 + "dte     TIMESTAMP)"
-                + HiveSuite.tableProps("hive-date-as-long", null, "'opensearch.mapping.names'='dte:&t'");
+                + HiveSuite.tableProps(resource, null, "'opensearch.mapping.names'='dte:&t'");
 
         String query = "SELECT * from nixtime WHERE type = 1";
 

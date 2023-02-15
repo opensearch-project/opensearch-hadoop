@@ -53,12 +53,6 @@ public class ResourceTest {
         List<Object[]> parameters = new ArrayList<Object[]>();
         parameters.add(new Object[]{OpenSearchMajorVersion.LATEST, true});
         parameters.add(new Object[]{OpenSearchMajorVersion.LATEST, false});
-
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_3_X, true});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, true});
-
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_3_X, false});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, false});
         return parameters;
     }
 

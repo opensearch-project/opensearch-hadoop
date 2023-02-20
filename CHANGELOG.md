@@ -6,6 +6,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Added CHANGELOG and verifier workflow ([65](https://github.com/opensearch-project/opensearch-hadoop/pull/65))
 - Added support for OpenSearch 1.x ([78](https://github.com/opensearch-project/opensearch-hadoop/pull/78))
 ### Changed
+- [Spark Distribution] Default Assemble artifact to Spark 3 ([107](https://github.com/opensearch-project/opensearch-hadoop/pull/107))
 ### Deprecated
 ### Removed
 ### Fixed

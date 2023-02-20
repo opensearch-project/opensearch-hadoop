@@ -20,6 +20,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.apache.rat:apache-rat` from 0.13 to 0.15
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.1
+- Bumps `org.apache.hadoop.thirdparty:hadoop-shaded-protobuf_3_7` from 1.0.0 to 1.1.1
 
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

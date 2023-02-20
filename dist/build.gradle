@@ -8,7 +8,7 @@ apply plugin: 'opensearch.hadoop.build'
 description = "OpenSearch for Apache Hadoop"
 project.archivesBaseName = 'opensearch-hadoop'
 
-def sparkVariantIncluded = 'spark20scala211'
+def sparkVariantIncluded = 'spark30scala212'
 
 configurations {
     embedded {
@@ -44,11 +44,11 @@ configurations {
 BuildPlugin.disableTransitiveDependencies(project, project.configurations.thirdPartyShaded)
 
 def distProjects = [":opensearch-hadoop-mr", ":opensearch-hadoop-hive", ":opensearch-hadoop-pig",
-                    ":opensearch-spark-20", ":opensearch-storm"]
+                    ":opensearch-spark-30", ":opensearch-storm"]
 
 distProjects.each { distProject ->
     def configureDistDependency = { Dependency dependency ->
-        if (distProject == ":opensearch-spark-20") {
+        if (distProject == ":opensearch-spark-30") {
             dependency.capabilities {
                 requireCapability("org.opensearch.spark.sql.variant:$sparkVariantIncluded:$project.version")
             }

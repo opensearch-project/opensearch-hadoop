@@ -21,6 +21,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `commons-httpclient:commons-httpclient` from 3.0.1 to 3.1
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.1
+- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.6.7 to 2.14.2
 
 
 [Unreleased 1.x]: https://github.com/opensearch-project/opensearch-hadoop/compare/1.0.0...HEAD

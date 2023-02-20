@@ -21,6 +21,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.1
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.6.7 to 2.14.2
+- Bumps `org.json4s:json4s-ast_2.10` from 3.2.10 to 3.6.12
 
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

@@ -70,7 +70,7 @@ distProjects.each { distProject ->
 
 dependencies {
     // For Uber pom (and Javadoc to a lesser extent)
-    thirdPartyShaded("commons-httpclient:commons-httpclient:3.0.1")
+    thirdPartyShaded("commons-httpclient:commons-httpclient:3.1")
     thirdPartyShaded("org.codehaus.jackson:jackson-mapper-asl:${project.ext.jacksonVersion}")
     thirdPartyShaded("org.codehaus.jackson:jackson-core-asl:${project.ext.jacksonVersion}")
 

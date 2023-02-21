@@ -11,6 +11,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Fixed
 ### Security
 ### Dependencies
+- Bumps `com.google.guava:guava` from 16.0.1 to 23.0
 - Bumps `com.google.guava:guava` from 11.0 to 23.0
 - Bumps `commons-codec:commons-codec` from 1.4 to 1.15
 - Bumps `com.google.code.findbugs:jsr305` from 2.0.1 to 3.0.2

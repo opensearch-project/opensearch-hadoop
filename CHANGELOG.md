@@ -22,6 +22,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.1
 - Bumps `org.apache.hadoop.thirdparty:hadoop-shaded-protobuf_3_7` from 1.0.0 to 1.1.1
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.6.7 to 2.14.2
+- Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.397 to 1.12.411
 
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

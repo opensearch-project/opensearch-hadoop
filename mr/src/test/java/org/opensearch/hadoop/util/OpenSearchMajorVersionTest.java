@@ -78,10 +78,8 @@ public class OpenSearchMajorVersionTest {
         versions.add("2.3.0");
         versions.add("2.3.1");
         versions.add("2.4.0");
-        versions.add("3.0.0-alpha1");
-        versions.add("3.0.0-beta2");
-        versions.add("3.0.0-rc3");
-        versions.add("3.0.0");
+        versions.add("2.5.0");
+        versions.add("2.6.0");
         TEST_VERSIONS = Collections.unmodifiableList(versions);
     }
 
@@ -119,24 +117,24 @@ public class OpenSearchMajorVersionTest {
             assertThat(minorVersion, greaterThanOrEqualTo(0));
         }
         try {
-            OpenSearchMajorVersion.V_3_X.parseMinorVersion("6.0.0");
+            OpenSearchMajorVersion.V_2_X.parseMinorVersion("6.0.0");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Invalid version string for major version; Received [6.0.0] for major version [3.x]",
+            assertEquals("Invalid version string for major version; Received [6.0.0] for major version [2.x]",
                     e.getMessage());
         }
         try {
-            OpenSearchMajorVersion.V_3_X.parseMinorVersion("3.");
+            OpenSearchMajorVersion.V_2_X.parseMinorVersion("2.");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Could not parse OpenSearch minor version [3.]. Invalid version format.",
+            assertEquals("Could not parse OpenSearch minor version [2.]. Invalid version format.",
                     e.getMessage());
         }
         try {
-            OpenSearchMajorVersion.V_3_X.parseMinorVersion("3.4-abcd.4");
+            OpenSearchMajorVersion.V_2_X.parseMinorVersion("2.6-abcd.4");
             fail("Invalid major version");
         } catch (OpenSearchHadoopIllegalArgumentException e) {
-            assertEquals("Could not parse OpenSearch minor version [3.4-abcd.4]. Non-numeric minor version [4-abcd].",
+            assertEquals("Could not parse OpenSearch minor version [2.6-abcd.4]. Non-numeric minor version [6-abcd].",
                     e.getMessage());
         }
     }

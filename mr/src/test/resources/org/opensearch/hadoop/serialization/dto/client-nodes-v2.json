@@ -21,7 +21,7 @@
             "host" : "cerberus",
             "version" : "3.3.3",
             "roles" : [
-                "master",
+                "cluster_manager",
                 "data"
             ],
             "http_address" : "inet[/192.168.1.50:9201]",

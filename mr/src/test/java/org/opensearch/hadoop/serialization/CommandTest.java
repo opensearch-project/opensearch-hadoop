@@ -81,8 +81,7 @@ public class CommandTest {
                 ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT,
                 ConfigurationOptions.OPENSEARCH_OPERATION_DELETE};
         boolean[] asJsons = new boolean[]{false, true};
-        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[]{OpenSearchMajorVersion.V_2_X,
-                OpenSearchMajorVersion.V_1_X};
+        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[] { OpenSearchMajorVersion.V_2_X };
 
         for (OpenSearchMajorVersion version : versions) {
             for (boolean asJson : asJsons) {

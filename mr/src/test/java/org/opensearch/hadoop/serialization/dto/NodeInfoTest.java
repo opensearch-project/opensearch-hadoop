@@ -50,13 +50,6 @@ public class NodeInfoTest {
         assertFalse(nodeMap.get("Unseen").isIngest());
     }
 
-    @Test
-    public void testV5() throws Exception {
-        Map<String, NodeInfo> nodeMap = testNodeInfo(getClass().getResourceAsStream("client-nodes-v5.json"));
-        assertFalse(nodeMap.get("Darkhawk").isIngest());
-        assertTrue(nodeMap.get("Unseen").isIngest());
-    }
-
     static Map<String, NodeInfo> testNodeInfo(InputStream input) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         JsonParser jsonParser = mapper.getJsonFactory().createJsonParser(input);

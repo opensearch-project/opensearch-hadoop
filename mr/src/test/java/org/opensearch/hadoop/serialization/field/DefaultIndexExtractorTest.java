@@ -57,7 +57,7 @@ public class DefaultIndexExtractorTest {
     public void createFieldExtractor() {
         Settings settings = new TestSettings();
         settings.setResourceWrite("{field}");
-        settings.setInternalVersion(OpenSearchMajorVersion.V_3_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapFieldExtractor.class, LOG);
 
         IndexExtractor iformat = ObjectUtils.instantiate(settings.getMappingIndexExtractorClassName(), settings);
@@ -76,7 +76,7 @@ public class DefaultIndexExtractorTest {
     public void createFieldExtractorNull() {
         Settings settings = new TestSettings();
         settings.setResourceWrite("test/{field}");
-        settings.setInternalVersion(OpenSearchMajorVersion.V_3_X);
+        settings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
         InitializationUtils.setFieldExtractorIfNotSet(settings, MapFieldExtractor.class, LOG);
 
         IndexExtractor iformat = ObjectUtils.instantiate(settings.getMappingIndexExtractorClassName(), settings);

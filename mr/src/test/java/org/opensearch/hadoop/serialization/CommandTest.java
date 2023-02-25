@@ -69,7 +69,7 @@ public class CommandTest {
     public static Collection<Object[]> data() {
 
         // make sure all versions are tested. Throw if a new one is seen:
-        if (OpenSearchMajorVersion.LATEST != OpenSearchMajorVersion.V_3_X) {
+        if (OpenSearchMajorVersion.LATEST != OpenSearchMajorVersion.V_2_X) {
             throw new IllegalStateException("CommandTest needs new version updates.");
         }
 
@@ -81,8 +81,7 @@ public class CommandTest {
                 ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT,
                 ConfigurationOptions.OPENSEARCH_OPERATION_DELETE};
         boolean[] asJsons = new boolean[]{false, true};
-        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[]{OpenSearchMajorVersion.V_2_X,
-                OpenSearchMajorVersion.V_3_X};
+        OpenSearchMajorVersion[] versions = new OpenSearchMajorVersion[] { OpenSearchMajorVersion.V_2_X };
 
         for (OpenSearchMajorVersion version : versions) {
             for (boolean asJson : asJsons) {
@@ -141,7 +140,7 @@ public class CommandTest {
 
     @Test
     public void testParent() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_2_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -154,7 +153,7 @@ public class CommandTest {
 
     @Test
     public void testVersion() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_2_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -191,7 +190,7 @@ public class CommandTest {
 
     @Test
     public void testRouting() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_2_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -204,7 +203,7 @@ public class CommandTest {
 
     @Test
     public void testAllX() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_2_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -250,7 +249,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyInlineScript() throws Exception {
         assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_2_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
@@ -268,7 +267,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyFileScript() throws Exception {
         assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_2_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");

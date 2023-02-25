@@ -1,9 +1,10 @@
 # CHANGELOG
 Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
-## [Unreleased]
+## [Unreleased 2.x]
 ### Added
 - Added CHANGELOG and verifier workflow ([65](https://github.com/opensearch-project/opensearch-hadoop/pull/65))
+- Initial support for OpenSearch 2.x ([126](https://github.com/opensearch-project/opensearch-hadoop/pull/126))
 ### Changed
 - [Spark Distribution] Default Assemble artifact to Spark 3 ([107](https://github.com/opensearch-project/opensearch-hadoop/pull/107))
 ### Deprecated
@@ -28,4 +29,4 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.397 to 1.12.411
 
 
-[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD
+[Unreleased 2.x]: https://github.com/opensearch-project/opensearch-hadoop/compare/2.0...HEAD

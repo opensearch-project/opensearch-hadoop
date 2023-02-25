@@ -500,7 +500,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val lang = "painless"
     val script = "ctx._source.counter = ctx._source.getOrDefault('counter', 0) + 1"
 
-    if (version.onOrAfter(OpenSearchMajorVersion.V_3_X)) {
+    if (version.onOrAfter(OpenSearchMajorVersion.V_2_X)) {
       RestUtils.put(s"_scripts/$scriptName", s"""{"script":{"lang":"$lang", "source": "$script"}}""".getBytes(StringUtils.UTF_8))
     } else {
       RestUtils.put(s"_scripts/$scriptName", s"""{"script":{"lang":"$lang", "code": "$script"}}""".getBytes(StringUtils.UTF_8))

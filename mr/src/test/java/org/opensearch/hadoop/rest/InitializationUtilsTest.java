@@ -134,7 +134,7 @@ public class InitializationUtilsTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateWriteTTLRemoved() throws Exception {
         Settings set = new TestSettings();
-        set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_3_X));
+        set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_2_X));
         set.setProperty(OPENSEARCH_MAPPING_TTL, "1000");
         validateSettingsForWriting(set);
     }
@@ -142,7 +142,7 @@ public class InitializationUtilsTest {
     @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
     public void testValidateWriteTimestampRemoved() throws Exception {
         Settings set = new TestSettings();
-        set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_3_X));
+        set.setInternalClusterInfo(ClusterInfo.unnamedClusterWithVersion(OpenSearchMajorVersion.V_2_X));
         set.setProperty(OPENSEARCH_MAPPING_TIMESTAMP, "1000");
         validateSettingsForWriting(set);
     }

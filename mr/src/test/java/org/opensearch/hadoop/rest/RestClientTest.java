@@ -201,7 +201,7 @@ public class RestClientTest {
                 .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
 
         Settings testSettings = new TestSettings();
-        testSettings.setInternalVersion(OpenSearchMajorVersion.V_3_X);
+        testSettings.setInternalVersion(OpenSearchMajorVersion.V_2_X);
         RestClient client = new RestClient(testSettings, mock);
 
         // Make sure that it works

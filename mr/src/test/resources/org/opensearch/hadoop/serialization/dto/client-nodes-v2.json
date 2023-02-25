@@ -6,7 +6,7 @@
             "name" : "Darkhawk",
             "transport_address" : "inet[/192.168.1.50:9300]",
             "host" : "cerberus",
-            "version" : "2.3.3",
+            "version" : "2.5.0",
             "roles" : [],
             "http" : {
                 "bound_address" : "inet[/0:0:0:0:0:0:0:0:9200]",
@@ -19,9 +19,9 @@
             "name" : "Unseen",
             "transport_address" : "inet[/192.168.1.50:9301]",
             "host" : "cerberus",
-            "version" : "3.3.3",
+            "version" : "2.6.0",
             "roles" : [
-                "master",
+                "cluster_manager",
                 "data"
             ],
             "http_address" : "inet[/192.168.1.50:9201]",

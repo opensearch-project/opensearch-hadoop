@@ -1066,8 +1066,6 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  @Ignore
-  // @AwaitsFix(bugUrl = "https://github.com/opensearch-project/opensearch-hadoop/issues/41")
   def testDataSourcePushDown09StartsWith() {
     val df = opensearchDataSource("pd_starts_with")
     var filter = df.filter(df("airport").startsWith("O"))
@@ -1088,8 +1086,6 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  @Ignore
-  // @AwaitsFix(bugUrl = "https://github.com/opensearch-project/opensearch-hadoop/issues/41")
   def testDataSourcePushDown10EndsWith() {
     val df = opensearchDataSource("pd_ends_with")
     var filter = df.filter(df("airport").endsWith("O"))

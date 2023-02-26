@@ -10,6 +10,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Deprecated
 ### Removed
 ### Fixed
+- Restored skipped push down tests ([125](https://github.com/opensearch-project/opensearch-hadoop/pull/125))
 ### Security
 ### Dependencies
 - Bumps `com.google.guava:guava` from 16.0.1 to 23.0

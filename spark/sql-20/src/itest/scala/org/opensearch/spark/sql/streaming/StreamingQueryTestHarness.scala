@@ -400,7 +400,7 @@ object TestingSerde extends Serializable {
   }
 
   def deserialize[T](line: String): T = {
-    val data: T = IOUtils.deserializeFromBase64(line)
+    val data: T = IOUtils.deserializeFromBase64(line, Dataset.class)
     data
   }
 }

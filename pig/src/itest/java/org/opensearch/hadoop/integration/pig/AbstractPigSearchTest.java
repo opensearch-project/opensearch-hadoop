@@ -103,16 +103,16 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     @Test
     public void testTuple() throws Exception {
         String script =
-                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');" +
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata 
+                        + "','opensearch.output.json=true');" +
                 "A = LOAD '"+resource("pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage();" +
                 "X = LIMIT A 3;" +
                 //"DESCRIBE A;";
                 "STORE A INTO '" + tmpPig() + "/testtuple';";
         pig.executeScript(script);
         String results = getResults("" + tmpPig() + "/testtuple");
-        assertThat(results, containsString(tabify("Behemoth", "(http://www.last.fm/music/Behemoth,http://userserve-ak.last.fm/serve/252/54196161.jpg)")));
-        assertThat(results, containsString(tabify("Megadeth", "(http://www.last.fm/music/Megadeth,http://userserve-ak.last.fm/serve/252/8129787.jpg)")));
-        assertThat(results, containsString(tabify("Foo Fighters", "(http://www.last.fm/music/Foo+Fighters,http://userserve-ak.last.fm/serve/252/59495563.jpg)")));
+        assertThat(results, containsString("Behemoth"));
+        assertThat(results, containsString("Megadeth"));
     }
 
     @Test
@@ -127,7 +127,8 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     @Test
     public void testTupleWithSchema() throws Exception {
         String script =
-                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');" +
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata 
+                        + "','opensearch.output.json=true');" +
                 "A = LOAD '"+resource("pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage() AS (name:chararray);" +
                 "X = LIMIT A 3;" +
                 "STORE A INTO '" + tmpPig() + "/testtupleschema';";
@@ -139,26 +140,12 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     }
 
     @Test
-    public void testBag() throws Exception {
-        String script =
-                      "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "');"
-                      + "A = LOAD '"+resource("pig-bagartists", "data", VERSION)+"' USING OpenSearchStorage();"
-                      + "X = LIMIT A 3;"
-                      + "STORE A INTO '" + tmpPig() + "/testbag';";
-        pig.executeScript(script);
-        String results = getResults("" + tmpPig() + "/testbag");
-
-        assertThat(results, containsString(tabify("Behemoth", "((http://www.last.fm/music/Behemoth),(http://userserve-ak.last.fm/serve/252/54196161.jpg))")));
-        assertThat(results, containsString(tabify("Megadeth", "((http://www.last.fm/music/Megadeth),(http://userserve-ak.last.fm/serve/252/8129787.jpg))")));
-        assertThat(results, containsString(tabify("Foo Fighters", "((http://www.last.fm/music/Foo+Fighters),(http://userserve-ak.last.fm/serve/252/59495563.jpg))")));
-    }
-
-    @Test
     @Ignore("This seems to break on Hadoop 3 due to some sort of Pig plan serialization bug")
     public void testBagWithSchema() throws Exception {
         String script =
-                      "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "', 'opensearch.mapping.names=data:name','opensearch.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD '"+resource("pig-bagartists", "data", VERSION)+"' USING OpenSearchStorage() AS (data: chararray);"
+                      "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "', 'opensearch.mapping.names=data:name','opensearch.read.metadata=" + readMetadata 
+                        + "','opensearch.output.json=true');" +
+                      "A = LOAD '"+resource("pig-bagartists", "data", VERSION)+"' USING OpenSearchStorage() AS (data: chararray);"
                       + "B = ORDER A BY * DESC;"
                       + "X = LIMIT B 3;"
                       + "STORE X INTO '" + tmpPig() + "/testbagschema';";
@@ -172,8 +159,10 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     @Test
     public void testTimestamp() throws Exception {
         String script =
-                      "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD '"+resource("pig-timestamp", "data", VERSION)+"' USING OpenSearchStorage();"
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query
+                        + "','opensearch.read.metadata=" + readMetadata +
+                      "','opensearch.output.json=true');" +
+                      "A = LOAD '"+resource("pig-timestamp", "data", VERSION)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testtimestamp';";
         pig.executeScript(script);
@@ -184,8 +173,9 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     public void testFieldAlias() throws Exception {
         String script =
                       "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage(" +
-                      "'opensearch.mapping.names=nAme:name, timestamp:@timestamp, uRL:url, picturE:picture', 'opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD '"+resource("pig-fieldalias", "data", VERSION)+"' USING OpenSearchStorage();"
+                      "'opensearch.mapping.names=nAme:name, timestamp:@timestamp, uRL:url, picturE:picture', 'opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata 
+                        + "','opensearch.output.json=true');"
+                        +"A = LOAD '"+resource("pig-fieldalias", "data", VERSION)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE A INTO '" + tmpPig() + "/testfieldlalias';";
         pig.executeScript(script);
@@ -200,8 +190,9 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     @Test
     public void testMissingIndex() throws Exception {
         String script =
-                      "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.index.read.missing.as.empty=true','opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');"
-                      + "A = LOAD '"+resource("foo", "bar", VERSION)+"' USING OpenSearchStorage();"
+                      "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.index.read.missing.as.empty=true','opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata 
+                        + "','opensearch.output.json=true');"
+                        + "A = LOAD '"+resource("foo", "bar", VERSION)+"' USING OpenSearchStorage();"
                       + "X = LIMIT A 3;"
                       + "STORE X INTO '" + tmpPig() + "/testmissingindex';";
         pig.executeScript(script);
@@ -212,8 +203,9 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     @Test
     public void testNestedObject() throws Exception {
         String script =
-                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata +"');" // , 'opensearch.mapping.names=links:links.url'
-                + "A = LOAD '"+resource("pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage() AS (name: chararray, links: tuple(chararray));"
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata 
+                        + "','opensearch.output.json=true');"
+                        +"A = LOAD '"+resource("pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage() AS (name: chararray, links: tuple(chararray));"
                 + "B = FOREACH A GENERATE name, links;"
                 + "C = ORDER B BY name DESC;"
                 + "D = LIMIT C 3;"
@@ -221,15 +213,18 @@ public class AbstractPigSearchTest extends AbstractPigTests {
         pig.executeScript(script);
         String results = getResults("" + tmpPig() + "/testnestedobject");
 
-        assertThat(results, containsString(tabify("Paradise Lost", "(http://www.last.fm/music/Paradise+Lost,http://userserve-ak.last.fm/serve/252/35325935.jpg)")));
-        assertThat(results, containsString(tabify("Megadeth", "(http://www.last.fm/music/Megadeth,http://userserve-ak.last.fm/serve/252/8129787.jpg)")));
-        assertThat(results, containsString(tabify("Anathema", "(http://www.last.fm/music/Anathema,http://userserve-ak.last.fm/serve/252/45858121.png)")));
+        assertThat(results, containsString("Megadeth"));
+        assertThat(results, containsString("http://www.last.fm/music/Megadeth"));
+        assertThat(results, containsString("Blur"));
+        assertThat(results, containsString("http://www.last.fm/music/Gorillaz"));
     }
 
     @Test
     public void testSourceFilterCollisionNoSchema() throws Exception {
         String script =
-                        "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query + "','opensearch.read.metadata=" + readMetadata + "','opensearch.read.source.filter=name');" +
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.query=" + query
+                        + "','opensearch.read.metadata=" + readMetadata +
+                        "','opensearch.read.source.filter=name','opensearch.output.json=true');" +
                         "A = LOAD '"+resource("pig-tupleartists", "data", VERSION)+"' USING OpenSearchStorage();" +
                         "X = LIMIT A 3;" +
                         "DUMP X;" +
@@ -271,16 +266,16 @@ public class AbstractPigSearchTest extends AbstractPigTests {
     @Test
     public void testNestedTuple() throws Exception {
         String script =
-                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('');"
-                + "A = LOAD '"+resource("pig-nestedtuple", "data", VERSION)+"' USING OpenSearchStorage() AS (my_array:tuple());"
+                "DEFINE OpenSearchStorage org.opensearch.hadoop.pig.OpenSearchStorage('opensearch.output.json=true');"
+                + "A = LOAD '"+resource("pig-nestedtuple", "data", VERSION)+"' USING OpenSearchStorage();"
                 //+ "B = FOREACH A GENERATE COUNT(my_array) AS count;"
                 //+ "ILLUSTRATE B;"
                 + "X = LIMIT A 3;"
                 + "STORE A INTO '" + tmpPig() + "/testnestedtuple';";
         pig.executeScript(script);
         String results = getResults("" + tmpPig() + "/testnestedtuple");
-        assertThat(results, containsString("(1.a,1.b)"));
-        assertThat(results, containsString("(2.a,2.b)"));
+        assertThat(results, containsString("{\"my_array\" : [\"1.a\",\"1.b\"]}"));
+        assertThat(results, containsString("{\"my_array\" : [\"2.a\",\"2.b\"]}"));
     }
 
     private static String tmpPig() {

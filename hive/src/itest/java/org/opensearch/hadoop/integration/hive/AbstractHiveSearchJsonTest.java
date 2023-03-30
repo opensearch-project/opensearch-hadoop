@@ -286,6 +286,7 @@ public class AbstractHiveSearchJsonTest {
     private String tableProps(String resource, String... params) {
         List<String> copy = new ArrayList(Arrays.asList(params));
         copy.add("'" + ConfigurationOptions.OPENSEARCH_READ_METADATA + "'='" + readMetadata + "'");
+        copy.add("'" + ConfigurationOptions.OPENSEARCH_OUTPUT_JSON + "'='" + "yes'");
         return HiveSuite.tableProps(resource, query, copy.toArray(new String[copy.size()]));
     }
 }

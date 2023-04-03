@@ -78,7 +78,7 @@ sparkVariants {
             add(variant.configuration('compileOnly'), "com.fasterxml.jackson.core:jackson-annotations:2.14.2")
             add(variant.configuration('compileOnly'), "com.google.guava:guava:23.0")
             add(variant.configuration('compileOnly'), "org.json4s:json4s-jackson_${variant.scalaMajorVersion}:3.2.11")
-            add(variant.configuration('compileOnly'), "org.slf4j:slf4j-api:1.7.6")
+            add(variant.configuration('compileOnly'), "org.slf4j:slf4j-api:2.0.7")
 
             if ('2.10'.equals(scalaMajorVersion)) {
                 add(variant.configuration('implementation'), "org.apache.spark:spark-unsafe_${variant.scalaMajorVersion}:$variant.sparkVersion")

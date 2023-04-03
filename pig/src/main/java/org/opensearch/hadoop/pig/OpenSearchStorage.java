@@ -214,7 +214,7 @@ public class OpenSearchStorage extends LoadFunc implements LoadMetadata, LoadPus
             this.schema = new ResourceSchema();
         }
         else {
-            this.schema = IOUtils.deserializeFromBase64(s);
+            this.schema = IOUtils.deserializeFromBase64(s, ResourceSchema.class);
         }
         this.pigTuple = new PigTuple(schema);
     }

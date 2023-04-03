@@ -40,6 +40,9 @@ import org.junit.Test;
 import org.junit.runners.MethodSorters;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static org.opensearch.hadoop.util.TestUtils.docEndpoint;
 import static org.opensearch.hadoop.util.TestUtils.resource;
@@ -668,6 +671,8 @@ public class AbstractHiveSaveTest {
     }
 
     private static String tableProps(String resource, String... params) {
+        List<String> copy = new ArrayList(Arrays.asList(params));
+        copy.add("'" + ConfigurationOptions.OPENSEARCH_INPUT_JSON + "'='" + "yes'");
         return HiveSuite.tableProps(resource, null, params);
     }
 }

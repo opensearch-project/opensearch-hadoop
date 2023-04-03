@@ -37,6 +37,8 @@ import org.opensearch.hadoop.serialization.dto.NodeInfo;
 import org.opensearch.hadoop.serialization.field.FieldFilter;
 import org.opensearch.hadoop.serialization.field.FieldFilter.NumberedInclude;
 
+import com.amazonaws.thirdparty.jackson.core.JsonProcessingException;
+
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.Collection;
@@ -47,7 +49,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class SettingsUtils {
+public class SettingsUtils {
 
     private static List<String> qualifyNodes(String nodes, int defaultPort, boolean resolveHostNames) {
         List<String> list = StringUtils.tokenize(nodes);
@@ -189,8 +191,9 @@ public abstract class SettingsUtils {
         settings.setProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_QUERY_FILTERS, IOUtils.serializeToBase64(filters));
     }
 
-    public static String[] getFilters(Settings settings) {
-        return IOUtils.deserializeFromBase64(settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_QUERY_FILTERS));
+    public String[] getFilters(Settings settings) {
+        String[] filters = IOUtils.deserializeFromBase64(settings.getProperty(InternalConfigurationOptions.INTERNAL_OPENSEARCH_QUERY_FILTERS), String[].class);
+        return filters;
     }
 
     public static String determineSourceFields(Settings settings) {

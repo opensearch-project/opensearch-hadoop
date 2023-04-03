@@ -71,7 +71,8 @@ public abstract class QueryUtils {
     }
 
     public static List<QueryBuilder> parseFilters(Settings settings) {
-        String[] rawFilters = SettingsUtils.getFilters(settings);
+        SettingsUtils settingsUtils = new SettingsUtils();
+        String[] rawFilters = settingsUtils.getFilters(settings);
         if (rawFilters == null) {
             return Collections.emptyList();
         }

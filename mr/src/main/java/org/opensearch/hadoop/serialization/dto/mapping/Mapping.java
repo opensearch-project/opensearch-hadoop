@@ -41,6 +41,9 @@ import java.util.Map;
 import org.opensearch.hadoop.serialization.FieldType;
 import org.opensearch.hadoop.serialization.field.FieldFilter;
 
+import com.amazonaws.thirdparty.jackson.annotation.JsonCreator;
+import com.amazonaws.thirdparty.jackson.annotation.JsonProperty;
+
 /**
  * A mapping has a name and a collection of fields.
  */
@@ -49,6 +52,7 @@ public class Mapping implements Serializable {
     private final String index;
     private final String type;
     private final Field[] fields;
+
 
     /**
      * Construct a new mapping
@@ -63,7 +67,9 @@ public class Mapping implements Serializable {
         this(index, name, (fields != null ? fields.toArray(new Field[fields.size()]) : Field.NO_FIELDS));
     }
 
-    Mapping(String index, String type, Field[] fields) {
+    @JsonCreator
+    Mapping(@JsonProperty("index") String index, @JsonProperty("type") String type,
+            @JsonProperty("fields") Field[] fields) {
         this.index = index;
         this.type = type;
         this.fields = fields;

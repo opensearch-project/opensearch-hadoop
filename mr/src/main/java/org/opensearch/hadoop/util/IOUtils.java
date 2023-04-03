@@ -33,8 +33,6 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -45,11 +43,16 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
-import javax.xml.bind.DatatypeConverter;
-
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
-import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
+
+import com.amazonaws.thirdparty.jackson.core.JsonProcessingException;
+import com.amazonaws.thirdparty.jackson.databind.DeserializationFeature;
+import com.amazonaws.thirdparty.jackson.databind.ObjectMapper;
+import com.amazonaws.thirdparty.jackson.databind.SerializationFeature;
+
 
 /**
  * Utility class used internally for the Pig support.
@@ -57,6 +60,11 @@ import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationExceptio
 public abstract class IOUtils {
 
     private final static Field BYTE_ARRAY_BUFFER;
+    static final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
+            false).configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+
+    private static final Log log = LogFactory.getLog(IOUtils.class);
+    private final boolean trace = log.isTraceEnabled();
 
     static {
         BYTE_ARRAY_BUFFER = ReflectionUtils.findField(ByteArrayInputStream.class, "buf");
@@ -67,38 +75,28 @@ public abstract class IOUtils {
         if (object == null) {
             return StringUtils.EMPTY;
         }
-        FastByteArrayOutputStream baos = new FastByteArrayOutputStream();
-        ObjectOutputStream oos = null;
+        String json;
         try {
-            oos = new ObjectOutputStream(baos);
-            oos.writeObject(object);
+            json = mapper.writeValueAsString(object);
         } catch (IOException ex) {
             throw new OpenSearchHadoopSerializationException("Cannot serialize object " + object, ex);
-        } finally {
-            close(oos);
         }
-        return DatatypeConverter.printBase64Binary(baos.bytes().bytes());
+        return json;
     }
 
     @SuppressWarnings("unchecked")
-    public static <T extends Serializable> T deserializeFromBase64(String data) {
+    public static <T> T  deserializeFromBase64(String data, Class<T> clazz){
         if (!StringUtils.hasLength(data)) {
             return null;
         }
+        Object object = null;
+            try {
+                object =  mapper.readValue(data, clazz);
+            } catch (JsonProcessingException e) {
+                throw new OpenSearchHadoopSerializationException("Cannot deserialize object " + object, e);
 
-        byte[] rawData = DatatypeConverter.parseBase64Binary(data);
-        ObjectInputStream ois = null;
-        try {
-            ois = new ObjectInputStream(new FastByteArrayInputStream(rawData));
-            Object o = ois.readObject();
-            return (T) o;
-        } catch (ClassNotFoundException ex) {
-            throw new OpenSearchHadoopIllegalStateException("cannot deserialize object", ex);
-        } catch (IOException ex) {
-            throw new OpenSearchHadoopSerializationException("cannot deserialize object", ex);
-        } finally {
-            close(ois);
-        }
+            }
+            return (T) object;
     }
 
     public static String propsToString(Properties props) {

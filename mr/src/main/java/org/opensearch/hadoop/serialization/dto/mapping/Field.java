@@ -34,6 +34,9 @@ import java.util.Collection;
 
 import org.opensearch.hadoop.serialization.FieldType;
 
+import com.amazonaws.thirdparty.jackson.annotation.JsonCreator;
+import com.amazonaws.thirdparty.jackson.annotation.JsonProperty;
+
 @SuppressWarnings("serial")
 public class Field implements Serializable {
 
@@ -51,7 +54,8 @@ public class Field implements Serializable {
         this(name, type, (properties != null ? properties.toArray(new Field[properties.size()]) : NO_FIELDS));
     }
 
-    Field(String name, FieldType type, Field[] properties) {
+    @JsonCreator
+    Field(@JsonProperty("name") String name, @JsonProperty("type") FieldType type, @JsonProperty("properties") Field[] properties) {
         this.name = name;
         this.type = type;
         this.properties = properties;

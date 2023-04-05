@@ -30,5 +30,6 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.397 to 1.12.411
 - Bumps `org.slf4j:slf4j-api` from 1.7.6 to 2.0.7
 - Bumps `com.google.protobuf:protobuf-java` from 2.5.0 to 3.22.2
+- Bumps `io.netty:netty-all` from 4.0.29.Final to 4.0.56.Final
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

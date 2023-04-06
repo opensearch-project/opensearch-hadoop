@@ -27,9 +27,10 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.6.7 to 2.14.2
 - Bumps `org.json4s:json4s-ast_2.10` from 3.2.10 to 3.6.12
 - Bumps `commons-logging:commons-logging` from 1.1.1 to 1.2
-- Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.397 to 1.12.411
+- Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.397 to 1.12.443
 - Bumps `org.slf4j:slf4j-api` from 1.7.6 to 2.0.7
 - Bumps `com.google.protobuf:protobuf-java` from 2.5.0 to 3.22.2
 - Bumps `io.netty:netty-all` from 4.0.29.Final to 4.0.56.Final
+- Bumps `jline:jline` from 0.9.94 to 1.0
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

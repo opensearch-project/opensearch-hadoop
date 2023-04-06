@@ -69,7 +69,7 @@ dependencies {
 
     testImplementation(project(":test:shared"))
     testImplementation("com.fasterxml.jackson.core:jackson-databind:2.14.2")
-    testImplementation("io.netty:netty-all:4.0.29.Final")
+    testImplementation("io.netty:netty-all:4.0.56.Final")
     testImplementation("org.elasticsearch:securemock:1.2")
 
     itestEmbedded(project(":test:shared"))

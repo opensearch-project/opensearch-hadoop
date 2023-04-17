@@ -33,5 +33,6 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `io.netty:netty-all` from 4.0.29.Final to 4.1.91.Final
 - Bumps `jline:jline` from 0.9.94 to 1.0
 - Bumps `org.json4s:json4s-jackson_2.12` from 3.2.11 to 4.0.6
+- Bumps `org.apache.avro:avro` from 1.7.7 to 1.11.1
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

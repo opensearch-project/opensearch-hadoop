@@ -34,5 +34,6 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `jline:jline` from 0.9.94 to 1.0
 - Bumps `org.json4s:json4s-jackson_2.12` from 3.2.11 to 4.0.6
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.11.1
+- Bumps `org.apache.tez:tez-dag` from 0.9.2 to 0.10.2
 
 [Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD

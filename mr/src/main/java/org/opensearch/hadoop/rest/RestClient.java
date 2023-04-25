@@ -620,7 +620,8 @@ public class RestClient implements Closeable, StatsAware {
     public void putMapping(String index, String type, byte[] bytes) {
         // create index first (if needed) - it might return 403/404
         touch(index);
-        if (typeExists(index, type)) {
+        ClusterInfo clusterInfo = mainInfo();
+        if (clusterInfo.getMajorVersion().before(OpenSearchMajorVersion.V_2_X)) {
             execute(PUT, index + "/_mapping/" + type + "?include_type_name=true", new BytesArray(bytes));
         }
         else {

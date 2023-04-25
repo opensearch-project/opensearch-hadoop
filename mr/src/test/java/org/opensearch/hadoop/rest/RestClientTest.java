@@ -276,31 +276,6 @@ public class RestClientTest {
     }
 
     @Test
-    public void testMainInfoWithClusterTooOld() {
-        String response = "{\n" +
-                "\"name\": \"node\",\n" +
-                "\"cluster_name\": \"cluster\",\n" +
-                "\"version\": {\n" +
-                "  \"number\": \"1.0.0\"\n" +
-                "},\n" +
-                "\"tagline\": \"The OpenSearch Project: https://opensearch.org/\"\n" +
-                "}";
-
-        NetworkClient mock = Mockito.mock(NetworkClient.class);
-        Mockito.when(mock.execute(Mockito.any(SimpleRequest.class), Mockito.eq(true)))
-                .thenReturn(new SimpleResponse(201, new FastByteArrayInputStream(new BytesArray(response)), "localhost:9200"));
-
-        RestClient client = new RestClient(new TestSettings(), mock);
-
-        try {
-            client.mainInfo();
-            fail("Shouldn't operate on main version that is too old.");
-        } catch (OpenSearchHadoopIllegalStateException e) {
-            assertEquals("Invalid major version [1.0.0]. Version is lower than minimum required version [2.x].", e.getMessage());
-        }
-    }
-
-    @Test
     public void testMainInfoWithClusterNotProvidingUUID() {
         String response = "{\n" +
                 "\"name\": \"node\",\n" +

@@ -39,7 +39,7 @@ public class OpenSearchMajorVersion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public static final OpenSearchMajorVersion V_1_X = new OpenSearchMajorVersion((byte) 1, "2.x");
+    public static final OpenSearchMajorVersion V_1_X = new OpenSearchMajorVersion((byte) 1, "1.x");
     public static final OpenSearchMajorVersion V_2_X = new OpenSearchMajorVersion((byte) 2, "2.x");
     public static final OpenSearchMajorVersion V_3_X = new OpenSearchMajorVersion((byte) 3, "3.x");
     public static final OpenSearchMajorVersion V_7_X = new OpenSearchMajorVersion((byte) 7, "7.x");

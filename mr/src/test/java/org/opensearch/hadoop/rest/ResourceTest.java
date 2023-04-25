@@ -58,7 +58,10 @@ public class ResourceTest {
         parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, true});
 
         parameters.add(new Object[]{OpenSearchMajorVersion.V_3_X, false});
-        parameters.add(new Object[]{OpenSearchMajorVersion.V_2_X, false});
+        parameters.add(new Object[] { OpenSearchMajorVersion.V_2_X, false });
+        
+        parameters.add(new Object[] { OpenSearchMajorVersion.V_1_X, true });
+        parameters.add(new Object[] { OpenSearchMajorVersion.V_1_X, false });
         return parameters;
     }
 

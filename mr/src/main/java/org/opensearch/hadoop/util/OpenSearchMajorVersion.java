@@ -39,8 +39,10 @@ public class OpenSearchMajorVersion implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public static final OpenSearchMajorVersion V_1_X = new OpenSearchMajorVersion((byte) 1, "2.x");
     public static final OpenSearchMajorVersion V_2_X = new OpenSearchMajorVersion((byte) 2, "2.x");
     public static final OpenSearchMajorVersion V_3_X = new OpenSearchMajorVersion((byte) 3, "3.x");
+    public static final OpenSearchMajorVersion V_7_X = new OpenSearchMajorVersion((byte) 7, "7.x");
     public static final OpenSearchMajorVersion LATEST = V_3_X;
 
     public final byte major;
@@ -87,6 +89,9 @@ public class OpenSearchMajorVersion implements Serializable {
         }
         if (version.startsWith("3.")) {
             return new OpenSearchMajorVersion((byte) 3, version);
+        }
+        if (version.startsWith("7.")) {
+            return new OpenSearchMajorVersion((byte) 7, version);
         }
         throw new OpenSearchHadoopIllegalArgumentException("Unsupported/Unknown OpenSearch version [" + version + "]." +
                 "Highest supported version is [" + LATEST.version + "]. You may need to upgrade OpenSearch-Hadoop.");

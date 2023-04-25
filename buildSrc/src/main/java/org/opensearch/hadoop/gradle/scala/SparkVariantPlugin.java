@@ -64,7 +64,6 @@ import org.gradle.api.tasks.TaskProvider;
 import org.gradle.api.tasks.bundling.Jar;
 import org.gradle.api.tasks.scala.ScalaDoc;
 import org.gradle.api.tasks.testing.Test;
-import org.gradle.util.ConfigureUtil;
 
 import static org.gradle.api.plugins.JavaBasePlugin.DOCUMENTATION_GROUP;
 import static org.gradle.api.plugins.JavaBasePlugin.VERIFICATION_GROUP;
@@ -236,32 +235,16 @@ public class SparkVariantPlugin implements Plugin<Project> {
             return variant;
         }
 
-        public void all(Closure configure) {
-            all(ConfigureUtil.configureUsing(configure));
-        }
-
         public void all(Action<SparkVariant> action) {
             variants.all(action);
-        }
-
-        public void defaultVariant(Closure configure) {
-            defaultVariant(ConfigureUtil.configureUsing(configure));
         }
 
         public void defaultVariant(Action<SparkVariant> action) {
             variants.matching(SparkVariant::isDefaultVariant).all(action);
         }
 
-        public void featureVariants(Closure configure) {
-            featureVariants(ConfigureUtil.configureUsing(configure));
-        }
-
         public void featureVariants(Action<SparkVariant> action) {
             variants.matching(element -> !element.isDefaultVariant()).all(action);
-        }
-
-        public SparkVariant featureVariant(String featureVariant, Closure configure) {
-            return featureVariant(featureVariant, ConfigureUtil.configureUsing(configure));
         }
 
         public SparkVariant featureVariant(String featureVariant, Action<SparkVariant> action) {

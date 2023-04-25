@@ -620,7 +620,13 @@ public class RestClient implements Closeable, StatsAware {
     public void putMapping(String index, String type, byte[] bytes) {
         // create index first (if needed) - it might return 403/404
         touch(index);
-        execute(PUT, index + "/_mapping", new BytesArray(bytes));
+        ClusterInfo clusterInfo = mainInfo();
+        if (clusterInfo.getMajorVersion().before(OpenSearchMajorVersion.V_2_X)) {
+            execute(PUT, index + "/_mapping/" + type + "?include_type_name=true", new BytesArray(bytes));
+        }
+        else {
+            execute(PUT, index + "/_mapping", new BytesArray(bytes));
+        }
     }
 
     public OpenSearchToken createNewApiToken(String tokenName) {
@@ -705,9 +711,9 @@ public class RestClient implements Closeable, StatsAware {
         }
         String versionNumber = versionBody.get("number");
         OpenSearchMajorVersion major = OpenSearchMajorVersion.parse(versionNumber);
-        if (major.before(OpenSearchMajorVersion.V_2_X)) {
+        if (major.before(OpenSearchMajorVersion.V_1_X)) {
             throw new OpenSearchHadoopIllegalStateException("Invalid major version [" + major + "]. " +
-                    "Version is lower than minimum required version [" + OpenSearchMajorVersion.V_2_X + "].");
+                    "Version is lower than minimum required version [" + OpenSearchMajorVersion.V_1_X + "].");
         }
         return new ClusterInfo(new ClusterName(clusterName, clusterUUID), OpenSearchMajorVersion.parse(versionNumber));
     }

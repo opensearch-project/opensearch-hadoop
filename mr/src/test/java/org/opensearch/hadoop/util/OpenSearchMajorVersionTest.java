@@ -66,6 +66,7 @@ public class OpenSearchMajorVersionTest {
         versions.add("1.3.5");
         versions.add("1.3.6");
         versions.add("1.3.7");
+        versions.add("1.3.8");
         versions.add("2.0.0-alpha1");
         versions.add("2.0.0-beta2");
         versions.add("2.0.0-rc3");
@@ -78,6 +79,8 @@ public class OpenSearchMajorVersionTest {
         versions.add("2.3.0");
         versions.add("2.3.1");
         versions.add("2.4.0");
+        versions.add("2.5.0");
+        versions.add("2.6.0");
         versions.add("3.0.0-alpha1");
         versions.add("3.0.0-beta2");
         versions.add("3.0.0-rc3");

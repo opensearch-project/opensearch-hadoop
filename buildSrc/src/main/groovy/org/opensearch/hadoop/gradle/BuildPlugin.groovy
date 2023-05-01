@@ -469,18 +469,14 @@ class BuildPlugin implements Plugin<Project>  {
             javadocOptions.groups = [
                     'OpenSearch Map/Reduce' : ['org.opensearch.hadoop.mr*'],
                     'OpenSearch Hive' : ['org.opensearch.hadoop.hive*'],
-                    'OpenSearch Pig' : ['org.opensearch.hadoop.pig*'],
                     'OpenSearch Spark' : ['org.opensearch.spark*'],
-                    'OpenSearch Storm' : ['org.opensearch.storm*'],
             ]
             javadocOptions.links = [ // External doc links
                     "https://docs.oracle.com/javase/8/docs/api/",
                     "https://commons.apache.org/proper/commons-logging/apidocs/",
                     "https://hadoop.apache.org/docs/stable2/api/",
-                    "https://pig.apache.org/docs/r0.15.0/api/",
                     "https://hive.apache.org/javadocs/r1.2.2/api/",
                     "https://spark.apache.org/docs/latest/api/java/",
-                    "https://storm.apache.org/releases/current/javadocs/"
             ]
         }
         // TODO: Remove when root project does not handle distribution

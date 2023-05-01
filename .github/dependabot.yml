@@ -39,14 +39,6 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
-  - directory: /pig/
-    open-pull-requests-limit: 1
-    package-ecosystem: gradle
-    schedule:
-      interval: weekly
-    labels:
-      - "dependabot"
-      - "dependencies"
   - directory: /qa/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -80,14 +72,6 @@ updates:
       - "dependabot"
       - "dependencies"
   - directory: /spark/sql-30/
-    open-pull-requests-limit: 1
-    package-ecosystem: gradle
-    schedule:
-      interval: weekly
-    labels:
-      - "dependabot"
-      - "dependencies"
-  - directory: /storm/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
     schedule:

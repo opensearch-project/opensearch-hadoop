@@ -1,14 +1,12 @@
 [![Build & Test MapReduce](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-mr.yml/badge.svg?branch=main)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-mr.yml)
 [![Build & Test Spark](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-spark.yml/badge.svg?branch=main)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-spark.yml)
 [![Build & Test Hive](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-hive.yml/badge.svg?branch=main)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-hive.yml)
-[![Build & Test Pig](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-pig.yml/badge.svg?branch=main)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-pig.yml)
-[![Build & Test Storm](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-storm.yml/badge.svg?branch=main)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build-storm.yml)
 ![PRs welcome!](https://img.shields.io/badge/PRs-welcome!-success)
 ![OpenSearch logo](OpenSearch.svg)
 
 # OpenSearch Hadoop
 OpenSearch real-time search and analytics natively integrated with Hadoop.
-Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Pig](#apache-pig), [Apache Spark](#apache-spark) and [Apache Storm](#apache-storm).
+Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Spark](#apache-spark).
 
 - [OpenSearch Hadoop](#opensearch-hadoop)
   - [Requirements](#requirements)
@@ -28,9 +26,6 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Pig](#ap
     - [Reading](#reading-2)
     - [Writing](#writing-2)
     - [Signing requests for IAM authentication](#signing-requests-for-iam-authentication-1)
-  - [Apache Pig](#apache-pig)
-    - [Reading](#reading-3)
-    - [Writing](#writing-3)
   - [Apache Spark](#apache-spark)
     - [Scala](#scala)
     - [Reading](#reading-4)
@@ -43,9 +38,6 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Pig](#ap
     - [Writing](#writing-5)
       - [Spark SQL](#spark-sql-3)
     - [Signing requests for IAM authentication](#signing-requests-for-iam-authentication-2)
-  - [Apache Storm](#apache-storm)
-    - [Reading](#reading-6)
-    - [Writing](#writing-6)
   - [Building the source](#building-the-source)
   - [License](#license)
 
@@ -205,33 +197,6 @@ TBLPROPERTIES(
     );
 ```
 
-## [Apache Pig][]
-OpenSearch-Hadoop provides both read and write functions for Pig so you can access OpenSearch from Pig scripts.
-
-Register OpenSearch-Hadoop jar into your script or add it to your Pig classpath:
-```
-REGISTER /path_to_jar/opensearch-hadoop-<version>.jar;
-```
-Additionally one can define an alias to save some chars:
-```
-%define OPENSEARCHSTORAGE org.opensearch.pig.hadoop.OpenSearchStorage()
-```
-and use `$OPENSEARCHSTORAGE` for storage definition.
-
-### Reading
-To read data from OpenSearch, use `OpenSearchStorage` and specify the query through the `LOAD` function:
-```SQL
-A = LOAD 'radio/artists' USING org.opensearch.pig.hadoop.OpenSearchStorage('opensearch.query=?q=me*');
-DUMP A;
-```
-
-### Writing
-Use the same `Storage` to write data to OpenSearch:
-```SQL
-A = LOAD 'src/artists.dat' USING PigStorage() AS (id:long, name, url:chararray, picture: chararray);
-B = FOREACH A GENERATE name, TOTUPLE(url, picture) AS links;
-STORE B INTO 'radio/artists' USING org.opensearch.pig.hadoop.OpenSearchStorage();
-```
 ## [Apache Spark][]
 OpenSearch-Hadoop provides native (Java and Scala) integration with Spark: for reading a dedicated `RDD` and for writing, methods that work on any `RDD`. Spark SQL is also supported
 
@@ -357,30 +322,6 @@ val options = Map("pushdown" -> "true",
 accountsRead.saveToOpenSearch("accounts-00001", options)
 ```
 
-## [Apache Storm][]
-OpenSearch-Hadoop provides native integration with Storm: for reading a dedicated `Spout` and for writing a specialized `Bolt`
-
-### Reading
-To read data from OpenSearch, use `OpenSearchSpout`:
-```java
-import org.opensearch.storm.OpenSearchSpout;
-
-TopologyBuilder builder = new TopologyBuilder();
-builder.setSpout("opensearch-spout", new OpenSearchSpout("storm/docs", "?q=me*"), 5);
-builder.setBolt("bolt", new PrinterBolt()).shuffleGrouping("opensearch-spout");
-```
-
-### Writing
-To index data to OpenSearch, use `OpenSearchBolt`:
-
-```java
-import org.opensearch.storm.OpenSearchBolt;
-
-TopologyBuilder builder = new TopologyBuilder();
-builder.setSpout("spout", new RandomSentenceSpout(), 10);
-builder.setBolt("opensearch-bolt", new OpenSearchBolt("storm/docs"), 5).shuffleGrouping("spout");
-```
-
 ## Building the source
 
 OpenSearch Hadoop uses [Gradle][] for its build system and it is not required to have it installed on your machine. By default (`gradlew`), it automatically builds the package and runs the unit tests. For integration testing, use the `integrationTests` task.
@@ -414,10 +355,8 @@ under the License.
 
 [Hadoop]: http://hadoop.apache.org
 [Map/Reduce]: http://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html
-[Apache Pig]: http://pig.apache.org
 [Apache Hive]: http://hive.apache.org
 [Apache Spark]: http://spark.apache.org
-[Apache Storm]: http://storm.apache.org
 [HiveQL]: http://cwiki.apache.org/confluence/display/Hive/LanguageManual
 [external table]: http://cwiki.apache.org/Hive/external-tables.html
 [Apache License]: http://www.apache.org/licenses/LICENSE-2.0

@@ -38,7 +38,6 @@ import org.opensearch.hadoop.gradle.fixture.hadoop.conf.ServiceConfiguration
 import org.opensearch.hadoop.gradle.fixture.hadoop.conf.SettingsContainer
 import org.opensearch.hadoop.gradle.fixture.hadoop.tasks.HadoopMRJob
 import org.opensearch.hadoop.gradle.fixture.hadoop.tasks.HiveBeeline
-import org.opensearch.hadoop.gradle.fixture.hadoop.tasks.PigScript
 import org.opensearch.hadoop.gradle.fixture.hadoop.tasks.SparkApp
 
 apply plugin: 'opensearch.hadoop.build'
@@ -47,7 +46,6 @@ apply plugin: HadoopFixturePlugin
 
 configurations {
     kdcFixture
-    stormDeps
 }
 
 tasks.withType(ScalaCompile) { ScalaCompile task ->
@@ -74,7 +72,6 @@ configurations {
 
 dependencies {
     implementation(project(":opensearch-hadoop-mr"))
-    implementation(project(":opensearch-storm"))
 
     implementation("org.scala-lang:scala-library:${scala212Version}")
     implementation("org.scala-lang:scala-reflect:${scala212Version}")
@@ -94,18 +91,8 @@ dependencies {
     implementation("org.apache.spark:spark-sql_2.12:$project.ext.spark30Version")
 
     implementation( project(path: ':opensearch-hadoop-mr', configuration: 'itestJarConfig'))
-    implementation( project(path: ':opensearch-storm', configuration: 'itestJarConfig'))
 
     kdcFixture project(':test:fixtures:minikdc')
-
-    stormDeps('commons-httpclient:commons-httpclient:3.1') {
-        exclude group: 'junit'
-    }
-    stormDeps("org.codehaus.jackson:jackson-mapper-asl:${project.ext.jacksonVersion}")
-    stormDeps("org.codehaus.jackson:jackson-core-asl:${project.ext.jacksonVersion}")
-    stormDeps('commons-codec:commons-codec:1.4') {
-        exclude group: 'junit'
-    }
 }
 
 // =============================================================================
@@ -125,22 +112,6 @@ if (disableTests) {
     // the opensearch jar which will not be reachable.
     // Additionally, when using a local repo, the esCluster plugin is not applied, and thus, cannot be referenced in the
     // build script.
-    
-    // Build uber storm jar for testing Storm remotely (opensearch-hadoop + opensearch-storm + qa tests)
-    Jar qaKerberosStormJar = project.tasks.create('kerberosStormJar', Jar)
-    qaKerberosStormJar.dependsOn(project(':opensearch-storm').tasks.getByName('jar'))
-    qaKerberosStormJar.dependsOn(project(':opensearch-storm').tasks.getByName('itestJar'))
-    qaKerberosStormJar.classifier = 'storm-testing'
-    
-    // Add projects to the storm testing uber-jar
-    [project, project(":opensearch-hadoop-mr"), project(":opensearch-storm")].forEach { proj ->
-        qaKerberosStormJar.from(proj.sourceSets.test.output)
-        qaKerberosStormJar.from(proj.sourceSets.main.output)
-        qaKerberosStormJar.from(proj.sourceSets.itest.output)
-    }
-    qaKerberosStormJar.from {
-        configurations.stormDeps.collect { dep -> zipTree(dep) }
-    }
     
     // =============================================================================
     // Kerberos configuration
@@ -250,7 +221,6 @@ if (disableTests) {
     // TODO: We should be acquiring these jars via a configuration instead of breaking the glass here.
     def mrJar = project(':opensearch-hadoop-mr').tasks.getByName('jar') as Jar
     def hiveJar = project(':opensearch-hadoop-hive').tasks.getByName('jar') as Jar
-    def pigJar = project(':opensearch-hadoop-pig').tasks.getByName('jar') as Jar
     def sparkJar = project(':opensearch-spark-30').tasks.getByName('jar') as Jar
 
     // Need these for SSL items, test data, and scripts
@@ -371,21 +341,10 @@ if (disableTests) {
             s.addSetting('mapreduce.reduce.java.opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
             s.addSetting('opensearch.nodes', opensearchAddress)
         }
-        config.service('pig') { ServiceConfiguration s ->
-            s.setJvmArgs("-Xmx200m")
-            s.addSetting('java.security.krb5.conf', krb5Conf.toString())
-            s.addSetting('hadoop.security.krb5.principal', "$clientPrincipal$realm")
-            s.addSetting('hadoop.security.krb5.keytab', clientKeytab.toString())
-            s.addSetting('yarn.app.mapreduce.am.command-opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
-            s.addSetting('mapreduce.map.java.opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
-            s.addSetting('mapreduce.reduce.java.opts', "-Xmx200m -Djava.security.krb5.conf=${krb5Conf.toString()}")
-            s.addSetting('opensearch.nodes', opensearchAddress)
-        }
         config.addDependency(jar)
         config.addDependency(kerberosItestJar)
         config.addDependency(mrJar)
         config.addDependency(hiveJar)
-        config.addDependency(pigJar)
         config.addDependency(sparkJar)
     }
 
@@ -630,34 +589,6 @@ if (disableTests) {
     integrationTest.dependsOn(hiveReadData)
     
     // =============================================================================
-    // Pig Jobs
-    // =============================================================================
-    
-    PigScript pigLoadData = config.createClusterTask('pigLoadData', PigScript.class) {
-        clusterConfiguration = config
-        useCluster(testClusters.integTest)
-        dependsOn(jar, setupUsers, copyData)
-        script = new File(resourceDir, 'pig/load_to_opensearch.pig')
-        libJars(pigJar.archivePath, kerberosItestJar.archivePath)
-        environmentVariables.putAll([
-                'PIG_OPTS': "-Djava.security.krb5.conf=${krb5Conf.toString()}"
-        ])
-    }
-    integrationTest.dependsOn(pigLoadData)
-    
-    PigScript pigReadData = config.createClusterTask('pigReadData', PigScript.class) {
-        clusterConfiguration = config
-        useCluster(testClusters.integTest)
-        dependsOn(pigLoadData)
-        script = new File(resourceDir, 'pig/read_from_opensearch.pig')
-        libJars(pigJar.archivePath, kerberosItestJar.archivePath)
-        environmentVariables.putAll([
-                'PIG_OPTS': "-Djava.security.krb5.conf=${krb5Conf.toString()}"
-        ])
-    }
-    integrationTest.dependsOn(pigReadData)
-    
-    // =============================================================================
     // Copy job outputs
     // =============================================================================
     
@@ -678,7 +609,6 @@ if (disableTests) {
             'sparkDF': sparkReadData,
             'sparkDS': sparkReadData,
             'hive': hiveReadData,
-            'pig': pigReadData
     ]
     
     readJobs.forEach { integrationName, integrationReadTask ->

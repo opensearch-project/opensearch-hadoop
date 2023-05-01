@@ -103,7 +103,7 @@ dependencies {
     }
     stormDeps("org.codehaus.jackson:jackson-mapper-asl:${project.ext.jacksonVersion}")
     stormDeps("org.codehaus.jackson:jackson-core-asl:${project.ext.jacksonVersion}")
-    stormDeps('commons-codec:commons-codec:1.4') {
+    stormDeps('commons-codec:commons-codec:1.15') {
         exclude group: 'junit'
     }
 }

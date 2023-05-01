@@ -30,7 +30,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.397 to 1.12.451
 - Bumps `org.slf4j:slf4j-api` from 1.7.6 to 1.7.36
 - Bumps `com.google.protobuf:protobuf-java` from 2.5.0 to 3.22.3
-- Bumps `io.netty:netty-all` from 4.0.29.Final to 4.1.91.Final
+- Bumps `io.netty:netty-all` from 4.0.29.Final to 4.1.92.Final
 - Bumps `jline:jline` from 0.9.94 to 1.0
 - Bumps `org.json4s:json4s-jackson_2.12` from 3.2.11 to 4.0.6
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.11.1

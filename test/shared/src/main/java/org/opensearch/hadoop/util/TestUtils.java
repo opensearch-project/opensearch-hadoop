@@ -7,7 +7,7 @@
  * Modifications Copyright OpenSearch Contributors. See
  * GitHub history for details.
  */
- 
+
 /*
  * Licensed to Elasticsearch under one or more contributor
  * license agreements. See the NOTICE file distributed with
@@ -28,13 +28,22 @@
  */
 package org.opensearch.hadoop.util;
 
+import static org.opensearch.hadoop.util.IOUtils.close;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.Locale;
 
+import javax.xml.bind.DatatypeConverter;
+
+import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.rest.RestClient;
+import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 
 public class TestUtils {
 
@@ -103,5 +112,43 @@ public class TestUtils {
         }
 
         return out.toByteArray();
+    }
+
+    public static String serializeToBase64(Serializable object) {
+        if (object == null) {
+            return StringUtils.EMPTY;
+        }
+        FastByteArrayOutputStream baos = new FastByteArrayOutputStream();
+        ObjectOutputStream oos = null;
+        try {
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+        } catch (IOException ex) {
+            throw new OpenSearchHadoopSerializationException("Cannot serialize object " + object, ex);
+        } finally {
+            close(oos);
+        }
+        return DatatypeConverter.printBase64Binary(baos.bytes().bytes());
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T extends Serializable> T deserializeFromBase64(String data) {
+        if (!StringUtils.hasLength(data)) {
+            return null;
+        }
+
+        byte[] rawData = DatatypeConverter.parseBase64Binary(data);
+        ObjectInputStream ois = null;
+        try {
+            ois = new ObjectInputStream(new FastByteArrayInputStream(rawData));
+            Object o = ois.readObject();
+            return (T) o;
+        } catch (ClassNotFoundException ex) {
+            throw new OpenSearchHadoopIllegalStateException("cannot deserialize object", ex);
+        } catch (IOException ex) {
+            throw new OpenSearchHadoopSerializationException("cannot deserialize object", ex);
+        } finally {
+            close(ois);
+        }
     }
 }

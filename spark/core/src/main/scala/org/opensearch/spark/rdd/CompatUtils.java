@@ -62,7 +62,6 @@ abstract class CompatUtils {
 
     static void checkSparkLibraryCompatibility(boolean throwOnIncompatible) {
         // check whether the correct opensearch-hadoop is used with the correct Spark version
-        boolean isSpark13Level = ObjectUtils.isClassPresent("org.apache.spark.sql.DataFrame", SparkConf.class.getClassLoader());
         boolean isSpark20Level = ObjectUtils.isClassPresent("org.apache.spark.sql.streaming.StreamingQuery", SparkConf.class.getClassLoader());
 
         try {
@@ -72,7 +71,7 @@ abstract class CompatUtils {
 
             String errorMessage = null;
 
-            if (!(isSpark13Level || isSpark20Level)) {
+            if (!(isSpark20Level)) {
                 String sparkVersion = getSparkVersionOr("1.0-1.2");
                 errorMessage = String.format("Incorrect classpath detected; OpenSearch Spark compiled for Spark %s but used with unsupported Spark version %s",
                         esSupportedSparkVersion, sparkVersion);

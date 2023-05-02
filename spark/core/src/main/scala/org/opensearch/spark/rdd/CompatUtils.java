@@ -76,7 +76,7 @@ abstract class CompatUtils {
                 errorMessage = String.format("Incorrect classpath detected; OpenSearch Spark compiled for Spark %s but used with unsupported Spark version %s",
                         esSupportedSparkVersion, sparkVersion);
             } else if (isSpark20Level != isEshForSpark20) { // XOR can be applied as well but != increases readability
-                String sparkVersion = getSparkVersionOr(isSpark13Level ? "1.3-1.6" : "2.0+");
+                String sparkVersion = getSparkVersionOr("2.0+");
                 errorMessage = String.format("Incorrect classpath detected; OpenSearch Spark compiled for Spark %s but used with Spark %s",
                         esSupportedSparkVersion, sparkVersion);
             }

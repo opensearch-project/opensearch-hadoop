@@ -513,18 +513,12 @@ class BuildPlugin implements Plugin<Project>  {
         pack.dependsOn(project.tasks.jar)
         pack.dependsOn(project.tasks.javadocJar)
         pack.dependsOn(project.tasks.sourcesJar)
-        pack.outputs.files(project.tasks.jar.archivePath, project.tasks.javadocJar.archivePath, project.tasks.sourcesJar.archivePath)
         project.getPlugins().withType(SparkVariantPlugin).whenPluginAdded {
             SparkVariantPluginExtension sparkVariants = project.getExtensions().getByType(SparkVariantPluginExtension.class)
             sparkVariants.featureVariants { SparkVariant variant ->
                 pack.dependsOn(project.tasks.getByName(variant.taskName('jar')))
                 pack.dependsOn(project.tasks.getByName(variant.taskName('javadocJar')))
                 pack.dependsOn(project.tasks.getByName(variant.taskName('sourcesJar')))
-                pack.outputs.files(
-                        project.tasks.getByName(variant.taskName('jar')).archivePath,
-                        project.tasks.getByName(variant.taskName('javadocJar')).archivePath,
-                        project.tasks.getByName(variant.taskName('sourcesJar')).archivePath
-                )
             }
         }
 

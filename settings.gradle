@@ -1,6 +1,6 @@
 pluginManagement {
   plugins {
-    id 'com.github.johnrengelman.shadow' version "6.1.0"
+    id 'com.github.johnrengelman.shadow' version "8.1.1"
   }
 }
 
@@ -16,10 +16,6 @@ project(":hive").name = "opensearch-hadoop-hive"
 include 'spark-core'
 project(":spark-core").projectDir = new File(settingsDir, "spark/core")
 project(":spark-core").name = "opensearch-spark"
-
-include 'sql-13'
-project(":sql-13").projectDir = new File(settingsDir, "spark/sql-13")
-project(":sql-13").name = "opensearch-spark-13"
 
 include 'sql-20'
 project(":sql-20").projectDir = new File(settingsDir, "spark/sql-20")

@@ -45,17 +45,16 @@ import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 
+import org.gradle.api.file.ConfigurableFileCollection;
+
 /**
  * Concatenates a list of files into one and removes duplicate lines.
  */
-public class ConcatFilesTask extends DefaultTask {
+public abstract class ConcatFilesTask extends DefaultTask {
 
     public ConcatFilesTask() {
         setDescription("Concat a list of files into one.");
     }
-
-    /** List of files to concatenate */
-    private FileTree files;
 
     /** line to add at the top of the target file */
     private String headerLine;
@@ -64,14 +63,9 @@ public class ConcatFilesTask extends DefaultTask {
 
     private List<String> additionalLines = new ArrayList<>();
 
-    public void setFiles(FileTree files) {
-        this.files = files;
-    }
 
     @InputFiles
-    public FileTree getFiles() {
-        return files;
-    }
+    public abstract ConfigurableFileCollection getFiles();
 
     public void setHeaderLine(String headerLine) {
         this.headerLine = headerLine;

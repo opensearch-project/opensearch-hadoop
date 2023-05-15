@@ -1,4 +1,4 @@
-name: Build
+name: Build and test spark 30
 
 on: [push, pull_request]
 

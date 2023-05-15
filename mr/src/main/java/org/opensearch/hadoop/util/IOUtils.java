@@ -33,6 +33,7 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.io.StringReader;
 import java.io.StringWriter;
@@ -43,15 +44,17 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Properties;
 
+import javax.xml.bind.DatatypeConverter;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
 
 import com.amazonaws.thirdparty.jackson.core.JsonProcessingException;
-import com.amazonaws.thirdparty.jackson.databind.DeserializationFeature;
 import com.amazonaws.thirdparty.jackson.databind.ObjectMapper;
 import com.amazonaws.thirdparty.jackson.databind.SerializationFeature;
+
 
 
 /**
@@ -60,8 +63,7 @@ import com.amazonaws.thirdparty.jackson.databind.SerializationFeature;
 public abstract class IOUtils {
 
     private final static Field BYTE_ARRAY_BUFFER;
-    static final ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES,
-            false).configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    static final ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
 
     private static final Log log = LogFactory.getLog(IOUtils.class);
     private final boolean trace = log.isTraceEnabled();
@@ -89,14 +91,14 @@ public abstract class IOUtils {
         if (!StringUtils.hasLength(data)) {
             return null;
         }
-        Object object = null;
+        final T object;
             try {
                 object =  mapper.readValue(data, clazz);
             } catch (JsonProcessingException e) {
-                throw new OpenSearchHadoopSerializationException("Cannot deserialize object " + object, e);
+                throw new OpenSearchHadoopSerializationException("Cannot deserialize string " + data, e);
 
             }
-            return (T) object;
+            return object;
     }
 
     public static String propsToString(Properties props) {

@@ -31,6 +31,7 @@ package org.opensearch.hadoop.serialization.dto.mapping;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Objects;
 
 import org.opensearch.hadoop.serialization.FieldType;
 
@@ -61,20 +62,35 @@ public class Field implements Serializable {
         this.properties = properties;
     }
 
+    @JsonProperty("properties")
     public Field[] properties() {
         return properties;
     }
 
+    @JsonProperty("type")
     public FieldType type() {
         return type;
     }
 
+    @JsonProperty("name")
     public String name() {
         return name;
     }
 
     @Override
     public String toString() {
-        return String.format("%s=%s", name, ((type == FieldType.OBJECT || type == FieldType.NESTED) ? Arrays.toString(properties) : type));
+        return String.format("%s=%s", name,
+                ((type == FieldType.OBJECT || type == FieldType.NESTED) ? Arrays.toString(properties) : type));
+    }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Field == false) {
+            return false;
+        }
+        Field other = (Field) o;
+        return Objects.equals(this.name, other.name) &&
+                Objects.equals(this.type, other.type) &&
+                Objects.deepEquals(this.properties, other.properties);
     }
 }

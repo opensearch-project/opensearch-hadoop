@@ -52,8 +52,6 @@ jobs:
 
       - name: publish snapshots to build repositories
         run: |
-          ./gradlew :opensearch-hadoop-mr:publishMainPublicationToBuildRepository
-          ./gradlew :opensearch-hadoop-hive:publishMainPublicationToBuildRepository
           ./gradlew -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution
 
       - name: set required env variables

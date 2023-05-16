@@ -1,6 +1,9 @@
 name: Publish snapshots to maven
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   build-and-publish-snapshots:
@@ -39,11 +42,6 @@ jobs:
 
       - name: 'Setup: Java 17 env'
         run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
-      - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v1
-        with:
-          role-to-assume: ${{ secrets.PUBLISH_SNAPSHOTS_ROLE }}
-          aws-region: us-east-1
 
       - name: Read value from Properties-file
         id: read_property
@@ -89,6 +87,12 @@ jobs:
         with:
           repository: 'opensearch-project/opensearch-build-libraries'
           path: 'build'
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.PUBLISH_SNAPSHOTS_ROLE }}
+          aws-region: us-east-1
 
       - name: Get credentials and publish snapshots to maven
         run: |

@@ -1,0 +1,102 @@
+name: Publish snapshots to maven
+
+on: [push, pull_request]
+
+jobs:
+  build-and-publish-snapshots:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+      contents: write
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 8 env'
+        run: echo "JAVA8_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 11 env'
+        run: echo "JAVA11_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 17 env'
+        run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
+      # - name: Configure AWS credentials
+      #   uses: aws-actions/configure-aws-credentials@v1
+      #   with:
+      #     role-to-assume: ${{ secrets.PUBLISH_SNAPSHOTS_ROLE }}
+      #     aws-region: us-east-1
+
+      - name: Read value from Properties-file
+        id: read_property
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: 'buildSrc/opensearch-hadoop-version.properties'
+          properties: 'opensearch_hadoop'
+
+      - name: publish snapshots to build repositories
+        run: |
+          ./gradlew :opensearch-hadoop-mr:publishMainPublicationToBuildRepository
+          ./gradlew :opensearch-hadoop-hive:publishMainPublicationToBuildRepository
+          ./gradlew -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution
+
+      - name: set required env variables
+        run: |
+          echo "MAVEN_HOME=maven" >> $GITHUB_ENV
+          echo "MAVEN_HOME_CLIENT=maven/org/opensearch/client" >> $GITHUB_ENV
+          echo "VERSION=${{ steps.read_property.outputs.opensearch_hadoop }}" >> $GITHUB_ENV
+
+      - name: create snapshots maven folder and copy files
+        run: |
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}-SNAPSHOT"
+          cp -R mr/build/repo/org/opensearch/client/* ${{ env.MAVEN_HOME_CLIENT }}
+          cp -R hive/build/repo/org/opensearch/client/* ${{ env.MAVEN_HOME_CLIENT }}
+          cp -R dist/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}-SNAPSHOT
+
+      - name: debug output directories
+        run: tree maven
+
+      - uses: actions/checkout@v3
+        with:
+          repository: 'opensearch-project/opensearch-build'
+          path: 'build'
+
+      - name: Get credentials and publish snapshots to maven
+        run: |
+          export SONATYPE_USERNAME=$(aws secretsmanager get-secret-value --secret-id maven-snapshots-username --query SecretString --output text)
+          export SONATYPE_PASSWORD=$(aws secretsmanager get-secret-value --secret-id maven-snapshots-password --query SecretString --output text)
+          echo "::add-mask::$SONATYPE_USERNAME"
+          echo "::add-mask::$SONATYPE_PASSWORD"
+          export SNAPSHOT_REPO_URL="https://aws.oss.sonatype.org/content/repositories/snapshots/"
+          build/resources/publish/publish-snapshot.sh $MAVEN_HOME
+
+

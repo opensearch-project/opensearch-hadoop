@@ -39,11 +39,11 @@ jobs:
 
       - name: 'Setup: Java 17 env'
         run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
-      # - name: Configure AWS credentials
-      #   uses: aws-actions/configure-aws-credentials@v1
-      #   with:
-      #     role-to-assume: ${{ secrets.PUBLISH_SNAPSHOTS_ROLE }}
-      #     aws-region: us-east-1
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          role-to-assume: ${{ secrets.PUBLISH_SNAPSHOTS_ROLE }}
+          aws-region: us-east-1
 
       - name: Read value from Properties-file
         id: read_property

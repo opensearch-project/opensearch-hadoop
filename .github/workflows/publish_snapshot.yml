@@ -52,8 +52,6 @@ jobs:
 
       - name: publish snapshots to build repositories
         run: |
-          ./gradlew :opensearch-hadoop-mr:publishMainPublicationToBuildRepository
-          ./gradlew :opensearch-hadoop-hive:publishMainPublicationToBuildRepository
           ./gradlew -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution
 
       - name: set required env variables
@@ -71,8 +69,8 @@ jobs:
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}-SNAPSHOT"
-          cp -R mr/build/repo/org/opensearch/client/* ${{ env.MAVEN_HOME_CLIENT }}
-          cp -R hive/build/repo/org/opensearch/client/* ${{ env.MAVEN_HOME_CLIENT }}
+          cp -R mr/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}
+          cp -R hive/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}
           cp -R dist/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}-SNAPSHOT

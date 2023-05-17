@@ -52,7 +52,7 @@ jobs:
 
       - name: publish snapshots to build repositories
         run: |
-          ./gradlew -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution
+          ./gradlew -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution --info
 
       - name: set required env variables
         run: |

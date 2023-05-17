@@ -64,13 +64,15 @@ jobs:
         run: |
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}-SNAPSHOT"
-          cp -R mr/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}
-          cp -R hive/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}
+          cp -R mr/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}-SNAPSHOT
+          cp -R hive/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}-SNAPSHOT
           cp -R dist/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}-SNAPSHOT

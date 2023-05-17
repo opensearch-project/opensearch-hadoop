@@ -595,7 +595,7 @@ class BuildPlugin implements Plugin<Project>  {
         // If we are working with a project that has a scala variant (see below), we need to modify the pom's
         // artifact id which the publish task does not like (it fails validation when run).
         project.getTasks().withType(PublishToMavenRepository) { PublishToMavenRepository m ->
-            m.enabled = false
+            m.enabled = true
         }
 
         // Configure Scala Variants if present

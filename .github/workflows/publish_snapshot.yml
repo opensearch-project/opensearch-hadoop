@@ -1,9 +1,6 @@
 name: Publish snapshots to maven
 
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   build-and-publish-snapshots:
@@ -59,6 +56,9 @@ jobs:
           echo "MAVEN_HOME=maven" >> $GITHUB_ENV
           echo "MAVEN_HOME_CLIENT=maven/org/opensearch/client" >> $GITHUB_ENV
           echo "VERSION=${{ steps.read_property.outputs.opensearch_hadoop }}" >> $GITHUB_ENV
+
+      - name: debug output directories
+        run: tree
 
       - name: create snapshots maven folder and copy files
         run: |

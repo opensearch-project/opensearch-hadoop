@@ -49,7 +49,7 @@ jobs:
 
       - name: publish snapshots to build repositories
         run: |
-          ./gradlew clean -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution
+          ./gradlew clean -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution --no-daemon
 
       - name: set required env variables
         run: |

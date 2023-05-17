@@ -679,7 +679,7 @@ class BuildPlugin implements Plugin<Project>  {
         // Set the pom's destination to the distribution directory
         project.tasks.withType(GenerateMavenPom).all { GenerateMavenPom pom ->
             if (pom.name == "generatePomFileFor${publication.name.capitalize()}Publication") {
-                pom.destination = project.provider({"${project.buildDir}/distributions/${project.archivesBaseName}-${project.getVersion()}.pom"})
+                pom.destination = project.provider({"${project.buildDir}/poms/${project.archivesBaseName}-${project.getVersion()}.pom"})
             }
         }
 
@@ -742,7 +742,7 @@ class BuildPlugin implements Plugin<Project>  {
         // Fix the pom name
         project.tasks.withType(GenerateMavenPom).all { GenerateMavenPom pom ->
             if (pom.name == "generatePomFileFor${publication.name.capitalize()}Publication") {
-                pom.destination = project.provider({"${project.buildDir}/distributions/${filename}.pom"})
+                pom.destination = project.provider({"${project.buildDir}/poms/${filename}.pom"})
             }
         }
         // Fix the artifactId. Note: The publishing task does not like this happening. Hence it is disabled.

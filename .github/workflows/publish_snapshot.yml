@@ -50,35 +50,49 @@ jobs:
           path: 'buildSrc/opensearch-hadoop-version.properties'
           properties: 'opensearch_hadoop'
 
-      - name: publish snapshots to build repositories
-        run: |
-          ./gradlew :opensearch-hadoop-mr:publishMainPublicationToBuildRepository
-          ./gradlew :opensearch-hadoop-hive:publishMainPublicationToBuildRepository
-          ./gradlew -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution
-
       - name: set required env variables
         run: |
           echo "MAVEN_HOME=maven" >> $GITHUB_ENV
           echo "MAVEN_HOME_CLIENT=maven/org/opensearch/client" >> $GITHUB_ENV
           echo "VERSION=${{ steps.read_property.outputs.opensearch_hadoop }}" >> $GITHUB_ENV
 
-      - name: create snapshots maven folder and copy files
+      - name: make snapshot directories
         run: |
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}-SNAPSHOT"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}-SNAPSHOT"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}-SNAPSHOT"
-          cp -R mr/build/repo/org/opensearch/client/* ${{ env.MAVEN_HOME_CLIENT }}
-          cp -R hive/build/repo/org/opensearch/client/* ${{ env.MAVEN_HOME_CLIENT }}
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: generate JARs
+        run: |
+          ./gradlew clean -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution --no-configuration-cache --info
+
+      - name: copy JARs and POMs
+        run: |
+          cp -R mr/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}-SNAPSHOT
+          cp -R mr/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}-SNAPSHOT
+          cp -R hive/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}-SNAPSHOT
+          cp -R hive/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}-SNAPSHOT
           cp -R dist/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}-SNAPSHOT
+          cp -R dist/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-30/build/poms/opensearch-spark-30_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}-SNAPSHOT
           cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}-SNAPSHOT
+          cp -R spark/sql-30/build/poms/opensearch-spark-30_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}-SNAPSHOT
 
       - name: debug output directories
         run: tree maven

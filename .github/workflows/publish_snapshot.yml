@@ -49,14 +49,7 @@ jobs:
 
       - name: publish snapshots to build repositories
         run: |
-          ./gradlew :dist:generatePomFileForMainPublication 
-          ./gradlew :opensearch-hadoop-mr:generatePomFileForMainPublication 
-          ./gradlew :opensearch-hadoop-hive:generatePomFileForMainPublication 
-          ./gradlew :opensearch-spark:generatePomFileForSpark20scala210Publication
-          ./gradlew :opensearch-spark:generatePomFileForSpark20scala211Publication
-          ./gradlew :opensearch-spark:generatePomFileForSpark30scala212Publication
-          ./gradlew :opensearch-spark:generatePomFileForSpark30scala213Publication
-          ./gradlew clean -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution --no-daemon
+          ./gradlew clean -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution --no-configuration-cache --info
 
       - name: set required env variables
         run: |

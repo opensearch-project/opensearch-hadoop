@@ -11,6 +11,6 @@ standardReleasePipelineWithGenericTrigger(
         publishToMaven(
             signingArtifactsPath: "$WORKSPACE/maven/",
             mavenArtifactsPath: "$WORKSPACE/maven/",
-            autoPublish: true
+            autoPublish: false
         )
     }

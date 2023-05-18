@@ -1,9 +1,6 @@
 name: Publish snapshots to maven
 
-on:
-  push:
-    branches:
-      - main
+on: [push, pull_request]
 
 jobs:
   build-and-publish-snapshots:

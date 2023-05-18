@@ -4,7 +4,7 @@ lib = library(identifier: 'jenkins@1.5.3', retriever: modernSCM([
 ]))
 
 standardReleasePipelineWithGenericTrigger(
-    tokenIdCredential: 'jenkins-opensearch-hadoop-generic-webhook-token',
+    tokenIdCredential: 'jenkins-opensearch-hadoop-generic-webhook-token-manual',
     causeString: 'A tag was cut on opensearch-project/opensearch-hadoop repository causing this workflow to run',
     downloadReleaseAsset: true,
     publishRelease: false) {

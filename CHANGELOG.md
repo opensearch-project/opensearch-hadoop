@@ -5,6 +5,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 - Added CHANGELOG and verifier workflow ([65](https://github.com/opensearch-project/opensearch-hadoop/pull/65))
 - Added snapshot publication workflow ([218](https://github.com/opensearch-project/opensearch-hadoop/pull/218))
+- Added release workflow ([227](https://github.com/opensearch-project/opensearch-hadoop/pull/227))
 ### Changed
 - [Spark Distribution] Default Assemble artifact to Spark 3 ([107](https://github.com/opensearch-project/opensearch-hadoop/pull/107))
 - Changed the default deserialization/serialization logic from Object based to JSON based ([154](https://github.com/opensearch-project/opensearch-hadoop/pull/154))

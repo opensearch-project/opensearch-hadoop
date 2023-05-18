@@ -76,6 +76,10 @@ jobs:
         run: |
           for i in `find . -path '*/distributions/*' -name "*.jar" -type f`; do sha1sum "$i" >> "$i.sha1"; done
           for i in `find . -path '*/poms/*' -name "*.pom" -type f`; do sha1sum "$i" >> "$i.sha1"; done
+          for i in `find . -path '*/distributions/*' -name "*.jar" -type f`; do sha512sum "$i" >> "$i.sha1"; done
+          for i in `find . -path '*/poms/*' -name "*.pom" -type f`; do sha512sum "$i" >> "$i.sha1"; done
+          for i in `find . -path '*/distributions/*' -name "*.jar" -type f`; do sha256sum "$i" >> "$i.sha1"; done
+          for i in `find . -path '*/poms/*' -name "*.pom" -type f`; do sha256sum "$i" >> "$i.sha1"; done
           for i in `find . -path '*/distributions/*' -name "*.jar" -type f`; do md5sum "$i" >> "$i.md5"; done
           for i in `find . -path '*/poms/*' -name "*.pom" -type f`; do md5sum "$i" >> "$i.md5"; done
 

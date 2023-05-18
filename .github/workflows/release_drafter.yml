@@ -1,0 +1,118 @@
+name: Release drafter
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  draft-a-release:
+    name: Draft a release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - id: get_data
+        run: |
+          echo "approvers=$(cat .github/CODEOWNERS | grep @ | tr -d '* ' | sed 's/@/,/g' | sed 's/,//1')" >> $GITHUB_OUTPUT
+          echo "version=$(cat gradle.properties | grep "systemProp.version" | cut -d'=' -f2)" >> $GITHUB_OUTPUT
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 8 env'
+        run: echo "JAVA8_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 11 env'
+        run: echo "JAVA11_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 17 env'
+        run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Read value from Properties-file
+        id: read_property
+        uses: christian-draeger/read-properties@1.1.1
+        with:
+          path: 'buildSrc/opensearch-hadoop-version.properties'
+          properties: 'opensearch_hadoop'
+
+      - name: set required env variables
+        run: |
+          echo "MAVEN_HOME=maven" >> $GITHUB_ENV
+          echo "MAVEN_HOME_CLIENT=maven/org/opensearch/client" >> $GITHUB_ENV
+          echo "VERSION=${{ steps.read_property.outputs.opensearch_hadoop }}" >> $GITHUB_ENV
+
+      - name: make directories
+        run: |
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}"
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: generate JARs
+        run: |
+          ./gradlew clean -S -Dbuild.snapshot=false -Dorg.gradle.warning.mode=summary distribution --no-configuration-cache --no-daemon --info
+
+      - name: copy JARs and POMs
+        run: |
+          cp -R mr/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}
+          cp -R mr/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}
+          cp -R hive/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}
+          cp -R hive/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}
+          cp -R dist/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}
+          cp -R dist/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}
+          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}
+          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}
+          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}
+          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}
+          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}
+          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}
+          cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}
+          cp -R spark/sql-30/build/poms/opensearch-spark-30_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}
+          cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}
+          cp -R spark/sql-30/build/poms/opensearch-spark-30_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}
+
+      - name: create artifacts
+        run: |
+          tar -cvf artifacts.tar.gz maven
+
+      - uses: trstringer/manual-approval@v1
+        with:
+          secret: ${{ github.TOKEN }}
+          approvers: ${{ steps.get_data.outputs.approvers }}
+          minimum-approvals: 1
+          issue-title: 'Release opensearch-hadoop : ${{ steps.get_data.outputs.version }}'
+          issue-body: "Please approve or deny the release of opensearch-hadoop. **VERSION**: ${{ steps.get_data.outputs.version }} **TAG**: ${{ github.ref_name }}  **COMMIT**: ${{ github.sha }}"
+
+      - name: Draft a release
+        uses: softprops/action-gh-release@v1
+        with:
+          draft: true
+          generate_release_notes: true
+          files: |
+            artifacts.tar.gz

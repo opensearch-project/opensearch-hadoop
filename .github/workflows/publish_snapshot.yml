@@ -88,6 +88,7 @@ jobs:
 
       - name: copy JARs and POMs
         run: |
+          rm -rf dist/build/distributions/*.zip
           cp -R mr/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}-SNAPSHOT
           cp -R mr/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}-SNAPSHOT
           cp -R hive/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}-SNAPSHOT

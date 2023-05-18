@@ -75,6 +75,17 @@ jobs:
         run: |
           ./gradlew clean -S -Dbuild.snapshot=true -Dorg.gradle.warning.mode=summary distribution --no-configuration-cache --info
 
+      - name: generate sha and md5
+        run: |
+          for i in `find . -path '*/distributions/*' -name "*.jar" -type f`; do sha1sum "$i" >> "$i.sha1"; done
+          for i in `find . -path '*/poms/*' -name "*.pom" -type f`; do sha1sum "$i" >> "$i.sha1"; done
+          for i in `find . -path '*/distributions/*' -name "*.jar" -type f`; do sha512sum "$i" >> "$i.sha512"; done
+          for i in `find . -path '*/poms/*' -name "*.pom" -type f`; do sha512sum "$i" >> "$i.sha512"; done
+          for i in `find . -path '*/distributions/*' -name "*.jar" -type f`; do sha256sum "$i" >> "$i.sha256"; done
+          for i in `find . -path '*/poms/*' -name "*.pom" -type f`; do sha256sum "$i" >> "$i.sha256"; done
+          for i in `find . -path '*/distributions/*' -name "*.jar" -type f`; do md5sum "$i" >> "$i.md5"; done
+          for i in `find . -path '*/poms/*' -name "*.pom" -type f`; do md5sum "$i" >> "$i.md5"; done
+
       - name: copy JARs and POMs
         run: |
           cp -R mr/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}-SNAPSHOT

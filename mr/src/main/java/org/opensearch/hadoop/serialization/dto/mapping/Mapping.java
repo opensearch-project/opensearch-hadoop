@@ -44,6 +44,8 @@ import org.opensearch.hadoop.serialization.field.FieldFilter;
 import com.amazonaws.thirdparty.jackson.annotation.JsonCreator;
 import com.amazonaws.thirdparty.jackson.annotation.JsonProperty;
 
+import java.util.Objects;
+
 /**
  * A mapping has a name and a collection of fields.
  */
@@ -169,5 +171,16 @@ public class Mapping implements Serializable {
         } else {
             return String.format("%s=%s", index, Arrays.toString(fields));
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Mapping == false) {
+            return false;
+        }
+        Mapping other = (Mapping) o;
+        return Objects.equals(this.index, other.index) &&
+                Objects.equals(this.type, other.type) &&
+                Objects.deepEquals(this.fields, other.fields);
     }
 }

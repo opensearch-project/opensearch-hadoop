@@ -1,9 +1,9 @@
-name: Build
+name: Build and test hive
 
 on: [push, pull_request]
 
 jobs:
-  build-and-test-mr:
+  build-and-test-hive:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
@@ -44,4 +44,4 @@ jobs:
         run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Build with Gradle
-        run: ./gradlew opensearch-hadoop-mr:build
+        run: ./gradlew opensearch-hadoop-hive:build

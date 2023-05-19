@@ -4,6 +4,7 @@
   - [Feature Branches](#feature-branches)
 - [Release Labels](#release-labels)
 - [Releasing](#releasing)
+- [Snapshots](#snapshot-builds)
 
 ## Overview
 
@@ -32,3 +33,12 @@ Repositories create consistent release labels, such as `v1.0.0`, `v1.1.0` and `v
 ## Releasing
 
 The release process is standard across repositories in this org and is run by a release manager volunteering from amongst [MAINTAINERS](MAINTAINERS.md).
+
+1. Create a tag, e.g. `v2.1.0`, and push it to the GitHub repo.
+1. The [release-drafter.yml](.github/workflows/release-drafter.yml) will be automatically kicked off and is responsible for drafting a new release on GitHub containing release artifacts.
+1. Before creating a draft release, this workflow creates a GitHub issue asking for approval from the [maintainers](MAINTAINERS.md). See sample [issue](https://github.com/gaiksaya/opensearch-java/issues/1). The maintainers need to approve in order to continue the workflow run.
+1. Once a release is drafted [opensearch-hadoop-release](https://build.ci.opensearch.org/job/opensearch-hadoop-release/) jenkins workflow is triggered. The artifacts will be automcatically signed and published to maven.
+1. Increment the version in [opensearch-hadoop-version.properties](./buildSrc/opensearch-hadoop-version.properties) to the next patch release, e.g. `2.1.1`.
+
+## Snapshot Builds
+The [snapshots builds](https://aws.oss.sonatype.org/content/repositories/snapshots/org/opensearch/client/) are published to sonatype using [publish_snapshot.yml](./.github/workflows/publish_snapshot.yml) workflow. Each `push` event to the main branch triggers this workflow.

@@ -4,13 +4,13 @@ lib = library(identifier: 'jenkins@1.5.3', retriever: modernSCM([
 ]))
 
 standardReleasePipelineWithGenericTrigger(
-    tokenIdCredential: 'jenkins-opensearch-hadoop-generic-webhook-token-manual',
+    tokenIdCredential: 'jenkins-opensearch-hadoop-generic-webhook-token',
     causeString: 'A tag was cut on opensearch-project/opensearch-hadoop repository causing this workflow to run',
     downloadReleaseAsset: true,
-    publishRelease: false) {
+    publishRelease: true) {
         publishToMaven(
             signingArtifactsPath: "$WORKSPACE/maven/",
             mavenArtifactsPath: "$WORKSPACE/maven/",
-            autoPublish: false
+            autoPublish: true
         )
     }

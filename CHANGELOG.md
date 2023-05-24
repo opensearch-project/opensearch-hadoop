@@ -1,7 +1,22 @@
 # CHANGELOG
 Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
-
 ## [Unreleased]
+
+### Added
+
+### Dependencies
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+- Fixes imports from being thirdparty to local ([#245](https://github.com/opensearch-project/opensearch-java/pull/245))
+
+### Security
+## [1.0.0] - 05/18/2023
 ### Added
 - Added CHANGELOG and verifier workflow ([65](https://github.com/opensearch-project/opensearch-hadoop/pull/65))
 - Added snapshot publication workflow ([218](https://github.com/opensearch-project/opensearch-hadoop/pull/218))
@@ -39,4 +54,5 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.json4s:json4s-jackson_2.12` from 3.2.11 to 4.0.6
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.11.1
 
-[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/main...HEAD
+[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v7.13.4...v1.0.0

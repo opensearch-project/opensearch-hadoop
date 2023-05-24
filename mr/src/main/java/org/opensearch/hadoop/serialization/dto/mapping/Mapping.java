@@ -41,8 +41,8 @@ import java.util.Map;
 import org.opensearch.hadoop.serialization.FieldType;
 import org.opensearch.hadoop.serialization.field.FieldFilter;
 
-import com.amazonaws.thirdparty.jackson.annotation.JsonCreator;
-import com.amazonaws.thirdparty.jackson.annotation.JsonProperty;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.annotate.JsonCreator;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.annotate.JsonProperty;
 
 import java.util.Objects;
 

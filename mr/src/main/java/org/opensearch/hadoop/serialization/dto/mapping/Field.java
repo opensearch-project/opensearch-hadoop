@@ -35,8 +35,8 @@ import java.util.Objects;
 
 import org.opensearch.hadoop.serialization.FieldType;
 
-import com.amazonaws.thirdparty.jackson.annotation.JsonCreator;
-import com.amazonaws.thirdparty.jackson.annotation.JsonProperty;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.annotate.JsonCreator;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.annotate.JsonProperty;
 
 @SuppressWarnings("serial")
 public class Field implements Serializable {

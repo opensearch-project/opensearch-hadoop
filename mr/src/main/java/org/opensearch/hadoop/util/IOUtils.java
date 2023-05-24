@@ -50,10 +50,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.serialization.OpenSearchHadoopSerializationException;
-
-import com.amazonaws.thirdparty.jackson.core.JsonProcessingException;
-import com.amazonaws.thirdparty.jackson.databind.ObjectMapper;
-import com.amazonaws.thirdparty.jackson.databind.SerializationFeature;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.ObjectMapper;
+import org.opensearch.hadoop.thirdparty.codehaus.jackson.map.SerializationConfig;
 
 
 
@@ -63,7 +61,7 @@ import com.amazonaws.thirdparty.jackson.databind.SerializationFeature;
 public abstract class IOUtils {
 
     private final static Field BYTE_ARRAY_BUFFER;
-    static final ObjectMapper mapper = new ObjectMapper().configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
+    static final ObjectMapper mapper = new ObjectMapper().configure(SerializationConfig.Feature.FAIL_ON_EMPTY_BEANS, false);
 
     private static final Log log = LogFactory.getLog(IOUtils.class);
     private final boolean trace = log.isTraceEnabled();
@@ -94,7 +92,7 @@ public abstract class IOUtils {
         final T object;
             try {
                 object =  mapper.readValue(data, clazz);
-            } catch (JsonProcessingException e) {
+            } catch (IOException e) {
                 throw new OpenSearchHadoopSerializationException("Cannot deserialize string " + data, e);
 
             }

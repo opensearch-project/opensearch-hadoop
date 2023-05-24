@@ -37,7 +37,6 @@ import org.opensearch.hadoop.serialization.dto.NodeInfo;
 import org.opensearch.hadoop.serialization.field.FieldFilter;
 import org.opensearch.hadoop.serialization.field.FieldFilter.NumberedInclude;
 
-import com.amazonaws.thirdparty.jackson.core.JsonProcessingException;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

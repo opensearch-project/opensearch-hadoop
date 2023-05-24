@@ -42,7 +42,7 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Spark](#
   - [License](#license)
 
 ## Requirements
-OpenSearch (__3.x__ or higher) cluster accessible through [REST][]. That's it!
+OpenSearch (__1.3.x__ or higher) cluster accessible through [REST][]. That's it!
 If using SigV4 IAM auth features, you would need to include the [aws-sdk-bundle](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle) in your job classpath.
 
 ## Usage

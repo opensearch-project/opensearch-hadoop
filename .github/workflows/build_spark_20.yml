@@ -44,4 +44,4 @@ jobs:
         run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Build with Gradle
-        run: ./gradlew opensearch-spark-20:build
+        run: ./gradlew opensearch-spark-20:build --info --stack-trace

@@ -11,7 +11,7 @@ sparkVariants {
     capabilityGroup 'org.opensearch.spark.sql.variant'
     setDefaultVariant "spark20scala212", spark24Version, scala212Version
     addFeatureVariant "spark20scala211", spark24Version, scala211Version
-    addFeatureVariant "spark20scala210", spark22Version, scala210Version
+    // addFeatureVariant "spark20scala210", spark22Version, scala210Version
 
     all { SparkVariantPlugin.SparkVariant variant ->
         String scalaCompileTaskName = project.sourceSets
@@ -79,7 +79,7 @@ sparkVariants {
 
             // Scala compiler needs these for arcane reasons, but they are not used in the api nor the runtime
             add(variant.configuration('compileOnly'), "org.apache.hadoop.thirdparty:hadoop-shaded-protobuf_3_7:1.1.1")
-            add(variant.configuration('compileOnly'), "com.fasterxml.jackson.core:jackson-annotations:2.6.7")
+            add(variant.configuration('compileOnly'), "com.fasterxml.jackson.core:jackson-annotations:2.15.0")
             add(variant.configuration('compileOnly'), "org.json4s:json4s-jackson_${variant.scalaMajorVersion}:3.2.11")
             add(variant.configuration('compileOnly'), "org.apache.spark:spark-tags_${variant.scalaMajorVersion}:$variant.sparkVersion")
 

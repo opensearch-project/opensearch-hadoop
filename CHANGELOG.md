@@ -5,6 +5,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 
 ### Dependencies
+- Bumps `org.apache.avro:avro` from 1.7.7 to 1.10.2
 
 ### Changed
 

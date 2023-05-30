@@ -28,6 +28,16 @@
  */
 package org.opensearch.hadoop.rest;
 
+import java.io.Closeable;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
@@ -55,20 +65,9 @@ import org.opensearch.hadoop.serialization.handler.read.impl.AbortOnlyHandlerLoa
 import org.opensearch.hadoop.util.Assert;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.BytesRef;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.SettingsUtils;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.unit.TimeValue;
-
-import java.io.Closeable;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 
 /**
  * Rest client performing high-level operations using buffers to improve performance. Stateful in that once created, it

@@ -45,13 +45,13 @@ import org.opensearch.hadoop.mr.OpenSearchInputFormat;
 import org.opensearch.hadoop.mr.OpenSearchMapReduceUtil;
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
-public class ReadFromES extends Configured implements Tool {
+public class ReadFromOpenSearch extends Configured implements Tool {
 
     public static void main(final String[] args) throws Exception {
         KeytabLogin.doAfterLogin(new PrivilegedExceptionAction<Void>() {
             @Override
             public Void run() throws Exception {
-                System.exit(ToolRunner.run(new ReadFromES(), args));
+                System.exit(ToolRunner.run(new ReadFromOpenSearch(), args));
                 return null;
             }
         });
@@ -59,7 +59,7 @@ public class ReadFromES extends Configured implements Tool {
 
     @Override
     public int run(String[] args) throws Exception {
-        Job job = Job.getInstance(getConf(), "ReadFromES");
+        Job job = Job.getInstance(getConf(), "ReadFromOpenSearch");
         // DO NOT SET JAR BY CLASS HERE
         //
         // job.setJarByClass(getClass());

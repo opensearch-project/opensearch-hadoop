@@ -28,45 +28,34 @@
  */
 package org.opensearch.spark.integration;
 
+import static org.hamcrest.Matchers.greaterThan;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
+
 import java.io.Serializable;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.hadoop.io.MapWritable;
-import org.apache.hadoop.io.NullWritable;
 import org.apache.hadoop.io.Text;
-import org.apache.hadoop.mapred.JobConf;
 import org.apache.spark.SparkConf;
-import org.apache.spark.api.java.JavaPairRDD;
 import org.apache.spark.api.java.JavaRDD;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
 import org.apache.spark.serializer.KryoRegistrator;
-import org.opensearch.hadoop.HdpBootstrap;
-import org.opensearch.hadoop.TestData;
-import org.opensearch.hadoop.cfg.ConfigurationOptions;
-import org.opensearch.hadoop.mr.OpenSearchInputFormat;
-import org.opensearch.hadoop.rest.RestUtils;
-import org.opensearch.hadoop.util.TestSettings;
-import org.opensearch.hadoop.util.WritableUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.ClassRule;
-import org.junit.Ignore;
 import org.junit.Test;
+import org.opensearch.hadoop.TestData;
+import org.opensearch.hadoop.util.TestSettings;
 
 import com.esotericsoftware.kryo.Kryo;
-
-import static org.junit.Assert.*;
-
-import static org.hamcrest.Matchers.*;
-
-import scala.Tuple2;
 
 public class AbstractHadoopBasicSparkTest implements Serializable {
 
@@ -123,50 +112,6 @@ public class AbstractHadoopBasicSparkTest implements Serializable {
             kryo.register(Text.class);
             kryo.register(MapWritable.class);
         }
-    }
-
-    @Test
-    @Ignore("Spark 2.0 requires Hadoop 2.x")
-    public void testHadoopOldApiRead() throws Exception {
-        cfg.set("spark.serializer", "org.apache.spark.serializer.KryoSerializer");
-        //clone.set("spark.kryo.registrator", MyRegistrator.class.getName());
-
-        sc = new JavaSparkContext(cfg);
-
-        String target = "spark-test-hadoop-basic/data";
-
-        RestUtils.touch("spark-test-hadoop-basic");
-        RestUtils.postData(target, "{\"message\" : \"Hello World\",\"message_date\" : \"2014-05-25\"}".getBytes());
-        RestUtils.postData(target, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes());
-        RestUtils.refresh("spark-test*");
-
-        JobConf hdpConf = HdpBootstrap.hadoopConfig();
-        hdpConf.set(ConfigurationOptions.OPENSEARCH_RESOURCE, target);
-
-
-        //JavaPairRDD data = sc.newAPIHadoopRDD(hdpConf, OpenSearchInputFormat.class, NullWritable.class, MapWritable.class);
-        JavaPairRDD data = sc.hadoopRDD(hdpConf, OpenSearchInputFormat.class, NullWritable.class, MapWritable.class);
-
-        long messages = data.filter(new Function<Tuple2<Text, MapWritable>, Boolean>() {
-            @Override
-            public Boolean call(Tuple2<Text, MapWritable> t) { return t._2.containsKey(new Text("message")); }
-        }).count();
-
-        JavaRDD map = data.map(new Function<Tuple2<Text, MapWritable>, Map<String, Object>>() {
-            @Override
-            public Map<String, Object> call(Tuple2<Text, MapWritable> v1) throws Exception {
-                return (Map<String, Object>) WritableUtils.fromWritable(v1._2);
-            }
-        });
-
-        JavaRDD fooBar = data.map(new Function<Tuple2<Text, MapWritable>, String>() {
-            @Override
-            public String call(Tuple2<Text, MapWritable> v1) throws Exception {
-                return v1._1.toString();
-            }
-        });
-
-        assertThat((int) data.count(), is(2));
     }
     
     private JavaRDD<String> readAsRDD(URI uri) throws Exception {

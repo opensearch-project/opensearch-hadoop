@@ -248,7 +248,7 @@ class HiveEmbeddedServer2 implements HiveInstance {
         return new HiveConf(conf);
     }
 
-    private void removeESSettings(HiveConf conf) {
+    private void removeOpenSearchSettings(HiveConf conf) {
         //delete all "opensearch" properties
         Set<String> props = testSettings.stringPropertyNames();
         Iterator<Map.Entry<String, String>> iter = conf.iterator();
@@ -263,7 +263,7 @@ class HiveEmbeddedServer2 implements HiveInstance {
         }
     }
     private void refreshConfig(HiveConf conf) {
-        removeESSettings(conf);
+        removeOpenSearchSettings(conf);
         // copy test settings
         Enumeration<?> names = testSettings.propertyNames();
 
@@ -274,8 +274,8 @@ class HiveEmbeddedServer2 implements HiveInstance {
         }
     }
 
-    public void removeESSettings() {
-        removeESSettings(config);
+    public void removeOpenSearchSettings() {
+        removeOpenSearchSettings(config);
 
         // clear session state
         //        SessionState sessionState = SessionState.get();

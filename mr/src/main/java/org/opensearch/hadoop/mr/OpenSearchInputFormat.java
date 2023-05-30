@@ -120,7 +120,7 @@ public class OpenSearchInputFormat<K, V> extends InputFormat<K, V> implements or
     protected static abstract class OpenSearchInputRecordReader<K,V> extends RecordReader<K, V> implements org.apache.hadoop.mapred.RecordReader<K, V> {
 
         private int read = 0;
-        private OpenSearchInputSplit esSplit;
+        private OpenSearchInputSplit openSearchSplit;
         private ScrollReader scrollReader;
 
         private RestRepository client;
@@ -154,22 +154,22 @@ public class OpenSearchInputFormat<K, V> extends InputFormat<K, V> implements or
             init((OpenSearchInputSplit) split, compatContext.getConfiguration(), compatContext);
         }
 
-        void init(OpenSearchInputSplit esSplit, Configuration cfg, Progressable progressable) {
+        void init(OpenSearchInputSplit openSearchSplit, Configuration cfg, Progressable progressable) {
             // get a copy to override the host/port
-            Settings settings = HadoopSettingsManager.loadFrom(cfg).copy().load(esSplit.getPartition().getSerializedSettings());
+            Settings settings = HadoopSettingsManager.loadFrom(cfg).copy().load(openSearchSplit.getPartition().getSerializedSettings());
 
             if (log.isTraceEnabled()) {
                 log.trace(String.format("Init shard reader from cfg %s", HadoopCfgUtils.asProperties(cfg)));
                 log.trace(String.format("Init shard reader w/ settings %s", settings));
             }
 
-            this.esSplit = esSplit;
+            this.openSearchSplit = openSearchSplit;
 
             // initialize mapping/ scroll reader
             InitializationUtils.setValueReaderIfNotSet(settings, WritableValueReader.class, log);
             InitializationUtils.setUserProviderIfNotSet(settings, HadoopUserProvider.class, log);
 
-            PartitionDefinition part = esSplit.getPartition();
+            PartitionDefinition part = openSearchSplit.getPartition();
             PartitionReader partitionReader = RestService.createReader(settings, part, log);
 
             this.scrollReader = partitionReader.scrollReader;
@@ -184,7 +184,7 @@ public class OpenSearchInputFormat<K, V> extends InputFormat<K, V> implements or
             }
 
             if (log.isDebugEnabled()) {
-                log.debug(String.format("Initializing RecordReader for [%s]", esSplit));
+                log.debug(String.format("Initializing RecordReader for [%s]", openSearchSplit));
             }
         }
 
@@ -218,7 +218,7 @@ public class OpenSearchInputFormat<K, V> extends InputFormat<K, V> implements or
         public void close() throws IOException {
             try {
                 if (log.isDebugEnabled()) {
-                    log.debug(String.format("Closing RecordReader for [%s]", esSplit));
+                    log.debug(String.format("Closing RecordReader for [%s]", openSearchSplit));
                 }
 
                 if (beat != null) {
@@ -348,9 +348,9 @@ public class OpenSearchInputFormat<K, V> extends InputFormat<K, V> implements or
 
 
         @Override
-        void init(OpenSearchInputSplit esSplit, Configuration cfg, Progressable progressable) {
+        void init(OpenSearchInputSplit openSearchSplit, Configuration cfg, Progressable progressable) {
             useLinkedMapWritable = (!MapWritable.class.getName().equals(HadoopCfgUtils.getMapValueClass(cfg)));
-            super.init(esSplit, cfg, progressable);
+            super.init(openSearchSplit, cfg, progressable);
         }
 
         @Override

@@ -67,7 +67,7 @@ class OpenSearchServiceCredentialProvider extends HadoopDelegationTokenProvider 
 
   private[this] val LOG = LogFactory.getLog(classOf[OpenSearchServiceCredentialProvider])
 
-  LOG.info("Loaded EsServiceCredentialProvider")
+  LOG.info("Loaded OpenSearchServiceCredentialProvider")
 
   /**
    * Name of the service for logging purposes and for the purpose of determining if the

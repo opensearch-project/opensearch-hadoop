@@ -33,8 +33,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.opensearch.hadoop.OpenSearchHadoopException;
-import org.opensearch.hadoop.util.ByteSequence;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 
 /**
  * Encapsulates logic for parsing and understanding error messages from OpenSearch.

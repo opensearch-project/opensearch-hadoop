@@ -28,14 +28,14 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Spark](#
     - [Signing requests for IAM authentication](#signing-requests-for-iam-authentication-1)
   - [Apache Spark](#apache-spark)
     - [Scala](#scala)
-    - [Reading](#reading-4)
+    - [Reading](#reading-3)
       - [Spark SQL](#spark-sql)
-    - [Writing](#writing-4)
+    - [Writing](#writing-3)
       - [Spark SQL](#spark-sql-1)
     - [Java](#java)
-    - [Reading](#reading-5)
+    - [Reading](#reading-4)
       - [Spark SQL](#spark-sql-2)
-    - [Writing](#writing-5)
+    - [Writing](#writing-4)
       - [Spark SQL](#spark-sql-3)
     - [Signing requests for IAM authentication](#signing-requests-for-iam-authentication-2)
   - [Building the source](#building-the-source)
@@ -226,7 +226,7 @@ val playlist = df.filter(df("category").equalTo("pikes").and(df("year").geq(2016
 ```
 
 ### Writing
-Import the `org.opensearch.spark._` package to gain `savetoEs` methods on your `RDD`s:
+Import the `org.opensearch.spark._` package to gain `savetoOpenSearch` methods on your `RDD`s:
 
 ```scala
 import org.opensearch.spark._

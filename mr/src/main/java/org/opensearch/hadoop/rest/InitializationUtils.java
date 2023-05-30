@@ -322,23 +322,6 @@ public abstract class InitializationUtils {
         checkIndexStatus(settings);
     }
 
-    public static void validateSettingsForWriting(Settings settings) {
-        // File Scripts
-        if (StringUtils.hasText(settings.getUpdateScriptFile())) {
-            throw new OpenSearchHadoopIllegalArgumentException("Cannot use file scripts on ES 6.x and above. Please use " +
-                    "stored scripts with [" + ConfigurationOptions.OPENSEARCH_UPDATE_SCRIPT_STORED + "] instead.");
-        }
-
-        // Timestamp and TTL in index/updates
-        if (StringUtils.hasText(settings.getMappingTimestamp())) {
-            throw new OpenSearchHadoopIllegalArgumentException("Cannot use timestamps on index/update requests in ES 6.x " +
-                    "and above. Please remove the [" + ConfigurationOptions.OPENSEARCH_MAPPING_TIMESTAMP + "] setting.");
-        }
-        if (StringUtils.hasText(settings.getMappingTtl())) {
-            throw new OpenSearchHadoopIllegalArgumentException("Cannot use TTL on index/update requests in ES 6.x and " +
-                    "above. Please remove the [" + ConfigurationOptions.OPENSEARCH_MAPPING_TTL + "] setting.");
-        }
-    }
 
     /**
      * Creates a bootstrap client to discover and validate cluster information.

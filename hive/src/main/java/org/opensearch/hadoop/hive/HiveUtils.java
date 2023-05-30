@@ -103,7 +103,7 @@ abstract class HiveUtils {
 
         for (int i = 0; i < columnNames.size(); i++) {
             String original = columnNames.get(i);
-            String alias = fa.toES(original);
+            String alias = fa.toOpenSearch(original);
             if (alias != null) {
                 columnNames.set(i, alias);
             }
@@ -170,7 +170,7 @@ abstract class HiveUtils {
                 "from the given fields : {" + columnNames + "} of types {" + columnTypes + "}");
 
         // If the candidate field is aliased to something else, find the alias name and use that for the field name:
-        candidateField = alias.toES(candidateField);
+        candidateField = alias.toOpenSearch(candidateField);
 
         return candidateField;
     }

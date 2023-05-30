@@ -152,7 +152,6 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
     public void testOpenSearchDataset2Read() throws Exception {
 		String target = resource("sparksql-test-scala-basic-write", "data", version);
 
-        // Dataset<Row> dataset = JavaOpenSearchSparkSQL.esDF(sqc, target);
         Dataset<Row> dataset = sqc.read().format("opensearch").load(target);
         assertTrue(dataset.count() > 300);
         String schema = dataset.schema().treeString();

@@ -294,14 +294,6 @@ public abstract class Settings {
         return getProperty(OPENSEARCH_MAPPING_ROUTING);
     }
 
-    public String getMappingTtl() {
-        return getProperty(OPENSEARCH_MAPPING_TTL);
-    }
-
-    public String getMappingTimestamp() {
-        return getProperty(OPENSEARCH_MAPPING_TIMESTAMP);
-    }
-
     public String getMappingDefaultClassExtractor() {
         return getProperty(OPENSEARCH_MAPPING_DEFAULT_EXTRACTOR_CLASS);
     }
@@ -328,14 +320,6 @@ public abstract class Settings {
 
     public String getMappingRoutingExtractorClassName() {
         return getProperty(OPENSEARCH_MAPPING_ROUTING_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
-    }
-
-    public String getMappingTtlExtractorClassName() {
-        return getProperty(OPENSEARCH_MAPPING_TTL_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
-    }
-
-    public String getMappingTimestampExtractorClassName() {
-        return getProperty(OPENSEARCH_MAPPING_TIMESTAMP_EXTRACTOR_CLASS, getMappingDefaultClassExtractor());
     }
 
     public String getMappingIndexExtractorClassName() {

@@ -30,7 +30,6 @@ package org.opensearch.hadoop.rest;
 
 import java.io.InputStream;
 import java.util.List;
-import java.util.Map;
 
 public interface Response {
 

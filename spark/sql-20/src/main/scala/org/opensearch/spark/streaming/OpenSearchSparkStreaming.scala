@@ -48,7 +48,7 @@ object OpenSearchSparkStreaming {
     saveToOpenSearch(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToOpenSearch(ds: DStream[_], cfg: Map[String, String]): Unit = {
-    doSaveToEs(ds, cfg, hasMeta = false)
+    doSaveToOpenSearch(ds, cfg, hasMeta = false)
   }
 
   // Save with metadata
@@ -59,25 +59,25 @@ object OpenSearchSparkStreaming {
     saveToOpenSearchWithMeta(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_WRITE -> resource))
   }
   def saveToOpenSearchWithMeta[K,V](ds: DStream[(K,V)], cfg: Map[String, String]): Unit = {
-    doSaveToEs(ds, cfg, hasMeta = true)
+    doSaveToOpenSearch(ds, cfg, hasMeta = true)
   }
 
   // Save as JSON
-  def saveJsonToEs(ds: DStream[_], resource: String): Unit = {
+  def saveJsonToOpenSearch(ds: DStream[_], resource: String): Unit = {
     saveToOpenSearch(ds, resource, Map(OPENSEARCH_INPUT_JSON -> true.toString))
   }
-  def saveJsonToEs(ds: DStream[_], resource: String, cfg: Map[String, String]): Unit = {
+  def saveJsonToOpenSearch(ds: DStream[_], resource: String, cfg: Map[String, String]): Unit = {
     saveToOpenSearch(ds, resource, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
-  def saveJsonToEs(ds: DStream[_], cfg: Map[String, String]): Unit = {
+  def saveJsonToOpenSearch(ds: DStream[_], cfg: Map[String, String]): Unit = {
     saveToOpenSearch(ds, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_INPUT_JSON -> true.toString))
   }
 
   // Implementation
-  def doSaveToEs(ds: DStream[_], cfg: Map[String, String], hasMeta: Boolean): Unit = {
+  def doSaveToOpenSearch(ds: DStream[_], cfg: Map[String, String], hasMeta: Boolean): Unit = {
     // Set the transport pooling key and delegate to the standard OpenSearchSpark save.
     // IMPORTANT: Do not inline this into the lambda expression below
     val config = collection.mutable.Map(cfg.toSeq: _*) += (INTERNAL_TRANSPORT_POOLING_KEY -> UUID.randomUUID().toString)
-    ds.foreachRDD(rdd => OpenSearchSpark.doSaveToEs(rdd, config, hasMeta))
+    ds.foreachRDD(rdd => OpenSearchSpark.doSaveToOpenSearch(rdd, config, hasMeta))
   }
 }

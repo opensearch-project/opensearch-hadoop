@@ -57,31 +57,31 @@ object OpenSearchSparkSQL {
   // Read
   //
   
-  def esDF(sc: SQLContext): DataFrame = esDF(sc, Map.empty[String, String])
-  def esDF(sc: SQLContext, resource: String): DataFrame = esDF(sc, Map(OPENSEARCH_RESOURCE_READ -> resource))
-  def esDF(sc: SQLContext, resource: String, query: String): DataFrame = esDF(sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
-  def esDF(sc: SQLContext, cfg: Map[String, String]): DataFrame = {
-    val esConf = new SparkSettingsManager().load(sc.sparkContext.getConf).copy()
-    esConf.merge(cfg.asJava)
+  def openSearchDF(sc: SQLContext): DataFrame = openSearchDF(sc, Map.empty[String, String])
+  def openSearchDF(sc: SQLContext, resource: String): DataFrame = openSearchDF(sc, Map(OPENSEARCH_RESOURCE_READ -> resource))
+  def openSearchDF(sc: SQLContext, resource: String, query: String): DataFrame = openSearchDF(sc, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
+  def openSearchDF(sc: SQLContext, cfg: Map[String, String]): DataFrame = {
+    val openSearchConf = new SparkSettingsManager().load(sc.sparkContext.getConf).copy()
+    openSearchConf.merge(cfg.asJava)
 
-    sc.read.format("org.opensearch.spark.sql").options(esConf.asProperties.asScala.toMap).load
+    sc.read.format("org.opensearch.spark.sql").options(openSearchConf.asProperties.asScala.toMap).load
   }
 
-  def esDF(sc: SQLContext, resource: String, query: String, cfg: Map[String, String]): DataFrame = {
-    esDF(sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
+  def openSearchDF(sc: SQLContext, resource: String, query: String, cfg: Map[String, String]): DataFrame = {
+    openSearchDF(sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
   }
 
-  def esDF(sc: SQLContext, resource: String, cfg: Map[String, String]): DataFrame = {
-    esDF(sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource))
+  def openSearchDF(sc: SQLContext, resource: String, cfg: Map[String, String]): DataFrame = {
+    openSearchDF(sc, collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_RESOURCE_READ -> resource))
   }
 
   // SparkSession variant
-  def esDF(ss: SparkSession): DataFrame = esDF(ss.sqlContext, Map.empty[String, String])
-  def esDF(ss: SparkSession, resource: String): DataFrame = esDF(ss.sqlContext, Map(OPENSEARCH_RESOURCE_READ -> resource))
-  def esDF(ss: SparkSession, resource: String, query: String): DataFrame = esDF(ss.sqlContext, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
-  def esDF(ss: SparkSession, cfg: Map[String, String]): DataFrame = esDF(ss.sqlContext, cfg) 
-  def esDF(ss: SparkSession, resource: String, query: String, cfg: Map[String, String]): DataFrame = esDF(ss.sqlContext, resource, query, cfg)
-  def esDF(ss: SparkSession, resource: String, cfg: Map[String, String]): DataFrame = esDF(ss.sqlContext, resource, cfg)
+  def openSearchDF(ss: SparkSession): DataFrame = openSearchDF(ss.sqlContext, Map.empty[String, String])
+  def openSearchDF(ss: SparkSession, resource: String): DataFrame = openSearchDF(ss.sqlContext, Map(OPENSEARCH_RESOURCE_READ -> resource))
+  def openSearchDF(ss: SparkSession, resource: String, query: String): DataFrame = openSearchDF(ss.sqlContext, Map(OPENSEARCH_RESOURCE_READ -> resource, OPENSEARCH_QUERY -> query))
+  def openSearchDF(ss: SparkSession, cfg: Map[String, String]): DataFrame = openSearchDF(ss.sqlContext, cfg) 
+  def openSearchDF(ss: SparkSession, resource: String, query: String, cfg: Map[String, String]): DataFrame = openSearchDF(ss.sqlContext, resource, query, cfg)
+  def openSearchDF(ss: SparkSession, resource: String, cfg: Map[String, String]): DataFrame = openSearchDF(ss.sqlContext, resource, cfg)
   
   //
   // Write
@@ -101,16 +101,16 @@ object OpenSearchSparkSQL {
       }
       val sparkCtx = srdd.sqlContext.sparkContext
       val sparkCfg = new SparkSettingsManager().load(sparkCtx.getConf)
-      val esCfg = new PropertiesSettings().load(sparkCfg.save())
-      esCfg.merge(cfg.asJava)
+      val openSearchCfg = new PropertiesSettings().load(sparkCfg.save())
+      openSearchCfg.merge(cfg.asJava)
 
       // Need to discover OpenSearch Version before checking index existence
-      InitializationUtils.setUserProviderIfNotSet(esCfg, classOf[HadoopUserProvider], LOG)
-      InitializationUtils.discoverClusterInfo(esCfg, LOG)
-      InitializationUtils.checkIdForOperation(esCfg)
-      InitializationUtils.checkIndexExistence(esCfg)
+      InitializationUtils.setUserProviderIfNotSet(openSearchCfg, classOf[HadoopUserProvider], LOG)
+      InitializationUtils.discoverClusterInfo(openSearchCfg, LOG)
+      InitializationUtils.checkIdForOperation(openSearchCfg)
+      InitializationUtils.checkIndexExistence(openSearchCfg)
 
-      sparkCtx.runJob(srdd.toDF().rdd, new OpenSearchDataFrameWriter(srdd.schema, esCfg.save()).write _)
+      sparkCtx.runJob(srdd.toDF().rdd, new OpenSearchDataFrameWriter(srdd.schema, openSearchCfg.save()).write _)
     }
   }
 }

@@ -181,10 +181,6 @@ public interface ConfigurationOptions {
     String OPENSEARCH_MAPPING_VERSION_EXTRACTOR_CLASS = "opensearch.mapping.version.extractor.class";
     String OPENSEARCH_MAPPING_ROUTING = "opensearch.mapping.routing";
     String OPENSEARCH_MAPPING_ROUTING_EXTRACTOR_CLASS = "opensearch.mapping.routing.extractor.class";
-    String OPENSEARCH_MAPPING_TTL = "opensearch.mapping.ttl";
-    String OPENSEARCH_MAPPING_TTL_EXTRACTOR_CLASS = "opensearch.mapping.ttl.extractor.class";
-    String OPENSEARCH_MAPPING_TIMESTAMP = "opensearch.mapping.timestamp";
-    String OPENSEARCH_MAPPING_TIMESTAMP_EXTRACTOR_CLASS = "opensearch.mapping.timestamp.extractor.class";
     String OPENSEARCH_MAPPING_INDEX_EXTRACTOR_CLASS = "opensearch.mapping.index.extractor.class";
     String OPENSEARCH_MAPPING_DEFAULT_INDEX_EXTRACTOR_CLASS = DefaultIndexExtractor.class.getName();
     String OPENSEARCH_MAPPING_INDEX_FORMATTER_CLASS = "opensearch.mapping.index.formatter.class";

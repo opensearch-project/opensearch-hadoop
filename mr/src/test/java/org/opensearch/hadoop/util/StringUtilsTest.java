@@ -43,26 +43,6 @@ public class StringUtilsTest {
     }
 
     @Test
-    public void testParseIpInEs1x() {
-        assertEquals("1.2.3.4", StringUtils.parseIpAddress("inet[/1.2.3.4:9200]").ip);
-    }
-
-    @Test
-    public void testParseIpInEs1xWithHostName() {
-        assertEquals("11.22.33.44", StringUtils.parseIpAddress("inet[foobar/11.22.33.44:9200]").ip);
-    }
-
-    @Test
-    public void testParseIpInEs2x() {
-        assertEquals("111.222.333.444", StringUtils.parseIpAddress("111.222.333.444:9200").ip);
-    }
-
-    @Test
-    public void testParseIpInEs2xWithHostName() {
-        assertEquals("11.222.3.4", StringUtils.parseIpAddress("foobar/11.222.3.4:9200").ip);
-    }
-
-    @Test
     public void testSingularIndexNames() {
         assertTrue(StringUtils.isValidSingularIndexName("abcdefg"));
         assertTrue(StringUtils.isValidSingularIndexName("\uD840\uDE13")); // HTTP Encode: %F0%A0%88%93

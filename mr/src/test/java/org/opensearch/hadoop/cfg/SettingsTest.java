@@ -10,15 +10,13 @@
 
 package org.opensearch.hadoop.cfg;
 
-import org.junit.Assert;
-import org.junit.Test;
-
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Assert;
+import org.junit.Test;
 
 public class SettingsTest {
     @Test

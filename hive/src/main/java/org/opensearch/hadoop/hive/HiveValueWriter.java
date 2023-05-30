@@ -98,7 +98,7 @@ public class HiveValueWriter extends FilteringValueWriter<HiveType> {
                 //write(entry.getKey(), mapType.getMapKeyTypeInfo(), generator);
                 // TODO: handle non-strings
 
-                String actualFieldName = alias.toES(entry.getKey().toString());
+                String actualFieldName = alias.toOpenSearch(entry.getKey().toString());
 
                 // filter out fields
                 if (shouldKeep(generator.getParentPath(), actualFieldName)) {
@@ -120,7 +120,7 @@ public class HiveValueWriter extends FilteringValueWriter<HiveType> {
 
             generator.writeBeginObject();
             for (StructField structField : refs) {
-                String actualFieldName = alias.toES(structField.getFieldName());
+                String actualFieldName = alias.toOpenSearch(structField.getFieldName());
                 if (shouldKeep(generator.getParentPath(), actualFieldName)) {
                     generator.writeFieldName(actualFieldName);
                     Result result = write(soi.getStructFieldData(data, structField),

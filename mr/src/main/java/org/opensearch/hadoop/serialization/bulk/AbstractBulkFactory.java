@@ -74,8 +74,6 @@ public abstract class AbstractBulkFactory implements BulkFactory {
             parentExtractor,
             routingExtractor,
             versionExtractor,
-            ttlExtractor,
-            timestampExtractor,
             paramsExtractor;
 
     private final FieldExtractor versionTypeExtractor = new FieldExtractor() {
@@ -247,8 +245,6 @@ public abstract class AbstractBulkFactory implements BulkFactory {
             parentExtractor = jsonExtractors.parent();
             routingExtractor = jsonExtractors.routing();
             versionExtractor = jsonExtractors.version();
-            ttlExtractor = jsonExtractors.ttl();
-            timestampExtractor = jsonExtractors.timestamp();
             paramsExtractor = jsonExtractors.params();
         } else {
             // init extractors (if needed)
@@ -284,20 +280,10 @@ public abstract class AbstractBulkFactory implements BulkFactory {
                 routingExtractor = new ChainedFieldExtractor(routings, routingResponse);
             }
 
-            if (settings.getMappingTtl() != null) {
-                settings.setProperty(ConstantFieldExtractor.PROPERTY, settings.getMappingTtl());
-                ttlExtractor = ObjectUtils.<FieldExtractor>instantiate(settings.getMappingTtlExtractorClassName(),
-                        settings);
-            }
             if (settings.getMappingVersion() != null) {
                 settings.setProperty(ConstantFieldExtractor.PROPERTY, settings.getMappingVersion());
                 versionExtractor = ObjectUtils.<FieldExtractor>instantiate(
                         settings.getMappingVersionExtractorClassName(), settings);
-            }
-            if (settings.getMappingTimestamp() != null) {
-                settings.setProperty(ConstantFieldExtractor.PROPERTY, settings.getMappingTimestamp());
-                timestampExtractor = ObjectUtils.<FieldExtractor>instantiate(
-                        settings.getMappingTimestampExtractorClassName(), settings);
             }
 
             // create adapter
@@ -324,14 +310,8 @@ public abstract class AbstractBulkFactory implements BulkFactory {
                 if (routingExtractor != null) {
                     log.trace(String.format("Instantiated routing extractor [%s]", routingExtractor));
                 }
-                if (ttlExtractor != null) {
-                    log.trace(String.format("Instantiated ttl extractor [%s]", ttlExtractor));
-                }
                 if (versionExtractor != null) {
                     log.trace(String.format("Instantiated version extractor [%s]", versionExtractor));
-                }
-                if (timestampExtractor != null) {
-                    log.trace(String.format("Instantiated timestamp extractor [%s]", timestampExtractor));
                 }
                 if (paramsExtractor != null) {
                     log.trace(String.format("Instantiated params extractor [%s]", paramsExtractor));
@@ -407,8 +387,6 @@ public abstract class AbstractBulkFactory implements BulkFactory {
         commaMightBeNeeded = id(list, commaMightBeNeeded);
         commaMightBeNeeded = addExtractorOrDynamicValue(list, getMetadataExtractorOrFallback(MetadataExtractor.Metadata.PARENT, parentExtractor), requestParameterNames.parent, commaMightBeNeeded);
         commaMightBeNeeded = addExtractorOrDynamicValueAsFieldWriter(list, getMetadataExtractorOrFallback(MetadataExtractor.Metadata.ROUTING, routingExtractor), requestParameterNames.routing, commaMightBeNeeded);
-        commaMightBeNeeded = addExtractorOrDynamicValue(list, getMetadataExtractorOrFallback(MetadataExtractor.Metadata.TTL, ttlExtractor), "\"_ttl\":", commaMightBeNeeded);
-        commaMightBeNeeded = addExtractorOrDynamicValue(list, getMetadataExtractorOrFallback(MetadataExtractor.Metadata.TIMESTAMP, timestampExtractor), "\"_timestamp\":", commaMightBeNeeded);
 
         // version & version_type fields
         Object versionField = getMetadataExtractorOrFallback(MetadataExtractor.Metadata.VERSION, versionExtractor);

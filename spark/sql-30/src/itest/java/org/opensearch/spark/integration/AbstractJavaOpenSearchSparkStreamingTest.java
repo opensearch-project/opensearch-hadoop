@@ -483,7 +483,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<String>> rddQueue1 = new LinkedList<>();
         rddQueue1.add(batch1);
         JavaDStream<String> dstream = ssc.queueStream(rddQueue1);
-        JavaOpenSearchSparkStreaming.saveJsonToEs(dstream, jsonTarget, cfg);
+        JavaOpenSearchSparkStreaming.saveJsonToOpenSearch(dstream, jsonTarget, cfg);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);
@@ -502,7 +502,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<byte[]>> rddQueue2 = new LinkedList<>();
         rddQueue2.add(batch2);
         JavaDStream<byte[]> dStreamBytes = ssc.queueStream(rddQueue2);
-        JavaOpenSearchSparkStreaming.saveJsonByteArrayToEs(dStreamBytes, jsonBATarget, cfg);
+        JavaOpenSearchSparkStreaming.saveJsonByteArrayToOpenSearch(dStreamBytes, jsonBATarget, cfg);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);
@@ -556,7 +556,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<String>> rddQueue1 = new LinkedList<>();
         rddQueue1.add(batch1);
         JavaDStream<String> dstream1 = ssc.queueStream(rddQueue1);
-        JavaOpenSearchSparkStreaming.saveJsonToEs(dstream1, target, localConf1);
+        JavaOpenSearchSparkStreaming.saveJsonToOpenSearch(dstream1, target, localConf1);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);
@@ -576,7 +576,7 @@ public class AbstractJavaOpenSearchSparkStreamingTest implements Serializable {
         Queue<JavaRDD<String>> rddQueue2 = new LinkedList<>();
         rddQueue2.add(batch2);
         JavaDStream<String> dstream2 = ssc.queueStream(rddQueue2);
-        JavaOpenSearchSparkStreaming.saveJsonToEs(dstream2, target, localConf2);
+        JavaOpenSearchSparkStreaming.saveJsonToOpenSearch(dstream2, target, localConf2);
         ssc.start();
         TimeUnit.SECONDS.sleep(2);
         ssc.stop(false, true);

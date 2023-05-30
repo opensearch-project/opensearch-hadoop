@@ -57,15 +57,15 @@ private[spark] abstract class AbstractOpenSearchRDD[T: ClassTag](
   }
 
   override def getPreferredLocations(split: Partition): Seq[String] = {
-    val esSplit = split.asInstanceOf[OpenSearchPartition]
-    esSplit.opensearchPartition.getHostNames
+    val openSearchSplit = split.asInstanceOf[OpenSearchPartition]
+    openSearchSplit.opensearchPartition.getHostNames
   }
 
   override def checkpoint(): Unit = {
     // Do nothing. OpenSearch RDD should not be checkpointed.
   }
 
-  def esCount(): Long = {
+  def openSearchCount(): Long = {
     val repo = new RestRepository(opensearchCfg)
     try {
       repo.count(true)

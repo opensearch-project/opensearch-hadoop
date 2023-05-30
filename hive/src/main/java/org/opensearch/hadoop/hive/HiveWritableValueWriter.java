@@ -81,7 +81,7 @@ public class HiveWritableValueWriter extends WritableValueWriter {
         }
         // HiveDate - Hive 0.12+
         else if (writable != null && HiveConstants.DATE_WRITABLE.equals(writable.getClass().getName())) {
-            generator.writeString(DateWritableWriter.toES(writable));
+            generator.writeString(DateWritableWriter.toOpenSearch(writable));
         }
         // HiveVarcharWritable - Hive 0.12+
         else if (writable != null && HiveConstants.VARCHAR_WRITABLE.equals(writable.getClass().getName())) {
@@ -93,11 +93,11 @@ public class HiveWritableValueWriter extends WritableValueWriter {
         }
         // TimestampWritableV2 - Hive 2.0+
         else if (writable != null && HiveConstants.TIMESTAMP_WRITABLE_V2.equals(writable.getClass().getName())) {
-            generator.writeString(TimestampV2Writer.toES(writable));
+            generator.writeString(TimestampV2Writer.toOpenSearch(writable));
         }
         // DateWritableV2 - Hive 2.0+
         else if (writable != null && HiveConstants.DATE_WRITABLE_V2.equals(writable.getClass().getName())) {
-            generator.writeString(DateWritableWriterV2.toES(writable));
+            generator.writeString(DateWritableWriterV2.toOpenSearch(writable));
         }
         else {
             return super.write(writable, generator);
@@ -108,7 +108,7 @@ public class HiveWritableValueWriter extends WritableValueWriter {
 
     // use nested class to efficiently get a hold of the underlying Date object (w/o doing reparsing, etc...)
     private static abstract class DateWritableWriter {
-        static String toES(Object dateWritable) {
+        static String toOpenSearch(Object dateWritable) {
             DateWritable dw = (DateWritable) dateWritable;
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(dw.get().getTime());
@@ -118,7 +118,7 @@ public class HiveWritableValueWriter extends WritableValueWriter {
 
     // use nested class to efficiently get a hold of the underlying Date object (w/o doing reparsing, etc...)
     private static abstract class DateWritableWriterV2 {
-        static String toES(Object dateWritable) {
+        static String toOpenSearch(Object dateWritable) {
             DateWritableV2 dw = (DateWritableV2) dateWritable;
             Calendar cal = Calendar.getInstance();
             cal.setTimeInMillis(dw.get().toEpochMilli());
@@ -128,7 +128,7 @@ public class HiveWritableValueWriter extends WritableValueWriter {
 
     // use nested class to get a hold of the underlying long timestamp
     private static abstract class TimestampV2Writer {
-        static String toES(Object tsWriteableV2) {
+        static String toOpenSearch(Object tsWriteableV2) {
             TimestampWritableV2 ts = (TimestampWritableV2) tsWriteableV2;
             long t = ts.getTimestamp().toEpochMilli();
             Calendar cal = Calendar.getInstance();

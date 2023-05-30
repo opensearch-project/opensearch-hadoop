@@ -182,7 +182,7 @@ public class HiveSuite {
 
     public static void after() throws Exception {
         if (server instanceof HiveEmbeddedServer2) {
-            ((HiveEmbeddedServer2) server).removeESSettings();
+            ((HiveEmbeddedServer2) server).removeOpenSearchSettings();
         }
     }
 

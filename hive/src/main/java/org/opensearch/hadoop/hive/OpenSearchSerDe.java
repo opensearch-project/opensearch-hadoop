@@ -244,7 +244,7 @@ public class OpenSearchSerDe extends AbstractSerDe {
             MapWritable map = (MapWritable) data;
             Text reuse = new Text();
             for (int index = 0; index < names.size(); index++) {
-                String esAlias = alias.toES(names.get(index));
+                String esAlias = alias.toOpenSearch(names.get(index));
                 // check for multi-level alias
                 Writable result = map;
                 for (String level : StringUtils.tokenize(esAlias, ".")) {

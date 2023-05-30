@@ -423,7 +423,7 @@ if (disableTests) {
         dependsOn(copyData, setupUsers)
         jobJar = jar.getArchiveFile().get().getAsFile()
         libJars(mrJar.getArchiveFile().get().getAsFile(), kerberosItestJar.getArchiveFile().get().getAsFile())
-        jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.LoadToES'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.LoadToOpenSearch'
         jobSettings([
                 'opensearch.resource': 'qa_kerberos_mr_data',
                 'opensearch.nodes': opensearchAddress,
@@ -450,7 +450,7 @@ if (disableTests) {
         dependsOn(mrLoadData)
         jobJar = jar.getArchiveFile().get().getAsFile()
         libJars(mrJar.getArchiveFile().get().getAsFile(), kerberosItestJar.getArchiveFile().get().getAsFile())
-        jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.ReadFromES'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.mr.ReadFromOpenSearch'
         jobSettings([
                 'opensearch.resource': 'qa_kerberos_mr_data',
                 'opensearch.nodes': opensearchAddress,
@@ -483,7 +483,7 @@ if (disableTests) {
     //    keytab = clientKeytab.toString()
         jobJar = jar.getArchiveFile().get().getAsFile()
         libJars(sparkJar.getArchiveFile().get().getAsFile(), kerberosItestJar.getArchiveFile().get().getAsFile())
-        jobClass = 'org.opensearch.hadoop.qa.kerberos.spark.LoadToES'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.spark.LoadToOpenSearch'
         jobSettings([
                 'spark.opensearch.resource': 'qa_kerberos_spark_data',
                 'spark.opensearch.nodes': opensearchAddress,
@@ -515,7 +515,7 @@ if (disableTests) {
     //    keytab = clientKeytab.toString()
         jobJar = jar.getArchiveFile().get().getAsFile()
         libJars(sparkJar.getArchiveFile().get().getAsFile(), kerberosItestJar.getArchiveFile().get().getAsFile())
-        jobClass = 'org.opensearch.hadoop.qa.kerberos.spark.ReadFromES'
+        jobClass = 'org.opensearch.hadoop.qa.kerberos.spark.ReadFromOpenSearch'
         jobSettings([
                 'spark.opensearch.resource': 'qa_kerberos_spark_data',
                 'spark.opensearch.nodes': opensearchAddress,

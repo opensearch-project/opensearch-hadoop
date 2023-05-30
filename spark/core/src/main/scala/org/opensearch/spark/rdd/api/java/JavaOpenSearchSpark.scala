@@ -73,7 +73,7 @@ object JavaOpenSearchSpark {
   def saveJsonToOpenSearch(jrdd: JavaRDD[String], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveJsonToOpenSearch(jrdd.rdd, resource, cfg.asScala)
   def saveJsonToOpenSearch(jrdd: JavaRDD[String], cfg: JMap[String, String]) = OpenSearchSpark.saveJsonToOpenSearch(jrdd.rdd, cfg.asScala)
 
-  def saveByteArrayToOpenSearch(jrdd: JavaRDD[Array[Byte]], resource: String) = OpenSearchSpark.saveJsonToOpenSearch(jrdd.rdd, resource)
-  def saveByteArrayToOpenSearch(jrdd: JavaRDD[Array[Byte]], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveJsonToOpenSearch(jrdd.rdd, resource, cfg.asScala)
-  def saveByteArrayToOpenSearch(jrdd: JavaRDD[Array[Byte]], cfg: JMap[String, String]) = OpenSearchSpark.saveJsonToOpenSearch(jrdd.rdd, cfg.asScala)
+  def saveJsonByteArrayToOpenSearch(jrdd: JavaRDD[Array[Byte]], resource: String) = OpenSearchSpark.saveJsonToOpenSearch(jrdd.rdd, resource)
+  def saveJsonByteArrayToOpenSearch(jrdd: JavaRDD[Array[Byte]], resource: String, cfg: JMap[String, String]) = OpenSearchSpark.saveJsonToOpenSearch(jrdd.rdd, resource, cfg.asScala)
+  def saveJsonByteArrayToOpenSearch(jrdd: JavaRDD[Array[Byte]], cfg: JMap[String, String]) = OpenSearchSpark.saveJsonToOpenSearch(jrdd.rdd, cfg.asScala)
 }

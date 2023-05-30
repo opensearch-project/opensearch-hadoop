@@ -55,7 +55,7 @@ public class JsonFieldExtractors {
     private final List<Object> results = new ArrayList<Object>(6);
     private String[] paths;
 
-    private FieldExtractor id, parent, routing, ttl, version, timestamp;
+    private FieldExtractor id, parent, routing, version;
     private AbstractIndexExtractor indexExtractor;
     private AbstractDefaultParamsExtractor params;
 
@@ -116,9 +116,7 @@ public class JsonFieldExtractors {
         initAndAdd(settings.getMappingRouting(), jsonPaths, routings);
         initAndAdd(MappingUtils.joinParentField(settings), jsonPaths, routings);
         routing = (routings.size() != 0) ? new ChainedFieldExtractor(routings) : null;
-        ttl = init(settings.getMappingTtl(), jsonPaths);
         version = init(settings.getMappingVersion(), jsonPaths);
-        timestamp = init(settings.getMappingTimestamp(), jsonPaths);
 
         // create index format
         indexExtractor = new AbstractIndexExtractor() {
@@ -196,16 +194,9 @@ public class JsonFieldExtractors {
         return routing;
     }
 
-    public FieldExtractor ttl() {
-        return ttl;
-    }
 
     public FieldExtractor version() {
         return version;
-    }
-
-    public FieldExtractor timestamp() {
-        return timestamp;
     }
 
     public void process(BytesArray storage) {

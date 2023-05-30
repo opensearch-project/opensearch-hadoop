@@ -33,9 +33,6 @@ import org.apache.commons.logging.LogFactory;
 import org.opensearch.hadoop.HdpBootstrap;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.rest.RestUtils;
-import org.opensearch.hadoop.rest.InitializationUtils;
-import org.opensearch.hadoop.util.ClusterInfo;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.TestSettings;
 import org.opensearch.hadoop.util.TestUtils;
@@ -52,7 +49,6 @@ public class LocalOpenSearch extends ExternalResource {
     protected void before() throws Throwable {
         if (Booleans.parseBoolean(HdpBootstrap.hadoopConfig().get(OpenSearchEmbeddedCluster.DISABLE_LOCAL_OPENSEARCH))) {
             LogFactory.getLog(getClass()).warn("local OpenSearch disable; assuming an external instance...");
-            setSingleNodeTemplate();
             clearState();
             return;
         }
@@ -60,7 +56,6 @@ public class LocalOpenSearch extends ExternalResource {
         String host = HdpBootstrap.hadoopConfig().get(ConfigurationOptions.OPENSEARCH_NODES);
         if (StringUtils.hasText(host)) {
             LogFactory.getLog(getClass()).warn(OPENSEARCH_NODES + "/host specified; assuming an external instance...");
-            setSingleNodeTemplate();
             clearState();
             return;
         }
@@ -75,19 +70,8 @@ public class LocalOpenSearch extends ExternalResource {
 
             // force initialization of test properties
             new TestSettings();
-            setSingleNodeTemplate();
             clearState();
         }
-    }
-
-    /**
-     * Installs an index template that sets number of shards to 1 and number of replicas to 0.
-     * Note, that this is only needed for version prior to legacy 7.0
-     */
-    @Deprecated
-    private void setSingleNodeTemplate() throws Exception {
-        LogFactory.getLog(getClass()).warn("Installing single node template...");
-        ClusterInfo clusterInfo = InitializationUtils.discoverClusterInfo(new TestSettings(), LogFactory.getLog(this.getClass()));
     }
 
     private void clearState() throws Exception {

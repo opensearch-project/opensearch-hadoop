@@ -42,12 +42,12 @@ package object sql {
   implicit def sqlContextFunctions(sc: SQLContext)= new SQLContextFunctions(sc)
 
   class SQLContextFunctions(sc: SQLContext) extends Serializable {
-    def esDF() = OpenSearchSparkSQL.esDF(sc)
-    def esDF(resource: String) = OpenSearchSparkSQL.esDF(sc, resource)
-    def esDF(resource: String, query: String) = OpenSearchSparkSQL.esDF(sc, resource, query)
-    def esDF(cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.esDF(sc, cfg)
-    def esDF(resource: String, cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.esDF(sc, resource, cfg)
-    def esDF(resource: String, query: String, cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.esDF(sc, resource, query, cfg)
+    def openSearchDF() = OpenSearchSparkSQL.openSearchDF(sc)
+    def openSearchDF(resource: String) = OpenSearchSparkSQL.openSearchDF(sc, resource)
+    def openSearchDF(resource: String, query: String) = OpenSearchSparkSQL.openSearchDF(sc, resource, query)
+    def openSearchDF(cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.openSearchDF(sc, cfg)
+    def openSearchDF(resource: String, cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.openSearchDF(sc, resource, cfg)
+    def openSearchDF(resource: String, query: String, cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.openSearchDF(sc, resource, query, cfg)
   }
 
   // the sparkDatasetFunctions already takes care of this
@@ -63,12 +63,12 @@ package object sql {
   implicit def sparkSessionFunctions(ss: SparkSession)= new SparkSessionFunctions(ss)
   
   class SparkSessionFunctions(ss: SparkSession) extends Serializable {
-    def esDF() = OpenSearchSparkSQL.esDF(ss)
-    def esDF(resource: String) = OpenSearchSparkSQL.esDF(ss, resource)
-    def esDF(resource: String, query: String) = OpenSearchSparkSQL.esDF(ss, resource, query)
-    def esDF(cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.esDF(ss, cfg)
-    def esDF(resource: String, cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.esDF(ss, resource, cfg)
-    def esDF(resource: String, query: String, cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.esDF(ss, resource, query, cfg)
+    def openSearchDF() = OpenSearchSparkSQL.openSearchDF(ss)
+    def openSearchDF(resource: String) = OpenSearchSparkSQL.openSearchDF(ss, resource)
+    def openSearchDF(resource: String, query: String) = OpenSearchSparkSQL.openSearchDF(ss, resource, query)
+    def openSearchDF(cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.openSearchDF(ss, cfg)
+    def openSearchDF(resource: String, cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.openSearchDF(ss, resource, cfg)
+    def openSearchDF(resource: String, query: String, cfg: scala.collection.Map[String, String]) = OpenSearchSparkSQL.openSearchDF(ss, resource, query, cfg)
   }
 
   implicit def sparkDatasetFunctions[T : ClassTag](ds: Dataset[T]) = new SparkDatasetFunctions(ds)

@@ -51,7 +51,7 @@ import org.opensearch.hadoop.mr.OpenSearchOutputFormat;
 import org.opensearch.hadoop.mr.LinkedMapWritable;
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin;
 
-public class LoadToES extends Configured implements Tool {
+public class LoadToOpenSearch extends Configured implements Tool {
 
     public static final String CONF_FIELD_NAMES = "load.field.names";
 
@@ -59,7 +59,7 @@ public class LoadToES extends Configured implements Tool {
         KeytabLogin.doAfterLogin(new PrivilegedExceptionAction<Void>() {
             @Override
             public Void run() throws Exception {
-                System.exit(ToolRunner.run(new LoadToES(), args));
+                System.exit(ToolRunner.run(new LoadToOpenSearch(), args));
                 return null;
             }
         });
@@ -71,7 +71,7 @@ public class LoadToES extends Configured implements Tool {
             throw new IllegalArgumentException("Must include configuration '" + CONF_FIELD_NAMES + "'");
         }
 
-        Job job = Job.getInstance(getConf(), "LoadToES");
+        Job job = Job.getInstance(getConf(), "LoadToOpenSearch");
         // DO NOT SET JAR BY CLASS HERE
         //
         // job.setJarByClass(getClass());

@@ -52,7 +52,7 @@ import org.opensearch.hadoop.util.StringUtils;
 
 /**
  * Hive specific InputFormat. Since Hive code base makes a lot of assumptions about the tables being actual files in HDFS (using instanceof checks without proper else) this class tries to 'fix' this by
- * adding a dummy {@link FileInputFormat} to ESInputFormat.
+ * adding a dummy {@link FileInputFormat} to OpenSearchInputFormat.
  */
 
 // A quick example would be {@link org.apache.hadoop.hive.ql.io.HiveInputFormat.HiveInputSplit#getPath()} which, in case the actual InputSplit is not a

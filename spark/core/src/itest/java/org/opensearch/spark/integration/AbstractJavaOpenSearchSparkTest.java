@@ -149,8 +149,8 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         Map<String, ?> doc2 = ImmutableMap.of("OTP", "Otopeni", "SFO", "San Fran", "number", 2);
 
         String target = "spark-test-java-dyn-map-id-write/data";
-        Map<Metadata, Object> header1 = ImmutableMap.<Metadata, Object> of(ID, 1, TTL, "1d");
-        Map<Metadata, Object> header2 = ImmutableMap.<Metadata, Object> of(ID, "2", TTL, "2d");
+        Map<Metadata, Object> header1 = ImmutableMap.<Metadata, Object> of(ID, 1);
+        Map<Metadata, Object> header2 = ImmutableMap.<Metadata, Object> of(ID, "2");
         JavaRDD<Tuple2<Object, Object>> tupleRdd = sc.parallelize(ImmutableList.<Tuple2<Object, Object>> of(new Tuple2(header1, doc1), new Tuple2(header2, doc2)));
         JavaPairRDD pairRDD = JavaPairRDD.fromJavaRDD(tupleRdd);
         // eliminate with static import
@@ -203,17 +203,17 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
       String json2 = "{\"participants\" : 5,\"airport\" : \"OTP\"}";
 
       JavaRDD<String> stringRDD = sc.parallelize(ImmutableList.of(json1, json2));
-      JavaOpenSearchSpark.saveJsonToEs(stringRDD, "spark-test-json-{airport}/data");
-      JavaOpenSearchSpark.saveJsonToEs(stringRDD, "spark-test-json1-{airport}/data", Collections.<String, String> emptyMap());
-      JavaOpenSearchSpark.saveJsonToEs(stringRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark-test-json2-{airport}/data"));
+      JavaOpenSearchSpark.saveJsonToOpenSearch(stringRDD, "spark-test-json-{airport}/data");
+      JavaOpenSearchSpark.saveJsonToOpenSearch(stringRDD, "spark-test-json1-{airport}/data", Collections.<String, String> emptyMap());
+      JavaOpenSearchSpark.saveJsonToOpenSearch(stringRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark-test-json2-{airport}/data"));
 
       byte[] json1BA = json1.getBytes();
       byte[] json2BA = json2.getBytes();
 
       JavaRDD<byte[]> byteRDD = sc.parallelize(ImmutableList.of(json1BA, json2BA));
-      JavaOpenSearchSpark.saveJsonByteArrayToEs(byteRDD, "spark-test-json-ba-{airport}/data");
-      JavaOpenSearchSpark.saveJsonByteArrayToEs(byteRDD, "spark-test-json-ba1-{airport}/data", Collections.<String, String> emptyMap());
-      JavaOpenSearchSpark.saveJsonByteArrayToEs(byteRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark-test-json-ba2-{airport}/data"));
+      JavaOpenSearchSpark.saveJsonByteArrayToOpenSearch(byteRDD, "spark-test-json-ba-{airport}/data");
+      JavaOpenSearchSpark.saveJsonByteArrayToOpenSearch(byteRDD, "spark-test-json-ba1-{airport}/data", Collections.<String, String> emptyMap());
+      JavaOpenSearchSpark.saveJsonByteArrayToOpenSearch(byteRDD, ImmutableMap.of(OPENSEARCH_RESOURCE, "spark-test-json-ba2-{airport}/data"));
 
       assertTrue(RestUtils.exists("spark-test-json-SFO/data"));
       assertTrue(RestUtils.exists("spark-test-json-OTP/data"));
@@ -285,7 +285,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
         RestUtils.postData(target, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes());
         RestUtils.refresh("spark-test*");
 
-        JavaRDD<String> opensearchRDD = JavaOpenSearchSpark.esJsonRDD(sc, target).values();
+        JavaRDD<String> opensearchRDD = JavaOpenSearchSpark.openSearchJsonRDD(sc, target).values();
         System.out.println(opensearchRDD.collect());
         JavaRDD<String> messages = opensearchRDD.filter(new Function<String, Boolean>() {
             @Override
@@ -314,7 +314,7 @@ public class AbstractJavaOpenSearchSparkTest implements Serializable {
                 "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes());
         RestUtils.refresh("spark-test-java-basic-group");
 
-        assertThat(JavaOpenSearchSpark.esJsonRDD(sc, target).groupBy(pair -> pair._2).count(), is(2L));
+        assertThat(JavaOpenSearchSpark.openSearchJsonRDD(sc, target).groupBy(pair -> pair._2).count(), is(2L));
     }
 
     // @Test(expected = OpenSearchHadoopIllegalArgumentException.class)

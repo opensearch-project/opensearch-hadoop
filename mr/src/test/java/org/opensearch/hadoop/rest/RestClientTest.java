@@ -29,29 +29,26 @@
 
 package org.opensearch.hadoop.rest;
 
-import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
+
+import java.io.InputStream;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.junit.Test;
+import org.mockito.Mockito;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.query.MatchAllQueryBuilder;
 import org.opensearch.hadoop.rest.stats.Stats;
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.ClusterInfo;
-import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.FastByteArrayInputStream;
+import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.TestSettings;
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
 
 public class RestClientTest {
 

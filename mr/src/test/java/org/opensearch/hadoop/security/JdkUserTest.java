@@ -68,19 +68,6 @@ public class JdkUserTest {
         assertThat(jdkUser.getOpenSearchToken(""), is(nullValue()));
         assertThat(jdkUser.getOpenSearchToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
         assertThat(jdkUser.getOpenSearchToken(testClusterName), is(equalTo(testToken)));
-
-        // Using getPrivateCredentials() always returns the creds in FIFO order, but using getPrivateCredentials(Class<T>) returns in
-        // random order. Cannot guarantee which creds are actually first added, and probably shouldn't try to determine it at runtime.
-//        // Add erroneous overlapping secret holder
-//        JdkUser.OpenSearchTokenHolder holder2 = new JdkUser.OpenSearchTokenHolder();
-//        holder2.setCred(testClusterName, unnamedToken);
-//        subject.getPrivateCredentials().add(holder2);
-//
-//        // Should only return contents of first holder
-//        assertThat(jdkUser.getEsToken(null), is(nullValue()));
-//        assertThat(jdkUser.getEsToken(""), is(nullValue()));
-//        assertThat(jdkUser.getEsToken(ClusterName.UNNAMED_CLUSTER_NAME), is(nullValue()));
-//        assertThat(jdkUser.getEsToken(testClusterName), is(equalTo(testToken)));
     }
 
     @Test

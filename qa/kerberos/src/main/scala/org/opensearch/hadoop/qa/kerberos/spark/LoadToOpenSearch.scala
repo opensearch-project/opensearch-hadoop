@@ -30,44 +30,43 @@
 package org.opensearch.hadoop.qa.kerberos.spark
 
 import java.security.PrivilegedExceptionAction
-
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.SparkSession
+import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.opensearch.hadoop.qa.kerberos.security.KeytabLogin
 import org.opensearch.spark._
 import org.opensearch.spark.sql._
 
-class ReadFromES(args: Array[String]) {
+class LoadToOpenSearch(args: Array[String]) {
 
-  val sparkConf: SparkConf = new SparkConf().setAppName("ReadFromES")
+  val sparkConf: SparkConf = new SparkConf().setAppName("LoadToOpenSearch")
   val spark: SparkSession = SparkSession.builder().config(sparkConf).getOrCreate()
 
   def run(): Unit = {
+    if (!sparkConf.contains(LoadToOpenSearch.CONF_FIELD_NAMES)) {
+      throw new IllegalArgumentException(LoadToOpenSearch.CONF_FIELD_NAMES + " is required")
+    }
     val resource = sparkConf.get("spark.opensearch.resource")
+    val fieldNames = sparkConf.get(LoadToOpenSearch.CONF_FIELD_NAMES).split(",")
+    val schema = StructType(fieldNames.map(StructField(_, StringType)))
 
-    // Expected directory names in :qa:kerberos:build.gradle readJobs
-    val rddOutputDir = s"${args(0)}RDD"
-    val dfOutputDir = s"${args(0)}DF"
-    val dsOutputDir = s"${args(0)}DS"
+    val df = spark.sqlContext.read
+      .schema(schema)
+      .option("sep", "\t")
+      .csv(args(0))
 
-    spark.sparkContext.esJsonRDD(s"${resource}_rdd").saveAsTextFile(rddOutputDir)
-
-    spark.sqlContext.esDF(s"${resource}_df")
-      .rdd
-      .map(row => row.toString())
-      .saveAsTextFile(dfOutputDir)
-
-    spark.sqlContext.read.format("opensearch").load(s"${resource}_ds")
-      .rdd
-      .map(row => row.toString())
-      .saveAsTextFile(dsOutputDir)
+    df.rdd.map(row => row.getValuesMap(row.schema.fieldNames)).saveToOpenSearch(s"${resource}_rdd")
+    df.saveToOpenSearch(s"${resource}_df")
+    df.write.format("opensearch").save(s"${resource}_ds")
   }
 }
 
-object ReadFromES {
+object LoadToOpenSearch {
+  val CONF_FIELD_NAMES = "spark.load.field.names"
+
   def main(args: Array[String]): Unit = {
     KeytabLogin.doAfterLogin(new PrivilegedExceptionAction[Unit] {
-      override def run(): Unit = new ReadFromES(args).run()
+      override def run(): Unit = new LoadToOpenSearch(args).run()
     })
   }
 }

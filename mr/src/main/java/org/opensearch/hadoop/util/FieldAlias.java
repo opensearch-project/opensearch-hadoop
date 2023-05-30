@@ -49,7 +49,7 @@ public class FieldAlias {
         this.caseInsensitive = caseInsensitive;
     }
 
-    public String toES(String string) {
+    public String toOpenSearch(String string) {
         String alias = fieldToAlias.get(string);
         if (alias == null) {
             alias = (caseInsensitive ? string.toLowerCase(Locale.ROOT) : string);

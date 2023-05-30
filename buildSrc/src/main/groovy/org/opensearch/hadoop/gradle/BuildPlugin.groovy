@@ -396,7 +396,7 @@ class BuildPlugin implements Plugin<Project>  {
             manifest.attributes['Implementation-Vendor'] = "OpenSearch"
             manifest.attributes['Implementation-Vendor-Id'] = "org.opensearch.hadoop"
             manifest.attributes['Repository-Revision'] = BuildParams.gitRevision
-            String build = System.env['ESHDP.BUILD']
+            String build = System.env['OSHDP.BUILD']
             if (build != null) {
                 manifest.attributes['Build'] = build
             }

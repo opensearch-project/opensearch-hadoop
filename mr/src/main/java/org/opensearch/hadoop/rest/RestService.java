@@ -582,8 +582,6 @@ public abstract class RestService implements Serializable {
         InitializationUtils.validateSettings(settings);
         InitializationUtils.discoverAndValidateClusterInfo(settings, log);
 
-        InitializationUtils.validateSettingsForWriting(settings);
-
         InitializationUtils.discoverNodesIfNeeded(settings, log);
         InitializationUtils.filterNonClientNodesIfNeeded(settings, log);
         InitializationUtils.filterNonDataNodesIfNeeded(settings, log);

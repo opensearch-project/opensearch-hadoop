@@ -55,7 +55,7 @@ class OpenSearchSparkSqlStreamingSink(sparkSession: SparkSession, settings: Sett
       logger.info(s"Using log path of [$logPath]")
       new OpenSearchSinkMetadataLog(settings, sparkSession, logPath)
     } else {
-      logger.warn("EsSparkSqlStreamingSink is continuing without write commit log. " +
+      logger.warn("OpenSearchSparkSqlStreamingSink is continuing without write commit log. " +
         "Be advised that data may be duplicated!")
       new NullMetadataLog[Array[OpenSearchSinkStatus]]()
     }

@@ -66,7 +66,7 @@ abstract class CompatUtils {
 
         try {
             CompatibilityLevel compatibilityLevel = ObjectUtils.instantiate("org.opensearch.spark.sql.SparkSQLCompatibilityLevel", CompatUtils.class.getClassLoader());
-            boolean isEshForSpark20 = "20".equals(compatibilityLevel.versionId());
+            boolean isOpenSearchForSpark20 = "20".equals(compatibilityLevel.versionId());
             String esSupportedSparkVersion = compatibilityLevel.versionDescription();
 
             String errorMessage = null;
@@ -75,7 +75,7 @@ abstract class CompatUtils {
                 String sparkVersion = getSparkVersionOr("1.0-1.2");
                 errorMessage = String.format("Incorrect classpath detected; OpenSearch Spark compiled for Spark %s but used with unsupported Spark version %s",
                         esSupportedSparkVersion, sparkVersion);
-            } else if (isSpark20Level != isEshForSpark20) { // XOR can be applied as well but != increases readability
+            } else if (isSpark20Level != isOpenSearchForSpark20) { // XOR can be applied as well but != increases readability
                 String sparkVersion = getSparkVersionOr("2.0+");
                 errorMessage = String.format("Incorrect classpath detected; OpenSearch Spark compiled for Spark %s but used with Spark %s",
                         esSupportedSparkVersion, sparkVersion);

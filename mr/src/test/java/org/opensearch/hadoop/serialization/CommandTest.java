@@ -142,7 +142,7 @@ public class CommandTest {
 
     @Test
     public void testParent() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -155,7 +155,7 @@ public class CommandTest {
 
     @Test
     public void testVersion() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -166,33 +166,10 @@ public class CommandTest {
         assertEquals(result, ba.toString());
     }
 
-    @Test
-    public void testTtl() throws Exception {
-        assumeFalse(isDeleteOP() && jsonInput);
-        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
-        Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_TTL, "<2>");
-
-        create(settings).write(data).copyTo(ba);
-        String result = prefix() + "\"_ttl\":2}}" + map();
-        assertEquals(result, ba.toString());
-    }
-
-    @Test
-    public void testTimestamp() throws Exception {
-        assumeFalse(isDeleteOP() && jsonInput);
-        assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
-        Settings settings = settings();
-        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_TIMESTAMP, "<3>");
-        create(settings).write(data).copyTo(ba);
-        String result = prefix() + "\"_timestamp\":3}}" + map();
-        assertEquals(result, ba.toString());
-    }
-
 
     @Test
     public void testRouting() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
@@ -205,16 +182,15 @@ public class CommandTest {
 
     @Test
     public void testAllX() throws Exception {
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         assumeFalse(ConfigurationOptions.OPENSEARCH_OPERATION_UPSERT.equals(operation));
         assumeFalse(isDeleteOP() && jsonInput);
         Settings settings = settings();
         settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ID, "n");
-        settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_TTL, "<2>");
         settings.setProperty(ConfigurationOptions.OPENSEARCH_MAPPING_ROUTING, "s");
 
         create(settings).write(data).copyTo(ba);
-        String result = "{\"" + operation + "\":{\"_id\":1,\"routing\":\"v\",\"_ttl\":2}}" + map();
+        String result = "{\"" + operation + "\":{\"_id\":1,\"routing\":\"v\"}}" + map();
         assertEquals(result, ba.toString());
     }
 
@@ -251,7 +227,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyInlineScript() throws Exception {
         assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");
@@ -269,7 +245,7 @@ public class CommandTest {
     @Test
     public void testUpdateOnlyFileScript() throws Exception {
         assumeTrue(ConfigurationOptions.OPENSEARCH_OPERATION_UPDATE.equals(operation));
-        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_3_X));
+        assumeTrue(version.onOrAfter(OpenSearchMajorVersion.V_1_X));
         Settings set = settings();
 
         set.setProperty(ConfigurationOptions.OPENSEARCH_INDEX_AUTO_CREATE, "yes");

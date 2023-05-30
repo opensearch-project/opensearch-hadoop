@@ -346,7 +346,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     // add some data
     val jsonDoc = """{"foo" : 5, "nested": { "bar" : [{"date":"2015-01-01", "age":20},{"date":"2015-01-01", "age":20}], "what": "now" } }"""
-    sc.makeRDD(Seq(jsonDoc)).saveJsonToEs(target)
+    sc.makeRDD(Seq(jsonDoc)).saveJsonToOpenSearch(target)
     RestUtils.refresh(index)
 
     val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE -> "nested.bar")
@@ -365,7 +365,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     // add some data
     val jsonDoc = """{"array" : [1, 2, 4, 5] }"""
-    sc.makeRDD(Seq(jsonDoc)).saveJsonToEs(target)
+    sc.makeRDD(Seq(jsonDoc)).saveJsonToOpenSearch(target)
     RestUtils.refresh(index)
 
     val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE -> "array")
@@ -391,7 +391,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     // add some data
     val jsonDoc1 = """{"array" : [1, 2, 4, 5] }"""
     val jsonDoc2 = """{"array" : 6 }"""
-    sc.makeRDD(Seq(jsonDoc1, jsonDoc2)).saveJsonToEs(target)
+    sc.makeRDD(Seq(jsonDoc1, jsonDoc2)).saveJsonToOpenSearch(target)
     RestUtils.refresh(index)
 
     val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE -> "array")
@@ -468,7 +468,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   def test1ReadFieldNameWithPercentage() {
     val index = wrapIndex("spark-test-scala-sql-field-with-percentage")
     val (target, docPath) = makeTargets(index, "data")
-    sqc.esDF(target).count()
+    sqc.openSearchDF(target).count()
   }
 
   @Test
@@ -487,7 +487,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val dataFrame = sqc.esDF(target, cfg)
+    val dataFrame = sqc.openSearchDF(target, cfg)
     assertEquals(345, dataFrame.count())
   }
 
@@ -611,7 +611,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val dataFrame = sqc.esDF(target, cfg)
+    val dataFrame = sqc.openSearchDF(target, cfg)
     dataFrame.printSchema()
     val schema = dataFrame.schema.treeString
     assertTrue(schema.contains("id: long"))
@@ -638,7 +638,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_INCLUDE -> "id, name, url")
 
-    val dataFrame = sqc.esDF(target, newCfg)
+    val dataFrame = sqc.openSearchDF(target, newCfg)
     val schema = dataFrame.schema.treeString
     assertTrue(schema.contains("id: long"))
     assertTrue(schema.contains("name: string"))
@@ -664,7 +664,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val newCfg = collection.mutable.Map(cfg.toSeq: _*) += (OPENSEARCH_READ_FIELD_INCLUDE -> "id, name, url") += (OPENSEARCH_READ_SOURCE_FILTER -> "name")
 
-    val dataFrame = sqc.esDF(target, newCfg)
+    val dataFrame = sqc.openSearchDF(target, newCfg)
     val schema = dataFrame.schema.treeString
     assertTrue(schema.contains("id: long"))
     assertTrue(schema.contains("name: string"))
@@ -687,8 +687,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val dfNoQuery = sqc.esDF(target, cfg)
-    val dfWQuery = sqc.esDF(target, "?q=name:me*", cfg)
+    val dfNoQuery = sqc.openSearchDF(target, cfg)
+    val dfWQuery = sqc.openSearchDF(target, "?q=name:me*", cfg)
 
     println(dfNoQuery.head())
     println(dfWQuery.head())
@@ -701,10 +701,10 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-scala-basic-write")
     val (target, _) = makeTargets(index, "data")
 
-    val dfNoQuery = JavaOpenSearchSparkSQL.esDF(sqc, target, cfg.asJava)
+    val dfNoQuery = JavaOpenSearchSparkSQL.openSearchDF(sqc, target, cfg.asJava)
     val query = s"""{ "query" : { "query_string" : { "query" : "name:me*" } } //, "fields" : ["name"]
                 }"""
-    val dfWQuery = JavaOpenSearchSparkSQL.esDF(sqc, target, query, cfg.asJava)
+    val dfWQuery = JavaOpenSearchSparkSQL.openSearchDF(sqc, target, query, cfg.asJava)
 
     println(dfNoQuery.head())
     println(dfWQuery.head())
@@ -799,7 +799,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val index = wrapIndex("sparksql-test-scala-basic-write-rich-mapping-id-mapping")
     val (target, _) = makeTargets(index, "data")
 
-    val dataFrame = sqc.esDF(target, cfg)
+    val dataFrame = sqc.openSearchDF(target, cfg)
 
     assertTrue(dataFrame.count > 300)
     dataFrame.printSchema()
@@ -1181,7 +1181,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test()
-  def testJsonLoadAndSavedToEs() {
+  def testJsonLoadAndSavedToOpenSearch() {
     val input = sqc.read.json(readAsRDD(this.getClass.getResource("/simple.json").toURI()))
     println(input.schema.simpleString)
 
@@ -1195,7 +1195,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testJsonLoadAndSavedToEsSchema() {
+  def testJsonLoadAndSavedToOpenSearchSchema() {
     assumeFalse(readMetadata)
     val input = sqc.read.json(readAsRDD(this.getClass.getResource("/multi-level-doc.json").toURI()))
     println("JSON schema")
@@ -1427,7 +1427,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val table = wrapIndex("save_mode_append")
 
     srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Append).save(target)
-    val df = OpenSearchSparkSQL.esDF(sqc, target)
+    val df = OpenSearchSparkSQL.openSearchDF(sqc, target)
 
     assertEquals(3, df.count())
     srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Append).save(target)
@@ -1442,7 +1442,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val table = wrapIndex("save_mode_overwrite")
 
     srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).save(target)
-    val df = OpenSearchSparkSQL.esDF(sqc, target)
+    val df = OpenSearchSparkSQL.openSearchDF(sqc, target)
 
     assertEquals(3, df.count())
     srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).save(target)
@@ -1456,7 +1456,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val (target, _) = makeTargets(index, "data")
 
     srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("opensearch.mapping.id", "number").save(target)
-    val df = OpenSearchSparkSQL.esDF(sqc, target)
+    val df = OpenSearchSparkSQL.openSearchDF(sqc, target)
 
     assertEquals(3, df.count())
     srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Overwrite).option("opensearch.mapping.id", "number").save(target)
@@ -1471,7 +1471,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val table = wrapIndex("save_mode_ignore")
 
     srcFrame.write.format("org.opensearch.spark.sql").mode(SaveMode.Ignore).save(target)
-    val df = OpenSearchSparkSQL.esDF(sqc, target)
+    val df = OpenSearchSparkSQL.openSearchDF(sqc, target)
 
     assertEquals(3, df.count())
     // should not go through
@@ -1485,7 +1485,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val json = """{"0ey" : "val", "another-array": [{ "item" : 1, "key": { "key_a":"val_a", "key_b":"val_b" } }, { "item" : 2, "key": { "key_a":"val_c","key_b":"val_d" } } ]}"""
     val index = wrapIndex("sparksql-test-array-with-nested-object")
     val (target, _) = makeTargets(index, "data")
-    sc.makeRDD(Seq(json)).saveJsonToEs(target)
+    sc.makeRDD(Seq(json)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "another-array").load(target)
 
     df.printSchema()
@@ -1520,7 +1520,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val json = """{"foo" : 5, "nested": { "bar" : [], "what": "now" } }"""
     val index = wrapIndex("sparksql-test-empty-nested-array")
     val (target, _) = makeTargets(index, "data")
-    sc.makeRDD(Seq(json)).saveJsonToEs(target)
+    sc.makeRDD(Seq(json)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(target)
     
     assertEquals("long", df.schema("foo").dataType.typeName)
@@ -1539,7 +1539,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val json = """{"foo" : [5,6], "nested": { "bar" : [{"date":"2015-01-01", "scores":[1,2]},{"date":"2015-01-01", "scores":[3,4]}], "what": "now" } }"""
     val index = wrapIndex("sparksql-test-double-nested-array")
     val (target, _) = makeTargets(index, "data")
-    sc.makeRDD(Seq(json)).saveJsonToEs(target)
+    sc.makeRDD(Seq(json)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "nested.bar,foo,nested.bar.scores").load(target)
 
     assertEquals("array", df.schema("foo").dataType.typeName)
@@ -1565,7 +1565,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val json = """{"foo" : 6, "nested": { "bar" : [{"date":"2015-01-01", "scores":[1,2]},{"date":"2015-01-01", "scores":[3,4]}], "what": "now" } }"""
     val index = wrapIndex("sparksql-test-nested-array-exclude")
     val (target, _) = makeTargets(index, "data")
-    sc.makeRDD(Seq(json)).saveJsonToEs(target)
+    sc.makeRDD(Seq(json)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").option(OPENSEARCH_READ_FIELD_EXCLUDE, "nested.bar").load(target)
 
     assertEquals("long", df.schema("foo").dataType.typeName)
@@ -1587,7 +1587,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val json = """{"rect":{"type":"foobar","coordinates":[ [50,32],[69,32],[69,50],[50,50],[50,32] ] }}"""
     val index = wrapIndex("sparksql-test-geo")
     val (target, _) = makeTargets(index, "data")
-    sc.makeRDD(Seq(json)).saveJsonToEs(target)
+    sc.makeRDD(Seq(json)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").option(OPENSEARCH_READ_FIELD_AS_ARRAY_INCLUDE, "rect.coordinates:2").load(target)
     
     val coords = df.schema("rect").dataType.asInstanceOf[StructType]("coordinates")
@@ -1715,7 +1715,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     RestUtils.putMapping(index, typed, mapping.getBytes(StringUtils.UTF_8))
 
     val latLonString = """{ "name" : "Chipotle Mexican Grill", "location": "40.715, -74.011" }""".stripMargin
-    sc.makeRDD(Seq(latLonString)).saveJsonToEs(target)
+    sc.makeRDD(Seq(latLonString)).saveJsonToOpenSearch(target)
     
     RestUtils.refresh(index)
     
@@ -1750,7 +1750,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     RestUtils.putMapping(index, typed, mapping.getBytes(StringUtils.UTF_8))
 
     val geohash = """{ "name": "Red Pepper Restaurant", "location": "9qh0kemfy5k3" }""".stripMargin
-    sc.makeRDD(Seq(geohash)).saveJsonToEs(target)
+    sc.makeRDD(Seq(geohash)).saveJsonToOpenSearch(target)
     
     RestUtils.refresh(index)
     
@@ -1785,7 +1785,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     RestUtils.putMapping(index, typed, mapping.getBytes(StringUtils.UTF_8))
 
     val arrayOfDoubles = """{ "name": "Mini Munchies Pizza", "location": [ -73.983, 40.719 ]}""".stripMargin
-    sc.makeRDD(Seq(arrayOfDoubles)).saveJsonToEs(target)
+    sc.makeRDD(Seq(arrayOfDoubles)).saveJsonToOpenSearch(target)
     
     RestUtils.refresh(index)
     
@@ -1822,7 +1822,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     RestUtils.putMapping(index, typed, mapping.getBytes(StringUtils.UTF_8))
 
     val lonLatObject = """{ "name" : "Pala Pizza","location": {"lat":40.722, "lon":-73.989} }""".stripMargin
-    sc.makeRDD(Seq(lonLatObject)).saveJsonToEs(target)
+    sc.makeRDD(Seq(lonLatObject)).saveJsonToOpenSearch(target)
     
     RestUtils.refresh(index)
     
@@ -1867,7 +1867,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val point = """{"name":"point","location":{ "type" : "point", "coordinates": [100.0, 0.0] }}""".stripMargin
 
-    sc.makeRDD(Seq(point)).saveJsonToEs(target)
+    sc.makeRDD(Seq(point)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(index)
  
     println(df.schema.treeString)
@@ -1912,7 +1912,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val line = """{"name":"line","location":{ "type": "linestring", "coordinates": [[-77.03, 38.89], [-77.00, 38.88]]} }""".stripMargin
       
-    sc.makeRDD(Seq(line)).saveJsonToEs(target)
+    sc.makeRDD(Seq(line)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(index)
  
     val dataType = df.schema("location").dataType
@@ -1956,7 +1956,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val polygon = """{"name":"polygon","location":{ "type" : "Polygon", "coordinates": [[ [100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 1.0], [100.0, 0.0] ]], "crs":null, "foo":"bar" }}""".stripMargin
       
-    sc.makeRDD(Seq(polygon)).saveJsonToEs(target)
+    sc.makeRDD(Seq(polygon)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(index)
  
     val dataType = df.schema("location").dataType
@@ -2004,7 +2004,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val multipoint = """{"name":"multipoint","location":{ "type" : "multipoint", "coordinates": [ [100.0, 0.0], [101.0, 0.0] ] }}""".stripMargin
       
-    sc.makeRDD(Seq(multipoint)).saveJsonToEs(target)
+    sc.makeRDD(Seq(multipoint)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(index)
  
     println(df.schema.treeString)
@@ -2050,7 +2050,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val multiline = """{"name":"multi-line","location":{ "type": "multilinestring", "coordinates":[ [[-77.0, 38.8], [-78.0, 38.8]], [[100.0, 0.0], [101.0, 1.0]] ]} }""".stripMargin
       
-    sc.makeRDD(Seq(multiline)).saveJsonToEs(target)
+    sc.makeRDD(Seq(multiline)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(index)
  
     println(df.schema.treeString)
@@ -2100,7 +2100,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val multipoly = """{"name":"multi-poly","location":{ "type" : "multipolygon", "coordinates": [ [[[100.0, 0.0], [101.0, 0.0], [101.0, 1.0], [100.0, 0.0] ]], [[[103.0, 0.0], [104.0, 0.0], [104.0, 1.0], [103.0, 0.0] ]] ]}}""".stripMargin
       
-    sc.makeRDD(Seq(multipoly)).saveJsonToEs(target)
+    sc.makeRDD(Seq(multipoly)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(index)
  
     println(df.schema.treeString)
@@ -2153,7 +2153,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val envelope = """{"name":"envelope","location":{ "type" : "envelope", "coordinates": [[-45.0, 45.0], [45.0, -45.0] ] }}""".stripMargin
       
-    sc.makeRDD(Seq(envelope)).saveJsonToEs(target)
+    sc.makeRDD(Seq(envelope)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(index)
  
     val dataType = df.schema("location").dataType
@@ -2199,7 +2199,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
 
     val data = """{"name":"nested-simple","employees":[{"name":"anne","salary":6},{"name":"bob","salary":100}, {"name":"charlie","salary":15}] }""".stripMargin
       
-    sc.makeRDD(Seq(data)).saveJsonToEs(target)
+    sc.makeRDD(Seq(data)).saveJsonToOpenSearch(target)
     val df = sqc.read.format("opensearch").load(index)
 
     println(df.schema.treeString)
@@ -2228,8 +2228,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val (target1, _) = makeTargets(index1, "data")
     val index2 = wrapIndex("sparksql-multi-index-2")
     val (target2, _) = makeTargets(index2, "data")
-    sc.makeRDD(Seq(jsonDoc)).saveJsonToEs(target1)
-    sc.makeRDD(Seq(jsonDoc)).saveJsonToEs(target2)
+    sc.makeRDD(Seq(jsonDoc)).saveJsonToOpenSearch(target1)
+    sc.makeRDD(Seq(jsonDoc)).saveJsonToOpenSearch(target2)
     RestUtils.refresh(wrapIndex("sparksql-multi-index-1"))
     RestUtils.refresh(wrapIndex("sparksql-multi-index-2"))
     val multiIndex = wrapIndex("sparksql-multi-index-1,") + index2
@@ -2248,8 +2248,8 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val (target1, _) = makeTargets(index1, "data")
     val index2 = wrapIndex("sparksql-multi-index-upcast-2")
     val (target2, _) = makeTargets(index2, "data")
-    sc.makeRDD(Seq(jsonDoc1)).saveJsonToEs(target1)
-    sc.makeRDD(Seq(jsonDoc2)).saveJsonToEs(target2)
+    sc.makeRDD(Seq(jsonDoc1)).saveJsonToOpenSearch(target1)
+    sc.makeRDD(Seq(jsonDoc2)).saveJsonToOpenSearch(target2)
     RestUtils.refresh(wrapIndex("sparksql-multi-index-upcast-1"))
     RestUtils.refresh(wrapIndex("sparksql-multi-index-upcast-1"))
     val multiIndex = wrapIndex("sparksql-multi-index-upcast-1,") + index2
@@ -2269,7 +2269,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val document1 = """{ "id": 1, "status_code" : [123]}""".stripMargin
     val document2 = """{ "id" : 2, "status_code" : []}""".stripMargin
     val document3 = """{ "id" : 3, "status_code" : null}""".stripMargin
-    sc.makeRDD(Seq(document1, document2, document3)).saveJsonToEs(target)
+    sc.makeRDD(Seq(document1, document2, document3)).saveJsonToOpenSearch(target)
     RestUtils.refresh(index)
     val df = sqc.read.format("opensearch").option("opensearch.read.field.as.array.include","status_code").load(index)
       .select("id", "status_code")

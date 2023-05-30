@@ -53,7 +53,6 @@ import org.opensearch.hadoop.util.TestUtils.docEndpoint
 import org.opensearch.hadoop.rest.RestUtils.ExtendedRestClient
 import org.opensearch.spark.rdd.OpenSearchSpark
 import org.opensearch.spark.rdd.Metadata.ID
-import org.opensearch.spark.rdd.Metadata.TTL
 import org.opensearch.spark.rdd.Metadata.VERSION
 import org.opensearch.spark.serialization.ReflectionUtils
 import org.opensearch.spark.sparkByteArrayJsonRDDFunctions
@@ -271,31 +270,6 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     assertThat(RestUtils.get(target + "/_search?"), containsString("SFO"))
   }
 
-  @Test(expected = classOf[OpenSearchHadoopSerializationException])
-  def testOpenSearchRDDWriteWithUnsupportedMapping() {
-
-    val doc1 = Map("one" -> null, "two" -> Set("2"), "three" -> (".", "..", "..."), "number" -> 1)
-    val doc2 = Map("OTP" -> "Otopeni", "SFO" -> "San Fran", "number" -> 2)
-
-    val target = wrapIndex(resource("spark-test-scala-dyn-id-write-fail", "data", version))
-
-    val metadata1 = Map(ID -> 5)
-    val metadata2 = Map(ID -> 6, TTL -> "23")
-
-    assertEquals(5, metadata1.getOrElse(ID, null))
-    assertEquals(6, metadata2.getOrElse(ID, null))
-
-    val pairRDD = sc.makeRDD(Seq((metadata1, doc1), (metadata2, doc2)))
-
-    try {
-      pairRDD.saveToOpenSearchWithMeta(target, cfg)
-    } catch {
-      case s: SparkException => throw s.getCause
-      case t: Throwable => throw t
-    }
-
-    fail("Should not have ingested TTL on ES 6.x+")
-  }
 
   @Test
   def testOpenSearchRDDWriteWithMappingExclude() {
@@ -446,12 +420,12 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     val json1 = "{\"reason\" : \"business\",\"airport\" : \"sfo\"}";
     val json2 = "{\"participants\" : 5,\"airport\" : \"otp\"}"
 
-    sc.makeRDD(Seq(json1, json2)).saveJsonToEs(wrapIndex(resource("spark-test-json-{airport}", "data", version)), cfg)
+    sc.makeRDD(Seq(json1, json2)).saveJsonToOpenSearch(wrapIndex(resource("spark-test-json-{airport}", "data", version)), cfg)
 
     val json1BA = json1.getBytes()
     val json2BA = json2.getBytes()
 
-    sc.makeRDD(Seq(json1BA, json2BA)).saveJsonToEs(wrapIndex(resource("spark-test-json-ba-{airport}", "data", version)), cfg)
+    sc.makeRDD(Seq(json1BA, json2BA)).saveJsonToOpenSearch(wrapIndex(resource("spark-test-json-ba-{airport}", "data", version)), cfg)
 
     assertTrue(RestUtils.exists(wrapIndex(resource("spark-test-json-sfo", "data", version))))
     assertTrue(RestUtils.exists(wrapIndex(resource("spark-test-json-otp", "data", version))))
@@ -583,8 +557,8 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     RestUtils.postData(docPath, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
     RestUtils.refresh(wrapIndex("spark-test-scala-basic-read"))
 
-    val esData = OpenSearchSpark.opensearchRDD(sc, target, cfg)
-    val messages = esData.filter(doc => doc._2.find(_.toString.contains("message")).nonEmpty)
+    val openSearchData = OpenSearchSpark.opensearchRDD(sc, target, cfg)
+    val messages = openSearchData.filter(doc => doc._2.find(_.toString.contains("message")).nonEmpty)
 
     assertTrue(messages.count() == 2)
     assertNotNull(messages.take(10))
@@ -604,19 +578,19 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     RestUtils.refresh(index)
 
     val queryTarget = resource("*-scala-basic-query-read", typename, version)
-    val esData = OpenSearchSpark.opensearchRDD(sc, queryTarget, "?q=message:Hello World", cfg)
+    val openSearchData = OpenSearchSpark.opensearchRDD(sc, queryTarget, "?q=message:Hello World", cfg)
     val newData = OpenSearchSpark.opensearchRDD(sc, collection.mutable.Map(cfg.toSeq: _*) += (
       OPENSEARCH_RESOURCE -> queryTarget,
       OPENSEARCH_INPUT_JSON -> "true",
       OPENSEARCH_QUERY -> "?q=message:Hello World"))
 
     // on each run, 2 docs are added
-    assertTrue(esData.count() % 2 == 0)
+    assertTrue(openSearchData.count() % 2 == 0)
     assertTrue(newData.count() % 2 == 0)
 
-    assertNotNull(esData.take(10))
+    assertNotNull(openSearchData.take(10))
     assertNotNull(newData.take(10))
-    assertNotNull(esData)
+    assertNotNull(openSearchData)
   }
 
   @Test
@@ -631,8 +605,8 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     RestUtils.postData(docPath, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
     RestUtils.refresh(wrapIndex("spark-test-scala-basic-json-read"))
 
-    val esData = OpenSearchSpark.esJsonRDD(sc, target, cfg)
-    val messages = esData.filter(doc => doc._2.contains("message"))
+    val openSearchData = OpenSearchSpark.openSearchJsonRDD(sc, target, cfg)
+    val messages = openSearchData.filter(doc => doc._2.contains("message"))
 
     assertTrue(messages.count() == 2)
     assertNotNull(messages.take(10))
@@ -654,8 +628,8 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
 
     val testCfg = cfg + (ConfigurationOptions.OPENSEARCH_READ_SOURCE_FILTER -> "message_date")
 
-    val esData = OpenSearchSpark.opensearchRDD(sc, target, testCfg)
-    val messages = esData.filter(doc => doc._2.contains("message_date"))
+    val openSearchData = OpenSearchSpark.opensearchRDD(sc, target, testCfg)
+    val messages = openSearchData.filter(doc => doc._2.contains("message_date"))
 
     assertTrue(messages.count() == 2)
     assertNotNull(messages.take(10))
@@ -689,7 +663,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     RestUtils.postData("_aliases", aliases.getBytes())
     RestUtils.refresh(alias)
 
-    val aliasRDD = OpenSearchSpark.esJsonRDD(sc, aliasTarget, cfg)
+    val aliasRDD = OpenSearchSpark.openSearchJsonRDD(sc, aliasTarget, cfg)
     assertEquals(2, aliasRDD.count())
   }
 
@@ -737,7 +711,7 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     RestUtils.put("_template/" + wrapIndex("test_template"), template.getBytes)
 
     val rdd = readAsRDD(AbstractScalaOpenSearchScalaSpark.testData.sampleArtistsJsonUri())
-    OpenSearchSpark.saveJsonToEs(rdd, target)
+    OpenSearchSpark.saveJsonToOpenSearch(rdd, target)
     val opensearchRDD = OpenSearchSpark.opensearchRDD(sc, target, cfg)
     println(opensearchRDD.count)
     println(RestUtils.getMappings(index).getResolvedView)
@@ -769,9 +743,9 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
   @Test
   def testaaaaaMultiIndexNonExisting() {
 
-    val multipleMissingIndicesWithSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump", Map(OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
+    val multipleMissingIndicesWithSetting = OpenSearchSpark.openSearchJsonRDD(sc, "bumpA,Stump", Map(OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
     assertEquals(0, multipleMissingIndicesWithSetting.count)
-    val multipleMissingIndicesWithoutSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump")
+    val multipleMissingIndicesWithoutSetting = OpenSearchSpark.openSearchJsonRDD(sc, "bumpA,Stump")
     try {
       val count = multipleMissingIndicesWithoutSetting.count
       fail("Should have thrown an exception instead of returning " + count)
@@ -798,9 +772,9 @@ class AbstractScalaOpenSearchScalaSpark(prefix: String, readMetadata: jl.Boolean
     RestUtils.postData(docPath2, "{\"message\" : \"Goodbye World\",\"message_date\" : \"2014-05-25\"}".getBytes())
     RestUtils.refresh(index2)
 
-    val mixedWithSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump," + index1 + "," + index2, Map(OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
+    val mixedWithSetting = OpenSearchSpark.openSearchJsonRDD(sc, "bumpA,Stump," + index1 + "," + index2, Map(OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY -> "yes"))
     assertEquals(4, mixedWithSetting.count)
-    val mixedWithoutSetting = OpenSearchSpark.esJsonRDD(sc, "bumpA,Stump," + index1)
+    val mixedWithoutSetting = OpenSearchSpark.openSearchJsonRDD(sc, "bumpA,Stump," + index1)
     try {
       val count = mixedWithoutSetting.count
       fail("Should have thrown an exception instead of returning " + count)

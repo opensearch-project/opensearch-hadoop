@@ -47,11 +47,11 @@ object JavaOpenSearchSparkStreaming {
   def saveToOpenSearchWithMeta[K, V](ds: JavaPairDStream[K, V], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToOpenSearchWithMeta(ds.dstream, resource, cfg.asScala)
   def saveToOpenSearchWithMeta[K, V](ds: JavaPairDStream[K, V], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveToOpenSearchWithMeta(ds.dstream, cfg.asScala)
 
-  def saveJsonToEs(ds: JavaDStream[String], resource: String): Unit = OpenSearchSparkStreaming.saveJsonToEs(ds.dstream, resource)
-  def saveJsonToEs(ds: JavaDStream[String], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToEs(ds.dstream, resource, cfg.asScala)
-  def saveJsonToEs(ds: JavaDStream[String], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToEs(ds.dstream, cfg.asScala)
+  def saveJsonToOpenSearch(ds: JavaDStream[String], resource: String): Unit = OpenSearchSparkStreaming.saveJsonToOpenSearch(ds.dstream, resource)
+  def saveJsonToOpenSearch(ds: JavaDStream[String], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToOpenSearch(ds.dstream, resource, cfg.asScala)
+  def saveJsonToOpenSearch(ds: JavaDStream[String], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToOpenSearch(ds.dstream, cfg.asScala)
 
-  def saveJsonByteArrayToEs(ds: JavaDStream[Array[Byte]], resource: String): Unit = OpenSearchSparkStreaming.saveJsonToEs(ds.dstream, resource)
-  def saveJsonByteArrayToEs(ds: JavaDStream[Array[Byte]], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToEs(ds.dstream, resource, cfg.asScala)
-  def saveJsonByteArrayToEs(ds: JavaDStream[Array[Byte]], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToEs(ds.dstream, cfg.asScala)
+  def saveJsonByteArrayToOpenSearch(ds: JavaDStream[Array[Byte]], resource: String): Unit = OpenSearchSparkStreaming.saveJsonToOpenSearch(ds.dstream, resource)
+  def saveJsonByteArrayToOpenSearch(ds: JavaDStream[Array[Byte]], resource: String, cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToOpenSearch(ds.dstream, resource, cfg.asScala)
+  def saveJsonByteArrayToOpenSearch(ds: JavaDStream[Array[Byte]], cfg: JMap[String, String]): Unit = OpenSearchSparkStreaming.saveJsonToOpenSearch(ds.dstream, cfg.asScala)
 }

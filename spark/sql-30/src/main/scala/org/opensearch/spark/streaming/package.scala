@@ -51,9 +51,9 @@ package object streaming {
   implicit def sparkByteArrayJsonDStreamFunctions(ds: DStream[Array[Byte]]): SparkJsonDStreamFunctions[Array[Byte]] = new SparkJsonDStreamFunctions[Array[Byte]](ds)
 
   class SparkJsonDStreamFunctions[T : ClassTag](ds: DStream[T]) extends Serializable {
-    def saveJsonToEs(resource: String): Unit = { OpenSearchSparkStreaming.saveJsonToEs(ds, resource) }
-    def saveJsonToEs(resource: String, cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveJsonToEs(ds, resource, cfg) }
-    def saveJsonToEs(cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveJsonToEs(ds, cfg) }
+    def saveJsonToOpenSearch(resource: String): Unit = { OpenSearchSparkStreaming.saveJsonToOpenSearch(ds, resource) }
+    def saveJsonToOpenSearch(resource: String, cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveJsonToOpenSearch(ds, resource, cfg) }
+    def saveJsonToOpenSearch(cfg: Map[String, String]): Unit = { OpenSearchSparkStreaming.saveJsonToOpenSearch(ds, cfg) }
   }
 
   implicit def sparkPairDStreamFunctions[K : ClassTag, V : ClassTag](ds: DStream[(K,V)]): SparkPairDStreamFunctions[K,V] = new SparkPairDStreamFunctions[K,V](ds)

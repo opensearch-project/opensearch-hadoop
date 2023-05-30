@@ -300,13 +300,13 @@ class AbstractScalaOpenSearchScalaSparkStreaming(val prefix: String, readMetadat
     val json2 = "{\"participants\" : 5,\"airport\" : \"otp\"}"
 
     val batch = sc.makeRDD(Seq(json1, json2))
-    runStreamRecoverably(batch)(_.saveJsonToEs(wrapIndex(resource("spark-streaming-test-json-{airport}", "data", version)), cfg))
+    runStreamRecoverably(batch)(_.saveJsonToOpenSearch(wrapIndex(resource("spark-streaming-test-json-{airport}", "data", version)), cfg))
 
     val json1BA = json1.getBytes()
     val json2BA = json2.getBytes()
 
     val batch2 = sc.makeRDD(Seq(json1BA, json2BA))
-    runStream(batch2)(_.saveJsonToEs(wrapIndex(resource("spark-streaming-test-json-ba-{airport}", "data", version)), cfg))
+    runStream(batch2)(_.saveJsonToOpenSearch(wrapIndex(resource("spark-streaming-test-json-ba-{airport}", "data", version)), cfg))
 
     assertTrue(RestUtils.exists(wrapIndex(resource("spark-streaming-test-json-sfo", "data", version))))
     assertTrue(RestUtils.exists(wrapIndex(resource("spark-streaming-test-json-otp", "data", version))))

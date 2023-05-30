@@ -51,12 +51,12 @@ package object spark {
     def opensearchRDD(resource: String, cfg: scala.collection.Map[String, String]) = OpenSearchSpark.opensearchRDD(sc, resource, cfg)
     def opensearchRDD(resource: String, query: String, cfg: scala.collection.Map[String, String]) = OpenSearchSpark.opensearchRDD(sc, resource, query, cfg)
 
-    def esJsonRDD() = OpenSearchSpark.esJsonRDD(sc)
-    def esJsonRDD(resource: String) = OpenSearchSpark.esJsonRDD(sc, resource)
-    def esJsonRDD(resource: String, query: String) = OpenSearchSpark.esJsonRDD(sc, resource, query)
-    def esJsonRDD(cfg: scala.collection.Map[String, String]) = OpenSearchSpark.esJsonRDD(sc, cfg)
-    def esJsonRDD(resource: String, cfg: scala.collection.Map[String, String]) = OpenSearchSpark.esJsonRDD(sc, resource, cfg)
-    def esJsonRDD(resource: String, query:String, cfg: scala.collection.Map[String, String]) = OpenSearchSpark.esJsonRDD(sc, resource, query, cfg)
+    def openSearchJsonRDD() = OpenSearchSpark.openSearchJsonRDD(sc)
+    def openSearchJsonRDD(resource: String) = OpenSearchSpark.openSearchJsonRDD(sc, resource)
+    def openSearchJsonRDD(resource: String, query: String) = OpenSearchSpark.openSearchJsonRDD(sc, resource, query)
+    def openSearchJsonRDD(cfg: scala.collection.Map[String, String]) = OpenSearchSpark.openSearchJsonRDD(sc, cfg)
+    def openSearchJsonRDD(resource: String, cfg: scala.collection.Map[String, String]) = OpenSearchSpark.openSearchJsonRDD(sc, resource, cfg)
+    def openSearchJsonRDD(resource: String, query:String, cfg: scala.collection.Map[String, String]) = OpenSearchSpark.openSearchJsonRDD(sc, resource, query, cfg)
   }
 
   implicit def sparkRDDFunctions[T : ClassTag](rdd: RDD[T]) = new SparkRDDFunctions[T](rdd)
@@ -71,9 +71,9 @@ package object spark {
   implicit def sparkByteArrayJsonRDDFunctions(rdd: RDD[Array[Byte]]) = new SparkJsonRDDFunctions[Array[Byte]](rdd)
 
   class SparkJsonRDDFunctions[T : ClassTag](rdd: RDD[T]) extends Serializable {
-    def saveJsonToEs(resource: String): Unit = { OpenSearchSpark.saveJsonToEs(rdd, resource) }
-    def saveJsonToEs(resource: String, cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSpark.saveJsonToEs(rdd, resource, cfg) }
-    def saveJsonToEs(cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSpark.saveJsonToEs(rdd, cfg) }
+    def saveJsonToOpenSearch(resource: String): Unit = { OpenSearchSpark.saveJsonToOpenSearch(rdd, resource) }
+    def saveJsonToOpenSearch(resource: String, cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSpark.saveJsonToOpenSearch(rdd, resource, cfg) }
+    def saveJsonToOpenSearch(cfg: scala.collection.Map[String, String]): Unit = { OpenSearchSpark.saveJsonToOpenSearch(rdd, cfg) }
   }
 
   implicit def sparkPairRDDFunctions[K : ClassTag, V : ClassTag](rdd: RDD[(K,V)]) = new SparkPairRDDFunctions[K,V](rdd)

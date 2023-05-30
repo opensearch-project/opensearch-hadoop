@@ -52,7 +52,6 @@ public enum FieldType {
     DATE_NANOS,
     BINARY,
     TOKEN_COUNT,
-    // ES 5.x
     TEXT, KEYWORD, HALF_FLOAT, SCALED_FLOAT,
     WILDCARD,
 

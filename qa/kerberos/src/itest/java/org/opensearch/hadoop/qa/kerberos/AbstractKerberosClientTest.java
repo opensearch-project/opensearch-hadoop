@@ -91,7 +91,7 @@ public class AbstractKerberosClientTest {
     }
 
     @Test
-    public void testSpnegoAuthToES() throws Exception {
+    public void testSpnegoAuthToOpenSearch() throws Exception {
         RestUtils.postData("_security/role_mapping/kerberos_client_mapping",
                 "{\"roles\":[\"superuser\"],\"enabled\":true,\"rules\":{\"field\":{\"username\":\"client@BUILD.CI.OPENSEARCH.ORG\"}}}".getBytes());
 
@@ -124,7 +124,7 @@ public class AbstractKerberosClientTest {
     }
 
     @Test
-    public void testSpnegoAuthWithKeytabToES() throws Exception {
+    public void testSpnegoAuthWithKeytabToOpenSearch() throws Exception {
         String hivePrincipal = System.getProperty("tests.hive.principal");
         Assert.hasText(hivePrincipal, "Needs tests.hive.principal system property");
         String hiveKeytab = System.getProperty("tests.hive.keytab");
@@ -162,7 +162,7 @@ public class AbstractKerberosClientTest {
     }
 
     @Test
-    public void testMutualSpnegoAuthToES() throws Exception {
+    public void testMutualSpnegoAuthToOpenSearch() throws Exception {
         RestUtils.postData("_security/role_mapping/kerberos_client_mapping",
                 "{\"roles\":[\"superuser\"],\"enabled\":true,\"rules\":{\"field\":{\"username\":\"client@BUILD.CI.OPENSEARCH.ORG\"}}}".getBytes());
 

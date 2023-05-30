@@ -47,9 +47,9 @@ public class FieldAliasTest {
         Properties tableProperties = new Properties();
         tableProperties.put(HiveConstants.MAPPING_NAMES, "timestamp:@timestamp , foo:123foo");
         FieldAlias alias = HiveUtils.alias(new PropertiesSettings(tableProperties));
-        assertEquals("@timestamp", alias.toES("timestamp"));
-        assertEquals("123foo", alias.toES("foo"));
-        assertEquals("bar", alias.toES("BaR"));
+        assertEquals("@timestamp", alias.toOpenSearch("timestamp"));
+        assertEquals("123foo", alias.toOpenSearch("foo"));
+        assertEquals("bar", alias.toOpenSearch("BaR"));
     }
 
     @Test
@@ -58,9 +58,9 @@ public class FieldAliasTest {
         tableProperties.put(HiveConstants.MAPPING_NAMES, "timestamp:@timestamp , foo:123foo");
         tableProperties.put(HiveConstants.COLUMNS, "id,name,timestamp,foo");
         FieldAlias alias = HiveUtils.alias(new PropertiesSettings(tableProperties));
-        assertEquals("@timestamp", alias.toES("timestamp"));
-        assertEquals("123foo", alias.toES("foo"));
-        assertEquals("bar", alias.toES("BaR"));
+        assertEquals("@timestamp", alias.toOpenSearch("timestamp"));
+        assertEquals("123foo", alias.toOpenSearch("foo"));
+        assertEquals("bar", alias.toOpenSearch("BaR"));
     }
 
     @Test

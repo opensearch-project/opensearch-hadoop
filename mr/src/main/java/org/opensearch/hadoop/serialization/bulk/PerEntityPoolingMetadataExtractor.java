@@ -130,12 +130,6 @@ public abstract class PerEntityPoolingMetadataExtractor implements MetadataExtra
      * If a metadata tag is unsupported for this version of OpenSearch then a
      */
     private FieldExtractor _createExtractorFor(Metadata metadata) {
-        //TTL and Timestamp metadata on index and update requests is not supported.
-        switch (metadata) {
-            case TTL: // Fall through
-            case TIMESTAMP:
-                return new UnsupportedMetadataFieldExtractor(metadata, version);
-        }
         return createExtractorFor(metadata);
     }
 

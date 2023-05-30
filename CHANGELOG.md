@@ -5,6 +5,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 
 ### Dependencies
+- Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.15.0 to 2.15.1
 
 ### Changed
 

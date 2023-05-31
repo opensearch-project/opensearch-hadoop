@@ -11,6 +11,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `io.netty:netty-all` from 4.1.92.Final to 4.1.93.Final
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.1
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.15.0 to 2.15.2
+- Bumps `org.slf4j:slf4j-api` from 1.7.6 to 2.0.7
 
 ### Changed
 

@@ -83,7 +83,7 @@ dependencies {
     }
     
     compileOnly("com.fasterxml.jackson.module:jackson-module-scala_2.12:2.6.7.1")
-    compileOnly("com.fasterxml.jackson.core:jackson-annotations:2.15.2")
+    compileOnly("com.fasterxml.jackson.core:jackson-annotations:2.14.2")
     compileOnly("org.json4s:json4s-jackson_2.12:4.0.6")
     compileOnly("org.slf4j:slf4j-api:1.7.6")
 

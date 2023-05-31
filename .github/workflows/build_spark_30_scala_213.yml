@@ -1,9 +1,9 @@
-name: Build and test spark 30
+name: Build and test spark 30 scala 213
 
 on: [push, pull_request]
 
 jobs:
-  build-and-test-spark-30:
+  build-and-test-spark-30-scala-213:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true

@@ -23,7 +23,11 @@ jobs:
       - name: Config JDK17 env
         env:
           ACTIONS_ALLOW_UNSECURE_COMMANDS: true
-        run: echo ::set-env name=JAVA17_HOME::$(echo $JAVA_HOME) 
+        run: echo ::set-env name=JAVA17_HOME::$(echo $JAVA_HOME)
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
       - name: Run Gradle
         run: |
           ./gradlew precommit --parallel

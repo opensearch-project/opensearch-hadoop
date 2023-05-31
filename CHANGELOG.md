@@ -1,6 +1,23 @@
 # CHANGELOG
 Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
+
 ## [Unreleased]
+
+### Added
+
+### Dependencies
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.0.1] - 05/30/2023
 
 ### Added
 
@@ -17,6 +34,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Fixes imports from being thirdparty to local ([#245](https://github.com/opensearch-project/opensearch-java/pull/245))
 
 ### Security
+
 ## [1.0.0] - 05/18/2023
 ### Added
 - Added CHANGELOG and verifier workflow ([65](https://github.com/opensearch-project/opensearch-hadoop/pull/65))

@@ -6,6 +6,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 
 ### Dependencies
+- Bumps `com.google.protobuf:protobuf-java` from 3.22.3 to 3.23.2
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
 
 ### Changed

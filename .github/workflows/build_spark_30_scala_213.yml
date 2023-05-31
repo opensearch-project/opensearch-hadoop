@@ -1,9 +1,9 @@
-name: Build and test spark
+name: Build and test spark 30 scala 213
 
 on: [push, pull_request]
 
 jobs:
-  build-and-test-spark:
+  build-and-test-spark-30-scala-213:
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
@@ -47,4 +47,4 @@ jobs:
         uses: gradle/gradle-build-action@v2
 
       - name: Build with Gradle
-        run: ./gradlew opensearch-spark:build
+        run: ./gradlew opensearch-spark-30:integrationTestSpark30scala213

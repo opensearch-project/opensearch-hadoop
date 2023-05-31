@@ -23,6 +23,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Dependencies
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.6.7 to 2.15.2
+- Bumps `commons-logging:commons-logging` from 1.1.1 to 1.2
 
 ### Changed
 

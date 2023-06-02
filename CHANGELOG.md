@@ -17,7 +17,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.15.0 to 2.15.2
 - Bumps `org.json4s:json4s-ast_2.10` from 3.2.10 to 3.6.12
 - Bumps `org.apache.hadoop.thirdparty:hadoop-shaded-protobuf_3_7` from 1.0.0 to 1.1.1
-- Bumps `org.apache.avro:avro` from 1.7.7 to 1.8.2
+- Bumps `org.apache.avro:avro` from 1.7.7 to 1.10.2
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.451 to 1.12.479
 
 ### Changed

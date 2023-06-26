@@ -19,6 +19,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.apache.hadoop.thirdparty:hadoop-shaded-protobuf_3_7` from 1.0.0 to 1.1.1
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.8.2
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.451 to 1.12.482
+- Bumps `commons-codec:commons-codec` from 1.15 to 1.16.0
 
 ### Changed
 

@@ -80,7 +80,7 @@ dependencies {
         exclude group: "org.apache.directory.api", module: "api-ldap-schema-data"
         exclude group: 'com.fasterxml.jackson.core'
     }
-    implementation 'com.amazonaws:aws-java-sdk-bundle:1.12.491'
+    implementation 'com.amazonaws:aws-java-sdk-bundle:1.12.524'
 }
 
 String generatedResources = "$buildDir/generated-resources/main"

@@ -6,7 +6,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 
 ### Dependencies
-- Bumps `com.google.protobuf:protobuf-java` from 3.22.3 to 3.23.3
+- Bumps `com.google.protobuf:protobuf-java` from 3.22.3 to 3.23.4
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
 - Bumps `io.netty:netty-all` from 4.1.92.Final to 4.1.96.Final
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.1

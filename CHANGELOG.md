@@ -6,9 +6,9 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 
 ### Dependencies
-- Bumps `com.google.protobuf:protobuf-java` from 3.22.3 to 3.23.3
+- Bumps `com.google.protobuf:protobuf-java` from 3.22.3 to 3.23.4
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
-- Bumps `io.netty:netty-all` from 4.1.92.Final to 4.1.93.Final
+- Bumps `io.netty:netty-all` from 4.1.92.Final to 4.1.96.Final
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.1
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.15.0 to 2.15.2
 - Bumps `org.slf4j:slf4j-api` from 1.7.6 to 2.0.7
@@ -20,6 +20,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.8.2
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.451 to 1.12.482
 - Bumps `commons-codec:commons-codec` from 1.15 to 1.16.0
+- Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.451 to 1.12.524
 
 ### Changed
 

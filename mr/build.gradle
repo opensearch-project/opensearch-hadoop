@@ -64,7 +64,7 @@ dependencies {
     
     embedded(project(path: ":thirdparty", configuration: "shadow"))
     implementation("commons-logging:commons-logging:1.2")
-    implementation("commons-codec:commons-codec:1.15")
+    implementation("commons-codec:commons-codec:1.16.0")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
 
     testImplementation(project(":test:shared"))

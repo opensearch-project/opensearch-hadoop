@@ -69,7 +69,7 @@ public class AbstractRestQueryTest {
     @Before
     public void start() throws IOException {
         version = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
-        settings = new TestSettings("rest/savebulk");
+        settings = new TestSettings("rest_save_bulk");
         settings.setInternalVersion(version);
         //testSettings.setPort(9200)
         settings.setProperty(ConfigurationOptions.OPENSEARCH_SERIALIZATION_WRITER_VALUE_CLASS, JdkValueWriter.class.getName());

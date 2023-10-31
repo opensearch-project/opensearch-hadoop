@@ -35,7 +35,6 @@ import org.junit.rules.ExternalResource;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
-@Ignore
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ AbstractRestSaveTest.class, AbstractRestQueryTest.class })
 public class RestSuite {

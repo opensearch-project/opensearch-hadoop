@@ -48,3 +48,10 @@ jobs:
 
       - name: Build with Gradle
         run: ./gradlew opensearch-spark-30:integrationTestSpark30scala213
+
+      - name: Publish Test Results
+        if: failure()
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-results-${{ matrix.os }}
+          path: '**/build/test-results'

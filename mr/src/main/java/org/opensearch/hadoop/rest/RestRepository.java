@@ -44,6 +44,7 @@ import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.bulk.BulkProcessor;
 import org.opensearch.hadoop.rest.bulk.BulkResponse;
+import org.opensearch.hadoop.rest.query.MatchAllQueryBuilder;
 import org.opensearch.hadoop.rest.query.QueryUtils;
 import org.opensearch.hadoop.rest.stats.Stats;
 import org.opensearch.hadoop.rest.stats.StatsAware;
@@ -376,15 +377,16 @@ public class RestRepository implements Closeable, StatsAware {
     }
 
     public void delete() {
-        // try first a blind delete by query (since the plugin might be installed)
+        // try first a blind delete by query
         try {
-            if (resources.getResourceWrite().isTyped()) {
-                client.delete(resources.getResourceWrite().index() + "/" + resources.getResourceWrite().type() + "/_query?q=*");
-            } else {
-                client.delete(resources.getResourceWrite().index() + "/_query?q=*");
-            }
+            Resource res = resources.getResourceWrite();
+            client.deleteByQuery(
+                    res.isTyped()
+                            ? res.index() + "/" + res.type()
+                            : res.index(),
+                    MatchAllQueryBuilder.MATCH_ALL);
         } catch (OpenSearchHadoopInvalidRequest ehir) {
-            log.info("Skipping delete by query as the plugin is not installed...");
+            log.error("Delete by query was not successful...", ehir);
         }
 
         // in ES 2.0 and higher this means scrolling and deleting the docs by hand...

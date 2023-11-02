@@ -238,7 +238,7 @@ public class RestClient implements Closeable, StatsAware {
     public BulkActionResponse bulk(Resource resource, TrackingBytesArray data) {
         // NB: dynamically get the stats since the transport can change
         long start = network.transportStats().netTotalTime;
-        Response response = execute(PUT, resource.bulk(), data);
+        Response response = execute(POST, resource.bulk(), data);
         long spent = network.transportStats().netTotalTime - start;
 
         stats.bulkTotal++;
@@ -497,6 +497,13 @@ public class RestClient implements Closeable, StatsAware {
         Request req = new SimpleRequest(DELETE, null, indexOrType);
         Response res = executeNotFoundAllowed(req);
         return (res.status() == HttpStatus.OK ? true : false);
+    }
+
+    public int deleteByQuery(String indexOrType, QueryBuilder query) {
+        BytesArray body = searchRequest(query);
+        Request req = new SimpleRequest(POST, null, indexOrType + "/_delete_by_query", body);
+        Response res = executeNotFoundAllowed(req);
+        return parseContent(res.body(), "deleted");
     }
 
     public boolean deleteScroll(String scrollId) {

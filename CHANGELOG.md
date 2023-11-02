@@ -29,6 +29,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Removed
 
 ### Fixed
+- Corrected the delete by query endpoint to match the OpenSearch API ([#350](https://github.com/opensearch-project/opensearch-hadoop/pull/350))
 
 ### Security
 

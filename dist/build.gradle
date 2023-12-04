@@ -74,7 +74,7 @@ dependencies {
     thirdPartyShaded("org.codehaus.jackson:jackson-mapper-asl:${project.ext.jacksonVersion}")
     thirdPartyShaded("org.codehaus.jackson:jackson-core-asl:${project.ext.jacksonVersion}")
 
-    implementation("commons-logging:commons-logging:1.2")
+    implementation("commons-logging:commons-logging:1.3.0")
     implementation("commons-codec:commons-codec:1.16.0")
     implementation("javax.xml.bind:jaxb-api:2.3.1")
     implementation("org.apache.hive:hive-service:$hiveVersion") {

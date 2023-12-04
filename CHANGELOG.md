@@ -21,6 +21,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.451 to 1.12.482
 - Bumps `commons-codec:commons-codec` from 1.15 to 1.16.0
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.451 to 1.12.524
+- Bumps `commons-logging:commons-logging` from 1.2 to 1.3.0
 
 ### Changed
 

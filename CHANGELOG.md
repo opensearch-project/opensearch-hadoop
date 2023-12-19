@@ -24,6 +24,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `commons-logging:commons-logging` from 1.2 to 1.3.0
 
 ### Changed
+- Update Gradle to 8.5 ([#377](https://github.com/opensearch-project/opensearch-hadoop/pull/377))
 
 ### Deprecated
 

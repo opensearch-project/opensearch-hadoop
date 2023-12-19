@@ -36,7 +36,7 @@ import org.opensearch.hadoop.gradle.fixture.hadoop.services.SparkYarnServiceDesc
 import org.gradle.api.GradleException
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.util.ConfigureUtil
+import org.gradle.util.internal.ConfigureUtil
 
 /**
  * Configuration for a Hadoop cluster, used for integration tests.

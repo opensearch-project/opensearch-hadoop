@@ -50,7 +50,6 @@ import org.gradle.api.file.SourceDirectorySet;
 import org.gradle.api.internal.artifacts.repositories.resolver.ComponentMetadataDetailsAdapter;
 import org.gradle.api.internal.tasks.DefaultScalaSourceDirectorySet;
 import org.gradle.api.plugins.BasePlugin;
-import org.gradle.api.plugins.Convention;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.plugins.JavaPlugin;
 import org.gradle.api.plugins.JavaPluginExtension;

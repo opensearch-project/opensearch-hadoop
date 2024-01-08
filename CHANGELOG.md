@@ -25,7 +25,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.json4s:json4s-jackson_2.12` from 4.0.6 to 4.0.7
 
 ### Changed
-- Update Gradle to 8.5 ([#377](https://github.com/opensearch-project/opensearch-hadoop/pull/377))
+- Update Gradle to 8.5 ([#377](https://github.com/opensearch-project/opensearch-hadoop/pull/377), [#386](https://github.com/opensearch-project/opensearch-hadoop/pull/386))
 
 ### Deprecated
 

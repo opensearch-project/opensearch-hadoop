@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 
 import groovy.lang.Closure;
-import org.codehaus.groovy.runtime.InvokerHelper;
 import org.codehaus.groovy.runtime.StringGroovyMethods;
 import org.gradle.api.Action;
 import org.gradle.api.GradleException;
@@ -49,12 +48,10 @@ import org.gradle.api.artifacts.ConfigurationContainer;
 import org.gradle.api.file.ConfigurableFileCollection;
 import org.gradle.api.file.SourceDirectorySet;
 import org.gradle.api.internal.artifacts.repositories.resolver.ComponentMetadataDetailsAdapter;
-import org.gradle.api.internal.tasks.DefaultScalaSourceSet;
+import org.gradle.api.internal.tasks.DefaultScalaSourceDirectorySet;
 import org.gradle.api.plugins.BasePlugin;
-import org.gradle.api.plugins.Convention;
 import org.gradle.api.plugins.JavaBasePlugin;
 import org.gradle.api.plugins.JavaPlugin;
-import org.gradle.api.plugins.JavaPluginConvention;
 import org.gradle.api.plugins.JavaPluginExtension;
 import org.gradle.api.tasks.SourceSet;
 import org.gradle.api.tasks.SourceSetContainer;
@@ -284,18 +281,16 @@ public class SparkVariantPlugin implements Plugin<Project> {
     @Override
     public void apply(final Project project) {
         SparkVariantPluginExtension extension = project.getExtensions().create("sparkVariants", SparkVariantPluginExtension.class, project);
-        final JavaPluginConvention javaPluginConvention = project.getConvention().getPlugin(JavaPluginConvention.class);
         final JavaPluginExtension javaPluginExtension = project.getExtensions().getByType(JavaPluginExtension.class);
 
         // Add a rule that annotates scala-library dependencies with the scala-library capability
         project.getDependencies().getComponents().all(ScalaRuntimeCapability.class);
 
-        extension.defaultVariant(sparkVariant -> configureDefaultVariant(project, sparkVariant, javaPluginExtension, javaPluginConvention));
-        extension.featureVariants(sparkVariant -> configureVariant(project, sparkVariant, javaPluginExtension, javaPluginConvention));
+        extension.defaultVariant(sparkVariant -> configureDefaultVariant(project, sparkVariant, javaPluginExtension));
+        extension.featureVariants(sparkVariant -> configureVariant(project, sparkVariant, javaPluginExtension));
     }
 
-    private static void configureDefaultVariant(Project project, SparkVariant sparkVariant, JavaPluginExtension javaPluginExtension,
-                                                JavaPluginConvention javaPluginConvention) {
+    private static void configureDefaultVariant(Project project, SparkVariant sparkVariant, JavaPluginExtension javaPluginExtension) {
         ConfigurationContainer configurations = project.getConfigurations();
         String capability = sparkVariant.getCapabilityName(project.getVersion());
 
@@ -308,9 +303,8 @@ public class SparkVariantPlugin implements Plugin<Project> {
         configureScalaJarClassifiers(project, sparkVariant);
     }
 
-    private static void configureVariant(Project project, SparkVariant sparkVariant, JavaPluginExtension javaPluginExtension,
-                                         JavaPluginConvention javaPluginConvention) {
-        SourceSetContainer sourceSets = javaPluginConvention.getSourceSets();
+    private static void configureVariant(Project project, SparkVariant sparkVariant, JavaPluginExtension javaPluginExtension) {
+        SourceSetContainer sourceSets = javaPluginExtension.getSourceSets();
         ConfigurationContainer configurations = project.getConfigurations();
         TaskContainer tasks = project.getTasks();
         Object version = project.getVersion();
@@ -333,9 +327,8 @@ public class SparkVariantPlugin implements Plugin<Project> {
     }
 
     public static SourceSet configureAdditionalVariantSourceSet(Project project, SparkVariant sparkVariant, String sourceSetName) {
-        final JavaPluginConvention javaPluginConvention = project.getConvention().getPlugin(JavaPluginConvention.class);
         final JavaPluginExtension javaPluginExtension = project.getExtensions().getByType(JavaPluginExtension.class);
-        SourceSetContainer sourceSets = javaPluginConvention.getSourceSets();
+        SourceSetContainer sourceSets = javaPluginExtension.getSourceSets();
         ConfigurationContainer configurations = project.getConfigurations();
         String version = project.getVersion().toString();
 
@@ -373,7 +366,7 @@ public class SparkVariantPlugin implements Plugin<Project> {
         SourceDirectorySet resourcesSourceSet = sourceSet.getResources();
         resourcesSourceSet.setSrcDirs(Collections.singletonList("src/" + sourceSetName + "/resources"));
 
-        SourceDirectorySet scalaSourceSet = getScalaSourceSet(sourceSet).getScala();
+        SourceDirectorySet scalaSourceSet = getScalaSourceSet(sourceSet);
         scalaSourceSet.setSrcDirs(Arrays.asList(
                 "src/" + sourceSetName + "/scala",
                 "src/" + sourceSetName + "/" + sparkVariant.getName()
@@ -393,9 +386,8 @@ public class SparkVariantPlugin implements Plugin<Project> {
         additionalSourceSet.setRuntimeClasspath(project.files(additionalSourceSet.getOutput(), mainSourceSet.getOutput(), additionalRuntimeClasspath));
     }
 
-    private static DefaultScalaSourceSet getScalaSourceSet(SourceSet sourceSet) {
-        Convention sourceSetConvention = (Convention) InvokerHelper.getProperty(sourceSet, "convention");
-        return (DefaultScalaSourceSet) sourceSetConvention.getPlugins().get("scala");
+    private static DefaultScalaSourceDirectorySet getScalaSourceSet(SourceSet sourceSet) {
+        return (DefaultScalaSourceDirectorySet) sourceSet.getExtensions().getByName("scala");
     }
 
     private static void registerMainVariant(JavaPluginExtension java, SparkVariant sparkVariant, SourceSet main, Object version) {
@@ -448,7 +440,7 @@ public class SparkVariantPlugin implements Plugin<Project> {
             scaladocClasspath.from(main.getCompileClasspath());
 
             scalaDoc.setClasspath(scaladocClasspath);
-            scalaDoc.setSource(getScalaSourceSet(main).getScala());
+            scalaDoc.setSource(getScalaSourceSet(main));
         });
     }
 

@@ -32,7 +32,7 @@ package org.opensearch.hadoop.gradle.fixture.hadoop.conf
 import org.opensearch.hadoop.gradle.fixture.hadoop.RoleDescriptor
 import org.gradle.api.GradleException
 import org.gradle.api.Project
-import org.gradle.util.ConfigureUtil
+import org.gradle.util.internal.ConfigureUtil
 
 /**
  * Shared configurations for all instances of a role within a Hadoop service.

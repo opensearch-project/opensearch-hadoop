@@ -33,7 +33,7 @@ import org.opensearch.gradle.testclusters.OpenSearchCluster
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
 import org.gradle.api.Task
-import org.gradle.util.ConfigureUtil
+import org.gradle.util.internal.ConfigureUtil
 
 /**
  * All the configurations that can be set hierarchically for a cluster.

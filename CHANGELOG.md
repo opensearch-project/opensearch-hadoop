@@ -8,7 +8,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Dependencies
 - Bumps `com.google.protobuf:protobuf-java` from 3.22.3 to 3.25.2
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
-- Bumps `io.netty:netty-all` from 4.1.92.Final to 4.1.104.Final
+- Bumps `io.netty:netty-all` from 4.1.92.Final to 4.1.106.Final
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.2
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.15.0 to 2.16.1
 - Bumps `org.slf4j:slf4j-api` from 1.7.6 to 2.0.9

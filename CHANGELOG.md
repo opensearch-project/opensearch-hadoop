@@ -23,6 +23,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.451 to 1.12.524
 - Bumps `commons-logging:commons-logging` from 1.2 to 1.3.0
 - Bumps `org.json4s:json4s-jackson_2.12` from 4.0.6 to 4.0.7
+- Bumps `com.fasterxml.jackson.module:jackson-module-scala_2.12` from 2.15.2 to 2.16.1
 
 ### Changed
 - Update Gradle to 8.5 ([#377](https://github.com/opensearch-project/opensearch-hadoop/pull/377), [#386](https://github.com/opensearch-project/opensearch-hadoop/pull/386))

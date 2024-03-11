@@ -10,7 +10,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
 - Bumps `io.netty:netty-all` from 4.1.92.Final to 4.1.107.Final
 - Bumps `org.codehaus.woodstox:stax2-api` from 3.1.4 to 4.2.2
-- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.15.0 to 2.16.1
+- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.15.0 to 2.16.2
 - Bumps `org.slf4j:slf4j-api` from 1.7.6 to 2.0.12
 - Bumps `com.google.code.findbugs:jsr305` from 2.0.1 to 3.0.2
 - Bumps `org.apache.htrace:htrace-core4` from 4.1.0-incubating to 4.2.0-incubating

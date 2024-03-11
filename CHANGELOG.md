@@ -6,6 +6,25 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 
 ### Dependencies
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+## [1.1.0]
+### Changed
+- Update Gradle to 8.5 ([#377](https://github.com/opensearch-project/opensearch-hadoop/pull/377), [#386](https://github.com/opensearch-project/opensearch-hadoop/pull/386))
+
+### Fixed
+- Corrected the delete by query endpoint to match the OpenSearch API ([#350](https://github.com/opensearch-project/opensearch-hadoop/pull/350))
+
+### Dependencies
 - Bumps `com.google.protobuf:protobuf-java` from 3.22.3 to 3.25.3
 - Bumps `com.esotericsoftware.kryo:kryo` from 2.21 to 2.24.0
 - Bumps `io.netty:netty-all` from 4.1.92.Final to 4.1.107.Final
@@ -25,51 +44,27 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.json4s:json4s-jackson_2.12` from 4.0.6 to 4.0.7
 - Bumps `com.fasterxml.jackson.module:jackson-module-scala_2.12` from 2.15.2 to 2.16.1
 
-### Changed
-- Update Gradle to 8.5 ([#377](https://github.com/opensearch-project/opensearch-hadoop/pull/377), [#386](https://github.com/opensearch-project/opensearch-hadoop/pull/386))
-
-### Deprecated
-
-### Removed
-
-### Fixed
-- Corrected the delete by query endpoint to match the OpenSearch API ([#350](https://github.com/opensearch-project/opensearch-hadoop/pull/350))
-
-### Security
-
 ## [1.0.1] - 05/30/2023
-
-### Added
-
 ### Dependencies
 - Bumps `commons-logging:commons-logging` from 1.1.1 to 1.2
 
-### Changed
-
-### Deprecated
-
-### Removed
-
 ### Fixed
 - Fixes imports from being thirdparty to local ([#245](https://github.com/opensearch-project/opensearch-java/pull/245))
-
-### Security
 
 ## [1.0.0] - 05/18/2023
 ### Added
 - Added CHANGELOG and verifier workflow ([65](https://github.com/opensearch-project/opensearch-hadoop/pull/65))
 - Added snapshot publication workflow ([218](https://github.com/opensearch-project/opensearch-hadoop/pull/218))
 - Added release workflow ([227](https://github.com/opensearch-project/opensearch-hadoop/pull/227))
+
 ### Changed
 - [Spark Distribution] Default Assemble artifact to Spark 3 ([107](https://github.com/opensearch-project/opensearch-hadoop/pull/107))
 - Changed the default deserialization/serialization logic from Object based to JSON based ([154](https://github.com/opensearch-project/opensearch-hadoop/pull/154))
-### Deprecated
-### Removed
+
 ### Fixed
 - Restored skipped push down tests ([125](https://github.com/opensearch-project/opensearch-hadoop/pull/125))
 - Fixed spark failured due to deserialization failed logic ([219](https://github.com/opensearch-project/opensearch-hadoop/pull/219))
-  
-### Security
+
 ### Dependencies
 - Bumps `com.google.guava:guava` from 16.0.1 to 23.0
 - Bumps `com.google.guava:guava` from 11.0 to 23.0
@@ -93,5 +88,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.json4s:json4s-jackson_2.12` from 3.2.11 to 4.0.6
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.11.1
 
-[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.1...v1.1.0
+[1.0.1]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v7.13.4...v1.0.0

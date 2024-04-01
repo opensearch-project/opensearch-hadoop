@@ -9,6 +9,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.16.1 to 2.17.0
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.16.1 to 2.17.0
 - Bumps `commons-logging:commons-logging` from 1.3.0 to 1.3.1
+- Bumps `com.google.protobuf:protobuf-java` from 3.25.3 to 4.26.1
 
 ### Changed
 

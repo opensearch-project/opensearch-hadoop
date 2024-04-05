@@ -13,6 +13,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `io.netty:netty-all` from 4.1.107.Final to 4.1.108.Final
 
 ### Changed
+- Changes invalid request exception messages to always be detailed ([#438](https://github.com/opensearch-project/opensearch-hadoop/pull/438))
 
 ### Deprecated
 

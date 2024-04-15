@@ -19,6 +19,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Removed
 
 ### Fixed
+- Fixes AWS SigV4 signing of `POST` requests with empty bodies such as scroll ([#443](https://github.com/opensearch-project/opensearch-hadoop/pull/443))
 
 ### Security
 

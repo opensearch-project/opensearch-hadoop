@@ -10,6 +10,7 @@
 
 package org.opensearch.hadoop.rest.commonshttp.auth.aws;
 
+import java.io.ByteArrayInputStream;
 import java.util.Date;
 import org.opensearch.hadoop.cfg.Settings;
 import org.opensearch.hadoop.rest.Request;
@@ -98,9 +99,9 @@ public class AwsV4SignerSupport {
             throw new IllegalArgumentException("Invalid request URI: " + httpInfo);
         }
 
-        if (request.body() != null) {
-            req.setContent(request.body().toInputStream());
-        }
+        // Explicitly provide an empty body stream to avoid the signer utilizing the query params as the body content
+        // See: https://github.com/opensearch-project/opensearch-hadoop/pull/443
+        req.setContent(request.body() != null ? request.body().toInputStream() : new ByteArrayInputStream(new byte[0]));
 
         for (Header header : http.getRequestHeaders()) {
             if (header.getName().equalsIgnoreCase("user-agent")) continue;

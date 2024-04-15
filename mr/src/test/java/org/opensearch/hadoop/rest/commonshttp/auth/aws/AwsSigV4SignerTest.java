@@ -146,7 +146,7 @@ public class AwsSigV4SignerTest {
                         "AWS4-HMAC-SHA256 "
                         + "Credential=test-access-key/20230113/ap-southeast-2/es/aws4_request, "
                         + "SignedHeaders=accept;content-type;host;x-amz-content-sha256;x-amz-date, "
-                        + "Signature="
+                        + "Signature=b19198b59948b23c790d8ed6bfde0cdce8e833c13e1950470cfd1fad614e5cbc"
                 ));
     }
 }

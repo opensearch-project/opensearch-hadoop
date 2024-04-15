@@ -10,7 +10,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.16.1 to 2.17.0
 - Bumps `commons-logging:commons-logging` from 1.3.0 to 1.3.1
 - Bumps `com.google.protobuf:protobuf-java` from 3.25.3 to 4.26.1
-- Bumps `io.netty:netty-all` from 4.1.107.Final to 4.1.108.Final
+- Bumps `io.netty:netty-all` from 4.1.107.Final to 4.1.109.Final
 - Bumps `org.slf4j:slf4j-api` from 2.0.12 to 2.0.13
 
 ### Changed

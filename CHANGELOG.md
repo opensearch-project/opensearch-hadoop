@@ -12,6 +12,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.google.protobuf:protobuf-java` from 3.25.3 to 4.26.1
 - Bumps `io.netty:netty-all` from 4.1.107.Final to 4.1.109.Final
 - Bumps `org.slf4j:slf4j-api` from 2.0.12 to 2.0.13
+- Bumps `commons-codec:commons-codec` from 1.16.1 to 1.17.0
 
 ### Changed
 - Changes invalid request exception messages to always be detailed ([#438](https://github.com/opensearch-project/opensearch-hadoop/pull/438))

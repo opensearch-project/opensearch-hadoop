@@ -198,6 +198,16 @@ public class RestClient implements Closeable, StatsAware {
         return (T) (string != null ? map.get(string) : map);
     }
 
+    @SuppressWarnings("unchecked")
+    private Map<String, Object> parseMap(String json) {
+        try {
+            JsonParser parser = mapper.getJsonFactory().createJsonParser(json);
+            return (Map<String, Object>) mapper.readValue(parser, Map.class);
+        } catch (IOException ex) {
+            throw new OpenSearchHadoopParsingException(ex);
+        }
+    }
+
     public static class BulkActionResponse {
         private Iterator<Map> entries;
         private long timeSpent;
@@ -453,27 +463,30 @@ public class RestClient implements Closeable, StatsAware {
 
     private void checkResponse(Request request, Response response) {
         if (response.hasFailed()) {
-            // check error first
-            String msg = null;
-            // try to parse the answer
+            ByteSequence requestBody = request.body();
+            String requestBodyString = requestBody != null ? requestBody.toString() : null;
+            String responseBodyString = IOUtils.asStringAlways(response.body());
+            OpenSearchHadoopException cause = null;
+
+            // Try to parse error
             try {
-                OpenSearchHadoopException ex = errorExtractor
-                        .extractError(this.<Map>parseContent(response.body(), null));
-                msg = (ex != null) ? ex.toString() : null;
-                if (response.isClientError()) {
-                    msg = msg + "\n" + request.body();
-                }
+                cause = errorExtractor.extractError(parseMap(responseBodyString));
             } catch (Exception ex) {
                 // can't parse message, move on
             }
 
-            if (!StringUtils.hasText(msg)) {
-                msg = String.format("[%s] on [%s] failed; server[%s] returned [%s|%s:%s]", request.method().name(),
-                        request.path(), response.uri(), response.status(), response.statusDescription(),
-                        IOUtils.asStringAlways(response.body()));
-            }
+            String msg = String.format(
+                  "[%s%s] on [%s] failed; server[%s] returned [%s|%s%s]",
+                  request.method().name(),
+                  StringUtils.hasLength(requestBodyString) ? ":" + requestBodyString : "",
+                  request.path(),
+                  response.uri(),
+                  response.status(),
+                  response.statusDescription(),
+                  cause == null && StringUtils.hasLength(responseBodyString) ? ":" + responseBodyString : ""
+            );
 
-            throw new OpenSearchHadoopInvalidRequest(msg);
+            throw new OpenSearchHadoopInvalidRequest(msg, cause);
         }
     }
 

@@ -14,6 +14,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.slf4j:slf4j-api` from 2.0.12 to 2.0.13
 
 ### Changed
+- Changes invalid request exception messages to always be detailed ([#438](https://github.com/opensearch-project/opensearch-hadoop/pull/438))
 
 ### Deprecated
 

@@ -2,8 +2,26 @@
 Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
-
 ### Added
+
+### Changed
+
+### Deprecated
+
+### Removed
+
+### Fixed
+
+### Security
+
+### Dependencies
+
+## [1.2.0]
+### Changed
+- Changes invalid request exception messages to always be detailed ([#438](https://github.com/opensearch-project/opensearch-hadoop/pull/438))
+
+### Fixed
+- Fixes AWS SigV4 signing of `POST` requests with empty bodies such as scroll ([#443](https://github.com/opensearch-project/opensearch-hadoop/pull/443))
 
 ### Dependencies
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.16.1 to 2.17.0
@@ -13,18 +31,6 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `io.netty:netty-all` from 4.1.107.Final to 4.1.109.Final
 - Bumps `org.slf4j:slf4j-api` from 2.0.12 to 2.0.13
 - Bumps `commons-codec:commons-codec` from 1.16.1 to 1.17.0
-
-### Changed
-- Changes invalid request exception messages to always be detailed ([#438](https://github.com/opensearch-project/opensearch-hadoop/pull/438))
-
-### Deprecated
-
-### Removed
-
-### Fixed
-- Fixes AWS SigV4 signing of `POST` requests with empty bodies such as scroll ([#443](https://github.com/opensearch-project/opensearch-hadoop/pull/443))
-
-### Security
 
 ## [1.1.0]
 ### Changed
@@ -72,7 +78,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Fixed
 - Restored skipped push down tests ([125](https://github.com/opensearch-project/opensearch-hadoop/pull/125))
-- Fixed spark failured due to deserialization failed logic ([219](https://github.com/opensearch-project/opensearch-hadoop/pull/219))
+- Fixed spark failures due to deserialization failed logic ([219](https://github.com/opensearch-project/opensearch-hadoop/pull/219))
 
 ### Dependencies
 - Bumps `com.google.guava:guava` from 16.0.1 to 23.0
@@ -97,7 +103,8 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.json4s:json4s-jackson_2.12` from 3.2.11 to 4.0.6
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.11.1
 
-[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.1.0...HEAD
+[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.2.0...HEAD
+[1.2.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v7.13.4...v1.0.0

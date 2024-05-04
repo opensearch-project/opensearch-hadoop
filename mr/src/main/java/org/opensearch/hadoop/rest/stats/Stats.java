@@ -37,6 +37,7 @@ public class Stats {
 
     /** sent */
     public long bytesSent;
+    public long compressedBytesSent;
     public long docsSent;
     public long docsRetried;
     public long bytesRetried;
@@ -68,6 +69,7 @@ public class Stats {
         }
 
         this.bytesSent = stats.bytesSent;
+        this.compressedBytesSent = stats.compressedBytesSent;
         this.docsSent = stats.docsSent;
         this.bulkTotal = stats.bulkTotal;
 
@@ -98,6 +100,7 @@ public class Stats {
         }
 
         bytesSent += other.bytesSent;
+        compressedBytesSent += other.compressedBytesSent;
         docsSent += other.docsSent;
         bulkTotal += other.bulkTotal;
         docsRetried += other.docsRetried;

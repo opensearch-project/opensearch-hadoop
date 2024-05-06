@@ -16,6 +16,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Dependencies
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.0 to 2.17.1
+- Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.0 to 2.17.1
 
 ## [1.2.0]
 ### Changed

@@ -29,10 +29,13 @@
 
 package org.opensearch.hadoop.rest.commonshttp;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.util.zip.GZIPInputStream;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
 
@@ -44,6 +47,8 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.ConnectTimeout
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpConnectionParams;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.Protocol;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.ProtocolSocketFactory;
+import org.opensearch.hadoop.util.ByteSequence;
+import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.TestSettings;
 import org.hamcrest.Matchers;
 import org.junit.After;
@@ -143,5 +148,19 @@ public class CommonsHttpTransportTests {
             return;
         }
         fail("Should not be able to connect to TEST_NET_1");
+    }
+
+    @Test
+    public void testCompressByteSequence() throws Exception {
+        String data = "test";
+        ByteSequence ba = new BytesArray(data.getBytes(StandardCharsets.UTF_8));
+        ByteSequence compressed = CommonsHttpTransport.compressByteSequence(ba);
+
+        try(GZIPInputStream gzipInputStream = new GZIPInputStream(compressed.toInputStream())) {
+            byte[] decompressed = gzipInputStream.readAllBytes();
+            String result = new String(decompressed, StandardCharsets.UTF_8);
+
+            assertEquals(result, data);
+        }
     }
 }

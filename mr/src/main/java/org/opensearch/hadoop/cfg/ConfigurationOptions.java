@@ -118,6 +118,10 @@ public interface ConfigurationOptions {
     String OPENSEARCH_HTTP_RETRIES = "opensearch.http.retries";
     String OPENSEARCH_HTTP_RETRIES_DEFAULT = "3";
 
+    /** HTTP compression */
+    String OPENSEARCH_HTTP_COMPRESSION = "opensearch.http.compression";
+    String OPENSEARCH_HTTP_COMPRESSION_DEFAULT = "false";
+
     /** Scroll keep-alive */
     String OPENSEARCH_SCROLL_KEEPALIVE = "opensearch.scroll.keepalive";
     String OPENSEARCH_SCROLL_KEEPALIVE_DEFAULT = "5m";

@@ -85,6 +85,7 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.params.HttpMet
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.Protocol;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.ProtocolSocketFactory;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.protocol.SecureProtocolSocketFactory;
+import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.ByteSequence;
 import org.opensearch.hadoop.util.ReflectionUtils;
 import org.opensearch.hadoop.util.StringUtils;
@@ -95,6 +96,7 @@ import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.InputStream;
@@ -106,7 +108,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.io.ByteArrayOutputStream;
+import java.util.zip.GZIPOutputStream;
 
 /**
  * Transport implemented on top of Commons Http. Provides transport retries.
@@ -674,7 +676,19 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                         String.format("Method %s cannot contain body - implementation bug", request.method().name()));
             }
             EntityEnclosingMethod entityMethod = (EntityEnclosingMethod) http;
-            entityMethod.setRequestEntity(new BytesArrayRequestEntity(ba));
+
+            // compress HTTP payload
+            if (settings.getHttpCompression()) {
+                log.debug("Compressing request");
+                ByteSequence compressed = compressByteSequence(ba);
+                entityMethod.setRequestEntity(new BytesArrayRequestEntity(compressed));
+                http.setRequestHeader("Content-Encoding", "gzip");
+                stats.compressedBytesSent += compressed.length();
+            } else {
+                log.debug("Skipping request compression");
+                entityMethod.setRequestEntity(new BytesArrayRequestEntity(ba));
+            }
+
             entityMethod.setContentChunked(false);
         }
 
@@ -757,6 +771,15 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         // the request URI is not set (since it is retried across hosts), so use the
         // http info instead for source
         return new SimpleResponse(http.getStatusCode(), new ResponseInputStream(http), httpInfo, headers);
+    }
+
+    public static ByteSequence compressByteSequence(ByteSequence byteSequence) throws IOException {
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        try(GZIPOutputStream gzipOutputStream = new GZIPOutputStream(buffer)) {
+            byteSequence.writeTo(gzipOutputStream);
+        }
+
+        return new BytesArray(buffer.toByteArray());
     }
 
     /**

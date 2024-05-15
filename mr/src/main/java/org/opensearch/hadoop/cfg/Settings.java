@@ -176,6 +176,10 @@ public abstract class Settings {
         return Integer.valueOf(getProperty(OPENSEARCH_HTTP_RETRIES, OPENSEARCH_HTTP_RETRIES_DEFAULT));
     }
 
+    public boolean getHttpCompression() {
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_HTTP_COMPRESSION, OPENSEARCH_HTTP_COMPRESSION_DEFAULT));
+    }
+
     public int getBatchSizeInBytes() {
         return ByteSizeValue.parseBytesSizeValue(getProperty(OPENSEARCH_BATCH_SIZE_BYTES, OPENSEARCH_BATCH_SIZE_BYTES_DEFAULT)).bytesAsInt();
     }

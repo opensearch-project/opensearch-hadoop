@@ -144,7 +144,7 @@ CREATE EXTERNAL TABLE artists (
     id      BIGINT,
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
-STORED BY 'org.opensearch.hive.hadoop.OpenSearchStorageHandler'
+STORED BY 'org.opensearch.hadoop.hive.OpenSearchStorageHandler'
 TBLPROPERTIES('opensearch.resource' = 'radio/artists', 'opensearch.query' = '?q=me*');
 ```
 
@@ -165,7 +165,7 @@ CREATE EXTERNAL TABLE artists (
     id      BIGINT,
     name    STRING,
     links   STRUCT<url:STRING, picture:STRING>)
-STORED BY 'org.opensearch.hive.hadoop.OpenSearchStorageHandler'
+STORED BY 'org.opensearch.hadoop.hive.OpenSearchStorageHandler'
 TBLPROPERTIES('opensearch.resource' = 'radio/artists');
 ```
 

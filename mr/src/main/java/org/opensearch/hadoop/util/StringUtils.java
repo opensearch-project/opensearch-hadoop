@@ -29,7 +29,6 @@
 package org.opensearch.hadoop.util;
 
 import org.opensearch.hadoop.OpenSearchHadoopIllegalStateException;
-import org.opensearch.hadoop.serialization.json.BackportedJsonStringEncoder;
 import org.opensearch.hadoop.thirdparty.codehaus.jackson.io.JsonStringEncoder;
 
 import java.nio.charset.Charset;
@@ -413,7 +412,7 @@ public abstract class StringUtils {
     }
 
     public static String jsonEncoding(String rawString) {
-        return new String(HAS_JACKSON_CLASS ? JacksonStringEncoder.jsonEncoding(rawString) : BackportedJsonStringEncoder.getInstance().quoteAsString(rawString));
+        return new String(JacksonStringEncoder.jsonEncoding(rawString));
     }
 
     // return the value in a JSON friendly way

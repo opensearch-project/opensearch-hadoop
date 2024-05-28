@@ -12,6 +12,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Removed
 
 ### Fixed
+- Remove unnecessary outputCommitter setting ([#465](https://github.com/opensearch-project/opensearch-hadoop/pull/465))
 
 ### Security
 

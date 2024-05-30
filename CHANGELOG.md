@@ -10,6 +10,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Deprecated
 
 ### Removed
+- Removed obsolete backported classes for Jackson 1.5 support ([#471](https://github.com/opensearch-project/opensearch-hadoop/pull/471))
 
 ### Fixed
 

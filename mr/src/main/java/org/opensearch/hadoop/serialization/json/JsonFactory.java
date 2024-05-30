@@ -37,11 +37,8 @@ import org.opensearch.hadoop.util.ObjectUtils;
 
 public abstract class JsonFactory {
 
-    private static final boolean HAS_OBJECT_READER = ObjectUtils.isClassPresent(
-            "org.codehaus.jackson.map.ObjectReader", JsonFactory.class.getClassLoader());
-
     public static <T> ObjectReader objectReader(ObjectMapper mapper, Class<T> clazz) {
-        return (HAS_OBJECT_READER ? JacksonObjectReader.reader(mapper, clazz) : BackportedObjectReader.create(mapper, clazz));
+        return JacksonObjectReader.reader(mapper, clazz);
     }
 
     private static class JacksonObjectReader {

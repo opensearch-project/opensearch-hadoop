@@ -316,8 +316,8 @@ class BuildPlugin implements Plugin<Project>  {
                 resolve.force("commons-cli:commons-cli:1.2")
 
                 resolve.eachDependency { DependencyResolveDetails details ->
-                    // There are tons of slf4j-* variants. Search for all of them, and lock them down.
-                    if (details.requested.name.contains("slf4j-")) {
+                    // There are tons of slf4j-* variants. Search for all of them, and lock them down (except slf4j-reload4j).
+                    if (details.requested.name.contains("slf4j-") && (!details.requested.name.contains("slf4j-reload4j"))) {
                         details.useVersion "1.7.6"
                     }
                     // Be careful with log4j version settings as they can be easily missed.

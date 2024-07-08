@@ -17,7 +17,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Security
 
 ### Dependencies
-- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.0 to 2.17.1
+- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.0 to 2.17.2
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.0 to 2.17.2
 - Bumps `commons-logging:commons-logging` from 1.3.1 to 1.3.2
 - Bumps `com.google.protobuf:protobuf-java` from 4.26.1 to 4.27.2

@@ -93,6 +93,7 @@ public enum FieldType {
         CAST_HIERARCHY.put(TEXT,             new LinkedHashSet<FieldType>(Collections.singletonList(KEYWORD)));
         CAST_HIERARCHY.put(KEYWORD,          new LinkedHashSet<FieldType>());
         CAST_HIERARCHY.put(WILDCARD,         new LinkedHashSet<FieldType>(Collections.singletonList(KEYWORD)));
+        CAST_HIERARCHY.put(HALF_FLOAT,       new LinkedHashSet<FieldType>(Arrays.asList(FLOAT)));
         CAST_HIERARCHY.put(HALF_FLOAT,       new LinkedHashSet<FieldType>(Arrays.asList(FLOAT, DOUBLE, KEYWORD)));
         CAST_HIERARCHY.put(SCALED_FLOAT,     new LinkedHashSet<FieldType>(Arrays.asList(DOUBLE, KEYWORD)));
         CAST_HIERARCHY.put(GEO_POINT,        new LinkedHashSet<FieldType>());
@@ -102,6 +103,7 @@ public enum FieldType {
         CAST_HIERARCHY.put(JOIN,             new LinkedHashSet<FieldType>());
         CAST_HIERARCHY.put(IP,               new LinkedHashSet<FieldType>(Collections.singletonList(KEYWORD)));
         CAST_HIERARCHY.put(COMPLETION,       new LinkedHashSet<FieldType>());
+        CAST_HIERARCHY.put(KNN_VECTOR,       new LinkedHashSet<FieldType>(Arrays.asList(FLOAT)));
     }
 
     public static FieldType parse(String name) {

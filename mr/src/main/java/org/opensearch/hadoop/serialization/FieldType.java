@@ -54,6 +54,7 @@ public enum FieldType {
     TOKEN_COUNT,
     TEXT, KEYWORD, HALF_FLOAT, SCALED_FLOAT,
     WILDCARD,
+    KNN_VECTOR,
 
     GEO_POINT,
     GEO_SHAPE,

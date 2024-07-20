@@ -52,6 +52,7 @@ import org.apache.spark.sql.types.ArrayType
 import org.apache.spark.sql.types.Decimal
 import org.apache.spark.sql.types.DecimalType
 import org.apache.spark.sql.types.DoubleType
+import org.apache.spark.sql.types.FloatType
 import org.apache.spark.sql.types.IntegerType
 import org.apache.spark.sql.types.MapType
 import org.apache.spark.sql.types.StringType
@@ -2464,6 +2465,46 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     val df = sqc.read.format("opensearch").load(index)
     RestUtils.refresh(index)
     df.count()
+  }
+
+  @Test
+  def testKnnVectorAsArrayOfFloats(): Unit = {
+    val mapping = wrapMapping("data", s"""{
+      |      "properties": {
+      |        "name": {
+      |          "type": "$keyword"
+      |        },
+      |        "vector": {
+      |          "type": "knn_vector",
+      |          "dimension": 2
+      |        }
+      |      }
+      |  }
+    """.stripMargin)
+
+    val index = wrapIndex("sparksql-test-knnvector-array-knnvector")
+    val typed = "data"
+    val (target, _) = makeTargets(index, typed)
+    RestUtils.touch(index)
+    RestUtils.putMapping(index, typed, mapping.getBytes(StringUtils.UTF_8))
+
+    val arrayOfFloats = """{ "name": "Mini Munchies Pizza", "vector": [ -0.013f, 0.009f ]}""".stripMargin
+    sc.makeRDD(Seq(arrayOfFloats)).saveJsonToOpenSearch(target)
+
+    RestUtils.refresh(index)
+
+    val df = sqc.read.format("opensearch").load(index)
+
+    val dataType = df.schema("vector").dataType
+    assertEquals("array", dataType.typeName)
+    val array = dataType.asInstanceOf[ArrayType]
+    assertEquals(FloatType, array.elementType)
+
+    val head = df.head()
+    val vector = head.getSeq(1)
+    assertEquals(2, vector.length)
+    assertEquals(-0.013f, vector(0))
+    assertEquals(0.009f, vector(1))
   }
 
   /**

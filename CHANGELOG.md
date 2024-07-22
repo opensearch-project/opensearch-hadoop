@@ -23,6 +23,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.google.protobuf:protobuf-java` from 4.26.1 to 4.27.2
 - Bumps `io.netty:netty-all` from 4.1.109.Final to 4.1.111.Final
 - Bumps `jakarta.servlet:jakarta.servlet-api` from 6.0.0 to 6.1.0
+- Bumps `commons-codec:commons-codec` from 1.17.0 to 1.17.1
 
 ## [1.2.0]
 ### Changed

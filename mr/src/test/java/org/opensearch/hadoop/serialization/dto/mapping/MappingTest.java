@@ -57,6 +57,7 @@ import static org.opensearch.hadoop.serialization.FieldType.HALF_FLOAT;
 import static org.opensearch.hadoop.serialization.FieldType.INTEGER;
 import static org.opensearch.hadoop.serialization.FieldType.JOIN;
 import static org.opensearch.hadoop.serialization.FieldType.KEYWORD;
+import static org.opensearch.hadoop.serialization.FieldType.KNN_VECTOR;
 import static org.opensearch.hadoop.serialization.FieldType.LONG;
 import static org.opensearch.hadoop.serialization.FieldType.NESTED;
 import static org.opensearch.hadoop.serialization.FieldType.OBJECT;
@@ -147,7 +148,7 @@ public class MappingTest {
         MappingSet mappings = getMappingsForResource("primitives.json");
         Mapping mapping = ensureAndGet("index", "primitives", mappings);
         Field[] props = mapping.getFields();
-        assertEquals(16, props.length);
+        assertEquals(17, props.length);
         assertEquals("field01", props[0].name());
         assertEquals(BOOLEAN, props[0].type());
         assertEquals("field02", props[1].name());
@@ -180,6 +181,8 @@ public class MappingTest {
         assertEquals(DATE_NANOS, props[14].type());
         assertEquals("field16", props[15].name());
         assertEquals(WILDCARD, props[15].type());
+        assertEquals("field17", props[16].name());
+        assertEquals(KNN_VECTOR, props[16].type());
     }
 
     @Test

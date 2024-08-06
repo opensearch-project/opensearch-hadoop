@@ -28,12 +28,14 @@
  */
 package org.opensearch.spark.serialization
 
+import java.io.IOException
 import java.util.Collections
 import java.util.Date
 import java.util.{List => JList}
 import scala.collection.JavaConverters.asScalaBufferConverter
 import scala.collection.Seq
 import scala.collection.mutable.LinkedHashMap
+import scala.collection.mutable.ListBuffer
 import scala.collection.mutable.Map
 import org.opensearch.hadoop.serialization.FieldType.BINARY
 import org.opensearch.hadoop.serialization.FieldType.BOOLEAN
@@ -56,6 +58,7 @@ import org.opensearch.hadoop.serialization.FieldType.STRING
 import org.opensearch.hadoop.serialization.FieldType.TEXT
 import org.opensearch.hadoop.serialization.FieldType.TOKEN_COUNT
 import org.opensearch.hadoop.serialization.FieldType.WILDCARD
+import org.opensearch.hadoop.serialization.FieldType.KNN_VECTOR
 import org.opensearch.hadoop.serialization.Parser.Token.VALUE_BOOLEAN
 import org.opensearch.hadoop.serialization.Parser.Token.VALUE_NULL
 import org.opensearch.hadoop.serialization.Parser.Token.VALUE_NUMBER
@@ -103,6 +106,7 @@ class ScalaValueReader extends AbstractValueReader with SettingsAware {
         case BINARY => binaryValue(Option(parser.binaryValue()).getOrElse(value.getBytes()))
         case DATE => date(value, parser)
         case DATE_NANOS => dateNanos(value, parser)
+        case KNN_VECTOR => floatValue(value, parser)
         // GEO is ambiguous so use the JSON type instead to differentiate between doubles (a lot in GEO_SHAPE) and strings
         case GEO_POINT | GEO_SHAPE => {
           if (parser.currentToken() == VALUE_NUMBER) doubleValue(value, parser) else textValue(value, parser)

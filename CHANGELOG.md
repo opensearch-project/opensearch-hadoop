@@ -24,6 +24,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `io.netty:netty-all` from 4.1.109.Final to 4.1.112.Final
 - Bumps `jakarta.servlet:jakarta.servlet-api` from 6.0.0 to 6.1.0
 - Bumps `commons-codec:commons-codec` from 1.17.0 to 1.17.1
+- Bumps `org.slf4j:slf4j-api` from 2.0.13 to 2.0.16
 
 ## [1.2.0]
 ### Changed

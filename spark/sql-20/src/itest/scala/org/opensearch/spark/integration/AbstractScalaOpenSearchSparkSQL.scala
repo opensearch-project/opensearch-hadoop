@@ -2455,6 +2455,7 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
    * Tests the handling of k-nn vector fields.
    */
   @Test
+  @Ignore("k-NN plugin is currently missing")
   def testKnnVectorAsArrayOfFloats(): Unit = {
     val mapping = wrapMapping("data", s"""{
       |      "properties": {

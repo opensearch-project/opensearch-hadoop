@@ -2467,6 +2467,9 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     df.count()
   }
 
+  /**
+   * Tests the handling of k-nn vector fields.
+   */
   @Test
   def testKnnVectorAsArrayOfFloats(): Unit = {
     val mapping = wrapMapping("data", s"""{

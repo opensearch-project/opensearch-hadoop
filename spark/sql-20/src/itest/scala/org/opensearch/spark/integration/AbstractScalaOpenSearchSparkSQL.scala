@@ -2451,6 +2451,9 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
     assertEquals("again", samples.get(0).asInstanceOf[Row].get(0))
   }
 
+  /**
+   * Tests the handling of k-nn vector fields.
+   */
   @Test
   def testKnnVectorAsArrayOfFloats(): Unit = {
     val mapping = wrapMapping("data", s"""{

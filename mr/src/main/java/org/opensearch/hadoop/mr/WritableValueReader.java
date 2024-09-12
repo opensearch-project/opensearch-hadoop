@@ -72,6 +72,7 @@ public class WritableValueReader extends JdkValueReader {
         case HALF_FLOAT:
         case SCALED_FLOAT:
         case FLOAT:
+        case KNN_VECTOR:
             arrayType = FloatWritable.class;
             break;
         case DOUBLE:

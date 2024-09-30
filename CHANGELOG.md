@@ -15,6 +15,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Security
 
 ### Dependencies
+- Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.2 to 2.18.0
 
 ## [1.3.0]
 ### Added

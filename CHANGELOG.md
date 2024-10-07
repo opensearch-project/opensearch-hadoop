@@ -17,6 +17,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Dependencies
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.2 to 2.18.0
 - Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.2 to 2.18.0
+- Bumps `io.netty:netty-all` from 4.1.112.Final to 4.1.114.Final
 
 ## [1.3.0]
 ### Added

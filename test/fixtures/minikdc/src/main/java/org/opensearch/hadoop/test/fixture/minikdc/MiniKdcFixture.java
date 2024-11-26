@@ -82,6 +82,9 @@ public class MiniKdcFixture {
         // Provisioning info
         Map<String, String> userToPassword = new HashMap<>();
         Map<String, List<String>> keytabToUsers = new HashMap<>();
+	keytabToUsers.put("opensearch.keytab", Arrays.asList("opensearch"));
+	keytabToUsers.put("hadoop.keytab", Arrays.asList("nn/build.ci.opensearch.org", "dn/build.ci.opensearch.org", "rm/build.ci.opensearch.org", "nm/build.ci.opensearch.org", "jhs/build.ci.opensearch.org"));
+	keytabToUsers.put("client.keytab", Arrays.asList("client/build.ci.opensearch.org"));
         Set<String> allKeytabUsers = new HashSet<>();
 
         // Create default KDC Conf

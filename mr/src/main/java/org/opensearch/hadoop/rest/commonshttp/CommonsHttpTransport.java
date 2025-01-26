@@ -108,6 +108,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
+import java.util.zip.GZIPInputStream;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -152,12 +154,14 @@ public class CommonsHttpTransport implements Transport, StatsAware {
     private static class ResponseInputStream extends DelegatingInputStream implements ReusableInputStream {
 
         private final HttpMethod method;
+        private final boolean compressed;
         private final boolean reusable;
 
         public ResponseInputStream(HttpMethod http) throws IOException {
-            super(http.getResponseBodyAsStream());
+            super(getStream(http));
             this.method = http;
-            reusable = (delegate() instanceof ByteArrayInputStream);
+            this.compressed = hasCompressedResponseBody(http);
+            this.reusable = (http.getResponseBodyAsStream() instanceof ByteArrayInputStream);
         }
 
         @Override
@@ -173,7 +177,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         @Override
         public InputStream copy() {
             try {
-                return (reusable ? method.getResponseBodyAsStream() : null);
+                return (reusable ? getStream(method, compressed) : null);
             } catch (IOException ex) {
                 throw new OpenSearchHadoopIllegalStateException(ex);
             }
@@ -189,6 +193,23 @@ public class CommonsHttpTransport implements Transport, StatsAware {
                 }
             }
             method.releaseConnection();
+        }
+
+        static private InputStream getStream(HttpMethod http) throws IOException {
+            return getStream(http, hasCompressedResponseBody(http));
+        }
+
+        static private InputStream getStream(HttpMethod http, boolean compressed) throws IOException {
+            InputStream responseBodyStream = http.getResponseBodyAsStream();
+            if (compressed) {
+                responseBodyStream = new GZIPInputStream(responseBodyStream);
+            }
+            return responseBodyStream;
+        }
+
+        static private boolean hasCompressedResponseBody(HttpMethod http) {
+            Header contentEncoding = http.getResponseHeader("Content-Encoding");
+            return (contentEncoding != null) && Objects.equals(contentEncoding.getValue(), "gzip");
         }
     }
 
@@ -690,6 +711,11 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             }
 
             entityMethod.setContentChunked(false);
+        }
+
+        if (settings.getHttpCompression()) {
+            log.debug("Requesting compressed response");
+            http.setRequestHeader("Accept-Encoding", "gzip");
         }
 
         headers.applyTo(http);

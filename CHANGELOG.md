@@ -20,6 +20,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `io.netty:netty-all` from 4.1.112.Final to 4.1.117.Final
 - Bumps `com.google.protobuf:protobuf-java` from 4.28.2 to 4.29.3
 - Bumps `commons-codec:commons-codec` from 1.17.1 to 1.18.0
+- Bumps `commons-logging:commons-logging` from 1.3.4 to 1.3.5
 
 ## [1.3.0]
 ### Added

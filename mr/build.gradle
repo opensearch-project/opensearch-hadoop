@@ -51,9 +51,11 @@ dependencies {
         // thirdparty submodule. Downstream users of the library can pull it in as needed
         // for tests.
         exclude group: 'com.fasterxml.jackson.core'
+        exclude group: 'org.slf4j', module: 'slf4j-reload4j'
     }
     api("org.apache.hadoop:hadoop-mapreduce-client-core:${project.ext.hadoopVersion}") {
         exclude group: 'com.fasterxml.jackson.core'
+        exclude group: 'org.slf4j', module: 'slf4j-reload4j'
     }
     
     embedded(project(path: ":thirdparty", configuration: "shadow"))

@@ -21,6 +21,9 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.google.protobuf:protobuf-java` from 4.28.2 to 4.29.3
 - Bumps `commons-codec:commons-codec` from 1.17.1 to 1.18.0
 - Bumps `commons-logging:commons-logging` from 1.3.4 to 1.3.5
+- Bumps Spark3 version from 3.2.4 to 3.4.4 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
+- Bumps Scala2.12 version from 2.12.8 to 2.12.20 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
+- Bumps Scala2.13 version from 2.13.6 to 2.13.16 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
 
 ## [1.3.0]
 ### Added

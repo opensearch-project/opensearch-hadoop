@@ -85,7 +85,9 @@ dependencies {
     compileOnly("org.json4s:json4s-jackson_2.12:4.0.7")
     compileOnly("org.slf4j:slf4j-api:2.0.12")
 
-    implementation("org.apache.hadoop:hadoop-client:${HadoopClusterConfiguration.HADOOP.defaultVersion()}")
+    implementation("org.apache.hadoop:hadoop-client:${HadoopClusterConfiguration.HADOOP.defaultVersion()}") {
+        exclude group: 'org.slf4j', module: 'slf4j-reload4j'
+    }
     implementation("org.apache.spark:spark-sql_2.12:$project.ext.spark30Version")
 
     implementation( project(path: ':opensearch-hadoop-mr', configuration: 'itestJarConfig'))

@@ -173,12 +173,12 @@ class BaseBuildPlugin implements Plugin<Project> {
      */
     private static void configureRepositories(Project project) {
         project.repositories.mavenCentral()
-        project.repositories.maven { url "https://clojars.org/repo" }
-        project.repositories.maven { url 'https://repo.spring.io/plugins-release-local' }
+        project.repositories.maven { url = "https://clojars.org/repo" }
+        project.repositories.maven { url = 'https://repo.spring.io/plugins-release-local' }
 
         // For OpenSearch snapshots.
-        project.repositories.maven { url "https://artifacts.opensearch.org/snapshots/" } // default
-        project.repositories.maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" } // oss-only
+        project.repositories.maven { url = "https://artifacts.opensearch.org/snapshots/" } // default
+        project.repositories.maven { url = "https://aws.oss.sonatype.org/content/repositories/snapshots" } // oss-only
 
         // OpenSearch artifacts
 //        project.repositories.maven { url "https://artifacts.opensearch.org/snapshots/" } // default
@@ -187,7 +187,7 @@ class BaseBuildPlugin implements Plugin<Project> {
         // Add Ivy repos in order to pull OpenSearch distributions that have bundled JDKs
         for (String repo : ['snapshots', 'artifacts']) {
             project.repositories.ivy {
-                url "https://${repo}.opensearch.org/releases"
+                url = "https://${repo}.opensearch.org/releases"
                 patternLayout {
                     artifact "/core/opensearch/[revision]/[module]-min-[revision](-[classifier]).[ext]"
                 }
@@ -199,8 +199,8 @@ class BaseBuildPlugin implements Plugin<Project> {
             // Extract the revision number of the snapshot via regex:
             String revision = (project.ext.luceneVersion =~ /\w+-snapshot-([a-z0-9]+)/)[0][1]
             project.repositories.maven {
-                name 'lucene-snapshots'
-                url "https://d1nvenhzbhpy0q.cloudfront.net/snapshots/lucene/${revision}"
+                name = 'lucene-snapshots'
+                url = "https://d1nvenhzbhpy0q.cloudfront.net/snapshots/lucene/${revision}"
             }
         }
     }

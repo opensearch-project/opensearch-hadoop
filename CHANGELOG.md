@@ -24,6 +24,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps Spark3 version from 3.2.4 to 3.4.4 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
 - Bumps Scala2.12 version from 2.12.8 to 2.12.20 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
 - Bumps Scala2.13 version from 2.13.6 to 2.13.16 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
+- Bumps `org.opensearch.gradle:build-tools` from 2.11.1 to 2.19.0 ([#557](https://github.com/opensearch-project/opensearch-hadoop/pull/557))
 
 ## [1.3.0]
 ### Added

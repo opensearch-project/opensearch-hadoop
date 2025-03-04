@@ -76,9 +76,13 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.16.0'
 
     if (localRepo) {
-        implementation name: "build-tools-${buildToolsVersion}"
+        implementation(name: "build-tools-${buildToolsVersion}") {
+            exclude group: 'com.github.johnrengelman'
+        }
     } else {
-        implementation group: 'org.opensearch.gradle', name: 'build-tools', version: buildToolsVersion
+        implementation(group: 'org.opensearch.gradle', name: 'build-tools', version: buildToolsVersion) {
+            exclude group: 'com.github.johnrengelman'
+        }
     }
 }
 

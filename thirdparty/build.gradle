@@ -1,7 +1,7 @@
 import org.opensearch.hadoop.gradle.BuildPlugin
 
 plugins {
-    id 'com.github.johnrengelman.shadow'
+    id 'com.gradleup.shadow'
     id 'opensearch.hadoop.build'
 }
 

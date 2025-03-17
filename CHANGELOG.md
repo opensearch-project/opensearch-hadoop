@@ -16,7 +16,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Dependencies
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.2 to 2.18.2
-- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.2 to 2.18.2
+- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.2 to 2.18.3
 - Bumps `io.netty:netty-all` from 4.1.112.Final to 4.1.118.Final
 - Bumps `com.google.protobuf:protobuf-java` from 4.28.2 to 4.29.3
 - Bumps `commons-codec:commons-codec` from 1.17.1 to 1.18.0

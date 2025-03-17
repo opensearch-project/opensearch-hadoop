@@ -196,7 +196,9 @@ task generateDependenciesReport(type: ConcatFilesTask) { concatDepsTask ->
 }
 
 project.tasks.named('dependencyLicenses', DependencyLicensesTask) {
-    it.dependencies = project.configurations.licenseChecks.fileCollection {
-        !(it instanceof ProjectDependency)
-    }
+    it.dependencies = project.configurations.licenseChecks.incoming.artifactView {
+        componentFilter {
+            !(it instanceof ProjectComponentIdentifier)
+        }
+    }.files
 }

@@ -28,6 +28,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.slf4j:slf4j-api` from 2.0.16 to 2.0.17
 - Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.651 to 1.12.782
 - Bumps `com.fasterxml.jackson.module:jackson-module-scala_2.12` from 2.16.1 to 2.18.3
+- Bumps `org.apache.avro:avro` from 1.8.2 to 1.12.0
 
 ## [1.3.0]
 ### Added

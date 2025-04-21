@@ -85,7 +85,7 @@ sparkVariants {
 
             if ('2.10' == scalaMajorVersion) {
                 add(variant.configuration('implementation'), "org.apache.spark:spark-unsafe_${variant.scalaMajorVersion}:$variant.sparkVersion")
-                add(variant.configuration('implementation'), "org.apache.avro:avro:1.8.2")
+                add(variant.configuration('implementation'), "org.apache.avro:avro:1.12.0")
                 add(variant.configuration('implementation'), "log4j:log4j:1.2.17")
                 add(variant.configuration('implementation'), "com.google.code.findbugs:jsr305:3.0.2")
                 add(variant.configuration('implementation'), "org.json4s:json4s-ast_2.10:3.6.12")

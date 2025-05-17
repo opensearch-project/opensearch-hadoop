@@ -721,7 +721,8 @@ public class RestClient implements Closeable, StatsAware {
     public ClusterInfo mainInfo() {
         // For serverless mode, return dummy info without making root request
         if (this.settings.getServerlessMode()) {
-            ClusterName clusterName = new ClusterName("serverless-collection", null);
+            // Use a dummy UUID instead of null to avoid NPE in validation
+            ClusterName clusterName = new ClusterName("serverless-collection", "serverless-uuid");
             return new ClusterInfo(clusterName, OpenSearchMajorVersion.LATEST);
         }
         
@@ -755,7 +756,8 @@ public class RestClient implements Closeable, StatsAware {
         } catch (Exception e) {
             // If unable to get cluster info in normal way, fallback to serverless mode
             LOG.debug("Error getting cluster info, falling back to serverless mode", e);
-            ClusterName clusterName = new ClusterName("serverless-collection", null);
+            // Use a dummy UUID instead of null to avoid NPE in validation
+            ClusterName clusterName = new ClusterName("serverless-collection", "serverless-uuid");
             return new ClusterInfo(clusterName, OpenSearchMajorVersion.LATEST);
         }
     }

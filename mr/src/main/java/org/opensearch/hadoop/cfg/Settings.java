@@ -168,6 +168,10 @@ public abstract class Settings {
         return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_WAN_ONLY, OPENSEARCH_NODES_WAN_ONLY_DEFAULT));
     }
 
+    public boolean getServerlessMode() {
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_SERVERLESS, OPENSEARCH_SERVERLESS_DEFAULT));
+    }
+
     public long getHttpTimeout() {
         return TimeValue.parseTimeValue(getProperty(OPENSEARCH_HTTP_TIMEOUT, OPENSEARCH_HTTP_TIMEOUT_DEFAULT)).getMillis();
     }
@@ -613,6 +617,11 @@ public abstract class Settings {
 
     public Settings setPort(int port) {
         setProperty(OPENSEARCH_PORT, "" + port);
+        return this;
+    }
+
+    public Settings setServerlessMode(boolean serverless) {
+        setProperty(OPENSEARCH_SERVERLESS, Boolean.toString(serverless));
         return this;
     }
 

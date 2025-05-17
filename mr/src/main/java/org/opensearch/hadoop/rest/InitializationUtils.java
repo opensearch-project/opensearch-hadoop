@@ -339,9 +339,11 @@ public abstract class InitializationUtils {
         try {
             mainInfo = bootstrap.mainInfo();
             if (log.isDebugEnabled()) {
+                // Handle serverless mode where UUID might be null
+                String uuid = mainInfo.getClusterName().getUUID() != null ? mainInfo.getClusterName().getUUID() : "N/A";
                 log.debug(String.format("Discovered OpenSearch cluster [%s/%s], version [%s]",
                         mainInfo.getClusterName().getName(),
-                        mainInfo.getClusterName().getUUID(),
+                        uuid,
                         mainInfo.getMajorVersion()));
             }
         } catch (OpenSearchHadoopException ex) {
@@ -364,7 +366,8 @@ public abstract class InitializationUtils {
                         mainInfo.getClusterName().getName(),
                         clusterName));
             }
-            if (mainInfo.getClusterName().getUUID().equals(clusterUUID) == false) {
+            if (mainInfo.getClusterName().getUUID() != null && 
+                mainInfo.getClusterName().getUUID().equals(clusterUUID) == false) {
                 log.warn(String.format(
                         "Discovered incorrect cluster UUID in settings. Expected [%s] but received [%s]; replacing...",
                         mainInfo.getClusterName().getUUID(),

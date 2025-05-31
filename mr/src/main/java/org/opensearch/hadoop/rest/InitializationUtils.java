@@ -85,13 +85,19 @@ public abstract class InitializationUtils {
 
             try {
                 if (bootstrap.indexExists(readResource.index())) {
-                    RestClient.Health status = bootstrap.getHealth(readResource.index());
-                    if (status == RestClient.Health.RED) {
-                        throw new OpenSearchHadoopIllegalStateException("Index specified [" + readResource.index()
-                                + "] is either red or " +
-                                "includes an index that is red, and thus all requested data cannot be safely and fully loaded. "
-                                +
-                                "Bailing out...");
+                    if (settings.getServerlessMode()) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Serverless mode - skipping health check (not supported in serverless)");
+                        }
+                   } else {
+                        RestClient.Health status = bootstrap.getHealth(readResource.index());
+                        if (status == RestClient.Health.RED) {
+                            throw new OpenSearchHadoopIllegalStateException("Index specified [" + readResource.index()
+                                    + "] is either red or " +
+                                    "includes an index that is red, and thus all requested data cannot be safely and fully loaded. "
+                                    +
+                                    "Bailing out...");
+                        }
                     }
                 }
             } finally {

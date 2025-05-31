@@ -75,6 +75,10 @@ public interface ConfigurationOptions {
     String OPENSEARCH_NODES_WAN_ONLY = "opensearch.nodes.wan.only";
     String OPENSEARCH_NODES_WAN_ONLY_DEFAULT = "false";
 
+    /** Serverless mode */
+    String OPENSEARCH_SERVERLESS = "opensearch.serverless";
+    String OPENSEARCH_SERVERLESS_DEFAULT = "false";
+
     String OPENSEARCH_NODES_RESOLVE_HOST_NAME = "opensearch.nodes.resolve.hostname";
 
     /** Secure Settings Keystore */
@@ -345,4 +349,5 @@ public interface ConfigurationOptions {
 
     String OPENSEARCH_AWS_SIGV4_SERVICE_NAME = "opensearch.aws.sigv4.service.name";
     String OPENSEARCH_AWS_SIGV4_SERVICE_NAME_DEFAULT = "es";
+    String OPENSEARCH_AWS_SIGV4_SERVICE_NAME_SERVERLESS = "aoss";
 }

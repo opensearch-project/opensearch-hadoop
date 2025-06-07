@@ -23,8 +23,8 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.methods.PutMet
 import org.opensearch.hadoop.util.BytesArray;
 import org.opensearch.hadoop.util.TestSettings;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.BasicAWSCredentials;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
 
@@ -48,7 +48,7 @@ public class AwsSigV4SignerTest {
     }
 
     private static AwsV4SignerSupport getTestSigner(Settings settings) {
-        AWSCredentials credentials = new BasicAWSCredentials("test-access-key", "test-secret-key");
+        AwsCredentials credentials = AwsBasicCredentials.create("test-access-key", "test-secret-key");
         AwsV4SignerSupport signer = new AwsV4SignerSupport(settings, settings.getNodes(), credentials);
         signer.overrideSigningDate(Date.from(Instant.ofEpochSecond(1673626117))); // 2023-01-13 16:08:37 +0000
         return signer;

@@ -77,7 +77,7 @@ class SparkYarnServiceDescriptor implements ServiceDescriptor {
 
     @Override
     String getDependencyCoordinates(ServiceConfiguration configuration) {
-        return "spark:spark-${configuration.getVersion()}:${artifactName(configuration)}@tgz"
+        return "apache:spark:${configuration.getVersion()}@tgz"
     }
 
     @Override

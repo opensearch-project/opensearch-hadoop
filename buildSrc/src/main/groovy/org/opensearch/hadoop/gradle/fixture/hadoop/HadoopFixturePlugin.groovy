@@ -40,7 +40,7 @@ import org.gradle.api.artifacts.repositories.IvyPatternRepositoryLayout
 
 class HadoopFixturePlugin implements Plugin<Project> {
 
-    private static final String APACHE_MIRROR = "https://apache.osuosl.org/"
+    private static final String APACHE_MIRROR = "https://archive.apache.org/dist/"
 
     static class HadoopFixturePluginExtension {
         private NamedDomainObjectContainer<HadoopClusterConfiguration> clusters
@@ -81,10 +81,9 @@ class HadoopFixturePlugin implements Plugin<Project> {
         repositoryHandler.add(repositoryHandler.ivy({IvyArtifactRepository ivyArtifactRepository ->
             ivyArtifactRepository.setUrl(APACHE_MIRROR)
             ivyArtifactRepository.patternLayout({IvyPatternRepositoryLayout ivyPatternRepositoryLayout ->
-                // We use this pattern normally and break the regular tradition of a strictly numerical version
-                // because Hive does not provide a reasonable artifact name that makes a more robust pattern
-                // reasonable (it has a very unorthodox layout)
-                ivyPatternRepositoryLayout.artifact("[organization]/[module]/[revision].[ext]")
+                ivyPatternRepositoryLayout.artifact("[module]/common/[module]-[revision]/[module]-[revision].[ext]")
+                ivyPatternRepositoryLayout.artifact("[module]/[module]-[revision]/apache-[module]-[revision]-bin.[ext]")
+                ivyPatternRepositoryLayout.artifact("spark/spark-[revision]/spark-[revision]-bin-hadoop3.[ext]")
                 ivyPatternRepositoryLayout.setM2compatible(true)
             })
             ivyArtifactRepository.metadataSources({IvyArtifactRepository.MetadataSources metadataSources ->

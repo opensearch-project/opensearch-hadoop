@@ -200,7 +200,7 @@ class BaseBuildPlugin implements Plugin<Project> {
             String revision = (project.ext.luceneVersion =~ /\w+-snapshot-([a-z0-9]+)/)[0][1]
             project.repositories.maven {
                 name = 'lucene-snapshots'
-                url = "https://d1nvenhzbhpy0q.cloudfront.net/snapshots/lucene/${revision}"
+                url = "https://artifacts.opensearch.org/snapshots/lucene/${revision}"
             }
         }
     }

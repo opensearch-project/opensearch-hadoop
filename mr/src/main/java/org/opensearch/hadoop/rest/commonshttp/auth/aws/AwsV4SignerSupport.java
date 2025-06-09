@@ -18,27 +18,25 @@ import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.Header;
 import org.opensearch.hadoop.thirdparty.google.common.base.Splitter;
 import org.opensearch.hadoop.thirdparty.google.common.base.Strings;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.HttpMethod;
-
-import com.amazonaws.DefaultRequest;
-import com.amazonaws.auth.AWS4Signer;
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.http.HttpMethodName;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.signer.Aws4Signer;
+import software.amazon.awssdk.auth.signer.params.Aws4SignerParams;
+import software.amazon.awssdk.http.SdkHttpFullRequest;
+import software.amazon.awssdk.http.SdkHttpMethod;
+import software.amazon.awssdk.regions.Region;
 import java.io.UnsupportedEncodingException;
-import java.net.URISyntaxException;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.Clock;
+import java.time.ZoneOffset;
 
 public class AwsV4SignerSupport {
     private final Settings settings;
     private final String httpInfo;
-    private final AWSCredentials credentials;
+    private final AwsCredentials credentials;
     private Date overriddenSigningDate;
 
-    public AwsV4SignerSupport(Settings settings, String httpInfo, AWSCredentials credentials) {
+    public AwsV4SignerSupport(Settings settings, String httpInfo, AwsCredentials credentials) {
         this.settings = settings;
         this.httpInfo = httpInfo;
         this.credentials = credentials;
@@ -57,64 +55,54 @@ public class AwsV4SignerSupport {
         String awsRegion = settings.getAwsSigV4Region();
         String awsServiceName = settings.getAwsSigV4ServiceName();
 
-        AWS4Signer aws4Signer = new AWS4Signer();
-        aws4Signer.setRegionName(awsRegion);
-        aws4Signer.setServiceName(awsServiceName);
-
-        if (overriddenSigningDate != null) {
-            aws4Signer.setOverrideDate(overriddenSigningDate);
+        SdkHttpFullRequest.Builder rb = SdkHttpFullRequest.builder()
+                .method(SdkHttpMethod.valueOf(request.method().name()))
+                .uri(java.net.URI.create(httpInfo))
+                .encodedPath(request.path().toString());
+        
+        CharSequence params = request.params();
+        if (params != null && params.length() > 0) {
+            Splitter.on('&').trimResults().omitEmptyStrings()
+                    .split(params.toString())
+                    .forEach(p -> {
+                        try {
+                            int idx = p.indexOf('=');
+                            String k = idx > 0 ? URLDecoder.decode(p.substring(0, idx), StandardCharsets.UTF_8.name()) : p;
+                            String v = idx > 0 ? URLDecoder.decode(p.substring(idx + 1), StandardCharsets.UTF_8.name()) : "";
+                            rb.putRawQueryParameter(k, v);
+                        } catch (UnsupportedEncodingException e) {
+                            throw new RuntimeException("UTF-8 encoding not supported", e);
+                        }
+                    });
         }
 
-        DefaultRequest<Void> req = new DefaultRequest<>(awsServiceName);
-        req.setHttpMethod(HttpMethodName.valueOf(request.method().name()));
-
-        String path = request.path().toString();
-        req.setResourcePath(path);
-
-        Splitter queryStringSplitter = Splitter.on('&').trimResults().omitEmptyStrings();
-        final Iterable<String> rawParams = request.params() != null ? queryStringSplitter.split(request.params())
-                : Collections.emptyList();
-
-        Map<String, List<String>> queryParams = new HashMap<>();
-
-        for (String rawParam : rawParams) {
-            if (!Strings.isNullOrEmpty(rawParam)) {
-                final String pair = URLDecoder.decode(rawParam, StandardCharsets.UTF_8.name());
-                final int index = pair.indexOf('=');
-                if (index > 0) {
-                    final String key = pair.substring(0, index);
-                    final String value = pair.substring(index + 1);
-                    queryParams.put(key, Collections.singletonList(value));
-                } else {
-                    queryParams.put(pair, Collections.singletonList(""));
-                }
+        for (Header h : http.getRequestHeaders()) {
+            if (!h.getName().equalsIgnoreCase("user-agent")) {
+                rb.appendHeader(h.getName(), h.getValue());
             }
         }
+        rb.appendHeader("x-amz-content-sha256", "required");
 
-        req.setParameters(queryParams);
+        rb.contentStreamProvider(() -> request.body() != null
+                ? request.body().toInputStream()
+                : new ByteArrayInputStream(new byte[0]));
 
-        try {
-            req.setEndpoint(new java.net.URI(httpInfo));
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException("Invalid request URI: " + httpInfo);
+        SdkHttpFullRequest unsigned = rb.build();
+
+        Aws4Signer signer = Aws4Signer.create();
+
+        Aws4SignerParams.Builder paramsBuilder = Aws4SignerParams.builder()
+                .awsCredentials(credentials)
+                .signingRegion(Region.of(awsRegion))
+                .signingName(awsServiceName);
+
+        if (overriddenSigningDate != null) {
+            paramsBuilder.signingClockOverride(
+                    Clock.fixed(overriddenSigningDate.toInstant(), ZoneOffset.UTC));
         }
 
-        // Explicitly provide an empty body stream to avoid the signer utilizing the query params as the body content
-        // See: https://github.com/opensearch-project/opensearch-hadoop/pull/443
-        req.setContent(request.body() != null ? request.body().toInputStream() : new ByteArrayInputStream(new byte[0]));
+        SdkHttpFullRequest signed = signer.sign(unsigned, paramsBuilder.build());
 
-        for (Header header : http.getRequestHeaders()) {
-            if (header.getName().equalsIgnoreCase("user-agent")) continue;
-
-            req.addHeader(header.getName(), header.getValue());
-        }
-
-        req.addHeader("x-amz-content-sha256", "required");
-
-        aws4Signer.sign(req, credentials);
-
-        for (Map.Entry<String, String> entry : req.getHeaders().entrySet()) {
-            http.setRequestHeader(entry.getKey(), entry.getValue());
-        }
+        signed.headers().forEach((k, v) -> http.setRequestHeader(k, v.get(0)));
     }
 }

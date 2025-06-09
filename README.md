@@ -20,7 +20,13 @@ Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Spark](#
 
 ## Requirements
 OpenSearch (__1.3.x__ or higher) cluster accessible through REST. That's it!
-If using SigV4 IAM auth features, you would need to include the [aws-sdk-bundle](https://mvnrepository.com/artifact/com.amazonaws/aws-java-sdk-bundle) in your job classpath.
+If using SigV4 IAM auth features, you would need to include the following AWS SDK v2 dependencies in your job classpath:
+- `software.amazon.awssdk:auth:2.31.59` (or later)
+- `software.amazon.awssdk:regions:2.31.59` (or later)
+- `software.amazon.awssdk:http-client-spi:2.31.59` (or later)
+- `software.amazon.awssdk:identity-spi:2.31.59` (or later)
+- `software.amazon.awssdk:sdk-core:2.31.59` (or later)
+- `software.amazon.awssdk:utils:2.31.59` (or later)
 
 ## Usage
 

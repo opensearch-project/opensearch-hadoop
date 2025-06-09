@@ -74,7 +74,7 @@ class HiveServiceDescriptor implements ServiceDescriptor {
 
     @Override
     String getDependencyCoordinates(ServiceConfiguration configuration) {
-        return "hive:hive-${configuration.getVersion()}:${artifactName(configuration)}@tar.gz"
+        return "apache:hive:${configuration.getVersion()}@tar.gz"
     }
 
     @Override

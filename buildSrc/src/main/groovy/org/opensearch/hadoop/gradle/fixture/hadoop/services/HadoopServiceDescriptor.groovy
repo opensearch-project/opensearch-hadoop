@@ -77,7 +77,8 @@ class HadoopServiceDescriptor implements ServiceDescriptor {
 
     @Override
     String getDependencyCoordinates(ServiceConfiguration configuration) {
-        return "hadoop.common:hadoop-${configuration.getVersion()}:${artifactName(configuration)}@tar.gz"
+        Version version = configuration.getVersion()
+        return "apache:hadoop:${configuration.getVersion()}@tar.gz"
     }
 
     @Override

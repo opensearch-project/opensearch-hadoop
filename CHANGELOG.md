@@ -11,6 +11,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Removed
 
 ### Fixed
+- Fixed build failures when downloading Apache project dependencies (Hadoop, Hive, Spark) ([#595](https://github.com/opensearch-project/opensearch-hadoop/pull/595))
 
 ### Security
 

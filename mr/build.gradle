@@ -79,7 +79,6 @@ dependencies {
     implementation "software.amazon.awssdk:auth:2.31.59"
     implementation "software.amazon.awssdk:regions:2.31.59"
     implementation "software.amazon.awssdk:http-client-spi:2.31.59"
-    implementation "software.amazon.awssdk:apache-client:2.31.59"
     implementation "software.amazon.awssdk:identity-spi:2.31.59"
     implementation "software.amazon.awssdk:utils:2.31.59"
     implementation "software.amazon.awssdk:sdk-core:2.31.59"

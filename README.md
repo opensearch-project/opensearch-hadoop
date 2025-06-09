@@ -24,6 +24,7 @@ If using SigV4 IAM auth features, you would need to include the following AWS SD
 - `software.amazon.awssdk:auth:2.31.59` (or later)
 - `software.amazon.awssdk:regions:2.31.59` (or later)
 - `software.amazon.awssdk:http-client-spi:2.31.59` (or later)
+- `software.amazon.awssdk:identity-spi:2.31.59` (or later)
 - `software.amazon.awssdk:sdk-core:2.31.59` (or later)
 - `software.amazon.awssdk:utils:2.31.59` (or later)
 

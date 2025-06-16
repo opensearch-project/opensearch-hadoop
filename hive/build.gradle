@@ -42,7 +42,7 @@ dependencies {
     testImplementation("org.apache.hive:hive-jdbc:$hiveVersion") {
         exclude module: "log4j-slf4j-impl"
     }
-    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.19.0")
+    testImplementation("com.fasterxml.jackson.core:jackson-databind:2.19.1")
 
     itestImplementation(project(":test:shared"))
     itestImplementation("org.apache.hive:hive-service:$hiveVersion") {
@@ -52,7 +52,7 @@ dependencies {
         exclude module: "log4j-slf4j-impl"
     }
     itestImplementation("org.apache.tez:tez-dag:0.9.2")
-    itestImplementation("com.fasterxml.jackson.core:jackson-databind:2.19.0")
+    itestImplementation("com.fasterxml.jackson.core:jackson-databind:2.19.1")
 
     additionalSources(project(":opensearch-hadoop-mr"))
     javadocSources(project(":opensearch-hadoop-mr"))

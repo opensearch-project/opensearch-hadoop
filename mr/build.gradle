@@ -76,12 +76,12 @@ dependencies {
         exclude group: "org.apache.directory.api", module: "api-ldap-schema-data"
         exclude group: 'com.fasterxml.jackson.core'
     }
-    implementation "software.amazon.awssdk:auth:2.31.63"
-    implementation "software.amazon.awssdk:regions:2.31.63"
-    implementation "software.amazon.awssdk:http-client-spi:2.31.63"
-    implementation "software.amazon.awssdk:identity-spi:2.31.63"
-    implementation "software.amazon.awssdk:utils:2.31.63"
-    implementation "software.amazon.awssdk:sdk-core:2.31.63"
+    implementation "software.amazon.awssdk:auth:2.31.64"
+    implementation "software.amazon.awssdk:regions:2.31.64"
+    implementation "software.amazon.awssdk:http-client-spi:2.31.64"
+    implementation "software.amazon.awssdk:identity-spi:2.31.64"
+    implementation "software.amazon.awssdk:utils:2.31.64"
+    implementation "software.amazon.awssdk:sdk-core:2.31.64"
 }
 
 String generatedResources = "$buildDir/generated-resources/main"

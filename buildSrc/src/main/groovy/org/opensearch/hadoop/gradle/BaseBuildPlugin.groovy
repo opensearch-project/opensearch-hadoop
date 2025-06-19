@@ -178,6 +178,7 @@ class BaseBuildPlugin implements Plugin<Project> {
 
         // For OpenSearch snapshots.
         project.repositories.maven { url = "https://artifacts.opensearch.org/snapshots/" } // default
+        project.repositories.maven { url = "https://central.sonatype.com/repository/maven-snapshots/" } // central portal snapshot
         project.repositories.maven { url = "https://aws.oss.sonatype.org/content/repositories/snapshots" } // oss-only
 
         // OpenSearch artifacts

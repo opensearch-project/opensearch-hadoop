@@ -41,4 +41,4 @@ The release process is standard across repositories in this org and is run by a 
 1. Increment the version in [opensearch-hadoop-version.properties](./buildSrc/opensearch-hadoop-version.properties) to the next patch release, e.g. `2.1.1`.
 
 ## Snapshot Builds
-The [snapshots builds](https://aws.oss.sonatype.org/content/repositories/snapshots/org/opensearch/client/) are published to sonatype using [publish_snapshot.yml](./.github/workflows/publish_snapshot.yml) workflow. Each `push` event to the main branch triggers this workflow.
+The [snapshots builds](https://central.sonatype.com/service/rest/repository/browse/maven-snapshots/org/opensearch/client/) are published to sonatype using [publish_snapshot.yml](./.github/workflows/publish_snapshot.yml) workflow. Each `push` event to the main branch triggers this workflow.

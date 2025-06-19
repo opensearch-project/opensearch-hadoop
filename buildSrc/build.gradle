@@ -60,6 +60,7 @@ repositories {
         // For some reason the root dirs all point to the buildSrc folder. The local Repo will be one above that.
         flatDir { dirs new File(project.rootDir, "../localRepo") }
     } else if (snapshot) {
+        maven { url = "https://central.sonatype.com/repository/maven-snapshots/" }
         maven { url = "https://aws.oss.sonatype.org/content/repositories/snapshots" }
     }
     else {

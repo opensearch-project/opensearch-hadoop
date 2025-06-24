@@ -168,6 +168,10 @@ public abstract class Settings {
         return Booleans.parseBoolean(getProperty(OPENSEARCH_NODES_WAN_ONLY, OPENSEARCH_NODES_WAN_ONLY_DEFAULT));
     }
 
+    public boolean getServerlessMode() {
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_SERVERLESS, OPENSEARCH_SERVERLESS_DEFAULT));
+    }
+
     public long getHttpTimeout() {
         return TimeValue.parseTimeValue(getProperty(OPENSEARCH_HTTP_TIMEOUT, OPENSEARCH_HTTP_TIMEOUT_DEFAULT)).getMillis();
     }
@@ -616,6 +620,11 @@ public abstract class Settings {
         return this;
     }
 
+    public Settings setServerlessMode(boolean serverless) {
+        setProperty(OPENSEARCH_SERVERLESS, Boolean.toString(serverless));
+        return this;
+    }
+
     public Settings setResourceRead(String index) {
         setProperty(OPENSEARCH_RESOURCE_READ, index);
         return this;
@@ -814,6 +823,10 @@ public abstract class Settings {
     }
 
     public String getAwsSigV4ServiceName() {
-        return getProperty(OPENSEARCH_AWS_SIGV4_SERVICE_NAME, OPENSEARCH_AWS_SIGV4_SERVICE_NAME_DEFAULT);
+        if (getServerlessMode()) {
+            return getProperty(OPENSEARCH_AWS_SIGV4_SERVICE_NAME, OPENSEARCH_AWS_SIGV4_SERVICE_NAME_SERVERLESS);
+        } else {
+            return getProperty(OPENSEARCH_AWS_SIGV4_SERVICE_NAME, OPENSEARCH_AWS_SIGV4_SERVICE_NAME_DEFAULT);
+        }
     }
 }

@@ -33,6 +33,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps AWS SDK from AWS SDK v1 `com.amazonaws:aws-java-sdk-bundle` 1.12.783 to AWS SDK v2 2.31.59 ([#594](https://github.com/opensearch-project/opensearch-hadoop/pull/594))
 - Bumps `software.amazon.awssdk:utils` from 2.31.59 to 2.31.63
 - Bumps `software.amazon.awssdk:auth` from 2.31.59 to 2.31.64
+- Bumps `software.amazon.awssdk:regions` from 2.31.64 to 2.31.73
 
 ## [1.3.0]
 ### Added

@@ -36,6 +36,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `software.amazon.awssdk:regions` from 2.31.64 to 2.31.73
 - Bumps `com.gradleup.shadow` from 8.3.6 to 8.3.8
 - Bumps `software.amazon.awssdk:sdk-core` from 2.31.73 to 2.31.77
+- Bumps `software.amazon.awssdk:identity-spi` from 2.31.77 to 2.31.78
 
 ## [1.3.0]
 ### Added

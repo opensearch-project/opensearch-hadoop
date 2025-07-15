@@ -28,15 +28,10 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps Scala2.13 version from 2.13.6 to 2.13.16 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
 - Bumps `org.opensearch.gradle:build-tools` from 2.11.1 to 2.19.0 ([#557](https://github.com/opensearch-project/opensearch-hadoop/pull/557))
 - Bumps `org.slf4j:slf4j-api` from 2.0.16 to 2.0.17
-- Bumps `com.amazonaws:aws-java-sdk-bundle` from 1.12.651 to 1.12.783
 - Bumps `com.fasterxml.jackson.module:jackson-module-scala_2.12` from 2.16.1 to 2.19.1
 - Bumps AWS SDK from AWS SDK v1 `com.amazonaws:aws-java-sdk-bundle` 1.12.783 to AWS SDK v2 2.31.59 ([#594](https://github.com/opensearch-project/opensearch-hadoop/pull/594))
-- Bumps `software.amazon.awssdk:utils` from 2.31.59 to 2.31.63
-- Bumps `software.amazon.awssdk:auth` from 2.31.59 to 2.31.64
-- Bumps `software.amazon.awssdk:regions` from 2.31.64 to 2.31.73
 - Bumps `com.gradleup.shadow` from 8.3.6 to 8.3.8
-- Bumps `software.amazon.awssdk:sdk-core` from 2.31.73 to 2.31.77
-- Bumps `software.amazon.awssdk:identity-spi` from 2.31.77 to 2.31.78
+- Bumps `software.amazon.awssdk:sdk-core` from 2.31.59 to 2.31.78
 
 ## [1.3.0]
 ### Added

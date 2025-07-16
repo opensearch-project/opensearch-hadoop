@@ -302,7 +302,6 @@ public class RestRepository implements Closeable, StatsAware {
 
             return shards;
         } else {
-            // Original implementation for non-serverless mode
             List<List<Map<String, Object>>> info = client.targetShards(resources.getResourceWrite().index(), SettingsUtils.getFixedRouting(settings));
             Map<ShardInfo, NodeInfo> shards = new LinkedHashMap<ShardInfo, NodeInfo>();
             List<NodeInfo> nodes = client.getHttpNodes(clientNodesOnly);

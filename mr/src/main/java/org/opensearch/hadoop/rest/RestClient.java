@@ -297,16 +297,16 @@ public class RestClient implements Closeable, StatsAware {
         return id.toString();
     }
 
-public void refresh(Resource resource) {
-    // Skip refresh operation for serverless mode as _refresh endpoint is not supported
-    if (settings.getServerlessMode()) {
-        if (LOG.isDebugEnabled()) {
-            LOG.debug("Serverless mode - skipping refresh operation (not supported in serverless)");
+    public void refresh(Resource resource) {
+        // Skip refresh operation for serverless mode as _refresh endpoint is not supported
+        if (settings.getServerlessMode()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Serverless mode - skipping refresh operation (not supported in serverless)");
+            }
+            return;
         }
-        return;
+        execute(POST, resource.refresh());
     }
-    execute(POST, resource.refresh());
-}
 
     public List<List<Map<String, Object>>> targetShards(String index, String routing) {
         List<List<Map<String, Object>>> shardsJson = null;
@@ -730,7 +730,7 @@ public void refresh(Resource resource) {
         if (this.settings.getServerlessMode()) {
             // Use a dummy UUID instead of null to avoid NPE in validation
             ClusterName clusterName = new ClusterName("serverless-collection", "serverless-uuid");
-            return new ClusterInfo(clusterName, OpenSearchMajorVersion.LATEST);
+            return new ClusterInfo(clusterName, OpenSearchMajorVersion.V_2_X);
         }
         
         // Check for cached serverless cluster info

@@ -657,6 +657,16 @@ public abstract class RestService implements Serializable {
         }
 
         RestRepository repository = new RestRepository(settings);
+
+        if (settings.getServerlessMode()) {
+            String node = SettingsUtils.getPinnedNode(settings);
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Partition writer instance [%s] assigned to [%s]", currentInstance, node));
+            }
+
+            return repository;
+        }
+
         // create the index if needed
         if (repository.touch()) {
             if (repository.waitForYellow()) {

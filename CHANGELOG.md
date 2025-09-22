@@ -30,7 +30,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.slf4j:slf4j-api` from 2.0.16 to 2.0.17
 - Bumps `com.fasterxml.jackson.module:jackson-module-scala_2.12` from 2.16.1 to 2.19.1
 - Bumps AWS SDK from AWS SDK v1 `com.amazonaws:aws-java-sdk-bundle` 1.12.783 to AWS SDK v2 2.31.59 ([#594](https://github.com/opensearch-project/opensearch-hadoop/pull/594))
-- Bumps `com.gradleup.shadow` from 8.3.6 to 8.3.8
+- Bumps `com.gradleup.shadow` from 8.3.6 to 9.1.0
 - Bumps `software.amazon.awssdk:sdk-core` from 2.31.59 to 2.31.78
 - Bumps `software.amazon.awssdk:regions` from 2.31.78 to 2.32.10
 

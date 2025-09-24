@@ -85,13 +85,19 @@ public abstract class InitializationUtils {
 
             try {
                 if (bootstrap.indexExists(readResource.index())) {
-                    RestClient.Health status = bootstrap.getHealth(readResource.index());
-                    if (status == RestClient.Health.RED) {
-                        throw new OpenSearchHadoopIllegalStateException("Index specified [" + readResource.index()
-                                + "] is either red or " +
-                                "includes an index that is red, and thus all requested data cannot be safely and fully loaded. "
-                                +
-                                "Bailing out...");
+                    if (settings.getServerlessMode()) {
+                        if (LOG.isDebugEnabled()) {
+                            LOG.debug("Serverless mode - skipping health check (not supported in serverless)");
+                        }
+                   } else {
+                        RestClient.Health status = bootstrap.getHealth(readResource.index());
+                        if (status == RestClient.Health.RED) {
+                            throw new OpenSearchHadoopIllegalStateException("Index specified [" + readResource.index()
+                                    + "] is either red or " +
+                                    "includes an index that is red, and thus all requested data cannot be safely and fully loaded. "
+                                    +
+                                    "Bailing out...");
+                        }
                     }
                 }
             } finally {
@@ -339,9 +345,11 @@ public abstract class InitializationUtils {
         try {
             mainInfo = bootstrap.mainInfo();
             if (log.isDebugEnabled()) {
+                // Handle serverless mode where UUID might be null
+                String uuid = mainInfo.getClusterName().getUUID() != null ? mainInfo.getClusterName().getUUID() : "N/A";
                 log.debug(String.format("Discovered OpenSearch cluster [%s/%s], version [%s]",
                         mainInfo.getClusterName().getName(),
-                        mainInfo.getClusterName().getUUID(),
+                        uuid,
                         mainInfo.getMajorVersion()));
             }
         } catch (OpenSearchHadoopException ex) {
@@ -364,7 +372,8 @@ public abstract class InitializationUtils {
                         mainInfo.getClusterName().getName(),
                         clusterName));
             }
-            if (mainInfo.getClusterName().getUUID().equals(clusterUUID) == false) {
+            if (mainInfo.getClusterName().getUUID() != null && 
+                mainInfo.getClusterName().getUUID().equals(clusterUUID) == false) {
                 log.warn(String.format(
                         "Discovered incorrect cluster UUID in settings. Expected [%s] but received [%s]; replacing...",
                         mainInfo.getClusterName().getUUID(),

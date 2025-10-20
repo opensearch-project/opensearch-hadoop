@@ -73,7 +73,7 @@ dependencies {
     compileOnly localGroovy()
 
     // Required for dependency licenses task
-    implementation 'org.apache.rat:apache-rat:0.15'
+    implementation 'org.apache.rat:apache-rat:0.17'
     implementation 'commons-codec:commons-codec:1.19.0'
 
     if (localRepo) {

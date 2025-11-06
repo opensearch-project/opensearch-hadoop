@@ -66,7 +66,7 @@ class SparkYarnServiceDescriptor implements ServiceDescriptor {
 
     @Override
     Version defaultVersion() {
-        return new Version(3, 4, 3)
+        return new Version(3, 4, 4)
     }
 
     String hadoopVersionCompatibility() {
@@ -77,7 +77,7 @@ class SparkYarnServiceDescriptor implements ServiceDescriptor {
 
     @Override
     String getDependencyCoordinates(ServiceConfiguration configuration) {
-        return "spark:spark-${configuration.getVersion()}:${artifactName(configuration)}@tgz"
+        return "apache:spark:${configuration.getVersion()}@tgz"
     }
 
     @Override

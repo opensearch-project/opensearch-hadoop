@@ -69,12 +69,12 @@ class HiveServiceDescriptor implements ServiceDescriptor {
 
     @Override
     Version defaultVersion() {
-        return new Version(3, 1, 3)
+        return new Version(4, 0, 1)
     }
 
     @Override
     String getDependencyCoordinates(ServiceConfiguration configuration) {
-        return "hive:hive-${configuration.getVersion()}:${artifactName(configuration)}@tar.gz"
+        return "apache:hive:${configuration.getVersion()}@tar.gz"
     }
 
     @Override

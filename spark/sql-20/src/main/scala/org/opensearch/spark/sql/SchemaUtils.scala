@@ -66,6 +66,7 @@ import org.opensearch.hadoop.serialization.FieldType.GEO_SHAPE
 import org.opensearch.hadoop.serialization.FieldType.INTEGER
 import org.opensearch.hadoop.serialization.FieldType.JOIN
 import org.opensearch.hadoop.serialization.FieldType.KEYWORD
+import org.opensearch.hadoop.serialization.FieldType.KNN_VECTOR
 import org.opensearch.hadoop.serialization.FieldType.LONG
 import org.opensearch.hadoop.serialization.FieldType.NESTED
 import org.opensearch.hadoop.serialization.FieldType.NULL
@@ -169,6 +170,7 @@ private[sql] object SchemaUtils {
       case WILDCARD      => StringType
       case DATE         => if (cfg.getMappingDateRich) TimestampType else StringType
       case DATE_NANOS => if (cfg.getMappingDateRich) TimestampType else StringType
+      case KNN_VECTOR   => DataTypes.createArrayType(FloatType)
       case OBJECT       => convertToStruct(field, geoInfo, absoluteName, arrayIncludes, arrayExcludes, cfg)
       case NESTED       => DataTypes.createArrayType(convertToStruct(field, geoInfo, absoluteName, arrayIncludes, arrayExcludes, cfg))
       case JOIN         => convertToStruct(field, geoInfo, absoluteName, arrayIncludes, arrayExcludes, cfg)

@@ -91,8 +91,8 @@ import org.opensearch.hadoop.util.ReflectionUtils;
 import org.opensearch.hadoop.util.StringUtils;
 import org.opensearch.hadoop.util.encoding.HttpEncodingTools;
 
-import com.amazonaws.auth.AWSCredentials;
-import com.amazonaws.auth.DefaultAWSCredentialsProviderChain;
+import software.amazon.awssdk.auth.credentials.AwsCredentials;
+import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider;
 
 import javax.security.auth.kerberos.KerberosPrincipal;
 import java.io.ByteArrayInputStream;
@@ -736,7 +736,7 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
 
         if (settings.getAwsSigV4Enabled()) {
-            final AWSCredentials credentials = DefaultAWSCredentialsProviderChain.getInstance().getCredentials();
+            final AwsCredentials credentials = DefaultCredentialsProvider.create().resolveCredentials();
             AwsV4SignerSupport awsV4Signer = new AwsV4SignerSupport(settings, httpInfo, credentials);
             awsV4Signer.sign(request, http);
         }

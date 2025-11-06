@@ -136,14 +136,14 @@ public class GlobalBuildInfoPlugin implements Plugin<Project> {
         final String osVersion = System.getProperty("os.version");
         final String osArch = System.getProperty("os.arch");
         final Jvm gradleJvm = Jvm.current();
-        JvmInstallationMetadata gradleJvmMetadata = metadataDetector.getMetadata(new InstallationLocation( gradleJvm.getJavaHome(), "current Java home"));
+        JvmInstallationMetadata gradleJvmMetadata = metadataDetector.getMetadata(InstallationLocation.userDefined( gradleJvm.getJavaHome(), "current Java home"));
         final String gradleJvmVendorDetails = gradleJvmMetadata.getVendor().getDisplayName();
         LOGGER.quiet("=======================================");
         LOGGER.quiet("OpenSearch Build Hamster says Hello!");
         LOGGER.quiet("  Gradle Version        : " + GradleVersion.current().getVersion());
         LOGGER.quiet("  OS Info               : " + osName + " " + osVersion + " (" + osArch + ")");
         if (BuildParams.getIsRuntimeJavaHomeSet()) {
-            final String runtimeJvmVendorDetails = metadataDetector.getMetadata(new InstallationLocation(BuildParams.getRuntimeJavaHome(), 
+            final String runtimeJvmVendorDetails = metadataDetector.getMetadata(InstallationLocation.userDefined(BuildParams.getRuntimeJavaHome(),
                     "current Java home"))
                 .getVendor()
                 .getDisplayName();
@@ -205,7 +205,7 @@ public class GlobalBuildInfoPlugin implements Plugin<Project> {
     private Stream<InstallationLocation> getAvailableJavaInstallationLocationSteam() {
         return Stream.concat(
             javaInstallationRegistry.toolchains().stream().map(t -> t.location),
-            Stream.of(new InstallationLocation(Jvm.current().getJavaHome(), "Current JVM"))
+            Stream.of(InstallationLocation.userDefined(Jvm.current().getJavaHome(), "Current JVM"))
         );
     }
 

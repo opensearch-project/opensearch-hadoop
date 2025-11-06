@@ -118,19 +118,6 @@ public class OpenSearchStorageHandler extends DefaultStorageHandler {
 
     // NB: save the table properties in a special place but nothing else; otherwise the settings might trip on each other
     private void init(TableDesc tableDesc, boolean read) {
-        Configuration cfg = getConf();
-        // NB: we can't just merge the table properties in, we need to save them per input/output otherwise clashes occur which confuse Hive
-
-        Settings settings = HadoopSettingsManager.loadFrom(cfg);
-        //settings.setProperty((read ? HiveConstants.INPUT_TBL_PROPERTIES : HiveConstants.OUTPUT_TBL_PROPERTIES), IOUtils.propsToString(tableDesc.getProperties()));
-        if (read) {
-            // no generic setting
-        }
-        else {
-            // replace the default committer when using the old API
-            HadoopCfgUtils.setOutputCommitterClass(cfg, OpenSearchOutputFormat.OpenSearchOutputCommitter.class.getName());
-        }
-
         Assert.hasText(tableDesc.getProperties().getProperty(TABLE_LOCATION), String.format(
                 "no table location [%s] declared by Hive resulting in abnormal execution;", TABLE_LOCATION));
     }

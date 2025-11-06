@@ -29,6 +29,7 @@
 
 package org.opensearch.hadoop.gradle
 
+import org.gradle.api.artifacts.component.ProjectComponentIdentifier
 import org.opensearch.gradle.DependenciesInfoPlugin
 import org.opensearch.gradle.info.BuildParams
 import org.opensearch.gradle.precommit.DependencyLicensesTask
@@ -836,15 +837,15 @@ class BuildPlugin implements Plugin<Project>  {
         integrationTest.maxHeapSize = "2g"
 
         integrationTest.testLogging {
-            displayGranularity 0
+            displayGranularity = 0
             events "started", "failed" //, "standardOut", "standardError"
-            exceptionFormat "full"
-            showCauses true
-            showExceptions true
-            showStackTraces true
+            exceptionFormat = "full"
+            showCauses = true
+            showExceptions = true
+            showStackTraces = true
             stackTraceFilters "groovy"
-            minGranularity 2
-            maxGranularity 2
+            minGranularity = 2
+            maxGranularity = 2
         }
 
         integrationTest.reports.html.required = false
@@ -857,9 +858,11 @@ class BuildPlugin implements Plugin<Project>  {
 
         if (!project.path.startsWith(":qa")) {
             TaskProvider<DependencyLicensesTask> dependencyLicenses = project.tasks.register('dependencyLicenses', DependencyLicensesTask.class) {
-                dependencies = project.configurations.runtimeClasspath.fileCollection {
-                    !(it instanceof ProjectDependency)
-                }
+                dependencies = project.configurations.runtimeClasspath.incoming.artifactView {
+                    componentFilter {
+                        !(it instanceof ProjectComponentIdentifier)
+                    }
+                }.files
                 mapping from: /hadoop-.*/, to: 'hadoop'
                 mapping from: /hive-.*/, to: 'hive'
                 mapping from: /jackson-.*/, to: 'jackson'

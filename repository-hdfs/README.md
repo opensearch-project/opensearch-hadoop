@@ -83,7 +83,7 @@ Or grab the latest nightly build from the [repository](http://oss.sonatype.org/c
 <repositories>
   <repository>
     <id>sonatype-oss</id>
-    <url>http://oss.sonatype.org/content/repositories/snapshots</url>
+    <url>https://central.sonatype.com/repository/maven-snapshots</url>
     <snapshots><enabled>true</enabled></snapshots>
   </repository>
 </repositories>

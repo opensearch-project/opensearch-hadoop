@@ -65,12 +65,12 @@ sparkVariants {
             add(variant.configuration('implementation'), "org.apache.spark:spark-streaming_${variant.scalaMajorVersion}:$variant.sparkVersion") {
                 exclude group: 'org.apache.hadoop'
             }
-            add(variant.configuration('implementation'), "org.slf4j:slf4j-api:2.0.13") {
+            add(variant.configuration('implementation'), "org.slf4j:slf4j-api:2.0.17") {
                 because 'spark exposes slf4j components in traits that we need to extend'
             }
-            add(variant.configuration('implementation'), "commons-logging:commons-logging:1.3.2")
+            add(variant.configuration('implementation'), "commons-logging:commons-logging:1.3.5")
             add(variant.configuration('implementation'), "javax.xml.bind:jaxb-api:2.3.1")
-            add(variant.configuration('implementation'), "com.google.protobuf:protobuf-java:4.27.1")
+            add(variant.configuration('implementation'), "com.google.protobuf:protobuf-java:4.33.0")
             add(variant.configuration('implementation'), "org.apache.spark:spark-catalyst_${variant.scalaMajorVersion}:$variant.sparkVersion")
             add(variant.configuration('implementation'), "org.apache.spark:spark-yarn_${variant.scalaMajorVersion}:$variant.sparkVersion") {
                 exclude group: 'org.apache.hadoop'
@@ -78,13 +78,13 @@ sparkVariants {
 
             // Scala compiler needs these for arcane reasons, but they are not used in the api nor the runtime
             add(variant.configuration('compileOnly'), "org.apache.hadoop.thirdparty:hadoop-shaded-protobuf_3_7:1.1.1")
-            add(variant.configuration('compileOnly'), "com.fasterxml.jackson.core:jackson-annotations:2.17.1")
+            add(variant.configuration('compileOnly'), "com.fasterxml.jackson.core:jackson-annotations:2.20")
             add(variant.configuration('compileOnly'), "org.json4s:json4s-jackson_${variant.scalaMajorVersion}:3.6.6")
             add(variant.configuration('compileOnly'), "org.json4s:json4s-ast_${variant.scalaMajorVersion}:3.6.6")
             add(variant.configuration('compileOnly'), "org.apache.spark:spark-tags_${variant.scalaMajorVersion}:$variant.sparkVersion")
 
             add(variant.configuration('test', 'implementation'), project(":test:shared"))
-            add(variant.configuration('test', 'implementation'), "jakarta.servlet:jakarta.servlet-api:6.0.0")
+            add(variant.configuration('test', 'implementation'), "jakarta.servlet:jakarta.servlet-api:6.1.0")
             add(variant.configuration('test', 'implementation'), "org.elasticsearch:securemock:1.2")
             add(variant.configuration('test', 'implementation'), "org.apache.spark:spark-core_${variant.scalaMajorVersion}:$variant.sparkVersion") {
                 exclude group: 'javax.servlet'
@@ -95,7 +95,7 @@ sparkVariants {
             }
 
             add(variant.configuration('itest', 'implementation'), project(":test:shared"))
-            add(variant.configuration('itest', 'implementation'), "jakarta.servlet:jakarta.servlet-api:6.0.0")
+            add(variant.configuration('itest', 'implementation'), "jakarta.servlet:jakarta.servlet-api:6.1.0")
             add(variant.configuration('itest', 'implementation'), "org.apache.spark:spark-yarn_${variant.scalaMajorVersion}:$variant.sparkVersion") {
                 exclude group: 'org.apache.hadoop'
             }
@@ -131,7 +131,7 @@ sparkVariants {
         String generatedJavaDirectory = "$buildDir/generated/java/${variant.name}"
         Configuration scalaCompilerPlugin = project.configurations.maybeCreate(variant.configuration('scalaCompilerPlugin'))
         scalaCompilerPlugin.defaultDependencies { dependencies ->
-            dependencies.add(project.dependencies.create("com.typesafe.genjavadoc:genjavadoc-plugin_${variant.scalaVersion}:0.18"))
+            dependencies.add(project.dependencies.create("com.typesafe.genjavadoc:genjavadoc-plugin_${variant.scalaVersion}:${variant.scalaMajorVersion != '2.11' ? '0.19' : '0.18'}"))
         }
 
         ScalaCompile compileScala = tasks.getByName(scalaCompileTaskName) as ScalaCompile

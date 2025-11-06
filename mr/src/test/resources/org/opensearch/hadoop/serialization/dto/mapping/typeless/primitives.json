@@ -50,6 +50,9 @@
         },
         "field16" : {
           "type" : "wildcard"
+        },
+        "field17" : {
+          "type" : "knn_vector"
         }
       }
     }

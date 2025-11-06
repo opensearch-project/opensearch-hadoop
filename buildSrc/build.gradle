@@ -60,10 +60,11 @@ repositories {
         // For some reason the root dirs all point to the buildSrc folder. The local Repo will be one above that.
         flatDir { dirs new File(project.rootDir, "../localRepo") }
     } else if (snapshot) {
-        maven { url "https://aws.oss.sonatype.org/content/repositories/snapshots" }
+        maven { url = "https://central.sonatype.com/repository/maven-snapshots/" }
+        maven { url = "https://aws.oss.sonatype.org/content/repositories/snapshots" }
     }
     else {
-        maven { url "https://plugins.gradle.org/m2/" }
+        maven { url = "https://plugins.gradle.org/m2/" }
     }
 }
 
@@ -73,12 +74,16 @@ dependencies {
 
     // Required for dependency licenses task
     implementation 'org.apache.rat:apache-rat:0.15'
-    implementation 'commons-codec:commons-codec:1.16.0'
+    implementation 'commons-codec:commons-codec:1.19.0'
 
     if (localRepo) {
-        implementation name: "build-tools-${buildToolsVersion}"
+        implementation(name: "build-tools-${buildToolsVersion}") {
+            exclude group: 'com.github.johnrengelman'
+        }
     } else {
-        implementation group: 'org.opensearch.gradle', name: 'build-tools', version: buildToolsVersion
+        implementation(group: 'org.opensearch.gradle', name: 'build-tools', version: buildToolsVersion) {
+            exclude group: 'com.github.johnrengelman'
+        }
     }
 }
 

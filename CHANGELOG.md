@@ -3,25 +3,57 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 ### Added
-- Added basic support for HTTP compression when writing to OpenSearch ([#451](https://github.com/opensearch-project/opensearch-hadoop/pull/451))
 
 ### Changed
+- Switched to more reliable OpenSearch Lucene snapshot location ([#597](https://github.com/opensearch-project/opensearch-hadoop/pull/597))
 
 ### Deprecated
+
+### Removed
+
+### Fixed
+- Fixed build failures when downloading Apache project dependencies (Hadoop, Hive, Spark) ([#595](https://github.com/opensearch-project/opensearch-hadoop/pull/595))
+
+### Security
+
+### Dependencies
+- Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.2 to 2.20.0
+- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.2 to 2.20
+- Bumps `io.netty:netty-all` from 4.1.112.Final to 4.2.1.Final
+- Bumps `com.google.protobuf:protobuf-java` from 4.28.2 to 4.33.0
+- Bumps `commons-codec:commons-codec` from 1.17.1 to 1.19.0
+- Bumps `commons-logging:commons-logging` from 1.3.4 to 1.3.5
+- Bumps Spark3 version from 3.2.4 to 3.4.4 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
+- Bumps Scala2.12 version from 2.12.8 to 2.12.20 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
+- Bumps Scala2.13 version from 2.13.6 to 2.13.16 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
+- Bumps `org.opensearch.gradle:build-tools` from 2.11.1 to 2.19.0 ([#557](https://github.com/opensearch-project/opensearch-hadoop/pull/557))
+- Bumps `org.slf4j:slf4j-api` from 2.0.16 to 2.0.17
+- Bumps `com.fasterxml.jackson.module:jackson-module-scala_2.12` from 2.16.1 to 2.19.1
+- Bumps AWS SDK from AWS SDK v1 `com.amazonaws:aws-java-sdk-bundle` 1.12.783 to AWS SDK v2 2.31.59 ([#594](https://github.com/opensearch-project/opensearch-hadoop/pull/594))
+- Bumps `com.gradleup.shadow` from 8.3.6 to 9.1.0
+- Bumps `software.amazon.awssdk:sdk-core` from 2.31.59 to 2.31.78
+- Bumps `software.amazon.awssdk:regions` from 2.31.78 to 2.34.5
+
+## [1.3.0]
+### Added
+- Added basic support for HTTP compression when writing to OpenSearch ([#451](https://github.com/opensearch-project/opensearch-hadoop/pull/451))
+- Added support for k-nn vectors ([#424](https://github.com/opensearch-project/opensearch-hadoop/pull/489))
 
 ### Removed
 - Removed obsolete backported classes for Jackson 1.5 support ([#471](https://github.com/opensearch-project/opensearch-hadoop/pull/471))
 
 ### Fixed
-
-### Security
+- Remove unnecessary outputCommitter setting ([#465](https://github.com/opensearch-project/opensearch-hadoop/pull/465))
 
 ### Dependencies
-- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.0 to 2.17.1
-- Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.0 to 2.17.1
-- Bumps `commons-logging:commons-logging` from 1.3.1 to 1.3.2
-- Bumps `com.google.protobuf:protobuf-java` from 4.26.1 to 4.27.1
-- Bumps `io.netty:netty-all` from 4.1.109.Final to 4.1.110.Final
+- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.0 to 2.17.2
+- Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.0 to 2.17.2
+- Bumps `commons-logging:commons-logging` from 1.3.1 to 1.3.4
+- Bumps `com.google.protobuf:protobuf-java` from 4.26.1 to 4.28.2
+- Bumps `io.netty:netty-all` from 4.1.109.Final to 4.1.112.Final
+- Bumps `jakarta.servlet:jakarta.servlet-api` from 6.0.0 to 6.1.0
+- Bumps `commons-codec:commons-codec` from 1.17.0 to 1.17.1
+- Bumps `org.slf4j:slf4j-api` from 2.0.13 to 2.0.16
 
 ## [1.2.0]
 ### Changed
@@ -110,7 +142,8 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.json4s:json4s-jackson_2.12` from 3.2.11 to 4.0.6
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.11.1
 
-[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.2.0...HEAD
+[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.3.0...HEAD
+[1.3.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.0...v1.0.1

@@ -277,56 +277,30 @@ public class RestRepository implements Closeable, StatsAware {
     }
 
     protected Map<ShardInfo, NodeInfo> doGetWriteTargetPrimaryShards(boolean clientNodesOnly) {
-        // For serverless mode, we skip shard information retrieval as it's not supported
-        if (settings.getServerlessMode()) {
-            Map<ShardInfo, NodeInfo> shards = new LinkedHashMap<ShardInfo, NodeInfo>();
-            List<NodeInfo> nodes = client.getHttpNodes(clientNodesOnly);
+        List<List<Map<String, Object>>> info = client.targetShards(resources.getResourceWrite().index(), SettingsUtils.getFixedRouting(settings));
+        Map<ShardInfo, NodeInfo> shards = new LinkedHashMap<ShardInfo, NodeInfo>();
+        List<NodeInfo> nodes = client.getHttpNodes(clientNodesOnly);
+        Map<String, NodeInfo> nodeMap = new HashMap<String, NodeInfo>(nodes.size());
+        for (NodeInfo node : nodes) {
+            nodeMap.put(node.getId(), node);
+        }
 
-            if (nodes.isEmpty()) {
-                log.warn("Cannot find any nodes (is HTTP enabled?)");
-                return null;
-            }
-
-            // In serverless mode, we create a single dummy shard assigned to the first available node
-            NodeInfo firstNode = nodes.get(0);
-            Map<String, Object> dummyShardData = new HashMap<String, Object>();
-            dummyShardData.put("index", resources.getResourceWrite().index());
-            dummyShardData.put("shard", 0);
-            dummyShardData.put("primary", true);
-            dummyShardData.put("node", firstNode.getId());
-            dummyShardData.put("state", "STARTED");
-            dummyShardData.put("relocating_node", null);
-
-            ShardInfo dummyShard = new ShardInfo(dummyShardData);
-            shards.put(dummyShard, firstNode);
-
-            return shards;
-        } else {
-            List<List<Map<String, Object>>> info = client.targetShards(resources.getResourceWrite().index(), SettingsUtils.getFixedRouting(settings));
-            Map<ShardInfo, NodeInfo> shards = new LinkedHashMap<ShardInfo, NodeInfo>();
-            List<NodeInfo> nodes = client.getHttpNodes(clientNodesOnly);
-            Map<String, NodeInfo> nodeMap = new HashMap<String, NodeInfo>(nodes.size());
-            for (NodeInfo node : nodes) {
-                nodeMap.put(node.getId(), node);
-            }
-
-            for (List<Map<String, Object>> shardGroup : info) {
-                // consider only primary shards
-                for (Map<String, Object> shardData : shardGroup) {
-                    ShardInfo shard = new ShardInfo(shardData);
-                    if (shard.isPrimary()) {
-                        NodeInfo node = nodeMap.get(shard.getNode());
-                        if (node == null) {
-                            log.warn(String.format("Cannot find node with id [%s] (is HTTP enabled?) from shard [%s] in nodes [%s]; layout [%s]", shard.getNode(), shard, nodes, info));
-                            return null;
-                        }
-                        shards.put(shard, node);
-                        break;
+        for (List<Map<String, Object>> shardGroup : info) {
+            // consider only primary shards
+            for (Map<String, Object> shardData : shardGroup) {
+                ShardInfo shard = new ShardInfo(shardData);
+                if (shard.isPrimary()) {
+                    NodeInfo node = nodeMap.get(shard.getNode());
+                    if (node == null) {
+                        log.warn(String.format("Cannot find node with id [%s] (is HTTP enabled?) from shard [%s] in nodes [%s]; layout [%s]", shard.getNode(), shard, nodes, info));
+                        return null;
                     }
+                    shards.put(shard, node);
+                    break;
                 }
             }
-            return shards;
         }
+        return shards;
     }
 
     public MappingSet getMappings() {
@@ -403,18 +377,20 @@ public class RestRepository implements Closeable, StatsAware {
     }
 
     public void delete() {
-        // try first a blind delete by query
-        try {
-            Resource res = resources.getResourceWrite();
-            client.deleteByQuery(
-                    res.isTyped()
-                            ? res.index() + "/" + res.type()
-                            : res.index(),
-                    MatchAllQueryBuilder.MATCH_ALL);
-        } catch (OpenSearchHadoopInvalidRequest ehir) {
-            log.error("Delete by query was not successful...", ehir);
+        if (!this.settings.getServerlessMode()) {
+            // try first a blind delete by query
+            try {
+                Resource res = resources.getResourceWrite();
+                client.deleteByQuery(
+                        res.isTyped()
+                                ? res.index() + "/" + res.type()
+                                : res.index(),
+                        MatchAllQueryBuilder.MATCH_ALL);
+            } catch (OpenSearchHadoopInvalidRequest ehir) {
+                log.error("Delete by query was not successful...", ehir);
+            } 
         }
-
+        
         // in ES 2.0 and higher this means scrolling and deleting the docs by hand...
         // do a scroll-scan without source
 

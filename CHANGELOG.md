@@ -33,6 +33,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.gradleup.shadow` from 8.3.6 to 9.1.0
 - Bumps `software.amazon.awssdk:sdk-core` from 2.31.59 to 2.31.78
 - Bumps `software.amazon.awssdk:regions` from 2.31.78 to 2.34.5
+- Bumps `software.amazon.awssdk:auth` from 2.34.5 to 2.38.2
 
 ## [1.3.0]
 ### Added

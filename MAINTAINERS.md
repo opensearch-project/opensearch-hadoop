@@ -8,4 +8,4 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 | -------------------- | --------------------------------------------- | ----------- |
 | Nick Knize           | [nknize](https://github.com/nknize)           | Community   |
 | Harsha Vamsi Kalluri | [harshavamsi](https://github.com/harshavamsi) | Amazon      |
-| Thomas Farr          | [Xtansia](https://github.com/Xtansia)         | Amazon      |
+| Thomas Farr          | [Xtansia](https://github.com/Xtansia)         | Independent |

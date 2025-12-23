@@ -133,92 +133,7 @@ public abstract class RestService implements Serializable {
         }
     }
 
-    public static class MultiReaderIterator implements Closeable, Iterator {
-        private final List<PartitionDefinition> definitions;
-        private final Iterator<PartitionDefinition> definitionIterator;
-        private PartitionReader currentReader;
-        private ScrollQuery currentScroll;
-        private boolean finished = false;
 
-        private final Settings settings;
-        private final Log log;
-
-        MultiReaderIterator(List<PartitionDefinition> defs, Settings settings, Log log) {
-            this.definitions = defs;
-            definitionIterator = defs.iterator();
-
-            this.settings = settings;
-            this.log = log;
-        }
-
-        @Override
-        public void close() {
-            if (finished) {
-                return;
-            }
-
-            ScrollQuery sq = getCurrent();
-            if (sq != null) {
-                sq.close();
-            }
-            if (currentReader != null) {
-                currentReader.close();
-            }
-
-            finished = true;
-        }
-
-        @Override
-        public boolean hasNext() {
-            ScrollQuery sq = getCurrent();
-            return (sq != null ? sq.hasNext() : false);
-        }
-
-        private ScrollQuery getCurrent() {
-            if (finished) {
-                return null;
-            }
-
-
-            for (boolean hasValue = false; !hasValue; ) {
-                if (currentReader == null) {
-                    if (definitionIterator.hasNext()) {
-                        currentReader = RestService.createReader(settings, definitionIterator.next(), log);
-                    } else {
-                        finished = true;
-                        return null;
-                    }
-                }
-
-                if (currentScroll == null) {
-                    currentScroll = currentReader.scrollQuery();
-                }
-
-                hasValue = currentScroll.hasNext();
-
-                if (!hasValue) {
-                    currentScroll.close();
-                    currentScroll = null;
-
-                    currentReader.close();
-                    currentReader = null;
-                }
-            }
-
-            return currentScroll;
-        }
-
-        @Override
-        public Object[] next() {
-            ScrollQuery sq = getCurrent();
-            return sq.next();
-        }
-
-        @Override
-        public void remove() {
-            throw new UnsupportedOperationException();
-        }
-    }
 
     @SuppressWarnings("unchecked")
     public static List<PartitionDefinition> findPartitions(Settings settings, Log log) {
@@ -572,9 +487,6 @@ public abstract class RestService implements Serializable {
         }
     }
 
-    public static MultiReaderIterator multiReader(Settings settings, List<PartitionDefinition> definitions, Log log) {
-        return new MultiReaderIterator(definitions, settings, log);
-    }
 
     public static PartitionWriter createWriter(Settings settings, long currentSplit, int totalSplits, Log log) {
         Version.logVersion();

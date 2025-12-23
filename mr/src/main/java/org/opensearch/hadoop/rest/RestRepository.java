@@ -377,18 +377,20 @@ public class RestRepository implements Closeable, StatsAware {
     }
 
     public void delete() {
-        // try first a blind delete by query
-        try {
-            Resource res = resources.getResourceWrite();
-            client.deleteByQuery(
-                    res.isTyped()
-                            ? res.index() + "/" + res.type()
-                            : res.index(),
-                    MatchAllQueryBuilder.MATCH_ALL);
-        } catch (OpenSearchHadoopInvalidRequest ehir) {
-            log.error("Delete by query was not successful...", ehir);
+        if (!this.settings.getServerlessMode()) {
+            // try first a blind delete by query
+            try {
+                Resource res = resources.getResourceWrite();
+                client.deleteByQuery(
+                        res.isTyped()
+                                ? res.index() + "/" + res.type()
+                                : res.index(),
+                        MatchAllQueryBuilder.MATCH_ALL);
+            } catch (OpenSearchHadoopInvalidRequest ehir) {
+                log.error("Delete by query was not successful...", ehir);
+            } 
         }
-
+        
         // in ES 2.0 and higher this means scrolling and deleting the docs by hand...
         // do a scroll-scan without source
 
@@ -475,6 +477,8 @@ public class RestRepository implements Closeable, StatsAware {
     }
 
     public boolean waitForYellow() {
+        // For serverless collections, waitForHealth is handled through the RestClient.waitForHealth()
+        // which will return appropriate result based on serverless mode
         return client.waitForHealth(resources.getResourceWrite().index(), RestClient.Health.YELLOW, TimeValue.timeValueSeconds(10));
     }
 

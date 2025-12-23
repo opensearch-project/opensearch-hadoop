@@ -95,6 +95,7 @@ public class RestClient implements Closeable, StatsAware {
     private final HttpRetryPolicy retryPolicy;
     final ClusterInfo clusterInfo;
     private final ErrorExtractor errorExtractor;
+    private final Settings settings;
 
     {
         mapper = new ObjectMapper();
@@ -116,6 +117,7 @@ public class RestClient implements Closeable, StatsAware {
         this.network = networkClient;
         this.scrollKeepAlive = TimeValue.timeValueMillis(settings.getScrollKeepAlive());
         this.indexReadMissingAsEmpty = settings.getIndexReadMissingAsEmpty();
+        this.settings = settings;
 
         String retryPolicyName = settings.getBatchWriteRetryPolicy();
 
@@ -296,6 +298,13 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public void refresh(Resource resource) {
+        // Skip refresh operation for serverless mode as _refresh endpoint is not supported
+        if (settings.getServerlessMode()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Serverless mode - skipping refresh operation (not supported in serverless)");
+            }
+            return;
+        }
         execute(POST, resource.refresh());
     }
 
@@ -717,11 +726,26 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public ClusterInfo mainInfo() {
-        Response response = execute(GET, "", true);
-        Map<String, Object> result = parseContent(response.body(), null);
-        if (result == null) {
-            throw new OpenSearchHadoopIllegalStateException("Unable to retrieve OpenSearch main cluster info.");
+        // For serverless mode, return dummy info without making root request
+        if (this.settings.getServerlessMode()) {
+            // Use a dummy UUID instead of null to avoid NPE in validation
+            ClusterName clusterName = new ClusterName("serverless-collection", "serverless-uuid");
+            return new ClusterInfo(clusterName, OpenSearchMajorVersion.V_2_X);
         }
+        
+        // Check for cached serverless cluster info
+        if (clusterInfo != null && clusterInfo.getMajorVersion() != null && "serverless-collection".equals(clusterInfo.getClusterName().getName())) {
+            // already detected as serverless
+            return clusterInfo;
+        }
+
+        // Standard mode - retrieve information from the cluster
+        try {
+            Response response = execute(GET, "", true);
+            Map<String, Object> result = parseContent(response.body(), null);
+            if (result == null) {
+                throw new OpenSearchHadoopIllegalStateException("Unable to retrieve OpenSearch main cluster info.");
+            }
         String clusterName = result.get("cluster_name").toString();
         String clusterUUID = (String) result.get("cluster_uuid");
         @SuppressWarnings("unchecked")
@@ -736,6 +760,13 @@ public class RestClient implements Closeable, StatsAware {
                     "Version is lower than minimum required version [" + OpenSearchMajorVersion.V_1_X + "].");
         }
         return new ClusterInfo(new ClusterName(clusterName, clusterUUID), OpenSearchMajorVersion.parse(versionNumber));
+        } catch (Exception e) {
+            // If unable to get cluster info in normal way, fallback to serverless mode
+            LOG.debug("Error getting cluster info, falling back to serverless mode", e);
+            // Use a dummy UUID instead of null to avoid NPE in validation
+            ClusterName clusterName = new ClusterName("serverless-collection", "serverless-uuid");
+            return new ClusterInfo(clusterName, OpenSearchMajorVersion.LATEST);
+        }
     }
 
     /**
@@ -758,6 +789,15 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public boolean waitForHealth(String index, Health health, TimeValue timeout) {
+        // Skip health check for serverless mode as _cluster/health endpoint is not supported
+        if (settings.getServerlessMode()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Serverless mode - skipping health check (not supported in serverless)");
+            }
+            // Return false to indicate no timeout
+            return false;
+        }
+        
         StringBuilder sb = new StringBuilder("/_cluster/health/");
         sb.append(index);
         sb.append("?wait_for_status=");

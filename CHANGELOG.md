@@ -3,6 +3,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 ### Added
+- Add support for Amazon OpenSearch Serverless ([#586](https://github.com/opensearch-project/opensearch-hadoop/pull/586))
 
 ### Changed
 - Switched to more reliable OpenSearch Lucene snapshot location ([#597](https://github.com/opensearch-project/opensearch-hadoop/pull/597))

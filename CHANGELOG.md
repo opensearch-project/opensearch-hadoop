@@ -19,10 +19,10 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ### Dependencies
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.17.2 to 2.21.0
-- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.2 to 2.20
+- Bumps `com.fasterxml.jackson.core:jackson-annotations` from 2.17.2 to 2.21
 - Bumps `io.netty:netty-all` from 4.1.112.Final to 4.2.1.Final
-- Bumps `com.google.protobuf:protobuf-java` from 4.28.2 to 4.33.4
 - Bumps `commons-codec:commons-codec` from 1.17.1 to 1.21.0
+- Bumps `com.google.protobuf:protobuf-java` from 4.28.2 to 4.33.5
 - Bumps `commons-logging:commons-logging` from 1.3.4 to 1.3.5
 - Bumps Spark3 version from 3.2.4 to 3.4.4 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
 - Bumps Scala2.12 version from 2.12.8 to 2.12.20 ([#551](https://github.com/opensearch-project/opensearch-hadoop/pull/551))
@@ -34,7 +34,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.gradleup.shadow` from 8.3.6 to 9.2.2
 - Bumps `software.amazon.awssdk:sdk-core` from 2.31.59 to 2.40.13
 - Bumps `software.amazon.awssdk:regions` from 2.31.78 to 2.39.6
-- Bumps `software.amazon.awssdk:auth` from 2.34.5 to 2.38.2
+- Bumps `software.amazon.awssdk:auth` from 2.34.5 to 2.41.20
 - Bumps `software.amazon.awssdk:utils` from 2.38.2 to 2.40.8
 - Bumps `software.amazon.awssdk:http-client-spi` from 2.39.6 to 2.40.3
 

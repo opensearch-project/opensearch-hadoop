@@ -169,6 +169,10 @@ tasks.withType(Test) { Test task ->
     task.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
     task.jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED"
     task.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.util=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.net=ALL-UNNAMED"
 }
 
 // Embed the embedded dependencies in the final jar after all configuration is complete

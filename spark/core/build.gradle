@@ -164,6 +164,20 @@ if (JavaVersion.current() >= JavaVersion.VERSION_17) {
     }
 }
 
+// Spark 4.0 requires JDK 17+, override the runtime for spark40 test tasks
+tasks.withType(Test) { Test task ->
+    if (task.name.contains("Spark40") || task.name.contains("spark40")) {
+        task.executable = new File(System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/java').absolutePath
+        task.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
+        task.jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED"
+        task.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
+        task.jvmArgs "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED"
+        task.jvmArgs "--add-opens=java.base/java.util=ALL-UNNAMED"
+        task.jvmArgs "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
+        task.jvmArgs "--add-opens=java.base/java.net=ALL-UNNAMED"
+    }
+}
+
 // Set minimum compatibility and java home for compiler task
 tasks.withType(ScalaCompile) { ScalaCompile task ->
     // Spark 4.0 variants require JDK 17+ which does not have rt.jar

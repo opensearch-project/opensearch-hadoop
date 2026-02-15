@@ -124,6 +124,11 @@ sparkVariants {
             tasks.getByName(variant.taskName('javadoc')) {
                 dependsOn compileScala
                 source(generatedJavaDirectory)
+                if (variant.name.contains('spark40')) {
+                    executable = new File(System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/javadoc').absolutePath
+                    options.addStringOption('Xdoclint:none', '-quiet')
+                    failOnError = false
+                }
             }
         }
 

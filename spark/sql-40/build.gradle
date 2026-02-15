@@ -85,7 +85,7 @@ sparkVariants {
             add(variant.configuration('compileOnly'), "org.apache.spark:spark-tags_${variant.scalaMajorVersion}:$variant.sparkVersion")
 
             add(variant.configuration('test', 'implementation'), project(":test:shared"))
-            add(variant.configuration('test', 'implementation'), "jakarta.servlet:jakarta.servlet-api:6.1.0")
+            add(variant.configuration('test', 'implementation'), "jakarta.servlet:jakarta.servlet-api:5.0.0")
             add(variant.configuration('test', 'implementation'), "org.elasticsearch:securemock:1.2")
             add(variant.configuration('test', 'implementation'), "org.apache.spark:spark-core_${variant.scalaMajorVersion}:$variant.sparkVersion") {
                 exclude group: 'javax.servlet'
@@ -96,7 +96,7 @@ sparkVariants {
             }
 
             add(variant.configuration('itest', 'implementation'), project(":test:shared"))
-            add(variant.configuration('itest', 'implementation'), "jakarta.servlet:jakarta.servlet-api:6.1.0")
+            add(variant.configuration('itest', 'implementation'), "jakarta.servlet:jakarta.servlet-api:5.0.0")
             add(variant.configuration('itest', 'implementation'), "org.apache.spark:spark-yarn_${variant.scalaMajorVersion}:$variant.sparkVersion") {
                 exclude group: 'org.apache.hadoop'
             }
@@ -163,14 +163,12 @@ sparkVariants {
     }
 }
 
-if (JavaVersion.current() >= JavaVersion.VERSION_16) {
-    tasks.withType(Test) { Test task ->
-        if (task.getName().startsWith("test"))
-        task.configure {
-            jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED" // Needed for IOUtils's BYTE_ARRAY_BUFFER reflection
-            jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED" // Needed for org.apache.spark.SparkConf, which indirectly uses java.nio.DirectByteBuffer
-            jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED" // Needed for secure mock
-        }}
+// Spark 4.0 requires JDK 17+, override the runtime for all test tasks
+tasks.withType(Test) { Test task ->
+    task.executable = new File(System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/java').absolutePath
+    task.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
 }
 
 // Embed the embedded dependencies in the final jar after all configuration is complete

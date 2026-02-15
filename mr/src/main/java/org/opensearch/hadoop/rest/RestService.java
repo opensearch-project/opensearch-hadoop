@@ -78,15 +78,21 @@ public abstract class RestService implements Serializable {
         public final ScrollReader scrollReader;
         public final RestRepository client;
         public final SearchRequestBuilder queryBuilder;
+        private final boolean serverlessMode;
 
         private ScrollQuery scrollQuery;
 
         private boolean closed = false;
 
         PartitionReader(ScrollReader scrollReader, RestRepository client, SearchRequestBuilder queryBuilder) {
+            this(scrollReader, client, queryBuilder, false);
+        }
+
+        PartitionReader(ScrollReader scrollReader, RestRepository client, SearchRequestBuilder queryBuilder, boolean serverlessMode) {
             this.scrollReader = scrollReader;
             this.client = client;
             this.queryBuilder = queryBuilder;
+            this.serverlessMode = serverlessMode;
         }
 
         @Override
@@ -102,7 +108,11 @@ public abstract class RestService implements Serializable {
 
         public ScrollQuery scrollQuery() {
             if (scrollQuery == null) {
-                scrollQuery = queryBuilder.build(client, scrollReader);
+                if (serverlessMode) {
+                    scrollQuery = queryBuilder.buildSearchAfter(client, scrollReader);
+                } else {
+                    scrollQuery = queryBuilder.build(client, scrollReader);
+                }
             }
 
             return scrollQuery;
@@ -222,9 +232,10 @@ public abstract class RestService implements Serializable {
      * This function creates a single partition for each index as serverless doesn't expose shard information.
      */
     static List<PartitionDefinition> findServerlessPartitions(RestRepository client, Settings settings, MappingSet mappingSet, Log log) {
-        // Check if maxDocsPerPartition is set and throw exception if it is
         if (settings.getMaxDocsPerPartition() != null) {
-            throw new OpenSearchHadoopIllegalArgumentException("maxDocsPerPartition setting is not supported in OpenSearch Serverless mode");
+            throw new OpenSearchHadoopIllegalArgumentException(
+                "maxDocsPerPartition setting is not supported in OpenSearch Serverless mode. " +
+                "Serverless does not support Slice API which is required for parallel partition reads.");
         }
 
         Resource readResource = new Resource(settings, true);
@@ -234,23 +245,11 @@ public abstract class RestService implements Serializable {
         log.info(String.format("Reading from [%s] in serverless mode", settings.getResourceRead()));
 
         List<PartitionDefinition> partitions = new ArrayList<PartitionDefinition>();
-
-        // For serverless mode, we create partitions based on the index names in the resource
-        // Since we cannot get shard information, we treat each index as a single partition
         String[] indices = readResource.index().split(",");
-        
+
         for (String indexName : indices) {
             indexName = indexName.trim();
-            // Create a single partition per index with dummy shard ID 0 (serverless mode detection via settings)
             partitions.add(partitionBuilder.build(indexName, 0, new String[0]));
-        }
-
-        if (partitions.isEmpty()) {
-            if (log.isDebugEnabled()) {
-                log.debug("No partitions created for serverless mode - creating default partition");
-            }
-            // Fallback: create at least one partition for the primary index
-            partitions.add(partitionBuilder.build(readResource.index(), 0, new String[0]));
         }
 
         return partitions;
@@ -462,7 +461,7 @@ public abstract class RestService implements Serializable {
                 requestBuilder = applyAliasMetadata(clusterInfo.getMajorVersion(), aliases, requestBuilder, partition.getIndex(), indices);
             }
         }
-        return new PartitionReader(scrollReader, repository, requestBuilder);
+        return new PartitionReader(scrollReader, repository, requestBuilder, settings.getServerlessMode());
     }
 
     /**

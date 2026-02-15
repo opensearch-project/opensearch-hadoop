@@ -641,6 +641,35 @@ public class RestClient implements Closeable, StatsAware {
         return out.bytes();
     }
 
+    /**
+     * Build a search_after request body by appending search_after to the original query body.
+     */
+    public BytesArray buildSearchAfterBody(Object[] searchAfter) {
+        FastByteArrayOutputStream out = new FastByteArrayOutputStream(256);
+        JacksonJsonGenerator generator = new JacksonJsonGenerator(out);
+        try {
+            generator.writeBeginObject();
+            generator.writeFieldName("search_after");
+            generator.writeBeginArray();
+            for (Object value : searchAfter) {
+                if (value instanceof Long) {
+                    generator.writeNumber((Long) value);
+                } else if (value instanceof Double) {
+                    generator.writeNumber((Double) value);
+                } else if (value instanceof Integer) {
+                    generator.writeNumber((Integer) value);
+                } else {
+                    generator.writeString(String.valueOf(value));
+                }
+            }
+            generator.writeEndArray();
+            generator.writeEndObject();
+        } finally {
+            generator.close();
+        }
+        return out.bytes();
+    }
+
     public boolean isAlias(String query) {
         Map<String, Object> aliases = (Map<String, Object>) get(query, null);
         return (aliases.size() > 1);

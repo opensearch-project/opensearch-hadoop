@@ -628,7 +628,10 @@ public class ScrollReaderTest {
         JdkValueReader valueReader = ObjectUtils.instantiate(JdkValueReader.class.getName(), testSettings);
         ScrollReader reader = new ScrollReader(ScrollReaderConfigBuilder.builder(valueReader, mappings.getResolvedView(), testSettings));
         ScrollReader.Scroll scroll = reader.read(stream);
-        assertNull(scroll);
+        assertNotNull(scroll);
+        assertNull(scroll.getScrollId());
+        assertTrue(scroll.isConcluded());
+        assertEquals(0, scroll.getHits().size());
     }
 
     /**

@@ -3,7 +3,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
 ### Added
-- Add Apache Spark 4.0 support ([#668](https://github.com/opensearch-project/opensearch-hadoop/issues/668))
+- Add Apache Spark 4.0 support ([#684](https://github.com/opensearch-project/opensearch-hadoop/pull/684))
 
 ### Changed
 - Switched to more reliable OpenSearch Lucene snapshot location ([#597](https://github.com/opensearch-project/opensearch-hadoop/pull/597))

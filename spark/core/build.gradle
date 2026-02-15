@@ -12,6 +12,7 @@ sparkVariants {
     setCoreDefaultVariant "spark20scala212", spark24Version, scala212Version
     addCoreFeatureVariant "spark30scala213", spark30Version, scala213Version
     addCoreFeatureVariant "spark30scala212", spark30Version, scala212Version
+    addCoreFeatureVariant "spark40scala213", spark40Version, scala213Version
     addCoreFeatureVariant "spark20scala211", spark24Version, scala211Version
     addCoreFeatureVariant "spark20scala210", spark22Version, scala210Version
 
@@ -44,6 +45,11 @@ sparkVariants {
             add(variant.configuration('api'), "org.apache.spark:spark-core_${variant.scalaMajorVersion}:${variant.sparkVersion}") {
                 exclude group: 'javax.servlet'
                 exclude group: 'org.apache.hadoop'
+            }
+
+            // Spark 4.0 moved org.apache.spark.internal.Logging to spark-common-utils
+            if (variant.sparkVersion.startsWith("4.")) {
+                add(variant.configuration('compileOnly'), "org.apache.spark:spark-common-utils_${variant.scalaMajorVersion}:${variant.sparkVersion}")
             }
 
             add(variant.configuration('implementation'), project(":opensearch-hadoop-mr"))
@@ -129,7 +135,7 @@ sparkVariants {
 
 // deal with the messy conflicts out there
 // Ignore the scalaCompilerPlugin configurations since it is immediately resolved to configure the scala compiler tasks
-configurations.matching{ it.name.contains('CompilerPlugin') == false && (it.name.contains("spark30") || it.name.contains("Spark30")) == false}.all { Configuration conf ->
+configurations.matching{ it.name.contains('CompilerPlugin') == false && (it.name.contains("spark30") || it.name.contains("Spark30")) == false && (it.name.contains("spark40") || it.name.contains("Spark40")) == false}.all { Configuration conf ->
     conf.resolutionStrategy {
         eachDependency { details ->
             // change all javax.servlet artifacts to the one used by Spark otherwise these will lead to
@@ -155,6 +161,10 @@ if (JavaVersion.current() >= JavaVersion.VERSION_17) {
 
 // Set minimum compatibility and java home for compiler task
 tasks.withType(ScalaCompile) { ScalaCompile task ->
+    // Spark 4.0 variants require JDK 17+ which does not have rt.jar
+    if (task.name.contains("spark40") || task.name.contains("Spark40")) {
+        return
+    }
     task.scalaCompileOptions.additionalParameters = ["-javabootclasspath", new File(project.ext.runtimeJavaHome, 'jre/lib/rt.jar').absolutePath]
     task.options.bootstrapClasspath = layout.files(new File(project.ext.runtimeJavaHome, 'jre/lib/rt.jar'))
     task.sourceCompatibility = project.ext.minimumRuntimeVersion

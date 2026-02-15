@@ -115,10 +115,15 @@ public abstract class BulkOutputGeneratorBase implements BulkOutputGenerator {
 
     @Override
     public BulkOutputGenerator addSuccess(String operation, int status) {
+        return addSuccess(operation, status, resource.index());
+    }
+
+    @Override
+    public BulkOutputGenerator addSuccess(String operation, int status, String index) {
         Assert.notNull(resource);
         items.add(getSuccess()
                 .replace(OP, operation)
-                .replace(IDX, resource.index())
+                .replace(IDX, index)
                 .replace(TYPE, resource.type())
                 .replace(ID, UUID.randomUUID().toString())
                 .replace(VER, "1")

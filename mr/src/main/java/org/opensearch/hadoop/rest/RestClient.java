@@ -299,6 +299,10 @@ public class RestClient implements Closeable, StatsAware {
         execute(POST, resource.refresh());
     }
 
+    public void refreshIndex(String index) {
+        execute(POST, index + "/_refresh");
+    }
+
     public List<List<Map<String, Object>>> targetShards(String index, String routing) {
         List<List<Map<String, Object>>> shardsJson = null;
 

@@ -967,4 +967,80 @@ public class BulkProcessorTest {
         assertEquals(-1, inputStream.read());
         return copyDoc;
     }
+
+    @Test
+    public void testBulk10_RefreshSingleIndex() throws Exception {
+        RestClient.BulkActionResponse response = generator.setInfo(resource, 56)
+                .addSuccess("index", 201)
+                .addSuccess("index", 201)
+                .addSuccess("index", 201)
+                .generate();
+
+        RestClient mockClient = mockClientResponses(response);
+        BulkProcessor processor = new BulkProcessor(mockClient, resource, testSettings);
+
+        BytesRef data = new BytesRef();
+        data.add(renderEntry("A"));
+        processor.add(data);
+        data.reset();
+        data.add(renderEntry("B"));
+        processor.add(data);
+        data.reset();
+        data.add(renderEntry("C"));
+        processor.add(data);
+
+        processor.close();
+
+        Mockito.verify(mockClient).refreshIndex("foo");
+        Mockito.verify(mockClient, Mockito.never()).refresh(Mockito.any(Resource.class));
+    }
+
+    @Test
+    public void testBulk10_RefreshMultipleDynamicIndices() throws Exception {
+        RestClient.BulkActionResponse response = generator.setInfo(resource, 56)
+                .addSuccess("index", 201, "logs-2026-01")
+                .addSuccess("index", 201, "logs-2026-02")
+                .addSuccess("index", 201, "logs-2026-01")
+                .addSuccess("index", 201, "logs-2026-03")
+                .addSuccess("index", 201, "logs-2026-02")
+                .generate();
+
+        RestClient mockClient = mockClientResponses(response);
+        BulkProcessor processor = new BulkProcessor(mockClient, resource, testSettings);
+
+        processData(processor);
+
+        processor.close();
+
+        Mockito.verify(mockClient).refreshIndex("logs-2026-01");
+        Mockito.verify(mockClient).refreshIndex("logs-2026-02");
+        Mockito.verify(mockClient).refreshIndex("logs-2026-03");
+        Mockito.verify(mockClient, Mockito.times(3)).refreshIndex(Mockito.anyString());
+        Mockito.verify(mockClient, Mockito.never()).refresh(Mockito.any(Resource.class));
+    }
+
+    @Test
+    public void testBulk10_NoRefreshWhenDisabled() throws Exception {
+        testSettings.setProperty(ConfigurationOptions.OPENSEARCH_BATCH_WRITE_REFRESH, "false");
+
+        RestClient.BulkActionResponse response = generator.setInfo(resource, 56)
+                .addSuccess("index", 201)
+                .addSuccess("index", 201)
+                .generate();
+
+        RestClient mockClient = mockClientResponses(response);
+        BulkProcessor processor = new BulkProcessor(mockClient, resource, testSettings);
+
+        BytesRef data = new BytesRef();
+        data.add(renderEntry("A"));
+        processor.add(data);
+        data.reset();
+        data.add(renderEntry("B"));
+        processor.add(data);
+
+        processor.close();
+
+        Mockito.verify(mockClient, Mockito.never()).refreshIndex(Mockito.anyString());
+        Mockito.verify(mockClient, Mockito.never()).refresh(Mockito.any(Resource.class));
+    }
 }

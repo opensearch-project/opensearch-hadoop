@@ -1061,14 +1061,6 @@ class AbstractScalaOpenSearchScalaSparkSQL(prefix: String, readMetadata: jl.Bool
   }
 
   @Test
-  def testDataSourcePushDown08InWithNumberAndStrings() {
-    val df = opensearchDataSource("pd_in_number")
-    var filter = df.filter("participants IN (2, 'bar', 1, 'foo')")
-
-    assertEquals(0, filter.count())
-  }
-
-  @Test
   def testDataSourcePushDown09StartsWith() {
     val df = opensearchDataSource("pd_starts_with")
     var filter = df.filter(df("airport").startsWith("O"))

@@ -131,6 +131,13 @@ class StreamingQueryTestHarness[S <: java.io.Serializable : Encoder](val sparkSe
       }
     }
 
+    override def onQueryIdle(event: StreamingQueryListener.QueryIdleEvent): Unit = {
+      captureQueryID(event.id)
+      if (inputsSeen >= inputsRequired) {
+        latch.countDown()
+      }
+    }
+
     override def onQueryTerminated(event: StreamingQueryListener.QueryTerminatedEvent): Unit = {
       try {
         captureQueryID(event.id)

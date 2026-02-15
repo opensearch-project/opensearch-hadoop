@@ -46,7 +46,7 @@ import org.apache.spark.api.java.function.Function;
 import org.apache.spark.sql.Dataset;
 import org.apache.spark.sql.Row;
 import org.apache.spark.sql.RowFactory;
-import org.apache.spark.sql.SQLContext;
+import org.apache.spark.sql.SparkSession;
 import org.apache.spark.sql.types.DataTypes;
 import org.apache.spark.sql.types.StructField;
 import org.apache.spark.sql.types.StructType;
@@ -81,7 +81,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 			.setAppName("opensearchtest");
 	
 	private static transient JavaSparkContext sc = null;
-	private static transient SQLContext sqc = null;
+	private static transient SparkSession sqc = null;
 	private transient OpenSearchMajorVersion version = TestUtils.getOpenSearchClusterInfo().getMajorVersion();
 
 	@ClassRule
@@ -90,7 +90,7 @@ public class AbstractJavaOpenSearchSparkSQLTest implements Serializable {
 	@BeforeClass
 	public static void setup() {
 		sc = new JavaSparkContext(conf);
-		sqc = new SQLContext(sc);
+		sqc = SparkSession.builder().sparkContext(sc.sc()).getOrCreate();
 	}
 
 	@AfterClass

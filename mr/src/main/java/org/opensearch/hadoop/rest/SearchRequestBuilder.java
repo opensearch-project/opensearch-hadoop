@@ -64,6 +64,7 @@ public class SearchRequestBuilder {
 
     private final boolean includeVersion;
     private TimeValue scroll = TimeValue.timeValueMinutes(10);
+    private String pitKeepAlive = "5m";
     private long size = 50;
     private long limit = -1;
     private String indices;
@@ -132,6 +133,11 @@ public class SearchRequestBuilder {
     public SearchRequestBuilder scroll(long keepAliveMillis) {
         Assert.isTrue(keepAliveMillis > 0, "Invalid scroll");
         this.scroll = TimeValue.timeValueMillis(keepAliveMillis);
+        return this;
+    }
+
+    public SearchRequestBuilder pitKeepAlive(String pitKeepAlive) {
+        this.pitKeepAlive = pitKeepAlive;
         return this;
     }
 
@@ -321,7 +327,7 @@ public class SearchRequestBuilder {
     public ScrollQuery buildSearchAfter(RestRepository client, ScrollReader reader) {
         String searchUri = assembleSearchAfterUri();
         BytesArray requestBody = assembleSearchAfterBody();
-        return client.scanLimitSearchAfter(searchUri, requestBody, limit, reader);
+        return client.scanLimitSearchAfter(searchUri, requestBody, limit, reader, indices, pitKeepAlive);
     }
 
     private String assembleSearchAfterUri() {
@@ -329,13 +335,9 @@ public class SearchRequestBuilder {
             size = limit;
         }
         Map<String, String> uriParams = new LinkedHashMap<String, String>();
+        // PIT usage requires no index in URI
         StringBuilder sb = new StringBuilder();
-        sb.append(indices);
-        if (StringUtils.hasLength(types)) {
-            sb.append("/");
-            sb.append(types);
-        }
-        sb.append("/_search?");
+        sb.append("_search?");
 
         uriParams.put("size", String.valueOf(size));
         if (includeVersion) {
@@ -379,10 +381,11 @@ public class SearchRequestBuilder {
             generator.writeBeginObject();
             root.toJson(generator);
             generator.writeEndObject();
-            // sort by _doc for search_after pagination
+            // sort by _doc with _id tiebreaker for search_after pagination
             generator.writeFieldName("sort");
             generator.writeBeginArray();
             generator.writeString("_doc");
+            generator.writeString("_id");
             generator.writeEndArray();
             if (StringUtils.hasText(fields)) {
                 generator.writeFieldName("_source");

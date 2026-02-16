@@ -136,4 +136,30 @@ public class ScrollQueryTest {
         Mockito.doReturn(mockClient).when(mocked).getRestClient();
         return mocked;
     }
+
+    @Test
+    public void testServerlessModeDeletesPitOnClose() throws Exception {
+        RestRepository repository = Mockito.mock(RestRepository.class);
+        ScrollReader scrollReader = Mockito.mock(ScrollReader.class);
+
+        Object[] hit = new Object[]{"1", Collections.singletonMap("field", "value")};
+        ScrollReader.Scroll initial = new ScrollReader.Scroll(null, 1,
+                Collections.singletonList(hit), 1, 0, new Object[]{0L, "1"}, "test-pit-id");
+        Mockito.doReturn(initial).when(repository).scroll(Matchers.anyString(), Matchers.any(BytesArray.class), Matchers.any(ScrollReader.class));
+
+        ScrollReader.Scroll empty = new ScrollReader.Scroll(null, 1, true);
+        Mockito.doReturn(empty).when(repository).searchAfter(
+                Matchers.anyString(), Matchers.any(BytesArray.class), Matchers.any(Object[].class),
+                Matchers.anyString(), Matchers.anyString(), Matchers.any(ScrollReader.class));
+
+        ScrollQuery scrollQuery = new ScrollQuery(repository, "_search?size=10", new BytesArray("{\"query\":{},\"sort\":[\"_doc\",\"_id\"]}"), 100, scrollReader, true, "test-pit-id", "5m");
+
+        Assert.assertTrue(scrollQuery.hasNext());
+        scrollQuery.next();
+        Assert.assertFalse(scrollQuery.hasNext());
+        scrollQuery.close();
+
+        Mockito.verify(repository).deletePit("test-pit-id");
+        Mockito.verify(repository).close();
+    }
 }

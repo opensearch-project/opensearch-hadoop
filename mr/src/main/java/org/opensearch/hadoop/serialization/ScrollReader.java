@@ -157,6 +157,7 @@ public class ScrollReader implements Closeable {
         private final int numberOfHits;
         private final int numberOfSkippedHits;
         private final Object[] searchAfter;
+        private final String pitId;
 
         public Scroll(String scrollId, long total, boolean concluded) {
             this.scrollId = scrollId;
@@ -166,13 +167,18 @@ public class ScrollReader implements Closeable {
             this.numberOfHits = 0;
             this.numberOfSkippedHits = 0;
             this.searchAfter = null;
+            this.pitId = null;
         }
 
         public Scroll(String scrollId, long total, List<Object[]> hits, int responseHits, int skippedHits) {
-            this(scrollId, total, hits, responseHits, skippedHits, null);
+            this(scrollId, total, hits, responseHits, skippedHits, null, null);
         }
 
         public Scroll(String scrollId, long total, List<Object[]> hits, int responseHits, int skippedHits, Object[] searchAfter) {
+            this(scrollId, total, hits, responseHits, skippedHits, searchAfter, null);
+        }
+
+        public Scroll(String scrollId, long total, List<Object[]> hits, int responseHits, int skippedHits, Object[] searchAfter, String pitId) {
             this.scrollId = scrollId;
             this.hits = hits;
             this.total = total;
@@ -180,6 +186,7 @@ public class ScrollReader implements Closeable {
             this.numberOfHits = responseHits;
             this.numberOfSkippedHits = skippedHits;
             this.searchAfter = searchAfter;
+            this.pitId = pitId;
         }
 
         public String getScrollId() {
@@ -208,6 +215,10 @@ public class ScrollReader implements Closeable {
 
         public Object[] getSearchAfter() {
             return searchAfter;
+        }
+
+        public String getPitId() {
+            return pitId;
         }
     }
 
@@ -432,7 +443,8 @@ public class ScrollReader implements Closeable {
 
         if (responseHits > 0) {
             Object[] searchAfter = (scrollId == null) ? extractLastSortValues(input) : null;
-            return new Scroll(scrollId, totalHits, results, responseHits, skippedHits, searchAfter);
+            String pitId = (scrollId == null) ? extractPitId(input) : null;
+            return new Scroll(scrollId, totalHits, results, responseHits, skippedHits, searchAfter, pitId);
         } else {
             // Scroll had no hits in the response, it must have concluded.
             return new Scroll(scrollId, totalHits, true);
@@ -908,6 +920,21 @@ public class ScrollReader implements Closeable {
             return lastSort;
         } finally {
             sortParser.close();
+        }
+    }
+
+    private static final String[] PIT_ID = new String[] { "pit_id" };
+
+    private String extractPitId(BytesArray input) {
+        Parser pitParser = new JacksonJsonParser(new FastByteArrayInputStream(input));
+        try {
+            Token token = ParsingUtils.seek(pitParser, PIT_ID);
+            if (token == Token.VALUE_STRING) {
+                return pitParser.text();
+            }
+            return null;
+        } finally {
+            pitParser.close();
         }
     }
 

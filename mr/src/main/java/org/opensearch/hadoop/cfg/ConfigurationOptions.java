@@ -130,6 +130,10 @@ public interface ConfigurationOptions {
     String OPENSEARCH_SCROLL_KEEPALIVE = "opensearch.scroll.keepalive";
     String OPENSEARCH_SCROLL_KEEPALIVE_DEFAULT = "5m";
 
+    /** PIT keep-alive (serverless mode) */
+    String OPENSEARCH_PIT_KEEPALIVE = "opensearch.pit.keepalive";
+    String OPENSEARCH_PIT_KEEPALIVE_DEFAULT = "5m";
+
     /** Scroll size */
     String OPENSEARCH_SCROLL_SIZE = "opensearch.scroll.size";
     String OPENSEARCH_SCROLL_SIZE_DEFAULT = "1000";

@@ -220,6 +220,10 @@ public abstract class Settings {
         return TimeValue.parseTimeValue(getProperty(OPENSEARCH_SCROLL_KEEPALIVE, OPENSEARCH_SCROLL_KEEPALIVE_DEFAULT)).getMillis();
     }
 
+    public String getPitKeepAlive() {
+        return getProperty(OPENSEARCH_PIT_KEEPALIVE, OPENSEARCH_PIT_KEEPALIVE_DEFAULT);
+    }
+
     public long getScrollSize() {
         return Long.valueOf(getProperty(OPENSEARCH_SCROLL_SIZE, OPENSEARCH_SCROLL_SIZE_DEFAULT));
     }

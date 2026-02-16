@@ -432,7 +432,8 @@ public abstract class RestService implements Serializable {
                         .readMetadata(settings.getReadMetadata())
                         .local(true)
                         .preference(settings.getShardPreference())
-                        .excludeSource(settings.getExcludeSource());
+                        .excludeSource(settings.getExcludeSource())
+                        .pitKeepAlive(settings.getPitKeepAlive());
 
         // For serverless mode, skip shard-specific settings that are not supported
         if (!settings.getServerlessMode()) {

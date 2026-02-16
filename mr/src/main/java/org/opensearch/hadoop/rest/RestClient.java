@@ -535,6 +535,19 @@ public class RestClient implements Closeable, StatsAware {
         return (res.status() == HttpStatus.OK ? true : false);
     }
 
+    public String createPit(String index, String keepAlive) {
+        Response res = execute(POST, index + "/_search/point_in_time?keep_alive=" + keepAlive, true);
+        String pitId = parseContent(res.body(), "pit_id");
+        return pitId;
+    }
+
+    public boolean deletePit(String pitId) {
+        BytesArray body = new BytesArray(("{\"pit_id\":[\"" + pitId + "\"]}").getBytes(StringUtils.UTF_8));
+        Request req = new SimpleRequest(DELETE, null, "_search/point_in_time", body);
+        Response res = executeNotFoundAllowed(req);
+        return (res.status() == HttpStatus.OK ? true : false);
+    }
+
     public boolean documentExists(String index, String type, String id) {
         return exists(index + "/" + type + "/" + id);
     }

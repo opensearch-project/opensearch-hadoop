@@ -348,8 +348,11 @@ public class RestRepository implements Closeable, StatsAware {
         }
     }
 
-    Scroll searchAfter(String queryUri, BytesArray baseBody, Object[] searchAfter, ScrollReader reader) throws IOException {
+    Scroll searchAfter(String queryUri, BytesArray baseBody, Object[] searchAfter, String pitId, String keepAlive, ScrollReader reader) throws IOException {
         BytesArray body = mergeSearchAfterIntoBody(baseBody, searchAfter);
+        if (StringUtils.hasText(pitId)) {
+            body = injectPit(body, pitId, keepAlive);
+        }
         InputStream response = client.execute(Request.Method.POST, queryUri, body).body();
         try {
             return reader.read(response);
@@ -360,25 +363,28 @@ public class RestRepository implements Closeable, StatsAware {
         }
     }
 
-    /**
-     * Merge search_after values into the base request body.
-     * Inserts "search_after":[...] before the closing brace of the JSON body.
-     */
+    private static BytesArray injectPit(BytesArray body, String pitId, String keepAlive) {
+        String base = body.toString().trim();
+        String pitFragment = "\"pit\":{\"id\":\"" + pitId + "\",\"keep_alive\":\"" + keepAlive + "\"}";
+        return new BytesArray(base.substring(0, base.length() - 1) + "," + pitFragment + "}");
+    }
+
     private BytesArray mergeSearchAfterIntoBody(BytesArray baseBody, Object[] searchAfter) {
         BytesArray searchAfterJson = client.buildSearchAfterBody(searchAfter);
-        // baseBody: {...}  searchAfterJson: {"search_after":[...]}
-        // Result: base body with search_after inserted
         String base = baseBody.toString().trim();
         String saFragment = searchAfterJson.toString().trim();
-        // Remove outer braces from search_after fragment: {"search_after":[...]} -> "search_after":[...]
         String saContent = saFragment.substring(1, saFragment.length() - 1);
-        // Insert before closing brace of base body
         String merged = base.substring(0, base.length() - 1) + "," + saContent + "}";
         return new BytesArray(merged);
     }
 
-    ScrollQuery scanLimitSearchAfter(String query, BytesArray body, long limit, ScrollReader reader) {
-        return new ScrollQuery(this, query, body, limit, reader, true);
+    ScrollQuery scanLimitSearchAfter(String query, BytesArray body, long limit, ScrollReader reader, String index, String keepAlive) {
+        String pitId = client.createPit(index, keepAlive);
+        return new ScrollQuery(this, query, body, limit, reader, true, pitId, keepAlive);
+    }
+
+    public void deletePit(String pitId) {
+        client.deletePit(pitId);
     }
 
     public boolean resourceExists(boolean read) {

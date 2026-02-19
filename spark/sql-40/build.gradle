@@ -59,6 +59,7 @@ sparkVariants {
             // Spark 4.0 split these into separate modules
             add(variant.configuration('implementation'), "org.apache.spark:spark-sql-api_${variant.scalaMajorVersion}:$variant.sparkVersion")
             add(variant.configuration('implementation'), "org.apache.spark:spark-common-utils_${variant.scalaMajorVersion}:$variant.sparkVersion")
+            add(variant.configuration('implementation'), "org.apache.spark:spark-common-utils-java_${variant.scalaMajorVersion}:$variant.sparkVersion")
 
             add(variant.configuration('implementation'), "org.apache.spark:spark-sql_${variant.scalaMajorVersion}:$variant.sparkVersion") {
                 exclude group: 'org.apache.hadoop'

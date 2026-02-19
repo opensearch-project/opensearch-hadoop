@@ -47,9 +47,11 @@ sparkVariants {
                 exclude group: 'org.apache.hadoop'
             }
 
-            // Spark 4.0 moved org.apache.spark.internal.Logging to spark-common-utils
+            // Spark 4.x moved org.apache.spark.internal.Logging to spark-common-utils
+            // Spark 4.1+ further split LogKey into spark-common-utils-java
             if (variant.sparkVersion.startsWith("4.")) {
                 add(variant.configuration('compileOnly'), "org.apache.spark:spark-common-utils_${variant.scalaMajorVersion}:${variant.sparkVersion}")
+                add(variant.configuration('compileOnly'), "org.apache.spark:spark-common-utils-java_${variant.scalaMajorVersion}:${variant.sparkVersion}")
             }
 
             add(variant.configuration('implementation'), project(":opensearch-hadoop-mr"))

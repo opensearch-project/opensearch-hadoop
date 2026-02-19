@@ -9,6 +9,7 @@ jobs:
       fail-fast: true
       matrix:
         os: [ubuntu-latest]
+        java: ['17', '21']
     steps:
       - name: Checkout Branch
         uses: actions/checkout@v3
@@ -43,15 +44,14 @@ jobs:
       - name: 'Setup: Java 17 env'
         run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
-      - name: Set up JDK 21
+      - name: Set up test JDK ${{ matrix.java }}
         uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
-          java-version: '21'
-          cache: 'gradle'
+          java-version: ${{ matrix.java }}
 
-      - name: 'Setup: Java 21 env'
-        run: echo "JAVA21_HOME=$JAVA_HOME" >> $GITHUB_ENV
+      - name: 'Setup: Spark test Java env'
+        run: echo "SPARK_TEST_JAVA_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
@@ -63,5 +63,5 @@ jobs:
         if: failure()
         uses: actions/upload-artifact@v4
         with:
-          name: test-results-${{ matrix.os }}
+          name: test-results-${{ matrix.os }}-java${{ matrix.java }}
           path: '**/build/test-results'

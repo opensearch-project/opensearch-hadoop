@@ -128,7 +128,7 @@ sparkVariants {
                 dependsOn compileScala
                 source(generatedJavaDirectory)
                 if (variant.name.contains('spark40')) {
-                    executable = new File(System.getenv('JAVA21_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/javadoc').absolutePath
+                    executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/javadoc').absolutePath
                     options.addStringOption('Xdoclint:none', '-quiet')
                     failOnError = false
                 }
@@ -170,7 +170,7 @@ if (JavaVersion.current() >= JavaVersion.VERSION_17) {
 // Spark 4.0 requires JDK 17+, override the runtime for spark40 test tasks
 tasks.withType(Test) { Test task ->
     if (task.name.contains("Spark40") || task.name.contains("spark40")) {
-        task.executable = new File(System.getenv('JAVA21_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/java').absolutePath
+        task.executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/java').absolutePath
         task.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
         task.jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED"
         task.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"

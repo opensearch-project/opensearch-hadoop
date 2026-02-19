@@ -169,4 +169,40 @@ public class InitializationUtilsTest {
         set.setProperty(OPENSEARCH_MAPPING_ID, "");
         validateSettings(set);
     }
+
+    @Test
+    public void testServerlessModeSettingCanBeEnabled() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_SERVERLESS, "true");
+        validateSettings(set);
+
+        assertTrue(set.getServerlessMode());
+    }
+
+    @Test
+    public void testServerlessModeWithWANOnlyIsValid() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_SERVERLESS, "true");
+        set.setProperty(OPENSEARCH_NODES_WAN_ONLY, "true");
+        validateSettings(set);
+
+        assertTrue(set.getServerlessMode());
+        assertTrue(set.getNodesWANOnly());
+    }
+
+    @Test
+    public void testServerlessModeUsesAossServiceName() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_SERVERLESS, "true");
+        
+        assertEquals("aoss", set.getAwsSigV4ServiceName());
+    }
+
+    @Test
+    public void testNormalModeUsesEsServiceName() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_SERVERLESS, "false");
+        
+        assertEquals("es", set.getAwsSigV4ServiceName());
+    }
 }

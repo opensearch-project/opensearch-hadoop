@@ -66,13 +66,31 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
     private boolean initialized = false;
     private String query;
     private BytesArray body;
+    private final boolean serverlessMode;
+    private Object[] searchAfter;
+    // Retained for search_after continuation in serverless mode
+    private String searchAfterUri;
+    private BytesArray searchAfterBaseBody;
+    private String pitId;
+    private String pitKeepAlive;
 
     ScrollQuery(RestRepository client, String query, BytesArray body, long size, ScrollReader reader) {
+        this(client, query, body, size, reader, false, null, null);
+    }
+
+    ScrollQuery(RestRepository client, String query, BytesArray body, long size, ScrollReader reader, boolean serverlessMode) {
+        this(client, query, body, size, reader, serverlessMode, null, null);
+    }
+
+    ScrollQuery(RestRepository client, String query, BytesArray body, long size, ScrollReader reader, boolean serverlessMode, String pitId, String pitKeepAlive) {
         this.repository = client;
         this.size = size;
         this.reader = reader;
         this.query = query;
         this.body = body;
+        this.serverlessMode = serverlessMode;
+        this.pitId = pitId;
+        this.pitKeepAlive = pitKeepAlive;
     }
 
     @Override
@@ -84,8 +102,11 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
             reader.close();
             // typically the scroll is closed after it is consumed so this will trigger a 404
             // however we're closing it either way
-            if (StringUtils.hasText(scrollId)) {
+            if (!serverlessMode && StringUtils.hasText(scrollId)) {
                 repository.getRestClient().deleteScroll(scrollId);
+            }
+            if (serverlessMode && StringUtils.hasText(pitId)) {
+                repository.deletePit(pitId);
             }
             repository.close();
         }
@@ -101,7 +122,11 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
             initialized = true;
             
             try {
-                Scroll scroll = repository.scroll(query, body, reader);
+                BytesArray requestBody = body;
+                if (serverlessMode && StringUtils.hasText(pitId)) {
+                    requestBody = injectPit(body, pitId, pitKeepAlive);
+                }
+                Scroll scroll = repository.scroll(query, requestBody, reader);
                 if (scroll == null) {
                     finished = true;
                     return false;
@@ -111,12 +136,21 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
                 scrollId = scroll.getScrollId();
                 batch = scroll.getHits();
                 finished = scroll.isConcluded();
+                searchAfter = scroll.getSearchAfter();
+                if (serverlessMode && scroll.getPitId() != null) {
+                    pitId = scroll.getPitId();
+                }
             } catch (IOException ex) {
                 throw new OpenSearchHadoopIllegalStateException(String.format("Cannot create scroll for query [%s/%s]", query, body), ex);
             }
             read += batch.size();
             stats.docsReceived += batch.size();
-            // no longer needed
+            if (serverlessMode) {
+                // Retain query URI and body for search_after continuation
+                searchAfterUri = query;
+                searchAfterBaseBody = body;
+            }
+            // no longer needed for scroll mode
             body = null;
             query = null;
         }
@@ -128,7 +162,12 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
             }
 
             try {
-                Scroll scroll = repository.scroll(scrollId, reader);
+                Scroll scroll;
+                if (serverlessMode) {
+                    scroll = repository.searchAfter(searchAfterUri, searchAfterBaseBody, searchAfter, pitId, pitKeepAlive, reader);
+                } else {
+                    scroll = repository.scroll(scrollId, reader);
+                }
                 if (scroll == null) {
                     finished = true;
                     return false;
@@ -136,6 +175,15 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
                 scrollId = scroll.getScrollId();
                 batch = scroll.getHits();
                 finished = scroll.isConcluded();
+                if (serverlessMode) {
+                    searchAfter = scroll.getSearchAfter();
+                    if (searchAfter == null) {
+                        finished = true;
+                    }
+                    if (scroll.getPitId() != null) {
+                        pitId = scroll.getPitId();
+                    }
+                }
             } catch (IOException ex) {
                 throw new OpenSearchHadoopIllegalStateException("Cannot retrieve scroll [" + scrollId + "]", ex);
             }
@@ -185,5 +233,11 @@ public class ScrollQuery implements Iterator<Object>, Closeable, StatsAware {
         StringBuilder builder = new StringBuilder();
         builder.append("ScrollQuery [scrollId=").append(scrollId).append("]");
         return builder.toString();
+    }
+
+    private static BytesArray injectPit(BytesArray body, String pitId, String keepAlive) {
+        String base = body.toString().trim();
+        String pitFragment = "\"pit\":{\"id\":\"" + pitId + "\",\"keep_alive\":\"" + keepAlive + "\"}";
+        return new BytesArray(base.substring(0, base.length() - 1) + "," + pitFragment + "}");
     }
 }

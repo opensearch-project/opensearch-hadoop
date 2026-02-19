@@ -32,6 +32,8 @@ import org.opensearch.hadoop.util.OpenSearchMajorVersion;
 import org.opensearch.hadoop.util.encoding.HttpEncodingTools;
 import org.junit.Test;
 
+import java.lang.reflect.Method;
+
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.assertFalse;
 
@@ -73,5 +75,28 @@ public class SearchRequestBuilderTest {
         String localWithPreferenceString = localWithPreferenceBuilder.toString();
         assertFalse(localWithPreferenceString.contains("_local"));
         assertTrue(localWithPreferenceString.contains(encodedPreferenceString));
+    }
+
+    @Test
+    public void testSearchAfterUriExcludesIndex() throws Exception {
+        SearchRequestBuilder builder = new SearchRequestBuilder(false)
+                .indices("my-index")
+                .size(1000);
+        Method method = SearchRequestBuilder.class.getDeclaredMethod("assembleSearchAfterUri");
+        method.setAccessible(true);
+        String uri = (String) method.invoke(builder);
+        assertTrue(uri.startsWith("_search?"));
+        assertFalse(uri.contains("my-index"));
+    }
+
+    @Test
+    public void testSearchAfterBodyContainsIdTiebreaker() throws Exception {
+        SearchRequestBuilder builder = new SearchRequestBuilder(false)
+                .indices("my-index")
+                .size(1000);
+        Method method = SearchRequestBuilder.class.getDeclaredMethod("assembleSearchAfterBody");
+        method.setAccessible(true);
+        String body = method.invoke(builder).toString();
+        assertTrue(body.contains("\"sort\":[\"_doc\",\"_id\"]"));
     }
 }

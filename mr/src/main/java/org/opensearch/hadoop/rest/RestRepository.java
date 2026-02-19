@@ -348,6 +348,45 @@ public class RestRepository implements Closeable, StatsAware {
         }
     }
 
+    Scroll searchAfter(String queryUri, BytesArray baseBody, Object[] searchAfter, String pitId, String keepAlive, ScrollReader reader) throws IOException {
+        BytesArray body = mergeSearchAfterIntoBody(baseBody, searchAfter);
+        if (StringUtils.hasText(pitId)) {
+            body = injectPit(body, pitId, keepAlive);
+        }
+        InputStream response = client.execute(Request.Method.POST, queryUri, body).body();
+        try {
+            return reader.read(response);
+        } finally {
+            if (response instanceof StatsAware) {
+                stats.aggregate(((StatsAware) response).stats());
+            }
+        }
+    }
+
+    private static BytesArray injectPit(BytesArray body, String pitId, String keepAlive) {
+        String base = body.toString().trim();
+        String pitFragment = "\"pit\":{\"id\":\"" + pitId + "\",\"keep_alive\":\"" + keepAlive + "\"}";
+        return new BytesArray(base.substring(0, base.length() - 1) + "," + pitFragment + "}");
+    }
+
+    private BytesArray mergeSearchAfterIntoBody(BytesArray baseBody, Object[] searchAfter) {
+        BytesArray searchAfterJson = client.buildSearchAfterBody(searchAfter);
+        String base = baseBody.toString().trim();
+        String saFragment = searchAfterJson.toString().trim();
+        String saContent = saFragment.substring(1, saFragment.length() - 1);
+        String merged = base.substring(0, base.length() - 1) + "," + saContent + "}";
+        return new BytesArray(merged);
+    }
+
+    ScrollQuery scanLimitSearchAfter(String query, BytesArray body, long limit, ScrollReader reader, String index, String keepAlive) {
+        String pitId = client.createPit(index, keepAlive);
+        return new ScrollQuery(this, query, body, limit, reader, true, pitId, keepAlive);
+    }
+
+    public void deletePit(String pitId) {
+        client.deletePit(pitId);
+    }
+
     public boolean resourceExists(boolean read) {
         Resource res = (read ? resources.getResourceRead() : resources.getResourceWrite());
         // cheap hit - works for exact index names, index patterns, the `_all` resource, and alias names
@@ -377,18 +416,20 @@ public class RestRepository implements Closeable, StatsAware {
     }
 
     public void delete() {
-        // try first a blind delete by query
-        try {
-            Resource res = resources.getResourceWrite();
-            client.deleteByQuery(
-                    res.isTyped()
-                            ? res.index() + "/" + res.type()
-                            : res.index(),
-                    MatchAllQueryBuilder.MATCH_ALL);
-        } catch (OpenSearchHadoopInvalidRequest ehir) {
-            log.error("Delete by query was not successful...", ehir);
+        if (!this.settings.getServerlessMode()) {
+            // try first a blind delete by query
+            try {
+                Resource res = resources.getResourceWrite();
+                client.deleteByQuery(
+                        res.isTyped()
+                                ? res.index() + "/" + res.type()
+                                : res.index(),
+                        MatchAllQueryBuilder.MATCH_ALL);
+            } catch (OpenSearchHadoopInvalidRequest ehir) {
+                log.error("Delete by query was not successful...", ehir);
+            } 
         }
-
+        
         // in ES 2.0 and higher this means scrolling and deleting the docs by hand...
         // do a scroll-scan without source
 
@@ -475,6 +516,8 @@ public class RestRepository implements Closeable, StatsAware {
     }
 
     public boolean waitForYellow() {
+        // For serverless collections, waitForHealth is handled through the RestClient.waitForHealth()
+        // which will return appropriate result based on serverless mode
         return client.waitForHealth(resources.getResourceWrite().index(), RestClient.Health.YELLOW, TimeValue.timeValueSeconds(10));
     }
 

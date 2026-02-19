@@ -156,6 +156,8 @@ public class ScrollReader implements Closeable {
         private final boolean concluded;
         private final int numberOfHits;
         private final int numberOfSkippedHits;
+        private final Object[] searchAfter;
+        private final String pitId;
 
         public Scroll(String scrollId, long total, boolean concluded) {
             this.scrollId = scrollId;
@@ -164,15 +166,27 @@ public class ScrollReader implements Closeable {
             this.concluded = concluded;
             this.numberOfHits = 0;
             this.numberOfSkippedHits = 0;
+            this.searchAfter = null;
+            this.pitId = null;
         }
 
         public Scroll(String scrollId, long total, List<Object[]> hits, int responseHits, int skippedHits) {
+            this(scrollId, total, hits, responseHits, skippedHits, null, null);
+        }
+
+        public Scroll(String scrollId, long total, List<Object[]> hits, int responseHits, int skippedHits, Object[] searchAfter) {
+            this(scrollId, total, hits, responseHits, skippedHits, searchAfter, null);
+        }
+
+        public Scroll(String scrollId, long total, List<Object[]> hits, int responseHits, int skippedHits, Object[] searchAfter, String pitId) {
             this.scrollId = scrollId;
             this.hits = hits;
             this.total = total;
             this.concluded = false;
             this.numberOfHits = responseHits;
             this.numberOfSkippedHits = skippedHits;
+            this.searchAfter = searchAfter;
+            this.pitId = pitId;
         }
 
         public String getScrollId() {
@@ -197,6 +211,14 @@ public class ScrollReader implements Closeable {
 
         public int getNumberOfSkippedHits() {
             return numberOfSkippedHits;
+        }
+
+        public Object[] getSearchAfter() {
+            return searchAfter;
+        }
+
+        public String getPitId() {
+            return pitId;
         }
     }
 
@@ -274,16 +296,27 @@ public class ScrollReader implements Closeable {
     }
 
     private Scroll read(Parser parser, BytesArray input) {
-        // get scroll_id
+        // Try to get scroll_id first. In serverless mode, it won't be present.
+        // We need to re-parse if scroll_id is not found, because ParsingUtils.seek
+        // advances the parser to the end when the token is not found.
         Token token = ParsingUtils.seek(parser, SCROLL_ID);
-        if (token == null) { // no scroll id is returned for frozen indices
+        String scrollId = null;
+        boolean needReparse = false;
+        if (token == null) {
             if (log.isTraceEnabled()) {
-                log.info("No scroll id found, likely because the index is frozen");
+                log.info("No scroll id found, reading as search after response");
             }
-            return null;
+            needReparse = true;
+        } else {
+            Assert.isTrue(token == Token.VALUE_STRING, "invalid response");
+            scrollId = parser.text();
         }
-        Assert.isTrue(token == Token.VALUE_STRING, "invalid response");
-        String scrollId = parser.text();
+
+        // If scroll_id was not found, parser is at the end. Re-parse from the beginning.
+        if (needReparse) {
+            parser.close();
+            parser = new JacksonJsonParser(new FastByteArrayInputStream(input));
+        }
 
         long totalHits = hitsTotal(parser);
         // check hits/total
@@ -409,7 +442,9 @@ public class ScrollReader implements Closeable {
         }
 
         if (responseHits > 0) {
-            return new Scroll(scrollId, totalHits, results, responseHits, skippedHits);
+            Object[] searchAfter = (scrollId == null) ? extractLastSortValues(input) : null;
+            String pitId = (scrollId == null) ? extractPitId(input) : null;
+            return new Scroll(scrollId, totalHits, results, responseHits, skippedHits, searchAfter, pitId);
         } else {
             // Scroll had no hits in the response, it must have concluded.
             return new Scroll(scrollId, totalHits, true);
@@ -834,6 +869,73 @@ public class ScrollReader implements Closeable {
 
         return result;
 
+    }
+
+    /**
+     * Re-parse the response to extract sort values from the last hit.
+     * Used for search_after pagination in serverless mode.
+     */
+    private Object[] extractLastSortValues(BytesArray input) {
+        Parser sortParser = new JacksonJsonParser(new FastByteArrayInputStream(input));
+        try {
+            // Navigate to hits.hits
+            Token token = ParsingUtils.seek(sortParser, new String[]{"hits", "hits"});
+            if (token != Token.START_ARRAY) {
+                return null;
+            }
+
+            Object[] lastSort = null;
+            int depth = 0;
+            for (token = sortParser.nextToken(); token != null; token = sortParser.nextToken()) {
+                if (token == Token.START_OBJECT) {
+                    depth++;
+                } else if (token == Token.END_OBJECT) {
+                    depth--;
+                    if (depth < 0) break; // end of hits array parent
+                } else if (token == Token.START_ARRAY) {
+                    depth++;
+                } else if (token == Token.END_ARRAY) {
+                    depth--;
+                    if (depth < 0) break; // end of hits array
+                } else if (token == Token.FIELD_NAME && depth == 1 && "sort".equals(sortParser.currentName())) {
+                    // Found sort field at hit level
+                    token = sortParser.nextToken();
+                    if (token == Token.START_ARRAY) {
+                        List<Object> values = new ArrayList<Object>();
+                        while ((token = sortParser.nextToken()) != Token.END_ARRAY) {
+                            if (token == Token.VALUE_NUMBER) {
+                                if (sortParser.numberType() == Parser.NumberType.LONG || sortParser.numberType() == Parser.NumberType.INT) {
+                                    values.add(sortParser.longValue());
+                                } else {
+                                    values.add(sortParser.doubleValue());
+                                }
+                            } else if (token.isValue()) {
+                                values.add(sortParser.text());
+                            }
+                        }
+                        lastSort = values.toArray(new Object[0]);
+                    }
+                }
+            }
+            return lastSort;
+        } finally {
+            sortParser.close();
+        }
+    }
+
+    private static final String[] PIT_ID = new String[] { "pit_id" };
+
+    private String extractPitId(BytesArray input) {
+        Parser pitParser = new JacksonJsonParser(new FastByteArrayInputStream(input));
+        try {
+            Token token = ParsingUtils.seek(pitParser, PIT_ID);
+            if (token == Token.VALUE_STRING) {
+                return pitParser.text();
+            }
+            return null;
+        } finally {
+            pitParser.close();
+        }
     }
 
     private long hitsTotal(Parser parser) {

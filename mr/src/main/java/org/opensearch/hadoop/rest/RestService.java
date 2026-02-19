@@ -78,15 +78,21 @@ public abstract class RestService implements Serializable {
         public final ScrollReader scrollReader;
         public final RestRepository client;
         public final SearchRequestBuilder queryBuilder;
+        private final boolean serverlessMode;
 
         private ScrollQuery scrollQuery;
 
         private boolean closed = false;
 
         PartitionReader(ScrollReader scrollReader, RestRepository client, SearchRequestBuilder queryBuilder) {
+            this(scrollReader, client, queryBuilder, false);
+        }
+
+        PartitionReader(ScrollReader scrollReader, RestRepository client, SearchRequestBuilder queryBuilder, boolean serverlessMode) {
             this.scrollReader = scrollReader;
             this.client = client;
             this.queryBuilder = queryBuilder;
+            this.serverlessMode = serverlessMode;
         }
 
         @Override
@@ -102,7 +108,11 @@ public abstract class RestService implements Serializable {
 
         public ScrollQuery scrollQuery() {
             if (scrollQuery == null) {
-                scrollQuery = queryBuilder.build(client, scrollReader);
+                if (serverlessMode) {
+                    scrollQuery = queryBuilder.buildSearchAfter(client, scrollReader);
+                } else {
+                    scrollQuery = queryBuilder.build(client, scrollReader);
+                }
             }
 
             return scrollQuery;
@@ -156,47 +166,93 @@ public abstract class RestService implements Serializable {
                 throw new OpenSearchHadoopIllegalArgumentException(
                         String.format("Index [%s] missing and settings [%s] is set to false", settings.getResourceRead(), ConfigurationOptions.OPENSEARCH_INDEX_READ_MISSING_AS_EMPTY));
             }
-            /*
-             * allIndicesExist will be false if even a single index does not exist (if multiple are in the resources string). If it is
-             * false, we have knowing if any index exists so we have to make the following requests regardless. They will return empty if
-             * none of the indices exist, so there's no harm other than the wasted time.
-             */
-            final List<List<Map<String, Object>>> shards = client.getReadTargetShards();
-            if (log.isTraceEnabled()) {
-                log.trace("Creating splits for shards " + shards);
-            }
 
-            log.info(String.format("Reading from [%s]", settings.getResourceRead()));
-
-            MappingSet mapping = null;
-            if (!shards.isEmpty()) {
-                mapping = client.getMappings();
-                if (log.isDebugEnabled()) {
-                    log.debug(String.format("Discovered resolved mapping {%s} for [%s]", mapping.getResolvedView(), settings.getResourceRead()));
-                }
-                // validate if possible
-                FieldPresenceValidation validation = settings.getReadFieldExistanceValidation();
-                if (validation.isRequired()) {
-                    MappingUtils.validateMapping(SettingsUtils.determineSourceFields(settings), mapping.getResolvedView(), validation, log);
-                }
-            }
-            final Map<String, NodeInfo> nodesMap = new HashMap<String, NodeInfo>();
-            if (nodes != null) {
-                for (NodeInfo node : nodes) {
-                    nodesMap.put(node.getId(), node);
-                }
-            }
             final List<PartitionDefinition> partitions;
-            if (settings.getMaxDocsPerPartition() != null) {
-                partitions = findSlicePartitions(client.getRestClient(), settings, mapping, nodesMap, shards, log);
+            if (settings.getServerlessMode()) {
+                // For serverless mode, use dedicated function that doesn't rely on shard API
+                MappingSet mapping = null;
+                if (allIndicesExist) {
+                    mapping = client.getMappings();
+                    if (log.isDebugEnabled()) {
+                        log.debug(String.format("Discovered resolved mapping {%s} for [%s]", mapping.getResolvedView(), settings.getResourceRead()));
+                    }
+                    // validate if possible
+                    FieldPresenceValidation validation = settings.getReadFieldExistanceValidation();
+                    if (validation.isRequired()) {
+                        MappingUtils.validateMapping(SettingsUtils.determineSourceFields(settings), mapping.getResolvedView(), validation, log);
+                    }
+                }
+                partitions = findServerlessPartitions(client, settings, mapping, log);
             } else {
-                partitions = findShardPartitions(settings, mapping, nodesMap, shards, log);
+                /*
+                 * allIndicesExist will be false if even a single index does not exist (if multiple are in the resources string). If it is
+                 * false, we have knowing if any index exists so we have to make the following requests regardless. They will return empty if
+                 * none of the indices exist, so there's no harm other than the wasted time.
+                 */
+                final List<List<Map<String, Object>>> shards = client.getReadTargetShards();
+                if (log.isTraceEnabled()) {
+                    log.trace("Creating splits for shards " + shards);
+                }
+
+                log.info(String.format("Reading from [%s]", settings.getResourceRead()));
+
+                MappingSet mapping = null;
+                if (!shards.isEmpty()) {
+                    mapping = client.getMappings();
+                    if (log.isDebugEnabled()) {
+                        log.debug(String.format("Discovered resolved mapping {%s} for [%s]", mapping.getResolvedView(), settings.getResourceRead()));
+                    }
+                    // validate if possible
+                    FieldPresenceValidation validation = settings.getReadFieldExistanceValidation();
+                    if (validation.isRequired()) {
+                        MappingUtils.validateMapping(SettingsUtils.determineSourceFields(settings), mapping.getResolvedView(), validation, log);
+                    }
+                }
+                final Map<String, NodeInfo> nodesMap = new HashMap<String, NodeInfo>();
+                if (nodes != null) {
+                    for (NodeInfo node : nodes) {
+                        nodesMap.put(node.getId(), node);
+                    }
+                }
+                if (settings.getMaxDocsPerPartition() != null) {
+                    partitions = findSlicePartitions(client.getRestClient(), settings, mapping, nodesMap, shards, log);
+                } else {
+                    partitions = findShardPartitions(settings, mapping, nodesMap, shards, log);
+                }
             }
             Collections.shuffle(partitions);
             return partitions;
         } finally {
             client.close();
         }
+    }
+
+    /**
+     * Create partitions for OpenSearch Serverless mode, which doesn't support shard APIs.
+     * This function creates a single partition for each index as serverless doesn't expose shard information.
+     */
+    static List<PartitionDefinition> findServerlessPartitions(RestRepository client, Settings settings, MappingSet mappingSet, Log log) {
+        if (settings.getMaxDocsPerPartition() != null) {
+            throw new OpenSearchHadoopIllegalArgumentException(
+                "maxDocsPerPartition setting is not supported in OpenSearch Serverless mode. " +
+                "Serverless does not support Slice API which is required for parallel partition reads.");
+        }
+
+        Resource readResource = new Resource(settings, true);
+        Mapping resolvedMapping = mappingSet == null ? null : mappingSet.getResolvedView();
+        PartitionDefinition.PartitionDefinitionBuilder partitionBuilder = PartitionDefinition.builder(settings, resolvedMapping);
+
+        log.info(String.format("Reading from [%s] in serverless mode", settings.getResourceRead()));
+
+        List<PartitionDefinition> partitions = new ArrayList<PartitionDefinition>();
+        String[] indices = readResource.index().split(",");
+
+        for (String indexName : indices) {
+            indexName = indexName.trim();
+            partitions.add(partitionBuilder.build(indexName, 0, new String[0]));
+        }
+
+        return partitions;
     }
 
     /**
@@ -373,11 +429,25 @@ public abstract class RestService implements Serializable {
                         .limit(settings.getScrollLimit())
                         .fields(SettingsUtils.determineSourceFields(settings))
                         .filters(QueryUtils.parseFilters(settings))
-                        .shard(Integer.toString(partition.getShardId()))
                         .readMetadata(settings.getReadMetadata())
                         .local(true)
                         .preference(settings.getShardPreference())
-                        .excludeSource(settings.getExcludeSource());
+                        .excludeSource(settings.getExcludeSource())
+                        .pitKeepAlive(settings.getPitKeepAlive());
+
+        // For serverless mode, skip shard-specific settings that are not supported
+        if (!settings.getServerlessMode()) {
+            // Standard mode: use shard-specific routing
+            requestBuilder.shard(Integer.toString(partition.getShardId()));
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Standard mode: using shard [%s]", partition.getShardId()));
+            }
+        } else {
+            // Serverless mode: skip shard targeting to read from entire index
+            if (log.isDebugEnabled()) {
+                log.debug("Serverless mode: skipping shard targeting for entire index read");
+            }
+        }
         if (partition.getSlice() != null && partition.getSlice().max > 1) {
             requestBuilder.slice(partition.getSlice().id, partition.getSlice().max);
         }
@@ -392,7 +462,7 @@ public abstract class RestService implements Serializable {
                 requestBuilder = applyAliasMetadata(clusterInfo.getMajorVersion(), aliases, requestBuilder, partition.getIndex(), indices);
             }
         }
-        return new PartitionReader(scrollReader, repository, requestBuilder);
+        return new PartitionReader(scrollReader, repository, requestBuilder, settings.getServerlessMode());
     }
 
     /**
@@ -569,6 +639,16 @@ public abstract class RestService implements Serializable {
         }
 
         RestRepository repository = new RestRepository(settings);
+
+        if (settings.getServerlessMode()) {
+            String node = SettingsUtils.getPinnedNode(settings);
+            if (log.isDebugEnabled()) {
+                log.debug(String.format("Partition writer instance [%s] assigned to [%s]", currentInstance, node));
+            }
+
+            return repository;
+        }
+
         // create the index if needed
         if (repository.touch()) {
             if (repository.waitForYellow()) {

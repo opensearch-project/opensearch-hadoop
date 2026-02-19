@@ -64,6 +64,7 @@ public class SearchRequestBuilder {
 
     private final boolean includeVersion;
     private TimeValue scroll = TimeValue.timeValueMinutes(10);
+    private String pitKeepAlive = "5m";
     private long size = 50;
     private long limit = -1;
     private String indices;
@@ -132,6 +133,11 @@ public class SearchRequestBuilder {
     public SearchRequestBuilder scroll(long keepAliveMillis) {
         Assert.isTrue(keepAliveMillis > 0, "Invalid scroll");
         this.scroll = TimeValue.timeValueMillis(keepAliveMillis);
+        return this;
+    }
+
+    public SearchRequestBuilder pitKeepAlive(String pitKeepAlive) {
+        this.pitKeepAlive = pitKeepAlive;
         return this;
     }
 
@@ -312,6 +318,92 @@ public class SearchRequestBuilder {
         String scrollUri = assemble();
         BytesArray requestBody = assembleBody();
         return client.scanLimit(scrollUri, requestBody, limit, reader);
+    }
+
+    /**
+     * Build a ScrollQuery using Search After API for serverless mode.
+     * Differs from build(): no scroll parameter in URI, sort added to body.
+     */
+    public ScrollQuery buildSearchAfter(RestRepository client, ScrollReader reader) {
+        String searchUri = assembleSearchAfterUri();
+        BytesArray requestBody = assembleSearchAfterBody();
+        return client.scanLimitSearchAfter(searchUri, requestBody, limit, reader, indices, pitKeepAlive);
+    }
+
+    private String assembleSearchAfterUri() {
+        if (limit > 0 && size > limit) {
+            size = limit;
+        }
+        Map<String, String> uriParams = new LinkedHashMap<String, String>();
+        // PIT usage requires no index in URI
+        StringBuilder sb = new StringBuilder();
+        sb.append("_search?");
+
+        uriParams.put("size", String.valueOf(size));
+        if (includeVersion) {
+            uriParams.put("version", "true");
+        }
+        if (routing != null) {
+            uriParams.put("routing", HttpEncodingTools.encode(routing));
+        }
+        uriParams.put("track_total_hits", "true");
+        if (readMetadata) {
+            uriParams.put("track_scores", "true");
+        }
+
+        for (Iterator<Entry<String, String>> it = uriParams.entrySet().iterator(); it.hasNext();) {
+            Entry<String, String> entry = it.next();
+            sb.append(entry.getKey());
+            if (StringUtils.hasText(entry.getValue())) {
+                sb.append("=");
+                sb.append(entry.getValue());
+            }
+            if (it.hasNext()) {
+                sb.append("&");
+            }
+        }
+        return sb.toString();
+    }
+
+    private BytesArray assembleSearchAfterBody() {
+        QueryBuilder root = query;
+        if (root == null) {
+            root = MatchAllQueryBuilder.MATCH_ALL;
+        }
+        if (filters.isEmpty() == false) {
+            root = new BoolQueryBuilder().must(root).filters(filters);
+        }
+        FastByteArrayOutputStream out = new FastByteArrayOutputStream(256);
+        JacksonJsonGenerator generator = new JacksonJsonGenerator(out);
+        try {
+            generator.writeBeginObject();
+            generator.writeFieldName("query");
+            generator.writeBeginObject();
+            root.toJson(generator);
+            generator.writeEndObject();
+            // sort by _doc with _id tiebreaker for search_after pagination
+            generator.writeFieldName("sort");
+            generator.writeBeginArray();
+            generator.writeString("_doc");
+            generator.writeString("_id");
+            generator.writeEndArray();
+            if (StringUtils.hasText(fields)) {
+                generator.writeFieldName("_source");
+                generator.writeBeginArray();
+                final List<String> fieldsArray = StringUtils.tokenize(fields, StringUtils.DEFAULT_DELIMITER);
+                for (String field : fieldsArray) {
+                    generator.writeString(field);
+                }
+                generator.writeEndArray();
+            } else if (excludeSource) {
+                generator.writeFieldName("_source");
+                generator.writeBoolean(false);
+            }
+            generator.writeEndObject();
+        } finally {
+            generator.close();
+        }
+        return out.bytes();
     }
 
     @Override

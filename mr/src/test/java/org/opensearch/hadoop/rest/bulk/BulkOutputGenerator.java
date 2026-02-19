@@ -43,6 +43,8 @@ public interface BulkOutputGenerator {
 
     public BulkOutputGenerator addSuccess(String operation, int status);
 
+    public BulkOutputGenerator addSuccess(String operation, int status, String index);
+
     public BulkOutputGenerator addFailure(String operation, int status, String type, String errorMessage);
 
     public BulkOutputGenerator addRejection(String operation);

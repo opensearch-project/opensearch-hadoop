@@ -32,8 +32,10 @@ package org.opensearch.hadoop.rest.bulk;
 import java.io.Closeable;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -90,6 +92,7 @@ public class BulkProcessor implements Closeable, StatsAware {
     private boolean executedBulkWrite = false;
     private boolean hadWriteErrors = false;
     private boolean requiresRefreshAfterBulk = false;
+    private final Set<String> writtenIndices = new LinkedHashSet<>();
 
     // Bulk write error handlers.
     private List<IBulkWriteErrorHandler> documentBulkErrorHandlers;
@@ -275,6 +278,10 @@ public class BulkProcessor implements Closeable, StatsAware {
 
                             if (error == null){
                                 // Write operation for this entry succeeded
+                                String idx = (String) values.get("_index");
+                                if (idx != null) {
+                                    writtenIndices.add(idx);
+                                }
                                 stats.bytesAccepted += data.length(trackingBytesPosition);
                                 stats.docsAccepted += 1;
                                 docsSent += 1;
@@ -574,12 +581,13 @@ public class BulkProcessor implements Closeable, StatsAware {
                 }
             }
 
-            if (requiresRefreshAfterBulk && executedBulkWrite) {
-                // refresh batch
-                restClient.refresh(resource);
+            if (requiresRefreshAfterBulk && executedBulkWrite && !writtenIndices.isEmpty()) {
+                for (String idx : writtenIndices) {
+                    restClient.refreshIndex(idx);
+                }
 
                 if (LOG.isDebugEnabled()) {
-                    LOG.debug(String.format("Refreshing index [%s]", resource));
+                    LOG.debug(String.format("Refreshing index %s", writtenIndices));
                 }
             }
         } finally {

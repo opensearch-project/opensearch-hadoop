@@ -1,0 +1,201 @@
+import org.opensearch.hadoop.gradle.scala.SparkVariantPlugin
+
+description = "OpenSearch Spark (for Spark 4.X)"
+
+apply plugin: 'java-library'
+apply plugin: 'scala'
+apply plugin: 'opensearch.hadoop.build.integration'
+apply plugin: 'spark.variants'
+
+sparkVariants {
+    capabilityGroup 'org.opensearch.spark.sql.variant'
+    setDefaultVariant "spark40scala213", spark40Version, scala213Version
+
+    all { SparkVariantPlugin.SparkVariant variant ->
+        String scalaCompileTaskName = project.sourceSets
+                .getByName(variant.getSourceSetName("main"))
+                .getCompileTaskName("scala")
+
+        project.configurations {
+            create(variant.configuration('embedded')) {
+                transitive = false
+                canBeResolved = true
+            }
+            getByName(variant.configuration('implementation')) {
+                extendsFrom project.configurations.getByName(variant.configuration('embedded'))
+            }
+        }
+
+        // Override BuildPlugin's slf4j 1.7.6 pinning: Spark 4.1+ requires slf4j 2.x
+        project.configurations.all { Configuration conf ->
+            conf.resolutionStrategy.eachDependency { details ->
+                if (details.requested.group == 'org.slf4j' && details.requested.name == 'slf4j-api') {
+                    details.useVersion '2.0.16'
+                }
+            }
+        }
+
+        // Configure main compile task
+        project.getTasks().getByName(scalaCompileTaskName) { ScalaCompile compileScala ->
+            configure(compileScala.scalaCompileOptions.forkOptions) {
+                memoryMaximumSize = '1g'
+            }
+            compileScala.scalaCompileOptions.additionalParameters = [
+                    "-feature",
+                    "-unchecked",
+                    "-deprecation",
+                    "-Ywarn-dead-code",
+                    "-Ywarn-numeric-widen",
+                    "-Xfatal-warnings"
+            ]
+        }
+
+        dependencies {
+            add(variant.configuration('embedded'), project(":opensearch-hadoop-mr"))
+            add(variant.configuration('embedded'), project(":opensearch-spark")) {
+                capabilities {
+                    requireCapability("org.opensearch.spark.variant:$variant.name:$project.version")
+                }
+            }
+
+            add(variant.configuration('api'), "org.scala-lang:scala-library:$variant.scalaVersion")
+            add(variant.configuration('api'), "org.scala-lang:scala-reflect:$variant.scalaVersion")
+            add(variant.configuration('api'), "org.apache.spark:spark-core_${variant.scalaMajorVersion}:$variant.sparkVersion") {
+                exclude group: 'javax.servlet'
+                exclude group: 'org.apache.hadoop'
+            }
+
+            // Spark 4.0 split these into separate modules
+            add(variant.configuration('implementation'), "org.apache.spark:spark-sql-api_${variant.scalaMajorVersion}:$variant.sparkVersion")
+            add(variant.configuration('implementation'), "org.apache.spark:spark-common-utils_${variant.scalaMajorVersion}:$variant.sparkVersion")
+            add(variant.configuration('implementation'), "org.apache.spark:spark-common-utils-java_${variant.scalaMajorVersion}:$variant.sparkVersion")
+
+            add(variant.configuration('implementation'), "org.apache.spark:spark-sql_${variant.scalaMajorVersion}:$variant.sparkVersion") {
+                exclude group: 'org.apache.hadoop'
+            }
+            add(variant.configuration('implementation'), "org.apache.spark:spark-streaming_${variant.scalaMajorVersion}:$variant.sparkVersion") {
+                exclude group: 'org.apache.hadoop'
+            }
+            add(variant.configuration('implementation'), "org.slf4j:slf4j-api:2.0.16") {
+                because 'spark exposes slf4j components in traits that we need to extend'
+            }
+            add(variant.configuration('implementation'), "commons-logging:commons-logging:1.3.5")
+            add(variant.configuration('implementation'), "jakarta.xml.bind:jakarta.xml.bind-api:4.0.2")
+            add(variant.configuration('implementation'), "com.google.protobuf:protobuf-java:4.33.5")
+            add(variant.configuration('implementation'), "org.apache.spark:spark-catalyst_${variant.scalaMajorVersion}:$variant.sparkVersion")
+            add(variant.configuration('implementation'), "org.apache.spark:spark-yarn_${variant.scalaMajorVersion}:$variant.sparkVersion") {
+                exclude group: 'org.apache.hadoop'
+            }
+
+            // Scala compiler needs these for arcane reasons, but they are not used in the api nor the runtime
+            add(variant.configuration('compileOnly'), "org.apache.hadoop.thirdparty:hadoop-shaded-protobuf_3_7:1.1.1")
+            add(variant.configuration('compileOnly'), "com.fasterxml.jackson.core:jackson-annotations:2.20")
+            add(variant.configuration('compileOnly'), "org.json4s:json4s-jackson_${variant.scalaMajorVersion}:4.0.7")
+            add(variant.configuration('compileOnly'), "org.json4s:json4s-ast_${variant.scalaMajorVersion}:4.0.7")
+            add(variant.configuration('compileOnly'), "org.apache.spark:spark-tags_${variant.scalaMajorVersion}:$variant.sparkVersion")
+
+            add(variant.configuration('test', 'implementation'), project(":test:shared"))
+            add(variant.configuration('test', 'implementation'), "jakarta.servlet:jakarta.servlet-api:5.0.0")
+            add(variant.configuration('test', 'implementation'), "org.elasticsearch:securemock:1.2")
+            add(variant.configuration('test', 'implementation'), "org.apache.spark:spark-core_${variant.scalaMajorVersion}:$variant.sparkVersion") {
+                exclude group: 'javax.servlet'
+                exclude group: 'org.apache.hadoop'
+            }
+            add(variant.configuration('test', 'implementation'), "org.apache.spark:spark-sql_${variant.scalaMajorVersion}:$variant.sparkVersion") {
+                exclude group: 'org.apache.hadoop'
+            }
+
+            add(variant.configuration('itest', 'implementation'), project(":test:shared"))
+            add(variant.configuration('itest', 'implementation'), "jakarta.servlet:jakarta.servlet-api:5.0.0")
+            add(variant.configuration('itest', 'implementation'), "org.apache.spark:spark-yarn_${variant.scalaMajorVersion}:$variant.sparkVersion") {
+                exclude group: 'org.apache.hadoop'
+            }
+            add(variant.configuration('itest', 'implementation'), "org.apache.spark:spark-streaming_${variant.scalaMajorVersion}:$variant.sparkVersion") {
+                exclude group: 'org.apache.hadoop'
+            }
+
+            add(variant.configuration('additionalSources'), project(":opensearch-hadoop-mr"))
+            add(variant.configuration('javadocSources'), project(":opensearch-hadoop-mr"))
+
+            add(variant.configuration('additionalSources'), project(":opensearch-spark")) {
+                capabilities {
+                    requireCapability("org.opensearch.spark.variant:$variant.name:$project.version")
+                }
+            }
+            add(variant.configuration('javadocSources'), project(":opensearch-spark")) {
+                capabilities {
+                    requireCapability("org.opensearch.spark.variant:$variant.name:$project.version")
+                }
+            }
+        }
+
+        def javaFilesOnly = { FileTreeElement spec ->
+            spec.file.name.endsWith('.java') || spec.isDirectory()
+        }
+
+        // Add java files from scala source set to javadocSourceElements.
+        project.fileTree("src/main/scala").include(javaFilesOnly).each {
+            project.artifacts.add(variant.configuration('javadocSourceElements'), it)
+        }
+
+        // Configure java source generation for javadoc purposes
+        String generatedJavaDirectory = "$buildDir/generated/java/${variant.name}"
+        Configuration scalaCompilerPlugin = project.configurations.maybeCreate(variant.configuration('scalaCompilerPlugin'))
+        scalaCompilerPlugin.defaultDependencies { dependencies ->
+            dependencies.add(project.dependencies.create("com.typesafe.genjavadoc:genjavadoc-plugin_${variant.scalaVersion}:0.19"))
+        }
+
+        ScalaCompile compileScala = tasks.getByName(scalaCompileTaskName) as ScalaCompile
+        compileScala.scalaCompileOptions.with {
+            additionalParameters = [
+                    "-Xplugin:" + configurations.getByName(variant.configuration('scalaCompilerPlugin')).asPath,
+                    "-P:genjavadoc:out=$generatedJavaDirectory".toString()
+            ]
+        }
+        // Export generated Java code from the genjavadoc compiler plugin
+        artifacts {
+            add(variant.configuration('javadocSourceElements'), project.file(generatedJavaDirectory)) {
+                builtBy compileScala
+            }
+        }
+        tasks.getByName(variant.taskName('javadoc')) {
+            dependsOn compileScala
+            source(generatedJavaDirectory)
+            // Spark 4.0 jars are compiled with JDK 17, so javadoc must also run on JDK 17+
+            executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/javadoc').absolutePath
+            options.addStringOption('Xdoclint:none', '-quiet')
+            failOnError = false
+        }
+
+        scaladoc {
+            title = "${rootProject.description} ${version} API"
+        }
+    }
+}
+
+// Spark 4.0 requires JDK 17+, override the runtime for all test tasks
+tasks.withType(Test) { Test task ->
+    task.executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/java').absolutePath
+    task.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.util=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.net=ALL-UNNAMED"
+}
+
+// Embed the embedded dependencies in the final jar after all configuration is complete
+sparkVariants {
+    all { SparkVariantPlugin.SparkVariant variant ->
+        tasks.getByName(variant.taskName('jar')) {
+            dependsOn(project.configurations.getByName(variant.configuration('embedded')))
+            // TODO: Is there a way to do this lazily? This looks like it resolves the configuration.
+            from(project.configurations.getByName(variant.configuration('embedded')).collect { it.isDirectory() ? it : zipTree(it)}) {
+                include "org/opensearch/**"
+                include "opensearch-hadoop-build.properties"
+                include "META-INF/services/*"
+            }
+        }
+    }
+}

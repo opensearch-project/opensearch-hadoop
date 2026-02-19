@@ -17,6 +17,7 @@ The below matrix shows the compatibility of the [`opensearch-hadoop`](https://ce
 | 1.0.0-1.1.0    | 2.2.3         | 2.10             |
 | 1.0.0-1.1.0    | 2.4.4         | 2.11/2.12        |
 | 1.0.0-1.1.0    | 3.2.4         | 2.12/2.13        |
+| 1.0.0-1.1.0    | 4.0.0         | 2.13             |
 
 ## Compatibility with AWS Glue
 

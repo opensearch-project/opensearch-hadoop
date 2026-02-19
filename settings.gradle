@@ -19,6 +19,10 @@ include 'sql-30'
 project(":sql-30").projectDir = new File(settingsDir, "spark/sql-30")
 project(":sql-30").name = "opensearch-spark-30"
 
+include 'sql-40'
+project(":sql-40").projectDir = new File(settingsDir, "spark/sql-40")
+project(":sql-40").name = "opensearch-spark-40"
+
 include 'dist'
 
 include 'test'

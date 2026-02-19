@@ -1,0 +1,19 @@
+# Notices for Jakarta XML Binding
+
+This content is produced and maintained by the Jakarta XML Binding project.
+
+ * Project home: https://projects.eclipse.org/projects/ee4j.jaxb
+
+## Copyright
+
+All content is the property of the respective authors or their employers. For
+more information regarding authorship of content, please consult the listed
+source code repository logs.
+
+## Declared Project Licenses
+
+This program and the accompanying materials are made available under the terms
+of the Eclipse Distribution License v. 1.0 which is available at
+http://www.eclipse.org/org/documents/edl-v10.php.
+
+SPDX-License-Identifier: BSD-3-Clause

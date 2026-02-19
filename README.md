@@ -2,6 +2,7 @@
 [![Build and test spark](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_spark.yml/badge.svg)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_spark.yml)
 [![Build and test spark 20](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_spark_20.yml/badge.svg)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_spark_20.yml)
 [![Build and test spark 30](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_spark_30.yml/badge.svg)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_spark_30.yml)
+[![Build and test spark 40](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_spark_40.yml/badge.svg)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_spark_40.yml)
 [![Build and test hive](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_hive.yml/badge.svg)](https://github.com/opensearch-project/opensearch-hadoop/actions/workflows/build_hive.yml)
 ![PRs welcome!](https://img.shields.io/badge/PRs-welcome!-success)
 

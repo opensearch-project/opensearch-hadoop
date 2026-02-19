@@ -308,7 +308,8 @@ class BuildPlugin implements Plugin<Project>  {
         }
 
         // Deal with the messy conflicts out there
-        project.configurations.all { Configuration conf ->
+        // Exclude spark40 configurations from slf4j 1.7.x pinning (Spark 4.1+ requires slf4j 2.x)
+        project.configurations.matching { !it.name.contains("spark40") && !it.name.contains("Spark40") }.all { Configuration conf ->
             conf.resolutionStrategy { ResolutionStrategy resolve ->
                 // Locking on to joda 2.8
                 resolve.force('joda-time:joda-time:2.8')

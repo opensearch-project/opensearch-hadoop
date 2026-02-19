@@ -30,7 +30,7 @@
 package org.opensearch.spark.sql.streaming
 
 import org.apache.spark.sql.SparkSession
-import org.apache.spark.sql.execution.streaming.CompactibleFileStreamLog
+import org.apache.spark.sql.execution.streaming.runtime.CompactibleFileStreamLog
 import org.opensearch.hadoop.cfg.Settings
 
 /**

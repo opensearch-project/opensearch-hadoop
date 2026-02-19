@@ -38,7 +38,7 @@ import org.apache.spark.sql.DataFrame
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.catalyst.InternalRow
 import org.apache.spark.sql.execution.SQLExecution
-import org.apache.spark.sql.execution.streaming.MetadataLog
+import org.apache.spark.sql.execution.streaming.checkpointing.MetadataLog
 import org.apache.spark.sql.execution.streaming.Sink
 import org.opensearch.hadoop.cfg.Settings
 

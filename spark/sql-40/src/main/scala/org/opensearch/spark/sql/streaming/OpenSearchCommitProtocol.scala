@@ -31,7 +31,7 @@ package org.opensearch.spark.sql.streaming
 
 import org.apache.commons.logging.Log
 import org.apache.commons.logging.LogFactory
-import org.apache.spark.sql.execution.streaming.MetadataLog
+import org.apache.spark.sql.execution.streaming.checkpointing.MetadataLog
 import org.opensearch.hadoop.util.Assert
 
 /**

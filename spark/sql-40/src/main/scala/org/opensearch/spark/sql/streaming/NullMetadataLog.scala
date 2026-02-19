@@ -29,7 +29,7 @@
 
 package org.opensearch.spark.sql.streaming
 
-import org.apache.spark.sql.execution.streaming.MetadataLog
+import org.apache.spark.sql.execution.streaming.checkpointing.MetadataLog
 
 /**
  * A null object style metadata log that discards incoming data, and otherwise

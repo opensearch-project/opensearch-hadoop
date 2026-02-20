@@ -425,7 +425,7 @@ public abstract class RestService implements Serializable {
                         .indices(partition.getIndex())
                         .query(QueryUtils.parseQuery(settings))
                         .scroll(settings.getScrollKeepAlive())
-                        .size(settings.getScrollSize())
+                        .size(settings.getServerlessMode() ? settings.getSearchAfterSize() : settings.getScrollSize())
                         .limit(settings.getScrollLimit())
                         .fields(SettingsUtils.determineSourceFields(settings))
                         .filters(QueryUtils.parseFilters(settings))

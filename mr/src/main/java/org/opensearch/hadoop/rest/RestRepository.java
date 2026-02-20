@@ -438,14 +438,6 @@ public class RestRepository implements Closeable, StatsAware {
         // 250 results
 
         int batchSize = 500;
-        StringBuilder sb = new StringBuilder(resources.getResourceWrite().index());
-        if (resources.getResourceWrite().isTyped()) {
-            sb.append('/').append(resources.getResourceWrite().type());
-        }
-        sb.append("/_search?scroll=10m&_source=false&size=");
-        sb.append(batchSize);
-        sb.append("&sort=_doc");
-        String scanQuery = sb.toString();
         ScrollReader scrollReader = new ScrollReader(
                 ScrollReaderConfigBuilder.builder(new JdkValueReader(), settings)
                         .setReadMetadata(true)
@@ -458,8 +450,27 @@ public class RestRepository implements Closeable, StatsAware {
                         .setErrorHandlerLoader(new AbortOnlyHandlerLoader()) // Only abort since this is internal
         );
 
+        ScrollQuery sq;
+        if (this.settings.getServerlessMode()) {
+            // Serverless mode: use PIT + search_after instead of scroll API
+            String searchQuery = "_search?size=" + batchSize + "&_source=false&track_total_hits=true";
+            BytesArray body = new BytesArray("{\"query\":{\"match_all\":{}},\"sort\":[\"_doc\",\"_id\"]}");
+            String index = resources.getResourceWrite().index();
+            String keepAlive = settings.getPitKeepAlive();
+            sq = scanLimitSearchAfter(searchQuery, body, -1, scrollReader, index, keepAlive);
+        } else {
+            StringBuilder sb = new StringBuilder(resources.getResourceWrite().index());
+            if (resources.getResourceWrite().isTyped()) {
+                sb.append('/').append(resources.getResourceWrite().type());
+            }
+            sb.append("/_search?scroll=10m&_source=false&size=");
+            sb.append(batchSize);
+            sb.append("&sort=_doc");
+            String scanQuery = sb.toString();
+            sq = scanAll(scanQuery, null, scrollReader);
+        }
+
         // start iterating
-        ScrollQuery sq = scanAll(scanQuery, null, scrollReader);
         try {
             BytesArray entry = new BytesArray(0);
 

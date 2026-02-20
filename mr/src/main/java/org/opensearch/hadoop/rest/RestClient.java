@@ -309,6 +309,12 @@ public class RestClient implements Closeable, StatsAware {
     }
 
     public void refreshIndex(String index) {
+        if (settings.getServerlessMode()) {
+            if (LOG.isDebugEnabled()) {
+                LOG.debug("Serverless mode - skipping refreshIndex (not supported in serverless)");
+            }
+            return;
+        }
         execute(POST, index + "/_refresh");
     }
 

@@ -15,6 +15,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Remove unused MultiReaderIterator and multiReader method ([#667](https://github.com/opensearch-project/opensearch-hadoop/pull/667))
 
 ### Fixed
+- Fixed serverless mode writes failing with 404 on _refresh endpoint ([#692](https://github.com/opensearch-project/opensearch-hadoop/pull/692))
 - Fixed opensearch-spark-40 dependency license SHAs and added dependabot config for sql-40 module ([#688](https://github.com/opensearch-project/opensearch-hadoop/pull/688))
 - Fixed global refresh when using dynamic index patterns ([#686](https://github.com/opensearch-project/opensearch-hadoop/pull/686))
 - Fixed build failures when downloading Apache project dependencies (Hadoop, Hive, Spark) ([#595](https://github.com/opensearch-project/opensearch-hadoop/pull/595))

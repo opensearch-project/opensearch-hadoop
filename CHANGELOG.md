@@ -5,6 +5,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 - Add support for Amazon OpenSearch Serverless ([#586](https://github.com/opensearch-project/opensearch-hadoop/pull/586))
 - Add Apache Spark 4.0 support ([#684](https://github.com/opensearch-project/opensearch-hadoop/pull/684))
+- Add dedicated `opensearch.search_after.size` setting for serverless mode page size ([#695](https://github.com/opensearch-project/opensearch-hadoop/pull/695))
 
 ### Changed
 - Switched to more reliable OpenSearch Lucene snapshot location ([#597](https://github.com/opensearch-project/opensearch-hadoop/pull/597))

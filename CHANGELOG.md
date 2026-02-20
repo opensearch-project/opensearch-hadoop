@@ -19,6 +19,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Fixed opensearch-spark-40 dependency license SHAs and added dependabot config for sql-40 module ([#688](https://github.com/opensearch-project/opensearch-hadoop/pull/688))
 - Fixed global refresh when using dynamic index patterns ([#686](https://github.com/opensearch-project/opensearch-hadoop/pull/686))
 - Fixed build failures when downloading Apache project dependencies (Hadoop, Hive, Spark) ([#595](https://github.com/opensearch-project/opensearch-hadoop/pull/595))
+- Fixed serverless mode SaveMode.Overwrite failing when document count exceeds scroll size ([#693](https://github.com/opensearch-project/opensearch-hadoop/pull/693))
 
 ### Security
 

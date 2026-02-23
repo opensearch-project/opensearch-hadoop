@@ -77,13 +77,27 @@ class BaseBuildPlugin implements Plugin<Project> {
 
             // We snap the runtime to java 8 since Hadoop needs to see some significant
             // upgrades to support any runtime higher than that
+            // Try to find JDK 8 from BuildParams (populated by JAVA8_HOME env var).
+            // If not found, use Gradle's JavaInstallationRegistry to auto-detect installed JDKs.
             JavaHome opensearchHadoopRuntimeJava = BuildParams.javaVersions.find { it.version == 8 }
-            if (opensearchHadoopRuntimeJava == null) {
-                throw new GradleException(
-                        '$JAVA8_HOME must be set to build OpenSearch-Hadoop. ' +
-                                "Note that if the variable was just set you might have to run `./gradlew --stop` for " +
-                                "it to be picked up. See https://github.com/elastic/elasticsearch/issues/31399 details."
-                )
+            if (opensearchHadoopRuntimeJava != null) {
+                project.rootProject.ext.runtimeJavaHome = opensearchHadoopRuntimeJava.javaHome.get()
+            } else {
+                def javaInstallationRegistry = project.rootProject.services.get(org.gradle.internal.jvm.inspection.JavaInstallationRegistry)
+                def jvmMetadataDetector = project.rootProject.services.get(org.gradle.internal.jvm.inspection.JvmMetadataDetector)
+                def jdk8Install = javaInstallationRegistry.toolchains().find { toolchain ->
+                    def metadata = jvmMetadataDetector.getMetadata(toolchain.location)
+                    metadata.languageVersion.majorVersion == '8'
+                }
+                if (jdk8Install != null) {
+                    project.rootProject.ext.runtimeJavaHome = jdk8Install.location.location
+                } else {
+                    throw new GradleException(
+                            'JDK 8 is required to build OpenSearch-Hadoop but was not found. ' +
+                                    'Either set $JAVA8_HOME or install JDK 8 via a toolchain manager (e.g. sdkman) ' +
+                                    'so that Gradle auto-detection can find it.'
+                    )
+                }
             }
 
             // Set on global build info
@@ -92,7 +106,6 @@ class BaseBuildPlugin implements Plugin<Project> {
             }
 
             // Set on build settings
-            project.rootProject.ext.runtimeJavaHome = opensearchHadoopRuntimeJava.javaHome.get()
             project.rootProject.ext.minimumRuntimeVersion = minimumRuntimeVersion
 
             project.rootProject.ext.buildInfoConfigured = true

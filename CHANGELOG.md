@@ -20,6 +20,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Fixed global refresh when using dynamic index patterns ([#686](https://github.com/opensearch-project/opensearch-hadoop/pull/686))
 - Fixed build failures when downloading Apache project dependencies (Hadoop, Hive, Spark) ([#595](https://github.com/opensearch-project/opensearch-hadoop/pull/595))
 - Fixed serverless mode SaveMode.Overwrite failing when document count exceeds scroll size ([#693](https://github.com/opensearch-project/opensearch-hadoop/pull/693))
+- Fixed RowSerializationEventConverterTest for Spark 3.4+ StructType.toString() format change ([#XXX](https://github.com/opensearch-project/opensearch-hadoop/pull/XXX))
 
 ### Security
 

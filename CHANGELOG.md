@@ -12,6 +12,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Deprecated
 
 ### Removed
+- Remove Apache Spark 2.x (sql-20) module support ([#687](https://github.com/opensearch-project/opensearch-hadoop/issues/687))
 - Remove unused MultiReaderIterator and multiReader method ([#667](https://github.com/opensearch-project/opensearch-hadoop/pull/667))
 
 ### Fixed

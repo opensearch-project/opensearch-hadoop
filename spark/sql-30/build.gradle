@@ -165,7 +165,6 @@ tasks.withType(ScalaCompile) { ScalaCompile task ->
     task.targetCompatibility = project.ext.minimumRuntimeVersion
     task.options.forkOptions.executable = new File(project.ext.runtimeJavaHome, 'bin/java').absolutePath
 }
-
 if (JavaVersion.current() >= JavaVersion.VERSION_16) {
     tasks.withType(Test) { Test task ->
         if (task.getName().startsWith("test"))

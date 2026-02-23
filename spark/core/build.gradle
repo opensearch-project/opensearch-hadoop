@@ -9,12 +9,9 @@ apply plugin: 'spark.variants'
 
 sparkVariants {
     capabilityGroup 'org.opensearch.spark.variant'
-    setCoreDefaultVariant "spark20scala212", spark24Version, scala212Version
+    setCoreDefaultVariant "spark30scala212", spark30Version, scala212Version
     addCoreFeatureVariant "spark30scala213", spark30Version, scala213Version
-    addCoreFeatureVariant "spark30scala212", spark30Version, scala212Version
     addCoreFeatureVariant "spark40scala213", spark40Version, scala213Version
-    addCoreFeatureVariant "spark20scala211", spark24Version, scala211Version
-    addCoreFeatureVariant "spark20scala210", spark22Version, scala210Version
 
     all { SparkVariantPlugin.SparkVariant variant ->
 
@@ -74,22 +71,6 @@ sparkVariants {
             add(variant.configuration('itest', 'implementation'), project(":test:shared"))
             add(variant.configuration('test', 'implementation'), "org.elasticsearch:securemock:1.2")
 
-            if (variant.scalaMajorVersion == '2.10') {
-                add(variant.configuration('implementation'), "org.apache.spark:spark-unsafe_${variant.scalaMajorVersion}:${variant.sparkVersion}")
-                add(variant.configuration('implementation'), "org.apache.avro:avro:1.8.2")
-                add(variant.configuration('implementation'), "log4j:log4j:1.2.17")
-                add(variant.configuration('implementation'), "com.google.code.findbugs:jsr305:3.0.2")
-                add(variant.configuration('implementation'), "org.json4s:json4s-ast_2.10:3.6.12")
-                add(variant.configuration('implementation'), "com.esotericsoftware.kryo:kryo:2.24.0")
-                add(variant.configuration('compileOnly'), "org.apache.hadoop:hadoop-annotations:${project.ext.hadoopVersion}")
-                add(variant.configuration('compileOnly'), "org.codehaus.jackson:jackson-core-asl:${project.ext.jacksonVersion}")
-                add(variant.configuration('compileOnly'), "org.codehaus.jackson:jackson-mapper-asl:${project.ext.jacksonVersion}")
-                add(variant.configuration('compileOnly'), "org.codehaus.woodstox:stax2-api:4.2.2")
-                if (variant.sparkVersion == spark22Version) {
-                    add(variant.configuration('compileOnly'), "org.apache.spark:spark-tags_${variant.scalaMajorVersion}:${variant.sparkVersion}")
-                }
-            }
-
             add(variant.configuration('additionalSources'), project(":opensearch-hadoop-mr"))
             add(variant.configuration('javadocSources'), project(":opensearch-hadoop-mr"))
         }
@@ -104,12 +85,11 @@ sparkVariants {
         }
 
         // Configure java source generation for javadoc purposes
-        if (variant.scalaMajorVersion != '2.10') {
-            String generatedJavaDirectory = "$buildDir/generated/java/${variant.name}"
-            Configuration scalaCompilerPlugin = project.configurations.maybeCreate(variant.configuration('scalaCompilerPlugin'))
-            scalaCompilerPlugin.defaultDependencies { dependencies ->
-                dependencies.add(project.dependencies.create("com.typesafe.genjavadoc:genjavadoc-plugin_${variant.scalaVersion}:${variant.scalaMajorVersion != '2.11' ? '0.19' : '0.18'}"))
-            }
+        String generatedJavaDirectory = "$buildDir/generated/java/${variant.name}"
+        Configuration scalaCompilerPlugin = project.configurations.maybeCreate(variant.configuration('scalaCompilerPlugin'))
+        scalaCompilerPlugin.defaultDependencies { dependencies ->
+            dependencies.add(project.dependencies.create("com.typesafe.genjavadoc:genjavadoc-plugin_${variant.scalaVersion}:0.19"))
+        }
 
             ScalaCompile compileScala = tasks.getByName(scalaCompileTaskName) as ScalaCompile
             compileScala.scalaCompileOptions.with {
@@ -133,27 +113,11 @@ sparkVariants {
                     failOnError = false
                 }
             }
-        }
 
         scaladoc {
             title = "${rootProject.description} ${version} API"
         }
     }
-}
-
-// deal with the messy conflicts out there
-// Ignore the scalaCompilerPlugin configurations since it is immediately resolved to configure the scala compiler tasks
-configurations.matching{ it.name.contains('CompilerPlugin') == false && (it.name.contains("spark30") || it.name.contains("Spark30")) == false && (it.name.contains("spark40") || it.name.contains("Spark40")) == false}.all { Configuration conf ->
-    conf.resolutionStrategy {
-        eachDependency { details ->
-            // change all javax.servlet artifacts to the one used by Spark otherwise these will lead to
-            // SecurityException (signer information wrong)
-            if (details.requested.name.contains("servlet") && !details.requested.name.contains("guice")) {
-                details.useTarget group: "org.eclipse.jetty.orbit", name: "javax.servlet", version: "3.0.0.v201112011016"
-            }
-        }
-    }
-    conf.exclude group: "org.mortbay.jetty"
 }
 
 if (JavaVersion.current() >= JavaVersion.VERSION_17) {

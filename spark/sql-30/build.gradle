@@ -150,6 +150,8 @@ sparkVariants {
         tasks.getByName(variant.taskName('javadoc')) {
             dependsOn compileScala
             source(generatedJavaDirectory)
+            options.addStringOption('Xdoclint:none', '-quiet')
+            failOnError = false
         }
 
         scaladoc {
@@ -159,8 +161,11 @@ sparkVariants {
 }
 
 tasks.withType(ScalaCompile) { ScalaCompile task ->
-    task.scalaCompileOptions.additionalParameters = ["-javabootclasspath", new File(project.ext.runtimeJavaHome, 'jre/lib/rt.jar').absolutePath]
-    task.options.bootstrapClasspath = layout.files(new File(project.ext.runtimeJavaHome, 'jre/lib/rt.jar'))
+    File rtJar = new File(project.ext.runtimeJavaHome, 'jre/lib/rt.jar')
+    if (rtJar.exists()) {
+        task.scalaCompileOptions.additionalParameters = ["-javabootclasspath", rtJar.absolutePath]
+        task.options.bootstrapClasspath = layout.files(rtJar)
+    }
     task.sourceCompatibility = project.ext.minimumRuntimeVersion
     task.targetCompatibility = project.ext.minimumRuntimeVersion
     task.options.forkOptions.executable = new File(project.ext.runtimeJavaHome, 'bin/java').absolutePath

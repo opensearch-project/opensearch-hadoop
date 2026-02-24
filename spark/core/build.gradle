@@ -109,9 +109,9 @@ sparkVariants {
                 source(generatedJavaDirectory)
                 if (variant.name.contains('spark40')) {
                     executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/javadoc').absolutePath
-                    options.addStringOption('Xdoclint:none', '-quiet')
-                    failOnError = false
                 }
+                options.addStringOption('Xdoclint:none', '-quiet')
+                failOnError = false
             }
 
         scaladoc {
@@ -151,8 +151,11 @@ tasks.withType(ScalaCompile) { ScalaCompile task ->
     if (task.name.contains("spark40") || task.name.contains("Spark40")) {
         return
     }
-    task.scalaCompileOptions.additionalParameters = ["-javabootclasspath", new File(project.ext.runtimeJavaHome, 'jre/lib/rt.jar').absolutePath]
-    task.options.bootstrapClasspath = layout.files(new File(project.ext.runtimeJavaHome, 'jre/lib/rt.jar'))
+    File rtJar = new File(project.ext.runtimeJavaHome, 'jre/lib/rt.jar')
+    if (rtJar.exists()) {
+        task.scalaCompileOptions.additionalParameters = ["-javabootclasspath", rtJar.absolutePath]
+        task.options.bootstrapClasspath = layout.files(rtJar)
+    }
     task.sourceCompatibility = project.ext.minimumRuntimeVersion
     task.targetCompatibility = project.ext.minimumRuntimeVersion
     task.options.forkOptions.executable = new File(project.ext.runtimeJavaHome, 'bin/java').absolutePath

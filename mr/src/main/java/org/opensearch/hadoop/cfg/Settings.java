@@ -228,6 +228,10 @@ public abstract class Settings {
         return Long.valueOf(getProperty(OPENSEARCH_SCROLL_SIZE, OPENSEARCH_SCROLL_SIZE_DEFAULT));
     }
 
+    public long getSearchAfterSize() {
+        return Long.valueOf(getProperty(OPENSEARCH_SEARCH_AFTER_SIZE, OPENSEARCH_SEARCH_AFTER_SIZE_DEFAULT));
+    }
+
     public long getScrollLimit() {
         return Long.valueOf(getProperty(OPENSEARCH_SCROLL_LIMIT, OPENSEARCH_SCROLL_LIMIT_DEFAULT));
     }

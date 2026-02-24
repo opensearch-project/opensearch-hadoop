@@ -138,6 +138,10 @@ public interface ConfigurationOptions {
     String OPENSEARCH_SCROLL_SIZE = "opensearch.scroll.size";
     String OPENSEARCH_SCROLL_SIZE_DEFAULT = "1000";
 
+    /** Search after page size (serverless mode) */
+    String OPENSEARCH_SEARCH_AFTER_SIZE = "opensearch.search_after.size";
+    String OPENSEARCH_SEARCH_AFTER_SIZE_DEFAULT = "10000";
+
     /** Scroll limit */
     String OPENSEARCH_SCROLL_LIMIT = "opensearch.scroll.limit";
     String OPENSEARCH_SCROLL_LIMIT_DEFAULT = "-1";

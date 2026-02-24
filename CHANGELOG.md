@@ -44,7 +44,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `com.gradleup.shadow` from 8.3.6 to 9.2.2
 - Bumps `software.amazon.awssdk:sdk-core` from 2.31.59 to 2.41.25
 - Bumps `software.amazon.awssdk:regions` from 2.31.78 to 2.39.6
-- Bumps `software.amazon.awssdk:auth` from 2.34.5 to 2.41.20
+- Bumps `software.amazon.awssdk:auth` from 2.34.5 to 2.42.0
 - Bumps `software.amazon.awssdk:utils` from 2.38.2 to 2.40.8
 - Bumps `software.amazon.awssdk:http-client-spi` from 2.39.6 to 2.40.3
 

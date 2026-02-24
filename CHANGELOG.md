@@ -9,7 +9,6 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Changed
 - Switched to more reliable OpenSearch Lucene snapshot location ([#597](https://github.com/opensearch-project/opensearch-hadoop/pull/597))
 - Make $JAVA8_HOME optional by using Gradle auto-detection and remove unnecessary JDK 8/11 setup from Spark 4.0 CI workflow ([#703](https://github.com/opensearch-project/opensearch-hadoop/pull/703))
-- Make $JAVA8_HOME environment variable optional by using Gradle auto-detection to find JDK 8 ([#XXX](https://github.com/opensearch-project/opensearch-hadoop/pull/XXX))
 
 ### Deprecated
 

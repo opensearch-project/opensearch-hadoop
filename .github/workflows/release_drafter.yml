@@ -65,9 +65,6 @@ jobs:
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-mr/${{ env.VERSION }}"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}"
-          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}"
-          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}"
-          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}"
 
@@ -98,12 +95,6 @@ jobs:
           cp -R hive/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}
           cp -R dist/build/distributions/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}
           cp -R dist/build/poms/* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop/${{ env.VERSION }}
-          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}
-          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.10* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.10/${{ env.VERSION }}
-          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}
-          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.11* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.11/${{ env.VERSION }}
-          cp -R spark/sql-20/build/distributions/opensearch-spark-20_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}
-          cp -R spark/sql-20/build/poms/opensearch-spark-20_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-20_2.12/${{ env.VERSION }}
           cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}
           cp -R spark/sql-30/build/poms/opensearch-spark-30_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}
           cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}

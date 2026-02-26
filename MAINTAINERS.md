@@ -6,7 +6,12 @@ This document contains a list of maintainers in this repo. See [opensearch-proje
 
 | Maintainer           | GitHub ID                                     | Affiliation |
 | -------------------- | --------------------------------------------- | ----------- |
-| Nick Knize           | [nknize](https://github.com/nknize)           | Community   |
 | Harsha Vamsi Kalluri | [harshavamsi](https://github.com/harshavamsi) | Amazon      |
 | Thomas Farr          | [Xtansia](https://github.com/Xtansia)         | Independent |
 | Sotaro Hikita        | [lawofcycles](https://github.com/lawofcycles) | Amazon      |
+
+## Emeritus
+
+| Maintainer           | GitHub ID                                     | Affiliation |
+| -------------------- | --------------------------------------------- | ----------- |
+| Nick Knize           | [nknize](https://github.com/nknize)           | Community   |

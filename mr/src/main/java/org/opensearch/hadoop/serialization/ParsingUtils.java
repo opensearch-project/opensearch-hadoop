@@ -237,7 +237,7 @@ public abstract class ParsingUtils {
         }
     }
 
-    private static String readValueAsString(Parser parser) {
+    public static String readValueAsString(Parser parser) {
         FastByteArrayOutputStream out = new FastByteArrayOutputStream(256);
         JacksonJsonGenerator generator = new JacksonJsonGenerator(out);
         traverse(parser, generator);

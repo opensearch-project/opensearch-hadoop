@@ -11,6 +11,8 @@ sparkVariants {
     capabilityGroup 'org.opensearch.spark.variant'
     setCoreDefaultVariant "spark30scala212", spark30Version, scala212Version
     addCoreFeatureVariant "spark30scala213", spark30Version, scala213Version
+    addCoreFeatureVariant "spark35scala212", spark35Version, scala212Version
+    addCoreFeatureVariant "spark35scala213", spark35Version, scala213Version
     addCoreFeatureVariant "spark40scala213", spark40Version, scala213Version
 
     all { SparkVariantPlugin.SparkVariant variant ->
@@ -44,11 +46,13 @@ sparkVariants {
                 exclude group: 'org.apache.hadoop'
             }
 
-            // Spark 4.x moved org.apache.spark.internal.Logging to spark-common-utils
+            // Spark 3.5+ moved org.apache.spark.internal.Logging to spark-common-utils
             // Spark 4.1+ further split LogKey into spark-common-utils-java
             if (variant.sparkVersion.startsWith("4.")) {
                 add(variant.configuration('compileOnly'), "org.apache.spark:spark-common-utils_${variant.scalaMajorVersion}:${variant.sparkVersion}")
                 add(variant.configuration('compileOnly'), "org.apache.spark:spark-common-utils-java_${variant.scalaMajorVersion}:${variant.sparkVersion}")
+            } else if (variant.sparkVersion.startsWith("3.5")) {
+                add(variant.configuration('compileOnly'), "org.apache.spark:spark-common-utils_${variant.scalaMajorVersion}:${variant.sparkVersion}")
             }
 
 

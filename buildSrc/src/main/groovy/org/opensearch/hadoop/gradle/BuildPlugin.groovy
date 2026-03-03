@@ -857,7 +857,9 @@ class BuildPlugin implements Plugin<Project>  {
         LicenseHeadersTask licenseHeaders = project.tasks.create('licenseHeaders', LicenseHeadersTask.class)
         precommitTasks.add(licenseHeaders)
 
-        if (!project.path.startsWith(":qa")) {
+        // Skip dependencyLicenses for root project: it has no direct external dependencies,
+        // but parallel builds can cause subproject dependencies to leak into its runtimeClasspath.
+        if (!project.path.startsWith(":qa") && project != project.rootProject) {
             TaskProvider<DependencyLicensesTask> dependencyLicenses = project.tasks.register('dependencyLicenses', DependencyLicensesTask.class) {
                 dependencies = project.configurations.runtimeClasspath.incoming.artifactView {
                     componentFilter {

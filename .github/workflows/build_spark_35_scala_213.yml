@@ -1,0 +1,57 @@
+name: Build and test spark 35 scala 213
+
+on: [push, pull_request]
+
+jobs:
+  build-and-test-spark-35-scala-213:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [ubuntu-latest]
+    steps:
+      - name: Checkout Branch
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 8
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '8'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 8 env'
+        run: echo "JAVA8_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 11 env'
+        run: echo "JAVA11_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: 'Setup: Java 17 env'
+        run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
+
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+
+      - name: Build with Gradle
+        run: ./gradlew opensearch-spark-35:integrationTestSpark35scala213
+
+      - name: Publish Test Results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-${{ matrix.os }}
+          path: '**/build/test-results'

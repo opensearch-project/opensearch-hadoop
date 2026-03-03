@@ -149,6 +149,14 @@ public final class FieldParser {
                 }
             }
 
+            // check if the field has enabled: false
+            // These fields have no subfield metadata in the mapping, so we cannot infer
+            // a struct schema. Fall back to STRING to preserve the raw JSON from _source.
+            Object enabled = content.get("enabled");
+            if (Boolean.FALSE.equals(enabled)) {
+                return new Field(key, FieldType.STRING);
+            }
+
             // check if it's a join field since these are special
             if (FieldType.JOIN == fieldType) {
                 return new Field(key, fieldType, new Field[]{new Field("name", FieldType.KEYWORD), new Field("parent", FieldType.KEYWORD)});

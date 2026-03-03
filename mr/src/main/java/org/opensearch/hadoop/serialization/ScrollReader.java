@@ -988,6 +988,20 @@ public class ScrollReader implements Closeable {
     }
 
     protected Object read(String fieldName, Token t, String fieldMapping, Parser parser) {
+        // For fields mapped as STRING (e.g. enabled: false objects),
+        // read the raw JSON as a string regardless of the actual token type.
+        if ((t == Token.START_ARRAY || t == Token.START_OBJECT) && fieldMapping != null) {
+            FieldType esType = mapping(fieldMapping, parser);
+            if (esType == FieldType.STRING) {
+                String rawJson = ParsingUtils.readValueAsString(parser);
+                Object value = reader.readValue(parser, rawJson, FieldType.STRING);
+                if (isArrayField(fieldMapping)) {
+                    return singletonList(fieldMapping, value, parser);
+                }
+                return value;
+            }
+        }
+
         if (t == Token.START_ARRAY) {
             return list(fieldName, fieldMapping, parser);
         }
@@ -1029,6 +1043,16 @@ public class ScrollReader implements Closeable {
 
     // Same as read(String, Token, String) above, but does not include checking the current field name to see if it's an array.
     protected Object readListItem(String fieldName, Token t, String fieldMapping, Parser parser) {
+        // For fields mapped as STRING (e.g. enabled: false objects),
+        // read the raw JSON as a string regardless of the actual token type.
+        if ((t == Token.START_ARRAY || t == Token.START_OBJECT) && fieldMapping != null) {
+            FieldType esType = mapping(fieldMapping, parser);
+            if (esType == FieldType.STRING) {
+                String rawJson = ParsingUtils.readValueAsString(parser);
+                return reader.readValue(parser, rawJson, FieldType.STRING);
+            }
+        }
+
         if (t == Token.START_ARRAY) {
             return list(fieldName, fieldMapping, parser);
         }

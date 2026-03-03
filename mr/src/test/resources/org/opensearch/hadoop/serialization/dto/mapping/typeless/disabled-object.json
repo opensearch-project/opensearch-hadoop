@@ -1,0 +1,15 @@
+{
+  "index": {
+    "mappings": {
+      "properties": {
+        "normal_field": {
+          "type": "keyword"
+        },
+        "disabled_object": {
+          "type": "object",
+          "enabled": false
+        }
+      }
+    }
+  }
+}

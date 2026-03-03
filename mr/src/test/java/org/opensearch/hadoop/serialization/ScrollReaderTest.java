@@ -711,4 +711,33 @@ public class ScrollReaderTest {
             return collector.retry("{\"_index\":\"pig\",\"_type\":\"tupleartists\",\"_id\":\"23hrGo7VRCyao8lB9Uu5Kw\",\"_score\":0.0,\"_source\":{\"number\":4}}".getBytes());
         }
     }
+
+    @Test
+    public void testScrollWithDisabledObject() throws IOException {
+        MappingSet mappings = getMappingSet("disabled-object");
+
+        InputStream stream = getClass().getResourceAsStream(scrollData("disabled-object"));
+
+        ScrollReader reader = new ScrollReader(ScrollReaderConfigBuilder.builder(new JdkValueReader(), mappings.getResolvedView(), new TestSettings())
+                .setReadMetadata(readMetadata)
+                .setMetadataName(metadataField)
+                .setReturnRawJson(readAsJson)
+                .setIgnoreUnmappedFields(false)
+                .setIncludeFields(Collections.<String>emptyList())
+                .setExcludeFields(Collections.<String>emptyList())
+                .setIncludeArrayFields(Collections.<String>emptyList()));
+
+        ScrollReader.Scroll scroll = reader.read(stream);
+        List<Object[]> hits = scroll.getHits();
+        assertEquals(1, hits.size());
+
+        Map doc = (Map) hits.get(0)[1];
+        assertEquals("hello", doc.get("normal_field"));
+        // disabled_object should be returned as a raw JSON string
+        assertNotNull(doc.get("disabled_object"));
+        assertTrue(doc.get("disabled_object") instanceof String);
+        String rawJson = (String) doc.get("disabled_object");
+        assertTrue(rawJson.contains("value1"));
+        assertTrue(rawJson.contains("value2"));
+    }
 }

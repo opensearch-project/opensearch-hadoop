@@ -1,0 +1,26 @@
+{
+  "_scroll_id" : "test",
+  "took" : 1,
+  "timed_out" : false,
+  "_shards" : {
+    "total" : 1,
+    "successful" : 1,
+    "failed" : 0
+  },
+  "hits" : {
+    "total" : 1,
+    "max_score" : 1.0,
+    "hits" : [{
+      "_index" : "test-disabled-object",
+      "_id" : "1",
+      "_score" : 1.0,
+      "_source" : {
+        "normal_field" : "hello",
+        "disabled_object" : [
+          { "key1" : "value1", "key2" : 123 },
+          { "key1" : "value2", "key2" : 456 }
+        ]
+      }
+    }]
+  }
+}

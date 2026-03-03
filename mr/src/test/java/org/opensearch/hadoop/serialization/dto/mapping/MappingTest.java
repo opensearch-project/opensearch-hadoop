@@ -466,4 +466,16 @@ public class MappingTest {
         assertEquals("field4", mapping.getFields()[2].name());
         assertEquals(INTEGER, mapping.getFields()[2].type());
     }
+
+    @Test
+    public void testDisabledObjectParsing() throws Exception {
+        MappingSet mappings = getMappingsForResource("disabled-object.json");
+        Mapping mapping = ensureAndGet("index", "disabled", mappings);
+        Field[] props = mapping.getFields();
+        assertEquals(2, props.length);
+        assertEquals("normal_field", props[0].name());
+        assertEquals(KEYWORD, props[0].type());
+        assertEquals("disabled_object", props[1].name());
+        assertEquals(STRING, props[1].type());
+    }
 }

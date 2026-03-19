@@ -11,7 +11,7 @@ base {
   archivesName = 'opensearch-hadoop'
 }
 
-def sparkVariantIncluded = 'spark30scala212'
+def sparkVariantIncluded = 'spark35scala212'
 
 configurations {
     embedded {
@@ -33,6 +33,11 @@ configurations {
             attribute(Usage.USAGE_ATTRIBUTE, objects.named(Usage, 'packaging'))
         }
     }
+    sparkExtraJars {
+        canBeResolved = true
+        canBeConsumed = false
+        transitive = false
+    }
     thirdPartyShaded {
         canBeResolved = true
         canBeConsumed = false
@@ -47,11 +52,11 @@ configurations {
 BuildPlugin.disableTransitiveDependencies(project, project.configurations.thirdPartyShaded)
 
 def distProjects = [":opensearch-hadoop-mr", ":opensearch-hadoop-hive",
-                    ":opensearch-spark-30"]
+                    ":opensearch-spark-35"]
 
 distProjects.each { distProject ->
     def configureDistDependency = { Dependency dependency ->
-        if (distProject == ":opensearch-spark-30") {
+        if (distProject == ":opensearch-spark-35") {
             dependency.capabilities {
                 requireCapability("org.opensearch.spark.sql.variant:$sparkVariantIncluded:$project.version")
             }
@@ -71,6 +76,33 @@ distProjects.each { distProject ->
     }
 }
 
+// Additional Spark variant jars to include in the distribution zip (not in the uber jar)
+['spark30scala212', 'spark30scala213'].each { variant ->
+    dependencies {
+        add('sparkExtraJars', project(":opensearch-spark-30")) {
+            capabilities {
+                requireCapability("org.opensearch.spark.sql.variant:$variant:$project.version")
+            }
+        }
+    }
+}
+['spark35scala213'].each { variant ->
+    dependencies {
+        add('sparkExtraJars', project(":opensearch-spark-35")) {
+            capabilities {
+                requireCapability("org.opensearch.spark.sql.variant:$variant:$project.version")
+            }
+        }
+    }
+}
+dependencies {
+    sparkExtraJars(project(":opensearch-spark-40")) {
+        capabilities {
+            requireCapability("org.opensearch.spark.sql.variant:spark40scala213:$project.version")
+        }
+    }
+}
+
 dependencies {
     // For Uber pom (and Javadoc to a lesser extent)
     thirdPartyShaded("commons-httpclient:commons-httpclient:3.1")
@@ -85,17 +117,17 @@ dependencies {
     }
     implementation("org.apache.hive:hive-exec:$hiveVersion")
     implementation("org.apache.hive:hive-metastore:$hiveVersion")
-    implementation("org.apache.spark:spark-core_${project.ext.scala212MajorVersion}:$spark30Version") {
+    implementation("org.apache.spark:spark-core_${project.ext.scala212MajorVersion}:$spark35Version") {
         exclude group: 'javax.servlet'
         exclude group: 'org.apache.hadoop'
     }
-    implementation("org.apache.spark:spark-yarn_${project.ext.scala212MajorVersion}:$spark30Version") {
+    implementation("org.apache.spark:spark-yarn_${project.ext.scala212MajorVersion}:$spark35Version") {
         exclude group: 'org.apache.hadoop'
     }
-    implementation("org.apache.spark:spark-sql_${project.ext.scala212MajorVersion}:$spark30Version") {
+    implementation("org.apache.spark:spark-sql_${project.ext.scala212MajorVersion}:$spark35Version") {
         exclude group: 'org.apache.hadoop'
     }
-    implementation("org.apache.spark:spark-streaming_${project.ext.scala212MajorVersion}:$spark30Version") {
+    implementation("org.apache.spark:spark-streaming_${project.ext.scala212MajorVersion}:$spark35Version") {
         exclude group: 'org.apache.hadoop'
     }
     implementation("org.scala-lang:scala-library:$scala212Version")
@@ -104,7 +136,7 @@ dependencies {
     implementation("org.apache.hadoop:hadoop-common:${project.ext.hadoopVersion}")
     implementation("org.apache.hadoop:hadoop-mapreduce-client-core:${project.ext.hadoopVersion}")
     implementation("joda-time:joda-time:$jodaVersion")
-    compileOnly("org.apache.spark:spark-catalyst_${project.ext.scala212MajorVersion}:$spark30Version")
+    compileOnly("org.apache.spark:spark-catalyst_${project.ext.scala212MajorVersion}:$spark35Version")
 }
 
 // Configure uber jar
@@ -170,6 +202,7 @@ task('distZip', type: Zip) {
 
     into("$zipContentDir/dist") {
         from(project.configurations.dist)
+        from(project.configurations.sparkExtraJars)
         from(tasks.jar)
         from(tasks.javadocJar)
         from(tasks.sourcesJar)

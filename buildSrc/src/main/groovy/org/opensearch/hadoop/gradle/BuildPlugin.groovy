@@ -319,7 +319,8 @@ class BuildPlugin implements Plugin<Project>  {
 
                 resolve.eachDependency { DependencyResolveDetails details ->
                     // There are tons of slf4j-* variants. Search for all of them, and lock them down.
-                    if (details.requested.name.contains("slf4j-")) {
+                    // Exclude slf4j-reload4j which was introduced in 1.7.36 (needed by Hadoop 3.4+)
+                    if (details.requested.name.contains("slf4j-") && details.requested.name != "slf4j-reload4j") {
                         details.useVersion "1.7.6"
                     }
                     // Be careful with log4j version settings as they can be easily missed.
@@ -336,9 +337,9 @@ class BuildPlugin implements Plugin<Project>  {
      * @param project to be configured
      */
     private static void configureBuildTasks(Project project) {
-        // Target Java 1.8 compilation
-        project.java.sourceCompatibility = '1.8'
-        project.java.targetCompatibility = '1.8'
+        // Target Java 11 compilation
+        project.java.sourceCompatibility = '11'
+        project.java.targetCompatibility = '11'
 
         // TODO: Remove all root project distribution logic. It should exist in a separate dist project.
         if (project != project.rootProject) {
@@ -457,7 +458,7 @@ class BuildPlugin implements Plugin<Project>  {
                     "org/opensearch/hadoop/util/**",
                     "org/apache/hadoop/hive/**"
             ]
-            // Set javadoc executable to runtime Java (1.8)
+            // Set javadoc executable to runtime Java
             javadoc.executable = new File(project.ext.runtimeJavaHome, 'bin/javadoc')
 
             MinimalJavadocOptions javadocOptions = javadoc.getOptions()
@@ -468,13 +469,14 @@ class BuildPlugin implements Plugin<Project>  {
             javadocOptions.header = project.name
             javadocOptions.showFromProtected()
             javadocOptions.addStringOption('Xdoclint:none', '-quiet')
+            javadoc.failOnError = false
             javadocOptions.groups = [
                     'OpenSearch Map/Reduce' : ['org.opensearch.hadoop.mr*'],
                     'OpenSearch Hive' : ['org.opensearch.hadoop.hive*'],
                     'OpenSearch Spark' : ['org.opensearch.spark*'],
             ]
             javadocOptions.links = [ // External doc links
-                    "https://docs.oracle.com/javase/8/docs/api/",
+                    "https://docs.oracle.com/en/java/javase/11/docs/api/",
                     "https://commons.apache.org/proper/commons-logging/apidocs/",
                     "https://hadoop.apache.org/docs/stable2/api/",
                     "https://hive.apache.org/javadocs/r1.2.2/api/",
@@ -564,9 +566,9 @@ class BuildPlugin implements Plugin<Project>  {
                 }
             }
             jdt {
-                javaRuntimeName = "JavaSE-1.8"
-                sourceCompatibility = 1.8
-                targetCompatibility = 1.8
+                javaRuntimeName = "JavaSE-11"
+                sourceCompatibility = 11
+                targetCompatibility = 11
             }
         }
     }
@@ -833,9 +835,15 @@ class BuildPlugin implements Plugin<Project>  {
 
         integrationTest.ignoreFailures = false
 
-        integrationTest.executable = "${project.ext.get('runtimeJavaHome')}/bin/java"
+        // Use lazy evaluation so that per-project testJavaHome overrides in build.gradle take effect
+        project.afterEvaluate {
+            integrationTest.executable = "${project.ext.get('testJavaHome')}/bin/java"
+        }
         integrationTest.minHeapSize = "256m"
         integrationTest.maxHeapSize = "2g"
+        integrationTest.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
+        integrationTest.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
+        integrationTest.jvmArgs "--add-opens=java.security.jgss/sun.security.krb5=ALL-UNNAMED"
 
         integrationTest.testLogging {
             displayGranularity = 0

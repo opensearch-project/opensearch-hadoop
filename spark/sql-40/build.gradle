@@ -161,8 +161,6 @@ sparkVariants {
         tasks.getByName(variant.taskName('javadoc')) {
             dependsOn compileScala
             source(generatedJavaDirectory)
-            // Spark 4.0 jars are compiled with JDK 17, so javadoc must also run on JDK 17+
-            executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/javadoc').absolutePath
             options.addStringOption('Xdoclint:none', '-quiet')
             failOnError = false
         }
@@ -173,9 +171,9 @@ sparkVariants {
     }
 }
 
-// Spark 4.0 requires JDK 17+, override the runtime for all test tasks
+// Configure all test tasks to use testJavaHome with required module opens
 tasks.withType(Test) { Test task ->
-    task.executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/java').absolutePath
+    task.executable = new File(project.ext.testJavaHome, 'bin/java').absolutePath
     task.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
     task.jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED"
     task.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"

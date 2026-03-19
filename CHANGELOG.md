@@ -11,6 +11,9 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Changed
 - Switched to more reliable OpenSearch Lucene snapshot location ([#597](https://github.com/opensearch-project/opensearch-hadoop/pull/597))
 - Make $JAVA8_HOME optional by using Gradle auto-detection and remove unnecessary JDK 8/11 setup from Spark 4.0 CI workflow ([#703](https://github.com/opensearch-project/opensearch-hadoop/pull/703))
+- Upgrade to OpenSearch 3.x build-tools and test against OpenSearch 3.5.0 ([#730](https://github.com/opensearch-project/opensearch-hadoop/pull/730))
+- Drop JDK 8 support: raise minimum runtime to Java 11, require JDK 21 to build ([#730](https://github.com/opensearch-project/opensearch-hadoop/pull/730))
+- Upgrade Hadoop from 3.1.2 to 3.4.3 for JDK 11+ compatibility ([#730](https://github.com/opensearch-project/opensearch-hadoop/pull/730))
 
 ### Deprecated
 

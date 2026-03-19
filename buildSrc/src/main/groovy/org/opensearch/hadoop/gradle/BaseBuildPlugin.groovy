@@ -31,7 +31,6 @@ package org.opensearch.hadoop.gradle
 
 import org.opensearch.gradle.info.BuildParams
 import org.opensearch.gradle.info.GlobalBuildInfoPlugin
-import org.opensearch.gradle.info.JavaHome
 import org.opensearch.hadoop.gradle.util.Resources
 import org.gradle.api.GradleException
 import org.gradle.api.JavaVersion
@@ -75,30 +74,13 @@ class BaseBuildPlugin implements Plugin<Project> {
             JavaVersion minimumRuntimeVersion = JavaVersion.toVersion(Resources.getResourceContents("/minimumRuntimeVersion"))
             println "Min runtime: ${minimumRuntimeVersion}"
 
-            // We snap the runtime to java 8 since Hadoop needs to see some significant
-            // upgrades to support any runtime higher than that
-            // Try to find JDK 8 from BuildParams (populated by JAVA8_HOME env var).
-            // If not found, use Gradle's JavaInstallationRegistry to auto-detect installed JDKs.
-            JavaHome opensearchHadoopRuntimeJava = BuildParams.javaVersions.find { it.version == 8 }
-            if (opensearchHadoopRuntimeJava != null) {
-                project.rootProject.ext.runtimeJavaHome = opensearchHadoopRuntimeJava.javaHome.get()
-            } else {
-                def javaInstallationRegistry = project.rootProject.services.get(org.gradle.internal.jvm.inspection.JavaInstallationRegistry)
-                def jvmMetadataDetector = project.rootProject.services.get(org.gradle.internal.jvm.inspection.JvmMetadataDetector)
-                def jdk8Install = javaInstallationRegistry.toolchains().find { toolchain ->
-                    def metadata = jvmMetadataDetector.getMetadata(toolchain.location)
-                    metadata.languageVersion.majorVersion == '8'
-                }
-                if (jdk8Install != null) {
-                    project.rootProject.ext.runtimeJavaHome = jdk8Install.location.location
-                } else {
-                    throw new GradleException(
-                            'JDK 8 is required to build OpenSearch-Hadoop but was not found. ' +
-                                    'Either set $JAVA8_HOME or install JDK 8 via a toolchain manager (e.g. sdkman) ' +
-                                    'so that Gradle auto-detection can find it.'
-                    )
-                }
-            }
+            // Use the current JVM as the runtime Java home
+            project.rootProject.ext.runtimeJavaHome = org.gradle.internal.jvm.Jvm.current().javaHome
+
+            // Test JDK: use SPARK_TEST_JAVA_HOME or JAVA17_HOME if set, otherwise fall back to current JVM.
+            // Modules that require a specific JDK (e.g. Spark 3.x, Hive) can override this per-project.
+            def testJava = System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.rootProject.ext.runtimeJavaHome.toString()
+            project.rootProject.ext.testJavaHome = testJava
 
             // Set on global build info
             BuildParams.init { params ->
@@ -112,6 +94,7 @@ class BaseBuildPlugin implements Plugin<Project> {
         }
         // Propagate to current project
         project.ext.runtimeJavaHome = project.rootProject.ext.runtimeJavaHome
+        project.ext.testJavaHome = project.rootProject.ext.testJavaHome
         project.ext.minimumRuntimeVersion = project.rootProject.ext.minimumRuntimeVersion
     }
 
@@ -193,15 +176,10 @@ class BaseBuildPlugin implements Plugin<Project> {
         project.repositories.maven { url = "https://artifacts.opensearch.org/snapshots/" } // default
         project.repositories.maven { url = "https://ci.opensearch.org/ci/dbc/snapshots/maven/" }
 
-        // Add Ivy repos in order to pull OpenSearch distributions that have bundled JDKs
-        for (String repo : ['snapshots', 'artifacts']) {
-            project.repositories.ivy {
-                url = "https://${repo}.opensearch.org/releases"
-                patternLayout {
-                    artifact "/core/opensearch/[revision]/[module]-min-[revision](-[classifier]).[ext]"
-                }
-            }
-        }
+        // OpenSearch distributions are resolved by build-tools' DistributionDownloadPlugin
+        // via exclusive Ivy repos with specific pattern layouts. The old Ivy repos below
+        // used incorrect patterns and a non-existent host (snapshots.opensearch.org),
+        // so they have been removed.
 
         // For Lucene Snapshots, Use the lucene version interpreted from opensearch-build-tools version file.
         if (project.ext.luceneVersion.contains('-snapshot')) {

@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.hadoop.io.Text;
-import org.codehaus.jackson.map.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.opensearch.hadoop.serialization.ScrollReader;
 import org.opensearch.hadoop.serialization.ScrollReaderConfigBuilder;
 import org.opensearch.hadoop.serialization.dto.mapping.FieldParser;

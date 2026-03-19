@@ -9,65 +9,82 @@
 ![OpenSearch logo](OpenSearch.svg)
 
 # OpenSearch Hadoop
-OpenSearch real-time search and analytics natively integrated with Hadoop.
-Supports [Map/Reduce](#mapreduce), [Apache Hive](#apache-hive), [Apache Spark](#apache-spark).
 
-- [OpenSearch Hadoop](#opensearch-hadoop)
-  - [Requirements](#requirements)
-  - [Usage](#usage)
-  - [Compatibility](#compatibility)
-  - [Building the source](#building-the-source)
-  - [License](#license)
+A connector for reading and writing data between [Apache Spark](http://spark.apache.org) and [OpenSearch](https://opensearch.org/). It enables Spark jobs to directly index data into OpenSearch and run queries against it, with parallel reads and writes across Spark partitions and OpenSearch shards for efficient distributed processing.
+
+Also supports [Apache Hive](http://hive.apache.org) and Hadoop [Map/Reduce](http://hadoop.apache.org/docs/r1.2.1/mapred_tutorial.html). Works with any OpenSearch cluster accessible via REST, including Amazon OpenSearch Service and Amazon OpenSearch Serverless.
+
+**Use cases:**
+- Index large datasets from Spark ETL pipelines into OpenSearch
+- Query OpenSearch from Spark for analytics, reporting, and machine learning
+- Build search-powered applications backed by Spark data pipelines
+- Bridge your data lake or lakehouse with search and analytics on OpenSearch
+
+## Quick Start
+
+Write a Spark DataFrame to OpenSearch and read it back, using PySpark:
+
+```bash
+pyspark --packages org.opensearch.client:opensearch-spark-30_2.12:2.0.0 \
+        --conf spark.opensearch.nodes=localhost \
+        --conf spark.opensearch.nodes.wan.only=true
+```
+
+```python
+# Write
+df = spark.createDataFrame([("hello", 1), ("world", 2)], ["name", "value"])
+df.write.format("opensearch").save("my-index")
+
+# Read
+result = spark.read.format("opensearch").load("my-index")
+result.show()
+```
+
+For Scala, Java, Spark SQL, RDD, and more examples, see the [User Guide](USER_GUIDE.md).
+For Amazon OpenSearch Service and OpenSearch Serverless, see the [User Guide](USER_GUIDE.md#amazon-opensearch-service).
+
+## Maven Coordinates
+
+Choose the artifact that matches your Spark and Scala version:
+
+| Spark Version | Scala Version | Artifact |
+|---------------|---------------|----------|
+| 3.4.x | 2.12 | `org.opensearch.client:opensearch-spark-30_2.12:2.0.0` |
+| 3.4.x | 2.13 | `org.opensearch.client:opensearch-spark-30_2.13:2.0.0` |
+| 3.5.x | 2.12 | `org.opensearch.client:opensearch-spark-35_2.12:2.0.0` |
+| 3.5.x | 2.13 | `org.opensearch.client:opensearch-spark-35_2.13:2.0.0` |
+| 4.x | 2.13 | `org.opensearch.client:opensearch-spark-40_2.13:2.0.0` |
+
+For Map/Reduce and Hive, see `org.opensearch.client:opensearch-hadoop-mr` and `org.opensearch.client:opensearch-hadoop-hive` on [Maven Central](https://central.sonatype.com/search?q=org.opensearch.client%20opensearch-hadoop).
 
 ## Requirements
-OpenSearch (__1.3.x__ or higher) cluster accessible through REST. That's it!
-If using SigV4 IAM auth features, you would need to include the following AWS SDK v2 dependencies in your job classpath:
-- `software.amazon.awssdk:auth:2.31.59` (or later)
-- `software.amazon.awssdk:regions:2.31.59` (or later)
-- `software.amazon.awssdk:http-client-spi:2.31.59` (or later)
-- `software.amazon.awssdk:identity-spi:2.31.59` (or later)
-- `software.amazon.awssdk:sdk-core:2.31.59` (or later)
-- `software.amazon.awssdk:utils:2.31.59` (or later)
 
-## Usage
-
-Please see the [USER_GUIDE](USER_GUIDE.md) for usage.
+- OpenSearch 1.x or later (including Amazon OpenSearch Service and Serverless)
+- Java 11 or later at runtime
+- Java 21 to build from source
+- For SigV4 IAM authentication, additional AWS SDK dependencies are required. See the [User Guide](USER_GUIDE.md).
 
 ## Compatibility
 
-See [Compatibility](COMPATIBILITY.md).
+See [COMPATIBILITY.md](COMPATIBILITY.md).
 
-## Building the source
+## Building from Source
 
-OpenSearch Hadoop uses [Gradle][] for its build system and it is not required to have it installed on your machine. By default (`gradlew`), it automatically builds the package and runs the unit tests. For integration testing, use the `integrationTests` task.
-See `gradlew tasks` for more information.
+OpenSearch Hadoop uses [Gradle](http://www.gradle.org/) for its build system. JDK 21 is required.
 
-To create a distributable zip, run `gradlew distZip` from the command line; once completed you will find the jar in `build/libs`.
+```bash
+./gradlew build           # build and run unit tests
+./gradlew integrationTests # run integration tests
+./gradlew distZip          # create distributable zip
+```
 
-To build the project, JVM 21 is required. The minimum compiler version is Java 21 and the minimum runtime is Java 11.
+## Documentation
+
+- [User Guide](USER_GUIDE.md) — usage examples for Spark, Hive, and Map/Reduce
+- [Compatibility](COMPATIBILITY.md) — supported versions of OpenSearch, Spark, and Scala
+- [Contributing](CONTRIBUTING.md)
+- [Changelog](CHANGELOG.md)
 
 ## License
-This project is released under version 2.0 of the [Apache License][]
 
-```
-Licensed to Elasticsearch under one or more contributor
-license agreements. See the NOTICE file distributed with
-this work for additional information regarding copyright
-ownership. Elasticsearch licenses this file to you under
-the Apache License, Version 2.0 (the "License"); you may
-not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing,
-software distributed under the License is distributed on an
-"AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
-KIND, either express or implied.  See the License for the
-specific language governing permissions and limitations
-under the License.
-```
-
-[Hadoop]: http://hadoop.apache.org
-[Apache License]: http://www.apache.org/licenses/LICENSE-2.0
-[Gradle]: http://www.gradle.org/
+This project is licensed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).

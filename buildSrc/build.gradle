@@ -12,8 +12,8 @@ if (GradleVersion.current() < GradleVersion.version(minimumGradleVersion)) {
     throw new GradleException("Gradle ${minimumGradleVersion}+ is required to build opensearch-hadoop")
 }
 
-if (JavaVersion.current() < JavaVersion.VERSION_11) {
-    throw new GradleException('At least Java 11 is required to use opensearch gradle tools')
+if (JavaVersion.current() < JavaVersion.VERSION_21) {
+    throw new GradleException('At least Java 21 is required to use opensearch gradle tools')
 }
 
 /*

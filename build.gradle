@@ -1,7 +1,6 @@
 import org.opensearch.gradle.ConcatFilesTask
 
 plugins {
-    id 'com.gradleup.shadow' version "9.3.2" apply false
 }
 
 description = 'OpenSearch for Apache Hadoop'

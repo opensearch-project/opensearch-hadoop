@@ -44,7 +44,7 @@ See `gradlew tasks` for more information.
 
 To create a distributable zip, run `gradlew distZip` from the command line; once completed you will find the jar in `build/libs`.
 
-To build the project, JVM 8, JVM 11, and JVM 17 are required. The minimum compiler version is Java 14 and the minimum runtime is Java 8.
+To build the project, JVM 21 is required. The minimum compiler version is Java 21 and the minimum runtime is Java 11.
 
 ## License
 This project is released under version 2.0 of the [Apache License][]

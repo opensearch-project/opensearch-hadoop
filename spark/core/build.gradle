@@ -111,9 +111,6 @@ sparkVariants {
             tasks.getByName(variant.taskName('javadoc')) {
                 dependsOn compileScala
                 source(generatedJavaDirectory)
-                if (variant.name.contains('spark40')) {
-                    executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/javadoc').absolutePath
-                }
                 options.addStringOption('Xdoclint:none', '-quiet')
                 failOnError = false
             }
@@ -124,29 +121,16 @@ sparkVariants {
     }
 }
 
-if (JavaVersion.current() >= JavaVersion.VERSION_17) {
-    tasks.withType(Test) { Test task ->
-        if (task.getName().startsWith("test")) 
-            task.configure {
-                jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED" // Needed for IOUtils's BYTE_ARRAY_BUFFER reflection
-                jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED" // Needed for org.apache.spark.SparkConf, which indirectly uses java.nio.DirectByteBuffer
-                jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED" // Needed for secure mock
-            }
-    }
-}
-
-// Spark 4.0 requires JDK 17+, override the runtime for spark40 test tasks
+// Configure all Spark test tasks to use testJavaHome (JDK 17) with required module opens
 tasks.withType(Test) { Test task ->
-    if (task.name.contains("Spark40") || task.name.contains("spark40")) {
-        task.executable = new File(System.getenv('SPARK_TEST_JAVA_HOME') ?: System.getenv('JAVA17_HOME') ?: project.ext.runtimeJavaHome.toString(), 'bin/java').absolutePath
-        task.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
-        task.jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED"
-        task.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
-        task.jvmArgs "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED"
-        task.jvmArgs "--add-opens=java.base/java.util=ALL-UNNAMED"
-        task.jvmArgs "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
-        task.jvmArgs "--add-opens=java.base/java.net=ALL-UNNAMED"
-    }
+    task.executable = new File(project.ext.testJavaHome, 'bin/java').absolutePath
+    task.jvmArgs "--add-opens=java.base/java.io=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.nio=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.lang=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.lang.invoke=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.util=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/sun.nio.ch=ALL-UNNAMED"
+    task.jvmArgs "--add-opens=java.base/java.net=ALL-UNNAMED"
 }
 
 // Set minimum compatibility and java home for compiler task

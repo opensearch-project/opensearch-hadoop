@@ -2,6 +2,8 @@
 Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 
 ## [Unreleased]
+
+## [2.0.0]
 ### Added
 - Add support for Amazon OpenSearch Serverless ([#586](https://github.com/opensearch-project/opensearch-hadoop/pull/586))
 - Add Apache Spark 4.0 support ([#684](https://github.com/opensearch-project/opensearch-hadoop/pull/684))
@@ -161,7 +163,8 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `org.json4s:json4s-jackson_2.12` from 3.2.11 to 4.0.6
 - Bumps `org.apache.avro:avro` from 1.7.7 to 1.11.1
 
-[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.3.0...HEAD
+[Unreleased]: https://github.com/opensearch-project/opensearch-hadoop/compare/v2.0.0...HEAD
+[2.0.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.3.0...v2.0.0
 [1.3.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.2.0...v1.3.0
 [1.2.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.1.0...v1.2.0
 [1.1.0]: https://github.com/opensearch-project/opensearch-hadoop/compare/v1.0.1...v1.1.0

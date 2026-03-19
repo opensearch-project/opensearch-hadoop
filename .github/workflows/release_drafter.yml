@@ -68,6 +68,9 @@ jobs:
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-hadoop-hive/${{ env.VERSION }}"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}"
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-35_2.12/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-35_2.13/${{ env.VERSION }}"
+          mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-40_2.13/${{ env.VERSION }}"
 
       - name: Setup Gradle
         uses: gradle/gradle-build-action@v2
@@ -100,6 +103,12 @@ jobs:
           cp -R spark/sql-30/build/poms/opensearch-spark-30_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.12/${{ env.VERSION }}
           cp -R spark/sql-30/build/distributions/opensearch-spark-30_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}
           cp -R spark/sql-30/build/poms/opensearch-spark-30_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-30_2.13/${{ env.VERSION }}
+          cp -R spark/sql-35/build/distributions/opensearch-spark-35_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-35_2.12/${{ env.VERSION }}
+          cp -R spark/sql-35/build/poms/opensearch-spark-35_2.12* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-35_2.12/${{ env.VERSION }}
+          cp -R spark/sql-35/build/distributions/opensearch-spark-35_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-35_2.13/${{ env.VERSION }}
+          cp -R spark/sql-35/build/poms/opensearch-spark-35_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-35_2.13/${{ env.VERSION }}
+          cp -R spark/sql-40/build/distributions/opensearch-spark-40_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-40_2.13/${{ env.VERSION }}
+          cp -R spark/sql-40/build/poms/opensearch-spark-40_2.13* ${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-40_2.13/${{ env.VERSION }}
 
       - name: create artifacts
         run: |

@@ -6,7 +6,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `commons-logging:commons-logging` from 1.3.5 to 1.3.6
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.21.1 to 2.21.2
 - Bumps `jakarta.xml.bind:jakarta.xml.bind-api` from 4.0.2 to 4.0.5
-- Bumps `com.google.protobuf:protobuf-java` from 4.34.0 to 4.34.1
+- Bumps `com.google.protobuf:protobuf-java` from 4.34.0 to 4.34.1 in /spark/core
 
 ## [2.0.0]
 ### Added

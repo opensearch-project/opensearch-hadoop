@@ -104,7 +104,7 @@ public abstract class Version {
                         sb.append("\n");
                     }
                 }
-                if (foundJars > 1) {
+                if (foundJars > 1 && !"true".equals(System.getProperty("opensearch.hadoop.version.check.skip"))) {
                     throw new RuntimeException(sb.toString());
                 }
             }

@@ -40,6 +40,7 @@ import java.util.Map;
 import java.util.Properties;
 
 import org.apache.commons.logging.LogFactory;
+import org.opensearch.hadoop.util.unit.Booleans;
 
 
 public abstract class Version {
@@ -104,7 +105,7 @@ public abstract class Version {
                         sb.append("\n");
                     }
                 }
-                if (foundJars > 1 && !"true".equals(System.getProperty("opensearch.hadoop.version.check.skip"))) {
+                if (foundJars > 1 && !Booleans.parseBoolean(System.getProperty("opensearch.hadoop.version.check.skip"))) {
                     throw new RuntimeException(sb.toString());
                 }
             }

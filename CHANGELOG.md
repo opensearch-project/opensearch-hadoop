@@ -6,7 +6,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `commons-logging:commons-logging` from 1.3.5 to 1.3.6
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.21.1 to 2.21.3
 - Bumps `jakarta.xml.bind:jakarta.xml.bind-api` from 4.0.2 to 4.0.5
-- Bumps `com.google.protobuf:protobuf-java` from 4.34.0 to 4.34.1 in /spark/core
+- Bumps `com.google.protobuf:protobuf-java` from 4.34.0 to 4.34.1
 - Bumps `software.amazon.awssdk:http-client-spi` from 2.42.4 to 2.42.17
 - Bumps `commons-codec:commons-codec` from 1.21.0 to 1.22.0
 - Bumps `software.amazon.awssdk:identity-spi` from 2.42.18 to 2.44.0

@@ -29,6 +29,7 @@
 package org.opensearch.hadoop.util;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -161,9 +162,14 @@ public class TrackingBytesArray implements ByteSequence {
     public InputStream toInputStream() {
         if (size == 0) {
             return new ByteArrayInputStream(new byte[0]);
-        } else {
-            return data.toInputStream();
         }
+        ByteArrayOutputStream out = new ByteArrayOutputStream(size);
+        try {
+            writeTo(out);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return new ByteArrayInputStream(out.toByteArray());
     }
 
     public void reset() {

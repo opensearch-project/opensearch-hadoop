@@ -43,6 +43,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Fixed serverless mode SaveMode.Overwrite failing when document count exceeds scroll size ([#693](https://github.com/opensearch-project/opensearch-hadoop/pull/693))
 - Fixed RowSerializationEventConverterTest for Spark 3.4+ StructType.toString() format change ([#702](https://github.com/opensearch-project/opensearch-hadoop/pull/702))
 - Fixed object fields with `enabled: false` returning empty structs or throwing exceptions when read via the connector ([#715](https://github.com/opensearch-project/opensearch-hadoop/pull/715))
+- Fixed SigV4 signing failure on bulk retry after partial success causing `x-amz-content-sha256 invalid` ([#759](https://github.com/opensearch-project/opensearch-hadoop/pull/759))
 
 ### Security
 

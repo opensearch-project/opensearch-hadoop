@@ -123,4 +123,38 @@ public class TrackingBytesArrayTest {
         assertEquals(7, data.length());
         assertEquals(2, entry.length());
     }
+
+    @Test
+    public void testToInputStreamIncludesRemovedEntriesBytesAfterRemove() throws Exception {
+        TrackingBytesArray tba = new TrackingBytesArray(new BytesArray(1024));
+
+        byte[] entry1 = "{\"index\":{\"_id\":\"1\"}}\n{\"title\":\"doc1\"}\n".getBytes();
+        byte[] entry2 = "{\"index\":{\"_id\":\"2\"}}\n{\"title\":\"doc2\"}\n".getBytes();
+        byte[] entry3 = "{\"index\":{\"_id\":\"3\"}}\n{\"title\":\"doc3\"}\n".getBytes();
+
+        tba.copyFrom(new BytesArray(entry1, entry1.length));
+        tba.copyFrom(new BytesArray(entry2, entry2.length));
+        tba.copyFrom(new BytesArray(entry3, entry3.length));
+
+        // Simulate partial bulk success: first entry succeeded, remove it before retry
+        tba.remove(0);
+
+        // writeTo: what gets sent over HTTP
+        ByteArrayOutputStream httpBody = new ByteArrayOutputStream();
+        tba.writeTo(httpBody);
+
+        // toInputStream: what SigV4 uses to compute x-amz-content-sha256
+        byte[] signedBody = tba.toInputStream().readAllBytes();
+
+        // These SHOULD be equal for SigV4 signature to match the actual HTTP body.
+        // If they differ, the signature computed from toInputStream() will not match
+        // the body sent via writeTo(), causing AOSS to reject with
+        // "x-amz-content-sha256 invalid"
+        assertArrayEquals(
+            "toInputStream() must return the same bytes as writeTo() after remove(). " +
+            "Mismatch causes SigV4 signature failure on AOSS bulk retry.",
+            httpBody.toByteArray(),
+            signedBody
+        );
+    }
 }

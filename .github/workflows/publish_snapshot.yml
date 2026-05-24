@@ -12,10 +12,10 @@ jobs:
       id-token: write
       contents: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Set up JDK 11
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@17f84c3641ba7b8f6deff6309fc4c864478f5d62 # v3
         with:
           distribution: 'temurin'
           java-version: '11'
@@ -25,7 +25,7 @@ jobs:
         run: echo "JAVA11_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@17f84c3641ba7b8f6deff6309fc4c864478f5d62 # v3
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -35,7 +35,7 @@ jobs:
         run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@17f84c3641ba7b8f6deff6309fc4c864478f5d62 # v3
         with:
           distribution: 'temurin'
           java-version: '21'
@@ -46,7 +46,7 @@ jobs:
 
       - name: Read value from Properties-file
         id: read_property
-        uses: christian-draeger/read-properties@1.1.1
+        uses: christian-draeger/read-properties@908f99d3334be3802ec7cb528395a69d19914e7b # 1.1.1
         with:
           path: 'buildSrc/opensearch-hadoop-version.properties'
           properties: 'opensearch_hadoop'
@@ -70,7 +70,7 @@ jobs:
           mkdir -p "${{ env.MAVEN_HOME_CLIENT }}/opensearch-spark-40_2.13/${{ env.VERSION }}-SNAPSHOT"
 
       - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@a8f75513eafdebd8141bd1cd4e30fcd194af8dfa # v2
 
       - name: generate JARs
         run: |
@@ -110,14 +110,14 @@ jobs:
       - name: debug output directories
         run: tree maven
 
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           repository: 'opensearch-project/opensearch-build'
           path: 'build'
           ref: 'main'
 
       - name: Load secret
-        uses: 1password/load-secrets-action@v2
+        uses: 1password/load-secrets-action@581a835fb51b8e7ec56b71cf2ffddd7e68bb25e0 # v2
         with:
           # Export loaded secrets as environment variables
           export-env: true
@@ -132,7 +132,7 @@ jobs:
           echo "SNAPSHOT_REPO_URL=$snapshot_repo_url" >> $GITHUB_ENV
 
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v5
+        uses: aws-actions/configure-aws-credentials@61815dcd50bd041e203e49132bacad1fd04d2708 # v5
         with:
           role-to-assume: ${{ env.MAVEN_SNAPSHOTS_S3_ROLE }}
           aws-region: us-east-1

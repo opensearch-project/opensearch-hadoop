@@ -18,20 +18,20 @@ jobs:
     steps:
       - name: GitHub App token
         id: github_app_token
-        uses: tibdex/github-app-token@v1.5.0
+        uses: tibdex/github-app-token@1901dc7d52169e70c27a8da37aef0d423e2867a2 # v1.5.0
         with:
           app_id: ${{ secrets.APP_ID }}
           private_key: ${{ secrets.APP_PRIVATE_KEY }}
           installation_id: 22958780
 
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
         with:
           token: ${{ steps.github_app_token.outputs.token }}
           
 
       - name: Set up JDK 11
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@17f84c3641ba7b8f6deff6309fc4c864478f5d62 # v3
         with:
           distribution: 'temurin'
           java-version: '11'
@@ -41,7 +41,7 @@ jobs:
         run: echo "JAVA11_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up JDK 17
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@17f84c3641ba7b8f6deff6309fc4c864478f5d62 # v3
         with:
           distribution: 'temurin'
           java-version: '17'
@@ -51,7 +51,7 @@ jobs:
         run: echo "JAVA17_HOME=$JAVA_HOME" >> $GITHUB_ENV
 
       - name: Set up JDK 21
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@17f84c3641ba7b8f6deff6309fc4c864478f5d62 # v3
         with:
           distribution: 'temurin'
           java-version: '21'
@@ -65,7 +65,7 @@ jobs:
           ./gradlew updateSHAs
 
       - name: Commit the changes
-        uses: stefanzweifel/git-auto-commit-action@v4.7.2
+        uses: stefanzweifel/git-auto-commit-action@bbd291750d2526367d915d5197485331dc2d8dc7 # v4.7.2
         with:
           commit_message: Updating SHAs
           branch: ${{ github.head_ref }}
@@ -74,12 +74,12 @@ jobs:
           commit_options: '--signoff'
 
       - name: Update the changelog
-        uses: dangoslen/dependabot-changelog-helper@v2
+        uses: dangoslen/dependabot-changelog-helper@b50e4a0a947219edb0a51ca92b9d4a4fb4e2a66f # v2
         with:
           version: 'Unreleased'
 
       - name: Commit the changes
-        uses: stefanzweifel/git-auto-commit-action@v4.7.2
+        uses: stefanzweifel/git-auto-commit-action@bbd291750d2526367d915d5197485331dc2d8dc7 # v4.7.2
         with:
           commit_message: "Update changelog"
           branch: ${{ github.head_ref }}

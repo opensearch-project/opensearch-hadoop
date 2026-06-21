@@ -41,10 +41,15 @@ import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 
+import java.util.Collections;
+
 import javax.net.SocketFactory;
 import javax.net.ssl.KeyManager;
 import javax.net.ssl.KeyManagerFactory;
+import javax.net.ssl.SNIHostName;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLParameters;
+import javax.net.ssl.SSLSocket;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
 import javax.net.ssl.X509TrustManager;
@@ -142,6 +147,12 @@ class SSLSocketFactory implements SecureProtocolSocketFactory {
         }
         else {
             Socket socket = socketfactory.createSocket();
+            if (socket instanceof SSLSocket) {
+                SSLSocket sslSocket = (SSLSocket) socket;
+                SSLParameters sslParams = sslSocket.getSSLParameters();
+                sslParams.setServerNames(Collections.singletonList(new SNIHostName(host)));
+                sslSocket.setSSLParameters(sslParams);
+            }
             SocketAddress localaddr = new InetSocketAddress(localAddress, localPort);
             SocketAddress remoteaddr = new InetSocketAddress(host, port);
             socket.bind(localaddr);

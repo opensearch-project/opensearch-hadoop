@@ -57,8 +57,16 @@ public class ServerlessModeTest {
         settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE_READ, "test-index");
         settings.setServerlessMode(true);
 
-        List<PartitionDefinition> partitions = RestService.findServerlessPartitions(null, settings, null, LOGGER);
+        RestClient restClient = Mockito.mock(RestClient.class);
+        Mockito.when(restClient.count(Mockito.eq("test-index"), Mockito.any()))
+                .thenReturn(100L);
 
+        RestRepository repository = Mockito.mock(RestRepository.class);
+        Mockito.when(repository.getRestClient()).thenReturn(restClient);
+
+        List<PartitionDefinition> partitions = RestService.findServerlessPartitions(repository, settings, null, LOGGER);
+
+        // 100 docs / 50000 default = 1 partition (no slicing needed)
         assertEquals(1, partitions.size());
         assertEquals("test-index", partitions.get(0).getIndex());
         assertEquals(0, partitions.get(0).getShardId());
@@ -70,7 +78,14 @@ public class ServerlessModeTest {
         settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE_READ, "index1,index2,index3");
         settings.setServerlessMode(true);
 
-        List<PartitionDefinition> partitions = RestService.findServerlessPartitions(null, settings, null, LOGGER);
+        RestClient restClient = Mockito.mock(RestClient.class);
+        Mockito.when(restClient.count(Mockito.anyString(), Mockito.any()))
+                .thenReturn(100L);
+
+        RestRepository repository = Mockito.mock(RestRepository.class);
+        Mockito.when(repository.getRestClient()).thenReturn(restClient);
+
+        List<PartitionDefinition> partitions = RestService.findServerlessPartitions(repository, settings, null, LOGGER);
 
         assertEquals(3, partitions.size());
         assertEquals("index1", partitions.get(0).getIndex());

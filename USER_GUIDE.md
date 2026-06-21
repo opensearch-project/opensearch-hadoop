@@ -489,16 +489,14 @@ opensearch.aws.sigv4.region=<region>
 opensearch.aws.sigv4.service.name=aoss
 ```
 
-### Parallel Reads (NextGen Only)
+### Parallel Reads
 
-By default, serverless mode reads each index serially in a single partition. The next-generation OpenSearch Serverless architecture supports PIT with sliced search, which enables parallel reads across multiple Spark tasks.
+Serverless mode automatically splits reads into parallel partitions using PIT + Slice. By default, the connector creates one partition per 50,000 documents in each index.
 
-To enable parallel reads, set `opensearch.input.max.docs.per.partition`:
+To customize the partition size, set `opensearch.input.max.docs.per.partition`:
 
 ```
 opensearch.input.max.docs.per.partition=100000
 ```
 
 The connector will count the documents in each index, divide by this value to determine the number of slices, and create one Spark partition per slice. For example, an index with 1,000,000 documents and `max.docs.per.partition=100000` will produce 10 parallel read tasks.
-
-This setting requires the next-generation OpenSearch Serverless architecture. Using it with Classic Serverless collections will result in a server-side error because Classic does not support the Slice API.

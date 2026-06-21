@@ -164,6 +164,7 @@ public interface ConfigurationOptions {
 
     /** Input options **/
     String OPENSEARCH_MAX_DOCS_PER_PARTITION = "opensearch.input.max.docs.per.partition";
+    String OPENSEARCH_MAX_DOCS_PER_PARTITION_SERVERLESS_DEFAULT = "50000";
 
     String OPENSEARCH_INPUT_JSON = "opensearch.input.json";
     String OPENSEARCH_INPUT_JSON_DEFAULT = "no";

@@ -229,9 +229,8 @@ public abstract class RestService implements Serializable {
 
     /**
      * Create partitions for OpenSearch Serverless mode, which doesn't support shard APIs.
-     * When maxDocsPerPartition is set, creates multiple sliced partitions per index for parallel reads.
-     * This requires PIT + Slice support (available on next-generation OpenSearch Serverless).
-     * On Classic Serverless, using maxDocsPerPartition will result in a server-side error.
+     * When maxDocsPerPartition is set, creates multiple sliced partitions per index for parallel reads
+     * using PIT + Slice.
      */
     static List<PartitionDefinition> findServerlessPartitions(RestRepository client, Settings settings, MappingSet mappingSet, Log log) {
         Resource readResource = new Resource(settings, true);
@@ -244,13 +243,16 @@ public abstract class RestService implements Serializable {
         String[] indices = readResource.index().split(",");
 
         Integer maxDocsPerPartition = settings.getMaxDocsPerPartition();
+        if (maxDocsPerPartition == null) {
+            maxDocsPerPartition = Integer.parseInt(ConfigurationOptions.OPENSEARCH_MAX_DOCS_PER_PARTITION_SERVERLESS_DEFAULT);
+        }
 
         for (String indexName : indices) {
             indexName = indexName.trim();
-            if (maxDocsPerPartition != null) {
-                QueryBuilder query = QueryUtils.parseQueryAndFilters(settings);
-                long numDocs = client.getRestClient().count(indexName, query);
-                int numPartitions = (int) Math.max(1, numDocs / maxDocsPerPartition);
+            QueryBuilder query = QueryUtils.parseQueryAndFilters(settings);
+            long numDocs = client.getRestClient().count(indexName, query);
+            int numPartitions = (int) Math.max(1, numDocs / maxDocsPerPartition);
+            if (numPartitions > 1) {
                 log.info(String.format("Serverless parallel read: index [%s] has [%d] docs, creating [%d] sliced partitions", indexName, numDocs, numPartitions));
                 for (int i = 0; i < numPartitions; i++) {
                     PartitionDefinition.Slice slice = new PartitionDefinition.Slice(i, numPartitions);

@@ -392,6 +392,28 @@ df = spark.read.format("opensearch") \
     .load("my-index")
 ```
 
+### Parallel Reads
+
+Serverless mode automatically splits reads into parallel partitions using PIT + Slice. By default, the connector creates one partition per 50,000 documents in each index.
+
+To customize the partition size, set `opensearch.input.max.docs.per.partition`:
+
+```python
+df = spark.read.format("opensearch") \
+    .option("opensearch.nodes", "https://xxx.us-east-1.aoss.amazonaws.com") \
+    .option("opensearch.port", "443") \
+    .option("opensearch.net.ssl", "true") \
+    .option("opensearch.nodes.wan.only", "true") \
+    .option("opensearch.aws.sigv4.enabled", "true") \
+    .option("opensearch.aws.sigv4.region", "us-east-1") \
+    .option("opensearch.aws.sigv4.service.name", "aoss") \
+    .option("opensearch.serverless", "true") \
+    .option("opensearch.input.max.docs.per.partition", "100000") \
+    .load("my-index")
+```
+
+The connector will count the documents in each index, divide by this value to determine the number of slices, and create one Spark partition per slice. For example, an index with 1,000,000 documents and `max.docs.per.partition=100000` will produce 10 parallel read tasks.
+
 ## Map/Reduce
 
 For low-level Hadoop Map/Reduce jobs, opensearch-hadoop provides `OpenSearchInputFormat` and `OpenSearchOutputFormat`. Add `opensearch-hadoop-mr-2.0.0.jar` to your job classpath.
@@ -472,31 +494,3 @@ TBLPROPERTIES(
     'opensearch.aws.sigv4.region' = 'us-east-1');
 ```
 
-## Amazon OpenSearch Serverless
-
-The connector supports Amazon OpenSearch Serverless (both Classic and NextGen architectures). Serverless collections do not expose shard information, so the connector uses PIT (Point in Time) with search_after for pagination instead of the scroll API.
-
-### Basic Configuration
-
-```
-opensearch.serverless=true
-opensearch.nodes=https://<collection-id>.aoss.<region>.on.aws
-opensearch.port=443
-opensearch.net.ssl=true
-opensearch.nodes.wan.only=true
-opensearch.aws.sigv4.enabled=true
-opensearch.aws.sigv4.region=<region>
-opensearch.aws.sigv4.service.name=aoss
-```
-
-### Parallel Reads
-
-Serverless mode automatically splits reads into parallel partitions using PIT + Slice. By default, the connector creates one partition per 50,000 documents in each index.
-
-To customize the partition size, set `opensearch.input.max.docs.per.partition`:
-
-```
-opensearch.input.max.docs.per.partition=100000
-```
-
-The connector will count the documents in each index, divide by this value to determine the number of slices, and create one Spark partition per slice. For example, an index with 1,000,000 documents and `max.docs.per.partition=100000` will produce 10 parallel read tasks.

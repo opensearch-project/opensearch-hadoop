@@ -67,6 +67,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `software.amazon.awssdk:auth` from 2.34.5 to 2.42.0
 - Bumps `software.amazon.awssdk:utils` from 2.38.2 to 2.42.4
 - Bumps `software.amazon.awssdk:http-client-spi` from 2.39.6 to 2.40.3
+- Bumps `commons-logging:commons-logging` from 1.3.6 to 1.4.0 ([#779](https://github.com/opensearch-project/opensearch-hadoop/pull/779))
 
 ## [1.3.0]
 ### Added

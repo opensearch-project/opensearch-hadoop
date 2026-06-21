@@ -14,7 +14,6 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.impl.NoOpLog;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.opensearch.hadoop.OpenSearchHadoopIllegalArgumentException;
 import org.opensearch.hadoop.cfg.ConfigurationOptions;
 import org.opensearch.hadoop.cfg.PropertiesSettings;
 import org.opensearch.hadoop.cfg.Settings;
@@ -79,14 +78,54 @@ public class ServerlessModeTest {
         assertEquals("index3", partitions.get(2).getIndex());
     }
 
-    @Test(expected = OpenSearchHadoopIllegalArgumentException.class)
-    public void testFindServerlessPartitionsRejectsMaxDocsPerPartition() {
+    @Test
+    public void testFindServerlessPartitionsWithMaxDocsPerPartition() {
         Settings settings = new PropertiesSettings();
         settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE_READ, "test-index");
         settings.setServerlessMode(true);
+        settings.setMaxDocsPerPartition(500);
+
+        RestClient restClient = Mockito.mock(RestClient.class);
+        Mockito.when(restClient.count(Mockito.eq("test-index"), Mockito.any()))
+                .thenReturn(2000L);
+
+        RestRepository repository = Mockito.mock(RestRepository.class);
+        Mockito.when(repository.getRestClient()).thenReturn(restClient);
+
+        List<PartitionDefinition> partitions = RestService.findServerlessPartitions(repository, settings, null, LOGGER);
+
+        assertEquals(4, partitions.size());
+        for (int i = 0; i < 4; i++) {
+            assertEquals("test-index", partitions.get(i).getIndex());
+            assertNotNull(partitions.get(i).getSlice());
+            assertEquals(i, partitions.get(i).getSlice().id);
+            assertEquals(4, partitions.get(i).getSlice().max);
+        }
+    }
+
+    @Test
+    public void testFindServerlessPartitionsWithMaxDocsPerPartitionMultipleIndices() {
+        Settings settings = new PropertiesSettings();
+        settings.setProperty(ConfigurationOptions.OPENSEARCH_RESOURCE_READ, "index1,index2");
+        settings.setServerlessMode(true);
         settings.setMaxDocsPerPartition(1000);
 
-        RestService.findServerlessPartitions(null, settings, null, LOGGER);
+        RestClient restClient = Mockito.mock(RestClient.class);
+        Mockito.when(restClient.count(Mockito.eq("index1"), Mockito.any()))
+                .thenReturn(3000L);
+        Mockito.when(restClient.count(Mockito.eq("index2"), Mockito.any()))
+                .thenReturn(1500L);
+
+        RestRepository repository = Mockito.mock(RestRepository.class);
+        Mockito.when(repository.getRestClient()).thenReturn(restClient);
+
+        List<PartitionDefinition> partitions = RestService.findServerlessPartitions(repository, settings, null, LOGGER);
+
+        // index1: 3000/1000 = 3 partitions, index2: 1500/1000 = 1 partition
+        assertEquals(4, partitions.size());
+        assertEquals("index1", partitions.get(0).getIndex());
+        assertEquals("index1", partitions.get(2).getIndex());
+        assertEquals("index2", partitions.get(3).getIndex());
     }
 
     @Test

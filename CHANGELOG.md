@@ -21,6 +21,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Add Apache Spark 4.0 support ([#684](https://github.com/opensearch-project/opensearch-hadoop/pull/684))
 - Add dedicated `opensearch.search_after.size` setting for serverless mode page size ([#695](https://github.com/opensearch-project/opensearch-hadoop/pull/695))
 - Add Apache Spark 3.5 support with dedicated opensearch-spark-35 module ([#717](https://github.com/opensearch-project/opensearch-hadoop/pull/717))
+- Add parallel read support for next-generation OpenSearch Serverless via PIT + Slice ([#783](https://github.com/opensearch-project/opensearch-hadoop/pull/783))
 
 ### Changed
 - Switched to more reliable OpenSearch Lucene snapshot location ([#597](https://github.com/opensearch-project/opensearch-hadoop/pull/597))

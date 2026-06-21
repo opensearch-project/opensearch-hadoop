@@ -67,6 +67,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `software.amazon.awssdk:auth` from 2.34.5 to 2.42.0
 - Bumps `software.amazon.awssdk:utils` from 2.38.2 to 2.42.4
 - Bumps `software.amazon.awssdk:http-client-spi` from 2.39.6 to 2.40.3
+- Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.21.1 to 2.21.4 ([#778](https://github.com/opensearch-project/opensearch-hadoop/pull/778))
 
 ## [1.3.0]
 ### Added

@@ -67,6 +67,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 - Bumps `software.amazon.awssdk:auth` from 2.34.5 to 2.42.0
 - Bumps `software.amazon.awssdk:utils` from 2.38.2 to 2.42.4
 - Bumps `software.amazon.awssdk:http-client-spi` from 2.39.6 to 2.40.3
+- Bumps `io.netty:netty-all` from 4.2.10.Final to 4.2.15.Final ([#780](https://github.com/opensearch-project/opensearch-hadoop/pull/780))
 
 ## [1.3.0]
 ### Added

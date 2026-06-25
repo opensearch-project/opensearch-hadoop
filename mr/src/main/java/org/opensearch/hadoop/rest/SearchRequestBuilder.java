@@ -377,6 +377,15 @@ public class SearchRequestBuilder {
         JacksonJsonGenerator generator = new JacksonJsonGenerator(out);
         try {
             generator.writeBeginObject();
+            if (slice != null && slice.max > 1) {
+                generator.writeFieldName("slice");
+                generator.writeBeginObject();
+                generator.writeFieldName("id");
+                generator.writeNumber(slice.id);
+                generator.writeFieldName("max");
+                generator.writeNumber(slice.max);
+                generator.writeEndObject();
+            }
             generator.writeFieldName("query");
             generator.writeBeginObject();
             root.toJson(generator);

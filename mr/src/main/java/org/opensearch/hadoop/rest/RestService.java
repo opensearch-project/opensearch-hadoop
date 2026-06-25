@@ -229,15 +229,10 @@ public abstract class RestService implements Serializable {
 
     /**
      * Create partitions for OpenSearch Serverless mode, which doesn't support shard APIs.
-     * This function creates a single partition for each index as serverless doesn't expose shard information.
+     * When maxDocsPerPartition is set, creates multiple sliced partitions per index for parallel reads
+     * using PIT + Slice.
      */
     static List<PartitionDefinition> findServerlessPartitions(RestRepository client, Settings settings, MappingSet mappingSet, Log log) {
-        if (settings.getMaxDocsPerPartition() != null) {
-            throw new OpenSearchHadoopIllegalArgumentException(
-                "maxDocsPerPartition setting is not supported in OpenSearch Serverless mode. " +
-                "Serverless does not support Slice API which is required for parallel partition reads.");
-        }
-
         Resource readResource = new Resource(settings, true);
         Mapping resolvedMapping = mappingSet == null ? null : mappingSet.getResolvedView();
         PartitionDefinition.PartitionDefinitionBuilder partitionBuilder = PartitionDefinition.builder(settings, resolvedMapping);
@@ -247,9 +242,25 @@ public abstract class RestService implements Serializable {
         List<PartitionDefinition> partitions = new ArrayList<PartitionDefinition>();
         String[] indices = readResource.index().split(",");
 
+        Integer maxDocsPerPartition = settings.getMaxDocsPerPartition();
+        if (maxDocsPerPartition == null) {
+            maxDocsPerPartition = Integer.parseInt(ConfigurationOptions.OPENSEARCH_MAX_DOCS_PER_PARTITION_SERVERLESS_DEFAULT);
+        }
+
         for (String indexName : indices) {
             indexName = indexName.trim();
-            partitions.add(partitionBuilder.build(indexName, 0, new String[0]));
+            QueryBuilder query = QueryUtils.parseQueryAndFilters(settings);
+            long numDocs = client.getRestClient().count(indexName, query);
+            int numPartitions = (int) Math.max(1, numDocs / maxDocsPerPartition);
+            if (numPartitions > 1) {
+                log.info(String.format("Serverless parallel read: index [%s] has [%d] docs, creating [%d] sliced partitions", indexName, numDocs, numPartitions));
+                for (int i = 0; i < numPartitions; i++) {
+                    PartitionDefinition.Slice slice = new PartitionDefinition.Slice(i, numPartitions);
+                    partitions.add(partitionBuilder.build(indexName, 0, slice, new String[0]));
+                }
+            } else {
+                partitions.add(partitionBuilder.build(indexName, 0, new String[0]));
+            }
         }
 
         return partitions;

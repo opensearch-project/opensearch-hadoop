@@ -139,6 +139,6 @@ jobs:
 
       - name: Get credentials and publish snapshots to maven
         run: |
-          build/publish/publish-snapshot.sh $MAVEN_HOME
+          build/scripts/legacy/publish/publish-snapshot.sh $MAVEN_HOME
 
 

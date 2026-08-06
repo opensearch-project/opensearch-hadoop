@@ -30,6 +30,8 @@
 package org.opensearch.spark.sql
 
 import java.io.ByteArrayOutputStream
+import java.time.Instant
+import java.time.LocalDate
 
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.ScalaReflection
@@ -39,6 +41,8 @@ import org.apache.spark.sql.types.MapType
 import org.apache.spark.sql.types.StringType
 import org.apache.spark.sql.types.StructField
 import org.apache.spark.sql.types.StructType
+import org.apache.spark.sql.types.TimestampType
+import org.apache.spark.sql.types.DateType
 import org.junit.Assert._
 import org.junit.Ignore
 import org.junit.Test
@@ -163,6 +167,28 @@ class DataFrameValueWriterTest {
       generator.flush()
       assertEquals("{}", new String(out.toByteArray))
     }
+  }
+
+  @Test
+  def testWriteDatesAndTimestamps(): Unit = {
+    val schema = StructType(Seq(
+      StructField("t_instant", TimestampType),
+      StructField("d_localdate", DateType)
+    ))
+    val instant = Instant.ofEpochMilli(1690000000000L)
+    val localDate = LocalDate.of(2023, 7, 22) 
+    val row = Row(instant, localDate)
+
+    val serialized = serialize(row, schema)
+    assertTrue(serialized.contains(""""t_instant":1690000000000"""))
+    assertTrue(serialized.contains(""""d_localdate""""))
+  }
+
+  @Test(expected = classOf[OpenSearchHadoopSerializationException])
+  def testWriteDatesAndTimestampsInvalidType(): Unit = {
+    val schema = StructType(Seq(StructField("t_instant", TimestampType)))
+    val row = Row("this-is-not-a-timestamp") 
+    serialize(row, schema)
   }
 
 }

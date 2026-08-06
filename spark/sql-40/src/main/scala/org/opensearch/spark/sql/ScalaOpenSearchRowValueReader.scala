@@ -29,6 +29,7 @@
 package org.opensearch.spark.sql
 
 import java.sql.Timestamp
+import java.time.Instant
 import scala.collection.mutable.LinkedHashMap
 import scala.collection.mutable.Map
 import org.opensearch.spark.serialization.ScalaValueReader
@@ -129,7 +130,11 @@ class ScalaRowValueReader extends ScalaValueReader with RowValueReader with Valu
   }
 
   override def createDate(value: Long) = {
-    new Timestamp(value)
+    Instant.ofEpochMilli(value)
+  }
+
+  override def createDateNanos(value: String) = {
+    org.opensearch.hadoop.util.DateUtils.parseDateNanos(value).toInstant()
   }
 
   def beginDoc(): Unit = {}

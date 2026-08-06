@@ -206,7 +206,7 @@ class ScalaValueReader extends AbstractValueReader with SettingsAware {
     createDate(DateUtils.parseDate(value).getTimeInMillis())
   }
 
-  protected[serialization] def createDateNanos(value: String) = {
+  protected[serialization] def createDateNanos(value: String): Any = {
     DateUtils.parseDateNanos(value)
   }
 

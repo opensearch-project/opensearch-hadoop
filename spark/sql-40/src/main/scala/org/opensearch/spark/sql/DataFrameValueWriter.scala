@@ -30,6 +30,8 @@ package org.opensearch.spark.sql
 
 import java.sql.Date
 import java.sql.Timestamp
+import java.time.Instant
+import java.time.LocalDate
 import java.util.{Map => JMap}
 import scala.collection.JavaConverters.mapAsScalaMapConverter
 import scala.collection.{Map => SMap}
@@ -248,7 +250,9 @@ class DataFrameValueWriter(writeUnknownTypes: Boolean = false) extends Filtering
       case _: Float                => FloatType
       case _: java.lang.Float      => FloatType
       case _: Timestamp            => TimestampType
+      case _: Instant              => TimestampType
       case _: Date                 => DateType
+      case _: LocalDate            => DateType
       case _: Array[Byte]          => BinaryType
       case array: Array[_]         => ArrayType(inferArraySchema(array))
       case map: Map[_, _]          => inferMapSchema(getFirstNotNullElement(map.valuesIterator))
@@ -268,8 +272,20 @@ class DataFrameValueWriter(writeUnknownTypes: Boolean = false) extends Filtering
       case LongType      => generator.writeNumber(value.asInstanceOf[Long])
       case DoubleType    => generator.writeNumber(value.asInstanceOf[Double])
       case FloatType     => generator.writeNumber(value.asInstanceOf[Float])
-      case TimestampType => generator.writeNumber(value.asInstanceOf[Timestamp].getTime())
-      case DateType      => generator.writeNumber(value.asInstanceOf[Date].getTime())
+      case TimestampType =>
+        val time = value match {
+          case t: Timestamp => t.getTime()
+          case i: Instant   => i.toEpochMilli()
+          case _            => throw new OpenSearchHadoopSerializationException(s"Unknown TimestampType value: $value")
+        }
+        generator.writeNumber(time)
+      case DateType      =>
+        val time = value match {
+          case d: Date      => d.getTime()
+          case ld: LocalDate => ld.atStartOfDay(java.time.ZoneOffset.UTC).toInstant().toEpochMilli()
+          case _            => throw new OpenSearchHadoopSerializationException(s"Unknown DateType value: $value")
+        }
+        generator.writeNumber(time)
       case StringType    => generator.writeString(value.toString)
       case _             => {
         val className = schema.getClass().getName()

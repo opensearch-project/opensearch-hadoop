@@ -23,7 +23,7 @@ class ScalaValueReaderTest {
   @Test
   def testCreateDateNanos(): Unit = {
     val reader = new ScalaValueReader()
-    val nanoDate = reader.createDateNanos("2015-01-01T12:10:30.123456789Z")
+    val nanoDate = reader.createDateNanos("2015-01-01T12:10:30.123456789Z").asInstanceOf[Timestamp]
     assertEquals(1420114230123l, nanoDate.getTime)
     assertEquals(123456789, nanoDate.getNanos)
   }

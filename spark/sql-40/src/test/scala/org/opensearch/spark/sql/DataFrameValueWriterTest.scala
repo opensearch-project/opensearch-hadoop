@@ -181,7 +181,7 @@ class DataFrameValueWriterTest {
 
     val serialized = serialize(row, schema)
     assertTrue(serialized.contains(""""t_instant":1690000000000"""))
-    assertTrue(serialized.contains(""""d_localdate""""))
+    assertTrue(serialized.contains(""""d_localdate":1689984000000"""))
   }
 
   @Test(expected = classOf[OpenSearchHadoopSerializationException])

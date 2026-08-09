@@ -5,6 +5,9 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Added
 - Add system property `opensearch.hadoop.version.check.skip` to bypass multiple JAR version detection ([#753](https://github.com/opensearch-project/opensearch-hadoop/pull/753))
 
+### Changed
+- Migrate sql-40 date handling to `java.time` `Instant`/`LocalDate` ([#794](https://github.com/opensearch-project/opensearch-hadoop/pull/794))
+
 ### Dependencies
 - Bumps `commons-logging:commons-logging` from 1.3.5 to 1.3.6
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.21.1 to 2.21.3

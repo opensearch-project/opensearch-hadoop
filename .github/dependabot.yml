@@ -7,6 +7,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /buildSrc/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -15,6 +16,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /dist/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -23,6 +25,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /hive/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -31,6 +34,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /mr/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -39,6 +43,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /qa/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -47,6 +52,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /spark/core/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -55,6 +61,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /spark/sql-30/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -63,6 +70,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /spark/sql-35/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -71,6 +79,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /spark/sql-40/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -79,6 +88,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /test/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -87,6 +97,7 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
   - directory: /thirdparty/
     open-pull-requests-limit: 1
     package-ecosystem: gradle
@@ -95,4 +106,5 @@ updates:
     labels:
       - "dependabot"
       - "dependencies"
+      - "skip-changelog"
 version: 2

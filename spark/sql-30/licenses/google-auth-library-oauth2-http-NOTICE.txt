@@ -1,0 +1,2 @@
+Google Auth Library for Java
+Copyright 2014 Google Inc.

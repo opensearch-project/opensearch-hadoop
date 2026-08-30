@@ -1,0 +1,2 @@
+Google HTTP Client Library for Java
+Copyright 2011 Google Inc.

@@ -359,4 +359,24 @@ public interface ConfigurationOptions {
     String OPENSEARCH_AWS_SIGV4_SERVICE_NAME = "opensearch.aws.sigv4.service.name";
     String OPENSEARCH_AWS_SIGV4_SERVICE_NAME_DEFAULT = "es";
     String OPENSEARCH_AWS_SIGV4_SERVICE_NAME_SERVERLESS = "aoss";
+
+    /** Google Cloud OIDC options **/
+    String OPENSEARCH_GCP_OIDC_ENABLED = "opensearch.gcp.oidc.enabled";
+    String OPENSEARCH_GCP_OIDC_ENABLED_DEFAULT = "false";
+
+    String OPENSEARCH_GCP_OIDC_TOKEN_TYPE = "opensearch.gcp.oidc.token.type";
+    String OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ID_TOKEN = "id_token";
+    String OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ACCESS_TOKEN = "access_token";
+    String OPENSEARCH_GCP_OIDC_TOKEN_TYPE_DEFAULT = OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ID_TOKEN;
+
+    /** Audience claim for the id_token flow. Required when token type is id_token. **/
+    String OPENSEARCH_GCP_OIDC_AUDIENCE = "opensearch.gcp.oidc.audience";
+
+    /** Comma separated OAuth2 scopes for the access_token flow. Required when token type is access_token. **/
+    String OPENSEARCH_GCP_OIDC_SCOPES = "opensearch.gcp.oidc.scopes";
+    String OPENSEARCH_GCP_OIDC_SCOPES_DEFAULT = "https://www.googleapis.com/auth/cloud-platform";
+
+    /** Seconds before actual expiry at which a cached token is considered expired. **/
+    String OPENSEARCH_GCP_OIDC_TOKEN_REFRESH_WINDOW = "opensearch.gcp.oidc.token.refresh.window";
+    String OPENSEARCH_GCP_OIDC_TOKEN_REFRESH_WINDOW_DEFAULT = "300";
 }

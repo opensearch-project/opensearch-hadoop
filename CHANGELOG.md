@@ -4,6 +4,7 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ## [Unreleased]
 ### Added
 - Add system property `opensearch.hadoop.version.check.skip` to bypass multiple JAR version detection ([#753](https://github.com/opensearch-project/opensearch-hadoop/pull/753))
+- Add support for Google Managed Service for Apache Spark, including authentication with Google credentials resolved from Application Default Credentials ([#803](https://github.com/opensearch-project/opensearch-hadoop/issues/803))
 
 ### Changed
 - Migrate sql-40 date handling to `java.time` `Instant`/`LocalDate` ([#794](https://github.com/opensearch-project/opensearch-hadoop/pull/794))

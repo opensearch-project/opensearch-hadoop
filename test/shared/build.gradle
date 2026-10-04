@@ -80,7 +80,7 @@ dependencies {
 
     implementation("org.hamcrest:hamcrest-all:${project.ext.hamcrestVersion}")
 
-    implementation("io.netty:netty-all:4.0.56.Final") {
+    implementation("io.netty:netty-all:4.2.15.Final") {
         because "Needed for creating mock SSL Server to test against"
     }
 

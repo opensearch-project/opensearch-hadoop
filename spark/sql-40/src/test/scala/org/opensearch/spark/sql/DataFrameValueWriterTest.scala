@@ -30,12 +30,15 @@
 package org.opensearch.spark.sql
 
 import java.io.ByteArrayOutputStream
+import java.sql.Date
 import java.time.Instant
 import java.time.LocalDate
+import java.util.TimeZone
 
 import org.apache.spark.sql.Row
 import org.apache.spark.sql.catalyst.ScalaReflection
 import org.apache.spark.sql.types.ArrayType
+import org.apache.spark.sql.types.DateType
 import org.apache.spark.sql.types.IntegerType
 import org.apache.spark.sql.types.MapType
 import org.apache.spark.sql.types.StringType
@@ -189,6 +192,21 @@ class DataFrameValueWriterTest {
     val schema = StructType(Seq(StructField("t_instant", TimestampType)))
     val row = Row("this-is-not-a-timestamp") 
     serialize(row, schema)
+  }
+
+  @Test
+  def testWriteDateUsesUtcStartOfDay(): Unit = {
+    val defaultTimeZone = TimeZone.getDefault
+    try {
+      TimeZone.setDefault(TimeZone.getTimeZone("Asia/Tokyo"))
+      val schema = StructType(Seq(StructField("d", DateType)))
+      val row = Row(Date.valueOf("2023-07-22"))
+      val serialized = serialize(row, schema)
+      assertTrue(serialized.contains(""""d":1689984000000"""))
+    } finally {
+      TimeZone.setDefault(defaultTimeZone)
+    }
+  }
   }
 
 }

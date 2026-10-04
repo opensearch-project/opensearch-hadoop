@@ -8,6 +8,9 @@ Inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/)
 ### Changed
 - Migrate sql-40 date handling to `java.time` `Instant`/`LocalDate` ([#794](https://github.com/opensearch-project/opensearch-hadoop/pull/794))
 
+### Fixed
+- Write Spark `DateType` values as UTC start of day so the stored date does not shift by the JVM timezone offset on non UTC JVMs ([#798](https://github.com/opensearch-project/opensearch-hadoop/issues/797))
+
 ### Dependencies
 - Bumps `commons-logging:commons-logging` from 1.3.5 to 1.3.6
 - Bumps `com.fasterxml.jackson.core:jackson-databind` from 2.21.1 to 2.21.3

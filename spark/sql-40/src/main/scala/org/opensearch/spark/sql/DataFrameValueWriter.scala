@@ -281,9 +281,9 @@ class DataFrameValueWriter(writeUnknownTypes: Boolean = false) extends Filtering
         generator.writeNumber(time)
       case DateType      =>
         val time = value match {
-          case d: Date      => d.getTime()
+          case d: Date       => d.toLocalDate.atStartOfDay(java.time.ZoneOffset.UTC).toInstant.toEpochMilli
           case ld: LocalDate => ld.atStartOfDay(java.time.ZoneOffset.UTC).toInstant().toEpochMilli()
-          case _            => throw new OpenSearchHadoopSerializationException(s"Unknown DateType value: $value")
+          case _             => throw new OpenSearchHadoopSerializationException(s"Unknown DateType value: $value")
         }
         generator.writeNumber(time)
       case StringType    => generator.writeString(value.toString)

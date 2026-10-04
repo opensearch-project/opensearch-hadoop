@@ -837,4 +837,25 @@ public abstract class Settings {
             return getProperty(OPENSEARCH_AWS_SIGV4_SERVICE_NAME, OPENSEARCH_AWS_SIGV4_SERVICE_NAME_DEFAULT);
         }
     }
+
+    public Boolean getGcpOidcEnabled() {
+        return Booleans.parseBoolean(getProperty(OPENSEARCH_GCP_OIDC_ENABLED, OPENSEARCH_GCP_OIDC_ENABLED_DEFAULT));
+    }
+
+    public String getGcpOidcTokenType() {
+        return getProperty(OPENSEARCH_GCP_OIDC_TOKEN_TYPE, OPENSEARCH_GCP_OIDC_TOKEN_TYPE_DEFAULT);
+    }
+
+    public String getGcpOidcAudience() {
+        return getProperty(OPENSEARCH_GCP_OIDC_AUDIENCE);
+    }
+
+    public String getGcpOidcScopes() {
+        return getProperty(OPENSEARCH_GCP_OIDC_SCOPES, OPENSEARCH_GCP_OIDC_SCOPES_DEFAULT);
+    }
+
+    public int getGcpOidcTokenRefreshWindow() {
+        return Integer.parseInt(getProperty(OPENSEARCH_GCP_OIDC_TOKEN_REFRESH_WINDOW,
+                OPENSEARCH_GCP_OIDC_TOKEN_REFRESH_WINDOW_DEFAULT));
+    }
 }

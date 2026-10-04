@@ -30,6 +30,7 @@
 package org.opensearch.hadoop.rest.commonshttp.auth;
 
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyAuthScheme;
+import org.opensearch.hadoop.rest.commonshttp.auth.gcp.GcpOidcAuthScheme;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoAuthScheme;
 import org.opensearch.hadoop.thirdparty.apache.commons.httpclient.auth.AuthPolicy;
 
@@ -37,6 +38,7 @@ public class OpenSearchHadoopAuthPolicies {
 
     public static final String NEGOTIATE = "Negotiate";
     public static final String APIKEY = "ApiKey";
+    public static final String BEARER = "Bearer";
 
     private static boolean REGISTERED = false;
 
@@ -45,6 +47,7 @@ public class OpenSearchHadoopAuthPolicies {
             REGISTERED = true;
             AuthPolicy.registerAuthScheme(NEGOTIATE, SpnegoAuthScheme.class);
             AuthPolicy.registerAuthScheme(APIKEY, OpenSearchApiKeyAuthScheme.class);
+            AuthPolicy.registerAuthScheme(BEARER, GcpOidcAuthScheme.class);
         }
     }
 

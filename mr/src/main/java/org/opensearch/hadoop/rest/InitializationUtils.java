@@ -318,9 +318,48 @@ public abstract class InitializationUtils {
             hasScript = hasScript || isSet;
         }
 
+        validateGcpOidcSettings(settings);
+
         // Early attempt to catch the internal field filtering clashing with user
         // specified field filtering
         SettingsUtils.determineSourceFields(settings); // ignore return, just checking for the throw.
+    }
+
+    /**
+     * Validates the Google OIDC options up front so that a misconfiguration surfaces as a
+     * configuration error rather than as an authentication failure from OpenSearch.
+     */
+    static void validateGcpOidcSettings(Settings settings) {
+        if (!settings.getGcpOidcEnabled()) {
+            return;
+        }
+
+        // Both schemes own the Authorization header, so allowing both would mean one silently
+        // overwriting the other.
+        Assert.isTrue(!settings.getAwsSigV4Enabled(),
+                "Cannot enable both [" + ConfigurationOptions.OPENSEARCH_AWS_SIGV4_ENABLED + "] and ["
+                        + ConfigurationOptions.OPENSEARCH_GCP_OIDC_ENABLED
+                        + "]. Use the one that matches the target cluster.");
+
+        String tokenType = settings.getGcpOidcTokenType();
+        if (ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ID_TOKEN.equals(tokenType)) {
+            Assert.hasText(settings.getGcpOidcAudience(),
+                    "Missing Google OIDC audience. Specify one with ["
+                            + ConfigurationOptions.OPENSEARCH_GCP_OIDC_AUDIENCE + "] when ["
+                            + ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE + "] is ["
+                            + ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ID_TOKEN + "]");
+        } else if (ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ACCESS_TOKEN.equals(tokenType)) {
+            Assert.hasText(settings.getGcpOidcScopes(),
+                    "Missing Google OAuth2 scopes. Specify at least one with ["
+                            + ConfigurationOptions.OPENSEARCH_GCP_OIDC_SCOPES + "] when ["
+                            + ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE + "] is ["
+                            + ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ACCESS_TOKEN + "]");
+        } else {
+            throw new OpenSearchHadoopIllegalArgumentException("Unsupported value [" + tokenType + "] for ["
+                    + ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE + "]. Supported values are ["
+                    + ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ID_TOKEN + "] and ["
+                    + ConfigurationOptions.OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ACCESS_TOKEN + "]");
+        }
     }
 
     public static void validateSettingsForReading(Settings settings) {

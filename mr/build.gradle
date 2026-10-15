@@ -82,6 +82,13 @@ dependencies {
     implementation "software.amazon.awssdk:identity-spi:2.44.4"
     implementation "software.amazon.awssdk:utils:2.44.4"
     implementation "software.amazon.awssdk:sdk-core:2.44.4"
+    implementation "com.google.auth:google-auth-library-oauth2-http:1.30.1"
+    implementation "com.google.auth:google-auth-library-credentials:1.30.1"
+    implementation "com.google.http-client:google-http-client:1.45.2"
+    implementation "com.google.http-client:google-http-client-gson:1.45.2"
+    implementation "io.opencensus:opencensus-contrib-http-util:0.31.1"
+    implementation "io.opencensus:opencensus-api:0.31.1"
+    implementation "io.grpc:grpc-api:1.68.2"
 }
 
 String generatedResources = "$buildDir/generated-resources/main"

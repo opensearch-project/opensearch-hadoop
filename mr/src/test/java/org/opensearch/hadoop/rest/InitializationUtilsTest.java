@@ -205,4 +205,75 @@ public class InitializationUtilsTest {
         
         assertEquals("es", set.getAwsSigV4ServiceName());
     }
+
+    @Test
+    public void testGcpOidcDisabledByDefaultNeedsNoOptions() {
+        Settings set = new TestSettings();
+        validateSettings(set);
+
+        assertFalse(set.getGcpOidcEnabled());
+    }
+
+    @Test
+    public void testGcpOidcIdTokenFlowRequiresAudience() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_GCP_OIDC_ENABLED, "true");
+        try {
+            validateSettings(set);
+            fail("Expected the id_token flow to require an audience");
+        } catch (OpenSearchHadoopIllegalArgumentException e) {
+            assertTrue("Unexpected message: " + e.getMessage(),
+                    e.getMessage().contains(OPENSEARCH_GCP_OIDC_AUDIENCE));
+        }
+    }
+
+    @Test
+    public void testGcpOidcIdTokenFlowWithAudienceIsValid() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_GCP_OIDC_ENABLED, "true");
+        set.setProperty(OPENSEARCH_GCP_OIDC_AUDIENCE, "https://opensearch.example.com");
+        validateSettings(set);
+
+        assertTrue(set.getGcpOidcEnabled());
+        assertEquals(OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ID_TOKEN, set.getGcpOidcTokenType());
+    }
+
+    @Test
+    public void testGcpOidcAccessTokenFlowDoesNotRequireAudience() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_GCP_OIDC_ENABLED, "true");
+        set.setProperty(OPENSEARCH_GCP_OIDC_TOKEN_TYPE, OPENSEARCH_GCP_OIDC_TOKEN_TYPE_ACCESS_TOKEN);
+        validateSettings(set);
+
+        // Scopes fall back to a non-empty default, so the access_token flow is usable as-is.
+        assertEquals(OPENSEARCH_GCP_OIDC_SCOPES_DEFAULT, set.getGcpOidcScopes());
+    }
+
+    @Test
+    public void testGcpOidcRejectsUnsupportedTokenType() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_GCP_OIDC_ENABLED, "true");
+        set.setProperty(OPENSEARCH_GCP_OIDC_TOKEN_TYPE, "saml");
+        try {
+            validateSettings(set);
+            fail("Expected an unsupported token type to be rejected");
+        } catch (OpenSearchHadoopIllegalArgumentException e) {
+            assertTrue("Unexpected message: " + e.getMessage(), e.getMessage().contains("saml"));
+        }
+    }
+
+    @Test
+    public void testGcpOidcAndSigV4AreMutuallyExclusive() {
+        Settings set = new TestSettings();
+        set.setProperty(OPENSEARCH_GCP_OIDC_ENABLED, "true");
+        set.setProperty(OPENSEARCH_GCP_OIDC_AUDIENCE, "https://opensearch.example.com");
+        set.setProperty(OPENSEARCH_AWS_SIGV4_ENABLED, "true");
+        try {
+            validateSettings(set);
+            fail("Expected SigV4 and Google OIDC to be rejected together");
+        } catch (OpenSearchHadoopIllegalArgumentException e) {
+            assertTrue("Unexpected message: " + e.getMessage(),
+                    e.getMessage().contains(OPENSEARCH_GCP_OIDC_ENABLED));
+        }
+    }
 }

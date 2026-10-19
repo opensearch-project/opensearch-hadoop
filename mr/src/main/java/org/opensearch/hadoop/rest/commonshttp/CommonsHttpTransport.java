@@ -47,6 +47,11 @@ import org.opensearch.hadoop.rest.Transport;
 import org.opensearch.hadoop.rest.commonshttp.auth.OpenSearchHadoopAuthPolicies;
 import org.opensearch.hadoop.rest.commonshttp.auth.aws.AwsV4SignerSupport;
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyAuthScheme;
+import org.opensearch.hadoop.rest.commonshttp.auth.gcp.GcpOidcAuthScheme;
+import org.opensearch.hadoop.rest.commonshttp.auth.gcp.GcpOidcCredentials;
+import org.opensearch.hadoop.rest.commonshttp.auth.gcp.GcpOidcCredentialsProvider;
+import org.opensearch.hadoop.rest.commonshttp.auth.gcp.GcpTokenSource;
+import org.opensearch.hadoop.rest.commonshttp.auth.gcp.GoogleCredentialsTokenSource;
 import org.opensearch.hadoop.rest.commonshttp.auth.bearer.OpenSearchApiKeyCredentials;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoAuthScheme;
 import org.opensearch.hadoop.rest.commonshttp.auth.spnego.SpnegoCredentials;
@@ -139,6 +144,8 @@ public class CommonsHttpTransport implements Transport, StatsAware {
     private final UserProvider userProvider;
     private UserProvider proxyUserProvider = null;
     private String runAsUser = null;
+    /** Non-null only when Google OIDC auth is enabled; caches tokens across requests. */
+    private final GcpOidcCredentialsProvider gcpOidcCredentialsProvider;
 
     /** If the HTTP Connection is made through a proxy */
     private boolean isProxied = false;
@@ -219,6 +226,16 @@ public class CommonsHttpTransport implements Transport, StatsAware {
     }
 
     public CommonsHttpTransport(Settings settings, SecureSettings secureSettings, String host) {
+        this(settings, secureSettings, host, null);
+    }
+
+    /**
+     * Allows tests to supply the source of Google tokens, so that the auth wiring can be exercised
+     * without Application Default Credentials being available in the environment.
+     *
+     * @param gcpTokenSource source of Google tokens, or null to resolve them from the environment
+     */
+    CommonsHttpTransport(Settings settings, SecureSettings secureSettings, String host, GcpTokenSource gcpTokenSource) {
         if (log.isDebugEnabled()) {
             log.debug("Creating new CommonsHttpTransport");
         }
@@ -274,6 +291,18 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         }
         client = new HttpClient(params, new SocketTrackingConnectionManager());
         client.setHostConfiguration(hostConfig);
+
+        // Built before addHttpAuth so that the Google credentials can be registered with the
+        // rest of the auth schemes.
+        if (settings.getGcpOidcEnabled()) {
+            GcpTokenSource tokenSource = (gcpTokenSource != null
+                    ? gcpTokenSource
+                    : new GoogleCredentialsTokenSource(settings));
+            this.gcpOidcCredentialsProvider = new GcpOidcCredentialsProvider(tokenSource,
+                    settings.getGcpOidcTokenRefreshWindow());
+        } else {
+            this.gcpOidcCredentialsProvider = null;
+        }
 
         addHttpAuth(settings, secureSettings, authSettings);
         completeAuth(authSettings);
@@ -333,6 +362,20 @@ public class CommonsHttpTransport implements Transport, StatsAware {
             }
             authPrefs.add(AuthPolicy.BASIC);
             client.getParams().setAuthenticationPreemptive(true); // Preemptive auth only if there's basic creds.
+        }
+        if (gcpOidcCredentialsProvider != null) {
+            HttpState state = (authSettings[1] != null ? (HttpState) authSettings[1] : new HttpState());
+            authSettings[1] = state;
+            AuthScope scope = new AuthScope(AuthScope.ANY_HOST, AuthScope.ANY_PORT, AuthScope.ANY_REALM,
+                    OpenSearchHadoopAuthPolicies.BEARER);
+            Credentials gcpCredentials = new GcpOidcCredentials(gcpOidcCredentialsProvider);
+            state.setCredentials(scope, gcpCredentials);
+            if (log.isDebugEnabled()) {
+                log.debug("Using Google OIDC credentials...");
+            }
+            OpenSearchHadoopAuthPolicies.registerAuthSchemes();
+            // Ahead of basic so that the Google token wins if both happen to be configured.
+            authPrefs.add(0, OpenSearchHadoopAuthPolicies.BEARER);
         }
         // Try auth schemes based on currently logged in user:
         if (userProvider != null) {
@@ -697,7 +740,22 @@ public class CommonsHttpTransport implements Transport, StatsAware {
         // We don't want a token added from a proxy user to collide with the
         // run_as mechanism from a real user impersonating said proxy, so
         // make these conditions mutually exclusive.
-        if (runAsUser != null) {
+        // Only one scheme may seed the auth state: setPreemptive() rejects an already
+        // initialized state, so these branches must stay mutually exclusive.
+        if (gcpOidcCredentialsProvider != null) {
+            // The token itself is resolved by the scheme while it builds the header, so a token
+            // that expires partway through a long running batch or streaming job is refreshed.
+            if (log.isDebugEnabled()) {
+                log.debug("Performing preemptive authentication with Google OIDC token");
+            }
+            http.getHostAuthState().setPreemptive();
+            http.getHostAuthState().setAuthAttempted(true);
+            http.getHostAuthState().setAuthScheme(new GcpOidcAuthScheme());
+            if (isProxied && !isSecure) {
+                http.getProxyAuthState().setPreemptive();
+                http.getProxyAuthState().setAuthAttempted(true);
+            }
+        } else if (runAsUser != null) {
             if (log.isDebugEnabled()) {
                 log.debug("Performing request with runAs user set to [" + runAsUser + "]");
             }
